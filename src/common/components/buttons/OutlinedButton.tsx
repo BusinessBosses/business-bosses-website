@@ -3,14 +3,16 @@ interface Props {
   onClick: VoidFunction;
   text: string;
   className?: string;
+  icon?: any;
 }
-const OutlinedButton = ({ onClick, text, className }: Props) => {
+const OutlinedButton = ({ onClick, text, className, icon }: Props) => {
   return (
     <button
       onClick={onClick}
-      className={`bg-white border-2 border-primary rounded-xl text-primary w-full p-2 ${className}`}
+      className={`bg-white border-2 border-primary gap-1 rounded-xl flex items-center justify-center text-primary p-2 ${className}`}
     >
       {text}
+      {icon}
     </button>
   );
 };

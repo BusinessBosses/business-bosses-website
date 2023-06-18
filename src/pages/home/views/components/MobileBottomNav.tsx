@@ -38,9 +38,11 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
             fill={currentIndex === 2 ? primaryColor : strokeColor}
           />
         </button>
-        <Assets.ProfileIcon
-          stroke={currentIndex === 3 ? primaryColor : strokeColor}
-        />
+        <button onClick={() => navigate(RoutesPath.myProfile)}>
+          <Assets.ProfileIcon
+            stroke={currentIndex === 3 ? primaryColor : strokeColor}
+          />
+        </button>
       </div>
     </div>
   );

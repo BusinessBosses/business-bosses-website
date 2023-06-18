@@ -15,6 +15,11 @@ import Block from "./icons/block.svg";
 import Gallery from "./icons/gallery.svg";
 import Rocket from "./icons/rocket.svg";
 import BoostBnner from "./icons/boost_banner.png";
+import Instagram from "./icons/instagram_o.svg";
+import Twitter from "./icons/twitter_o.svg";
+import Trophy from "./icons/trophy.svg";
+import Product from "./icons/product.svg";
+import Invite from "./icons/invitepicture.png";
 
 
 
@@ -36,6 +41,11 @@ const Assets = {
     Block,
     Gallery,
     Rocket,
-    BoostBnner
+    BoostBnner,
+    Instagram,
+    Twitter,
+    Trophy,
+    Product,
+    Invite
 };
 export default Assets;

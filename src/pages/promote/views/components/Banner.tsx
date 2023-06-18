@@ -11,7 +11,7 @@ const Banner = () => {
     <div className="relative">
       <img src={Assets.BoostBnner} className="w-full" alt="" />
       <div className="absolute top-5 px-3">
-        <p className="text-white text-2xl font-bold">Reach Wider Audience</p>
+        <p className="text-white text-2xl font-bold">Reach A Wider Audience</p>
         <div className="">
           {perks.map((perk, index) => (
             <Perk text={perk} key={index} />
