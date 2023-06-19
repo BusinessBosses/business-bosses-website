@@ -22,7 +22,7 @@ const PostItem = () => {
         </p>
         <div className="mt-2">
           <img
-            src="https://cdn.pixabay.com/photo/2023/01/05/13/42/roses-7698973__340.jpg"
+            src="https://cdn.pixabay.com/photo/2016/10/18/21/22/beach-1751455_640.jpg"
             alt=""
             className="rounded-lg w-full h-64 object-cover"
           />
@@ -32,7 +32,7 @@ const PostItem = () => {
                 <div key={img} className="inline-block">
                   <div className="w-20 h-20 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
                     <img
-                      src="https://cdn.pixabay.com/photo/2023/01/05/13/42/roses-7698973__340.jpg"
+                      src="https://cdn.pixabay.com/photo/2018/10/05/14/39/sunset-3726030_640.jpg"
                       alt=""
                       className="rounded-lg w-20 h-20 object-cover"
                     />

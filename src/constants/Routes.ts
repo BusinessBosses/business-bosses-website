@@ -9,6 +9,9 @@ const createPost = "/create-post";
 const promotePost = "/promote-post";
 const settings = "/settings";
 const invite = "/invite";
+const notifications = "/notifications";
+const homeSearch = "/home-search";
+const connections = "/connections";
 
 const RoutesPath = {
     home,
@@ -21,7 +24,10 @@ const RoutesPath = {
     promotePost,
     myProfile,
     settings,
-    invite
+    invite,
+    notifications,
+    homeSearch,
+    connections
 }
 
 export default RoutesPath

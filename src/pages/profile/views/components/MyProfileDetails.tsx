@@ -25,7 +25,10 @@ const MyProfileDetails = () => {
       </div>
 
       <div className="flex items-center justify-between my-5">
-        <button className="text-center">
+        <button
+          onClick={() => navigate(RoutesPath.connections)}
+          className="text-center"
+        >
           <p>1</p>
           <p className="text-xs font-semibold text-[#A9A9A9]">Connections</p>
         </button>

@@ -20,6 +20,7 @@ import Twitter from "./icons/twitter_o.svg";
 import Trophy from "./icons/trophy.svg";
 import Product from "./icons/product.svg";
 import Invite from "./icons/invitepicture.png";
+import ActiveNotification from "./icons/active_notification.svg";
 
 
 
@@ -46,6 +47,7 @@ const Assets = {
     Twitter,
     Trophy,
     Product,
-    Invite
+    Invite,
+    ActiveNotification
 };
 export default Assets;

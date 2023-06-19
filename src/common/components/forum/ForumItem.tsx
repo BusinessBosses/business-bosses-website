@@ -24,7 +24,7 @@ const ForumItem = () => {
         </p>
         <div className="mt-2">
           <img
-            src="https://cdn.pixabay.com/photo/2023/01/05/13/42/roses-7698973__340.jpg"
+            src="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
             alt=""
             className="rounded-lg w-full h-64 object-cover"
           />
@@ -34,7 +34,7 @@ const ForumItem = () => {
                 <div key={img} className="inline-block">
                   <div className="w-20 h-20 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
                     <img
-                      src="https://cdn.pixabay.com/photo/2023/01/05/13/42/roses-7698973__340.jpg"
+                      src="https://cdn.pixabay.com/photo/2014/11/21/03/27/sea-540123_640.jpg"
                       alt=""
                       className="rounded-lg w-20 h-20 object-cover"
                     />

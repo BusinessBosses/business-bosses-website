@@ -9,6 +9,9 @@ import PromotePage from "./pages/promote/views/PromotePage";
 import MyProfile from "./pages/profile/views/MyProfile";
 import SettingsPage from "./pages/settings/views/SettingsPage";
 import InvitePage from "./pages/invite/views/InvitePage";
+import NotificationPage from "./pages/notification/views/NotificationPage";
+import HomeSearch from "./pages/search/views/HomeSearch";
+import ConnectionsPage from "./pages/connections/views/ConnectionsPage";
 const App = () => {
   return (
     <Routes>
@@ -21,6 +24,9 @@ const App = () => {
       <Route path={RoutesPath.promotePost} element={<PromotePage />} />
       <Route path={RoutesPath.settings} element={<SettingsPage />} />
       <Route path={RoutesPath.invite} element={<InvitePage />} />
+      <Route path={RoutesPath.notifications} element={<NotificationPage />} />
+      <Route path={RoutesPath.homeSearch} element={<HomeSearch />} />
+      <Route path={RoutesPath.connections} element={<ConnectionsPage />} />
     </Routes>
   );
 };
