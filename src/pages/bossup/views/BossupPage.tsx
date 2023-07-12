@@ -7,6 +7,7 @@ import Tabs from "./components/Tabs";
 import RoutesPath from "../../../constants/Routes";
 import Learning from "./Learning";
 import Opportunities from "./Opportunities";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
 
 const BossupPage = () => {
   const tabs: string[] = ["", RoutesPath.learning, RoutesPath.opportunities];
@@ -37,6 +38,7 @@ const BossupPage = () => {
 
   return (
     <div>
+    <div className="mobile-only">
       <div className="fixed top-0 w-full z-50">
         <div className="flex items-center p-5 justify-between bg-white">
           <p className="text-lg">Boss Up</p>
@@ -55,6 +57,41 @@ const BossupPage = () => {
       </Routes>
       <div className="my-20"></div>
       <MobileBottomNav currentIndex={1} />
+    </div>
+
+    <div className="computer-only">
+        <ComputerHeader />
+        <div className="computer-content">
+          <div className="firstsection" style={{  }}>
+            
+
+          </div>
+          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="computer-main-content" >
+          <Tabs
+        onChangeRoute={(index: number) => changeRoute(index)}
+        currentIndex={currentIndex}
+      />
+      <Routes>
+        <Route index element={<Challenge />} />
+        <Route path={RoutesPath.learning} element={<Learning />} />
+        <Route path={RoutesPath.opportunities} element={<Opportunities />} />
+      </Routes>
+      <div className="my-20"></div>
+            
+          </div>
+          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="lastsection" style={{}}>
+        
+            
+        
+
+            
+          </div>
+
+        </div>
+      </div>
+
     </div>
   );
 };

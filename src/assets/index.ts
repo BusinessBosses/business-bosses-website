@@ -1,5 +1,7 @@
-import MessageIcon from "./icons/message.svg";
+import  MessageIcon from "./icons/message.svg";
 import { ReactComponent as ProfileIcon } from "./icons/profile.svg";
+import { ReactComponent as Messagenoback } from "./icons/message.svg";
+import { ReactComponent as Notifnoback } from "./icons/notifications.svg";
 import NotificationIcon from "./icons/notifications.svg";
 import { ReactComponent as BossupIcon } from "./icons/bossup.svg";
 import Badge from "./icons/badge.svg";
@@ -48,6 +50,8 @@ const Assets = {
     Trophy,
     Product,
     Invite,
-    ActiveNotification
+    ActiveNotification,
+    Notifnoback,
+    Messagenoback
 };
 export default Assets;
