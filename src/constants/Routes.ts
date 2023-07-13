@@ -12,6 +12,9 @@ const invite = "/invite";
 const notifications = "/notifications";
 const homeSearch = "/home-search";
 const connections = "/connections";
+const register = "/auth/register";
+const login = "/auth/login";
+const verifyOtp = "/auth/verify";
 
 const RoutesPath = {
     home,
@@ -27,7 +30,10 @@ const RoutesPath = {
     invite,
     notifications,
     homeSearch,
-    connections
+    connections,
+    login,
+    register,
+    verifyOtp
 }
 
 export default RoutesPath

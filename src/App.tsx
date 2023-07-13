@@ -12,6 +12,9 @@ import InvitePage from "./pages/invite/views/InvitePage";
 import NotificationPage from "./pages/notification/views/NotificationPage";
 import HomeSearch from "./pages/search/views/HomeSearch";
 import ConnectionsPage from "./pages/connections/views/ConnectionsPage";
+import RegisterPage from "./pages/authentication/views/RegisterPage";
+import LoginPage from "./pages/authentication/views/LoginPage";
+import OtpVerificationPage from "./pages/authentication/views/OtpVerificationPage";
 const App = () => {
   return (
     <Routes>
@@ -27,6 +30,9 @@ const App = () => {
       <Route path={RoutesPath.notifications} element={<NotificationPage />} />
       <Route path={RoutesPath.homeSearch} element={<HomeSearch />} />
       <Route path={RoutesPath.connections} element={<ConnectionsPage />} />
+      <Route path={RoutesPath.register} element={<RegisterPage />} />
+      <Route path={RoutesPath.login} element={<LoginPage />} />
+      <Route path={RoutesPath.verifyOtp} element={<OtpVerificationPage />} />
     </Routes>
   );
 };
