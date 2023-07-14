@@ -8,6 +8,9 @@ import Badge from "./icons/badge.svg";
 import Logo from "./icons/logo.png";
 import { ReactComponent as Home } from "./icons/home.svg";
 import { ReactComponent as MarketPlace } from "./icons/marketplace.svg";
+import { ReactComponent as Private } from "./icons/private.svg";
+import { ReactComponent as Visible } from "./icons/eye.svg";
+import { ReactComponent as Google } from "./icons/g.svg";
 import Coin from "./icons/coin.svg";
 import Comment from "./icons/comment.svg";
 import Share from "./icons/share.svg";
@@ -52,6 +55,9 @@ const Assets = {
     Invite,
     ActiveNotification,
     Notifnoback,
-    Messagenoback
+    Messagenoback,
+    Private,
+    Visible,
+    Google
 };
 export default Assets;
