@@ -4,11 +4,15 @@ const bossup = "/bossup/*";
 const opportunities = "/opportunities";
 const learning = "/learning";
 const forum = "/forum";
-const myProfile = "/myprofile";
+const myProfile = "/profile/myprofile";
+const editProfile = "/profile/edit";
+const PublicUserProfile = "/profile/publicProfile";
 const createPost = "/create-post";
 const promotePost = "/promote-post";
 const settings = "/settings";
 const invite = "/invite";
+const chats = "/chats";
+const ChatRoom = "/chatRoom";
 const notifications = "/notifications";
 const homeSearch = "/home-search";
 const connections = "/connections";
@@ -33,7 +37,11 @@ const RoutesPath = {
     connections,
     login,
     register,
-    verifyOtp
+    verifyOtp,
+    PublicUserProfile,
+    editProfile,
+    chats,
+    ChatRoom
 }
 
 export default RoutesPath

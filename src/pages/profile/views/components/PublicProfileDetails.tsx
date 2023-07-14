@@ -1,13 +1,9 @@
-import React from "react";
 import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
-import Assets from "../../../../assets";
-import { BsGraphUp } from "react-icons/bs";
-import { BiEdit } from "react-icons/bi";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 
-const MyProfileDetails = () => {
+const PublicProfileDetails = () => {
   const navigate = useNavigate();
   return (
     <div className="mt-20 px-5">
@@ -44,25 +40,23 @@ const MyProfileDetails = () => {
 
       <div className=" flex items-center gap-3">
         <OutlinedButton
-          onClick={() => {
-            navigate(RoutesPath.editProfile);
-          }}
-          text="Edit"
-          icon={<BiEdit />}
+          onClick={() => {}}
+          text="Connect"
+          // icon={<BiEdit />}
           className="w-full border-[1px] py-1"
         />
         <OutlinedButton
           onClick={() => {
             navigate(RoutesPath.invite);
           }}
-          text="Earn"
-          icon={<img alt="" src={Assets.Coin} />}
+          text="Message"
+          // icon={<img alt="" src={Assets.Coin} />}
           className="w-full border-[1px] py-1"
         />
         <OutlinedButton
           onClick={() => {}}
-          text="Analyse"
-          icon={<BsGraphUp />}
+          text="Refer"
+          // icon={<BsGraphUp />}
           className="w-full border-[1px] py-1"
         />
       </div>
@@ -70,4 +64,4 @@ const MyProfileDetails = () => {
   );
 };
 
-export default MyProfileDetails;
+export default PublicProfileDetails;

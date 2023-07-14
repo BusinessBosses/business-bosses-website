@@ -15,6 +15,10 @@ import ConnectionsPage from "./pages/connections/views/ConnectionsPage";
 import RegisterPage from "./pages/authentication/views/RegisterPage";
 import LoginPage from "./pages/authentication/views/LoginPage";
 import OtpVerificationPage from "./pages/authentication/views/OtpVerificationPage";
+import PublicUserProfile from "./pages/profile/views/PublicUserProfile";
+import EditProfilePage from "./pages/profile/views/EditProfilePage";
+import ChatPage from "./pages/chat/views/ChatPage";
+import ChatRoomPage from "./pages/chat/views/ChatRoomPage";
 const App = () => {
   return (
     <Routes>
@@ -33,6 +37,13 @@ const App = () => {
       <Route path={RoutesPath.register} element={<RegisterPage />} />
       <Route path={RoutesPath.login} element={<LoginPage />} />
       <Route path={RoutesPath.verifyOtp} element={<OtpVerificationPage />} />
+      <Route path={RoutesPath.editProfile} element={<EditProfilePage />} />
+      <Route path={RoutesPath.chats} element={<ChatPage />} />
+      <Route path={RoutesPath.ChatRoom} element={<ChatRoomPage />} />
+      <Route
+        path={RoutesPath.PublicUserProfile}
+        element={<PublicUserProfile />}
+      />
     </Routes>
   );
 };

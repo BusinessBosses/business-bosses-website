@@ -1,4 +1,3 @@
-import React from "react";
 import Assets from "../../../assets";
 interface Props {
   imageURL: string;
@@ -13,7 +12,7 @@ const UserAvatar = ({ imageURL, isRanked, imageSize, badgeSize }: Props) => {
         <img
           src={imageURL}
           loading="lazy"
-          className={`${imageSize ?? "h-14 w-14"} rounded-full object-cover `}
+          className={`${imageSize ?? "h-12 w-12"} rounded-full object-cover `}
           alt=""
         />
         {isRanked ? (
