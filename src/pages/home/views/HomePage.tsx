@@ -25,11 +25,13 @@ const HomePage = () => {
         <div className="my-20"></div>
         <MobileBottomNav currentIndex={0} />
       </div>
+
+      
       <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
           <div className="firstsection">
-            <div className="flex items-center">
+            <div className="flex items-center fixed">
               <UserAvatar
                 imageSize="h-24 w-24"
                 imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
@@ -47,13 +49,14 @@ const HomePage = () => {
 
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" >
+          <div className="computer-main-content" style={{paddingTop:50,paddingLeft:20,paddingRight:20}} >
             {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
               <PostItem key={post} />
             ))}
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection" style={{}}>
+          <div className="lastsection">
+            <div className="fixed" style={{paddingRight:150}}>
             <ComputerBossOfTheWeek />
             <div className="bg-[#F4F4F4] flex items-center justify-between p-2 rounded-lg mt-2">
               <small className="text-xs text-[#545151]">Boss Up by</small>
@@ -61,8 +64,12 @@ const HomePage = () => {
                 Business Bosses Company Limited
               </p>
               <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+            
             </div>
 
+            </div>
+          
+            
           </div>
 
         </div>
