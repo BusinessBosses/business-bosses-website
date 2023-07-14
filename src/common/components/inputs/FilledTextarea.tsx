@@ -19,7 +19,7 @@ const FilledTextarea = ({
         <label className="text-[#333333] text-sm font-[700]">{label}</label>
       ) : null}
       <textarea
-        className="border-none bg-[#F4F4F4] text-[#232324CC] outline-none w-full p-3 rounded-lg resize-none"
+        className={`border-none bg-[#F4F4F4] text-[#232324CC] outline-none w-full p-3 rounded-lg resize-none ${className}`}
         placeholder={placeholder}
         defaultValue={defaultValue}
         onChange={onchange}

@@ -27,7 +27,7 @@ const FilledInput = ({
 
       <div className="bg-[#F4F4F4] rounded-lg p-3 flex items-center gap-2">
         <input
-          className="border-none text-[#232324CC] outline-none w-full bg-transparent"
+          className={`border-none text-[#232324CC] outline-none w-full bg-transparent ${className}`}
           type={type ?? "text"}
           placeholder={placeholder}
           defaultValue={defaultValue}

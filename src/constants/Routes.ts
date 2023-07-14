@@ -19,6 +19,7 @@ const connections = "/connections";
 const register = "/auth/register";
 const login = "/auth/login";
 const verifyOtp = "/auth/verify";
+const CreateListing = "/create-listing";
 
 const RoutesPath = {
     home,
@@ -41,7 +42,8 @@ const RoutesPath = {
     PublicUserProfile,
     editProfile,
     chats,
-    ChatRoom
+    ChatRoom,
+    CreateListing
 }
 
 export default RoutesPath

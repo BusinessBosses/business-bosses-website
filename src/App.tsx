@@ -19,6 +19,7 @@ import PublicUserProfile from "./pages/profile/views/PublicUserProfile";
 import EditProfilePage from "./pages/profile/views/EditProfilePage";
 import ChatPage from "./pages/chat/views/ChatPage";
 import ChatRoomPage from "./pages/chat/views/ChatRoomPage";
+import CreateListing from "./pages/marketplace/views/CreateListing";
 const App = () => {
   return (
     <Routes>
@@ -40,6 +41,7 @@ const App = () => {
       <Route path={RoutesPath.editProfile} element={<EditProfilePage />} />
       <Route path={RoutesPath.chats} element={<ChatPage />} />
       <Route path={RoutesPath.ChatRoom} element={<ChatRoomPage />} />
+      <Route path={RoutesPath.CreateListing} element={<CreateListing />} />
       <Route
         path={RoutesPath.PublicUserProfile}
         element={<PublicUserProfile />}

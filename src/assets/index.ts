@@ -11,6 +11,8 @@ import { ReactComponent as Private } from "./icons/private.svg";
 import { ReactComponent as Visible } from "./icons/eye.svg";
 import { ReactComponent as Google } from "./icons/g.svg";
 import { ReactComponent as Send } from "./icons/send.svg";
+import { ReactComponent as File } from "./icons/file.svg";
+import { ReactComponent as Upload } from "./icons/upload.svg";
 import Coin from "./icons/coin.svg";
 import Comment from "./icons/comment.svg";
 import Share from "./icons/share.svg";
@@ -58,6 +60,8 @@ const Assets = {
     Visible,
     Google,
     User,
-    Send
+    Send,
+    File,
+    Upload
 };
 export default Assets;
