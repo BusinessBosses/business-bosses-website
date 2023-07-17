@@ -12,6 +12,9 @@ interface Props {
 }
 const PostItem = ({ data }: Props) => {
   const navigate = useNavigate();
+  const secureImageUrl = data.images
+    ? data.images[0].replace(/^http:\/\//i, "https://")
+    : null;
   return (
     <div className="my-10">
       <div className="flex items-center justify-between">
@@ -75,7 +78,7 @@ const PostItem = ({ data }: Props) => {
         {data.images ? (
           <div className="mt-2">
             <img
-              src={data.images[0]}
+              src={secureImageUrl!}
               alt=""
               className="rounded-lg w-full h-64 object-cover"
             />
