@@ -3,8 +3,11 @@ import { FiUsers } from "react-icons/fi";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import { BsInfoCircle } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../../constants/Routes";
 
 const MobileMarketIntro = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-[#EAEAEA] p-5">
       <div className="flex items-center justify-between">
@@ -14,7 +17,9 @@ const MobileMarketIntro = () => {
         </div>
         <FilledButton
           icon={<AiOutlinePlus color="white" size={20} />}
-          onClick={() => {}}
+          onClick={() => {
+            navigate(RoutesPath.CreateListing);
+          }}
           text="Sell"
           className="px-12"
         />

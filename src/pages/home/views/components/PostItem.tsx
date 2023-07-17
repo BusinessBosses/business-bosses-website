@@ -1,20 +1,61 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import { IoIosMore } from "react-icons/io";
 import Assets from "../../../../assets";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../../constants/Routes";
+import Popup from "reactjs-popup";
 
 const PostItem = () => {
+  const navigate = useNavigate();
   return (
     <div className="my-10">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between">
+        <div
+          onClick={() => navigate(RoutesPath.PublicUserProfile)}
+          className="flex items-center gap-3"
+        >
           <UserAvatar imageURL="https://cdn.pixabay.com/photo/2023/06/02/14/12/woman-8035772_640.jpg" />
           <div className="">
             <p className="text-[#333333] text-lg">Isaac Akin</p>
             <p className="text-sm text-[#777777]">Supplier of survey</p>
           </div>
         </div>
-        <IoIosMore size={20} />
+        <Popup
+          trigger={
+            <div>
+              <IoIosMore size={20} />
+            </div>
+          }
+          position="left top"
+          on="click"
+          closeOnDocumentClick
+          contentStyle={{ padding: "0px", border: "none" }}
+          // arrow={false}
+        >
+          {
+            (((close: any) => (
+              <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                <button
+                  onClick={() => {
+                    close();
+                  }}
+                  className="menu-item"
+                >
+                  Hide
+                </button>
+                <button
+                  onClick={() => {
+                    close();
+                  }}
+                  className="menu-item"
+                >
+                  Report
+                </button>
+              </div>
+            )) as unknown) as ReactNode
+          }
+        </Popup>
       </div>
       <div className="mt-2">
         <p className="text-sm text-[#303133]">

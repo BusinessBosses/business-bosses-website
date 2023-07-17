@@ -9,7 +9,10 @@ const MobileHeader = () => {
   return (
     <div className="fixed bg-white top-0 w-full z-50">
       <div className="flex items-center justify-between p-5">
-        <button className="bg-white shadow p-2 rounded-lg relative ">
+        <button
+          onClick={() => navigate(RoutesPath.chats)}
+          className="bg-white shadow p-2 rounded-lg relative "
+        >
           <img src={Assets.MessageIcon} alt="" />
 
           <div className="absolute h-2 w-2 bg-primary rounded-full top-0 right-0" />

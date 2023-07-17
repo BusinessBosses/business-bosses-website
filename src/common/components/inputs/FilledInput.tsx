@@ -7,6 +7,7 @@ interface Props {
   onchange: ChangeEventHandler<HTMLInputElement>;
   suffixIcon?: any;
   onPressSuffixIcon?: VoidFunction;
+  label?: string;
 }
 const FilledInput = ({
   onchange,
@@ -15,22 +16,29 @@ const FilledInput = ({
   placeholder,
   suffixIcon,
   type,
+  label,
   onPressSuffixIcon,
 }: Props) => {
   return (
-    <div className="bg-[#F4F4F4] my-5 rounded-lg p-3 flex items-center gap-2">
-      <input
-        className="border-none outline-none w-full bg-transparent"
-        type={type ?? "text"}
-        placeholder={placeholder}
-        defaultValue={defaultValue}
-        onChange={onchange}
-      />
-      {suffixIcon ? (
-        <button type="button" onClick={onPressSuffixIcon}>
-          {suffixIcon}
-        </button>
+    <div className="my-5 ">
+      {label ? (
+        <label className="text-[#333333] text-sm font-[700]">{label}</label>
       ) : null}
+
+      <div className="bg-[#F4F4F4] rounded-lg p-3 flex items-center gap-2">
+        <input
+          className={`border-none text-[#232324CC] outline-none w-full bg-transparent ${className}`}
+          type={type ?? "text"}
+          placeholder={placeholder}
+          defaultValue={defaultValue}
+          onChange={onchange}
+        />
+        {suffixIcon ? (
+          <button type="button" onClick={onPressSuffixIcon}>
+            {suffixIcon}
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 };

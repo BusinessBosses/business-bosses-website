@@ -1,7 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { IoIosMore } from "react-icons/io";
 import UserAvatar from "../avatars/UserAvatar";
 import Assets from "../../../assets";
+import Popup from "reactjs-popup";
 
 const ForumItem = () => {
   return (
@@ -14,7 +15,41 @@ const ForumItem = () => {
             <p className="text-sm text-[#777777]">Supplier of survey</p>
           </div>
         </div>
-        <IoIosMore size={20} />
+        <Popup
+          trigger={
+            <div>
+              <IoIosMore size={20} />
+            </div>
+          }
+          position="left top"
+          on="click"
+          closeOnDocumentClick
+          contentStyle={{ padding: "0px", border: "none" }}
+          // arrow={false}
+        >
+          {
+            (((close: any) => (
+              <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                <button
+                  onClick={() => {
+                    close();
+                  }}
+                  className="menu-item"
+                >
+                  Hide
+                </button>
+                <button
+                  onClick={() => {
+                    close();
+                  }}
+                  className="menu-item"
+                >
+                  Report
+                </button>
+              </div>
+            )) as unknown) as ReactNode
+          }
+        </Popup>
       </div>
       <div className="mt-2">
         <p className="text-sm text-[#303133]">
