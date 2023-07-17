@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BiArrowBack } from "react-icons/bi";
+import { BiArrowBack, BiCross, BiExit, BiWindowClose, BiX } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import HomeSearchTabs from "./components/HomeSearchTabs";
@@ -10,7 +10,8 @@ const HomeSearch = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const navigate = useNavigate();
   return (
-    <div>
+    <div >
+    <div className="mobile-only">
       <div className="fixed top-0 w-full z-50">
         <div className="bg-white p-5 flex items-center justify-between">
           <button onClick={() => navigate(-1)}>
@@ -39,6 +40,21 @@ const HomeSearch = () => {
         {currentIndex === 1 ? <PostItem /> : null}
       </div>
     </div>
+
+    <div className="computer-only">
+     
+   
+        <HomeSearchTabs
+          currentIndex={currentIndex}
+          onChangeRoute={(index: number) => setCurrentIndex(index)}
+        />
+
+        {currentIndex === 0 ? <People /> : null}
+        {currentIndex === 1 ? <PostItem /> : null}
+      </div>
+    </div>
+    
+
   );
 };
 

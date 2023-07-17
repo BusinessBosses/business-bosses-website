@@ -5,19 +5,25 @@ import Assets from "../../../../assets";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import Popup from "reactjs-popup";
+import { BiBold } from "react-icons/bi";
 
 const PostItem = () => {
   const navigate = useNavigate();
   return (
-    <div className="my-10">
+    <div>
+    <div className="my-5" style={{paddingLeft:20, paddingRight:20}}>
       <div className="flex items-center justify-between">
         <div
           onClick={() => navigate(RoutesPath.PublicUserProfile)}
           className="flex items-center gap-3"
         >
           <UserAvatar imageURL="https://cdn.pixabay.com/photo/2023/06/02/14/12/woman-8035772_640.jpg" />
-          <div className="">
-            <p className="text-[#333333] text-lg">Isaac Akin</p>
+          <div className="mobile-only">
+            <p className="text-[#333333] text-sm" style={{fontWeight:'600'}}>Isaac Akin</p>
+            <p className="text-xs text-[#777777]">Supplier of survey</p>
+          </div>
+          <div className="computer-only">
+            <p className="text-[#333333] text-s" style={{fontWeight:'600'}}>Isaac Akin</p>
             <p className="text-sm text-[#777777]">Supplier of survey</p>
           </div>
         </div>
@@ -58,7 +64,10 @@ const PostItem = () => {
         </Popup>
       </div>
       <div className="mt-2">
-        <p className="text-sm text-[#303133]">
+        <p className="text-sm text-[#303133] mobile-only" style={{fontSize:13}}>
+          For you to be effective at networking you should make it a hobby
+        </p>
+        <p className="text-sm text-[#303133] computer-only" style={{fontSize:14}}>
           For you to be effective at networking you should make it a hobby
         </p>
         <div className="mt-2">
@@ -93,7 +102,12 @@ const PostItem = () => {
           <small className="text-[#B4B4B4]">6 days ago</small>
         </div>
       </div>
+      
     </div>
+    <div className="mobile-only" style={{ height: "7px", width: "100%", background: "#f4f4f4" }}></div>
+    <div className="computer-only" style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>
+    </div>
+
   );
 };
 

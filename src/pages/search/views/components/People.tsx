@@ -12,8 +12,7 @@ const People = () => {
       <ConnectTile />
       <ConnectTile />
       <ConnectTile />
-      <ConnectTile />
-      <ConnectTile />
+   
     </div>
   );
 };

@@ -26,7 +26,7 @@ const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
         navigate(RoutesPath.marketPlace);
         break;
       case 3:
-        navigate(RoutesPath.myProfile);
+        navigate(RoutesPath.chats);
         break;
       case 4:
         navigate(RoutesPath.notifications);

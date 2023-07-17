@@ -7,20 +7,27 @@ import ComputerBossOfTheWeek from "./components/ComputerBossOfTheWeek";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import MyProfileHeader from "../../profile/views/components/MyProfileHeader";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
+import RoutesPath from "../../../constants/Routes";
+import { useNavigate } from "react-router-dom";
+import { IoIosMore } from "react-icons/io";
+import { ReactNode } from "react";
+import Popup from "reactjs-popup";
 
 
 const HomePage = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="mobile-only">
         <MobileHeader />
-        <div className="mt-20">
+        <div className="" style={{paddingTop:45}}>
           <MobileBossOfTheWeek />
         </div>
-        <div className="p-5">
+        <div className="p-0">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
             <PostItem key={post} />
           ))}
+          
         </div>
         <div className="my-20"></div>
         <MobileBottomNav currentIndex={0} />
@@ -31,7 +38,8 @@ const HomePage = () => {
         <ComputerHeader />
         <div className="computer-content">
           <div className="firstsection">
-            <div className="flex items-center fixed">
+            <div className="flex items-center fixed" onClick={() => navigate(RoutesPath.myProfile)}>
+              
               <UserAvatar
                 imageSize="h-24 w-24"
                 imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
@@ -43,13 +51,50 @@ const HomePage = () => {
                 <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
               </div>
               <div className="flex-grow" />
+              <Popup
+          trigger={
+            <div>
+              <IoIosMore size={20} />
+            </div>
+          }
+          position="left top"
+          on="click"
+          closeOnDocumentClick
+          contentStyle={{ padding: "0px", border: "none" }}
+          // arrow={false}
+        >
+          {
+            (((close: any) => (
+              <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                <button
+                  onClick={() => {
+                    close();
+                  }}
+                  className="menu-item"
+                >
+                  Hide
+                </button>
+                <button
+                  onClick={() => {
+                    close();
+                  }}
+                  className="menu-item"
+                >
+                  Report
+                </button>
+              </div>
+            )) as unknown) as ReactNode
+          }
+        </Popup>
+
+              
             </div>
 
 
 
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{paddingTop:50,paddingLeft:20,paddingRight:20}} >
+          <div className="computer-main-content" style={{paddingTop:80}} >
             {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
               <PostItem key={post} />
             ))}
