@@ -23,9 +23,11 @@ class ServiceApi {
         try {
             const response = await axios.get(this.appendToURL(path), {
                 headers: {
-                    Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
+                    // Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
+                    Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk1MzMwODMsImV4cCI6MTcyMTA5MDY4M30.A0uwOmzkj9U0VugnWQfWIopbYqtBvuGx3jb1qaLIwuY'
                 }
             });
+            // console.log(response.data)
             if (response.data.success) {
                 return response.data
             } else {

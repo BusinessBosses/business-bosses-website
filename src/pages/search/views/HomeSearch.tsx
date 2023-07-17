@@ -36,7 +36,7 @@ const HomeSearch = () => {
         />
 
         {currentIndex === 0 ? <People /> : null}
-        {currentIndex === 1 ? <PostItem /> : null}
+        {/* {currentIndex === 1 ? <PostItem /> : null} */}
       </div>
     </div>
   );

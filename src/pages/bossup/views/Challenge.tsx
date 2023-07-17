@@ -13,11 +13,11 @@ const Challenge = () => {
         onJoin={() => {}}
         topics={20}
       />
-      <div className="p-5">
+      {/* <div className="p-5">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
           <ForumItem key={post} />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

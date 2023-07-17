@@ -1,18 +1,31 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { IoIosMore } from "react-icons/io";
 import UserAvatar from "../avatars/UserAvatar";
 import Assets from "../../../assets";
 import Popup from "reactjs-popup";
-
-const ForumItem = () => {
+import { Forum } from "../../interfaces/forum";
+import trimText from "../../functions/trimText";
+interface Props {
+  data: Forum;
+}
+const ForumItem = ({ data }: Props) => {
   return (
     <div className="my-10">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <UserAvatar imageURL="https://cdn.pixabay.com/photo/2023/06/02/14/12/woman-8035772_640.jpg" />
+          <UserAvatar
+            imageURL={
+              data.user?.photoUrl ??
+              "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+            }
+          />
           <div className="">
-            <p className="text-[#333333] text-lg">Isaac Akin</p>
-            <p className="text-sm text-[#777777]">Supplier of survey</p>
+            <p className="text-[#333333] text-lg capitalize">
+              {data.user?.username}
+            </p>
+            <p className="text-sm text-[#777777]">
+              {trimText(data.user?.bio ?? "", 20)}
+            </p>
           </div>
         </div>
         <Popup
@@ -52,39 +65,50 @@ const ForumItem = () => {
         </Popup>
       </div>
       <div className="mt-2">
-        <p className="text-sm text-[#303133]">
-          Lorem ipsum dolor sit amet consectetur. Ac sed aliquet velit turpis
-          mauris diam eget nibh. A mattis sem laoreet mauris. In amet id aenean
-          mattis massa.
-        </p>
-        <div className="mt-2">
-          <img
-            src="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
-            alt=""
-            className="rounded-lg w-full h-64 object-cover"
-          />
-          <div className="flex overflow-x-scroll mt-2 hide-scroll-bar">
-            <div className="flex flex-nowrap gap-2">
-              {[1, 2, 3, 4, 5].map((img) => (
-                <div key={img} className="inline-block">
-                  <div className="w-20 h-20 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                    <img
-                      src="https://cdn.pixabay.com/photo/2014/11/21/03/27/sea-540123_640.jpg"
-                      alt=""
-                      className="rounded-lg w-20 h-20 object-cover"
-                    />
+        <p className=" font-[500] text-black">{data.title}</p>
+        <p className="text-sm text-[#303133]">{data.description}</p>
+        {data.images ? (
+          <div className="mt-2">
+            <img
+              src={data.images[0]}
+              alt=""
+              className="rounded-lg w-full h-64 object-cover"
+            />
+            <div className="flex overflow-x-scroll mt-2 hide-scroll-bar">
+              <div className="flex flex-nowrap gap-2">
+                {data.images.map((img) => (
+                  <div key={img} className="inline-block">
+                    <div className="w-20 h-20 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                      <img
+                        src={img}
+                        alt=""
+                        className="rounded-lg w-20 h-20 object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
         <div className="mt-5 flex items-center justify-between">
           <div className="flex gap-5">
-            <PostAction count="2" icon={Assets.Like} onClick={() => {}} />
-            <PostAction count="5" icon={Assets.Comment} onClick={() => {}} />
-            <PostAction count="2" icon={Assets.Coin} onClick={() => {}} />
-            <PostAction count="2" icon={Assets.Share} onClick={() => {}} />
+            <PostAction
+              count={data.likes!.length.toString()}
+              icon={Assets.Like}
+              onClick={() => {}}
+            />
+            <PostAction
+              count={data.comments!.length.toString()}
+              icon={Assets.Comment}
+              onClick={() => {}}
+            />
+            <PostAction
+              count={data.coins!.length.toString()}
+              icon={Assets.Coin}
+              onClick={() => {}}
+            />
+            <PostAction count="" icon={Assets.Share} onClick={() => {}} />
           </div>
           <small className="text-[#B4B4B4]">6 days ago</small>
         </div>

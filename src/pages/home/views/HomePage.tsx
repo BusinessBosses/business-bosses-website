@@ -1,18 +1,32 @@
+import ForumItem from "../../../common/components/forum/ForumItem";
+import { Forum } from "../../../common/interfaces/forum";
+import { Post } from "../../../common/interfaces/post";
+import { MixedPostState } from "../../../redux/slices/PostSlice";
+import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "./components/MobileBossOfTheWeek";
 import MobileBottomNav from "./components/MobileBottomNav";
 import MobileHeader from "./components/MobileHeader";
 import PostItem from "./components/PostItem";
 const HomePage = () => {
+  const posts = useAppSelector((state) => state.post.mixedPosts);
+  const profile = useAppSelector((state) => state.user.profile);
   return (
     <div className=" ">
-      <MobileHeader />
+      <MobileHeader
+        coins={profile?.coinscount}
+        unseenNotification={profile?.unReadCount! > 0}
+      />
       <div className="mt-20">
         <MobileBossOfTheWeek />
       </div>
       <div className="p-5">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
-          <PostItem key={post} />
-        ))}
+        {posts.map((post: MixedPostState, index: number) => {
+          if (post.isForum) {
+            return <ForumItem data={post.data as Forum} key={index} />;
+          } else {
+            return <PostItem data={post.data as Post} key={index} />;
+          }
+        })}
       </div>
       <div className="my-20"></div>
       <MobileBottomNav currentIndex={0} />
