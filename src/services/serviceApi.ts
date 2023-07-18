@@ -24,7 +24,7 @@ class ServiceApi {
             const response = await axios.get(this.appendToURL(path), {
                 headers: {
                     // Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
-                    Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk1MzMwODMsImV4cCI6MTcyMTA5MDY4M30.A0uwOmzkj9U0VugnWQfWIopbYqtBvuGx3jb1qaLIwuY'
+                    Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkZGRiN2ZkYi03YTk5LTRkY2MtOGY2MC04NmFkZDY1ZWMzNjQiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk2MTYxNjMsImV4cCI6MTcyMTE3Mzc2M30.JGfspVty3ZHojEJblFqMDSkN1w2PVkZ674pY6SrPPuY'
                 }
             });
             // console.log(response.data)

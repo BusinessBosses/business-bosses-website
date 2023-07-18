@@ -13,6 +13,7 @@ export interface MixedPostState {
 }
 interface PostState {
     page: number,
+    count: number,
     mixedPosts: MixedPostState[],
     loading: boolean
 }
@@ -20,6 +21,7 @@ interface PostState {
 // Define the initial state using that type
 const initialState: PostState = {
     page: 0,
+    count: 0,
     mixedPosts: [],
     loading: false
 }

@@ -10,11 +10,15 @@ import PostItem from "./components/PostItem";
 const HomePage = () => {
   const posts = useAppSelector((state) => state.post.mixedPosts);
   const profile = useAppSelector((state) => state.user.profile);
+  const chats = useAppSelector((state) => state.chat.chats);
   return (
     <div className=" ">
       <MobileHeader
         coins={profile?.coinscount}
         unseenNotification={profile?.unReadCount! > 0}
+        unseenChat={
+          !!chats.find((fd) => fd.senderUid !== profile?.uid && !fd.seen)
+        }
       />
       <div className="mt-20">
         <MobileBossOfTheWeek />

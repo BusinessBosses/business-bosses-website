@@ -22,7 +22,7 @@ const FetchStatus = ({ error, errorMessage, loading, onReload }: Props) => {
           </p>
           <button
             onClick={onReload}
-            className="text-white  bg-linearBg flex items-center gap-2 px-10 py-2 rounded-full"
+            className="text-white  bg-primary flex items-center gap-2 px-10 py-2 rounded-full"
           >
             <BsWifiOff size={20} />
             Reload

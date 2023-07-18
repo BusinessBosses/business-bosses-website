@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import { IoIosMore } from "react-icons/io";
 import Assets from "../../../../assets";
@@ -44,7 +44,6 @@ const PostItem = ({ data }: Props) => {
           on="click"
           closeOnDocumentClick
           contentStyle={{ padding: "0px", border: "none" }}
-          // arrow={false}
         >
           {
             (((close: any) => (

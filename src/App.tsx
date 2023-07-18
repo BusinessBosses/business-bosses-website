@@ -23,43 +23,22 @@ import CreateListing from "./pages/marketplace/views/CreateListing";
 import { useEffect, useState } from "react";
 import serviceApi from "./services/serviceApi";
 import { useAppDispatch } from "./redux/store/store";
-import { Post } from "./common/interfaces/post";
-import { MixedPostState, addPostToState } from "./redux/slices/PostSlice";
+import { addPostToState } from "./redux/slices/PostSlice";
 import FetchStatus from "./common/components/fetch_status/FetchStatus";
 import { saveUserData } from "./redux/slices/UserSlice";
+import HomeController from "./pages/home/controller/HomeController";
+import { saveChatsToState } from "./redux/slices/ChatSlice";
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
 
   const fetchData = async () => {
     setLoading(true);
+    setErr(false);
     const response = await serviceApi.fetch("/init");
     if (response.success) {
-      let frms = [];
-      let psts = [];
-      const posts = response.data.posts.posts.rows.map((mp: Post) => ({
-        ...mp,
-        coins: mp.coins.map((cn: any) => cn.userId),
-        likes: mp.likes.map((lk: any) => lk.userId),
-      }));
-      const forums = response.data.posts.forums.rows.map((mp: Post) => ({
-        ...mp,
-        coins: mp.coins.map((cn: any) => cn.userId),
-        likes: mp.likes.map((lk: any) => lk.userId),
-      }));
-
-      for (let index = 0; index < posts.length; index++) {
-        psts.push({ isForum: false, data: posts[index] });
-      }
-
-      for (let index = 0; index < forums.length; index++) {
-        frms.push({ isForum: true, data: forums[index] });
-      }
-
-      const mixedData: MixedPostState[] = [...frms, ...psts].sort(
-        (a, b) => a.data.timestamp - b.data.timestamp
-      );
+      const processedPosts = HomeController.processData(response);
       dispatch(
         saveUserData({
           ...response.data.user,
@@ -67,7 +46,8 @@ const App = () => {
           interests: response.data.interests,
         })
       );
-      dispatch(addPostToState(mixedData));
+      dispatch(saveChatsToState(response.data.chats));
+      dispatch(addPostToState(processedPosts));
     } else {
       setErr(true);
     }
@@ -80,7 +60,14 @@ const App = () => {
     <FetchStatus
       error={err}
       errorMessage="Something went wrong!!"
-      loading={loading}
+      loading={true}
+      onReload={fetchData}
+    />
+  ) : err ? (
+    <FetchStatus
+      error={true}
+      errorMessage="Something went wrong!!"
+      loading={false}
       onReload={fetchData}
     />
   ) : (
