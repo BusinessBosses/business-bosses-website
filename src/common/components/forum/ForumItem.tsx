@@ -71,7 +71,6 @@ const ForumItem = ({ data }: Props) => {
         {data.images ? (
           <div className="mt-2">
             <img
-              crossOrigin="anonymous"
               loading="lazy"
               src={data.images[0]}
               alt=""

@@ -54,7 +54,6 @@ const App = () => {
     fetchBossOfTheWeek();
     if (response.success) {
       const processedPosts = HomeController.processData(response);
-      // console.log(response.data.user);
       dispatch(
         saveUserData({
           ...response.data.user,
