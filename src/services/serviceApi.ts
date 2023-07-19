@@ -19,7 +19,7 @@ class ServiceApi {
 
     // GET API REQUEST
 
-    async fetch(path: string,) {
+    async fetch(path: string) {
         try {
             const response = await axios.get(this.appendToURL(path), {
                 headers: {

@@ -14,7 +14,7 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
               : "text-[#A9A9A9]"
           }`}
         >
-          Connecteds
+          Connections
         </button>
         <button
           onClick={() => onChangeRoute(1)}
@@ -24,7 +24,7 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
               : "text-[#A9A9A9]"
           }`}
         >
-          Connections
+          Connecteds
         </button>
         <button
           onClick={() => onChangeRoute(2)}

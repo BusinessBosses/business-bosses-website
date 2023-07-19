@@ -2,8 +2,10 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import { AiOutlineMore } from "react-icons/ai";
 import { BiArrowBack } from "react-icons/bi";
-
-const PublicProfileHeader = () => {
+interface Props {
+  name: string;
+}
+const PublicProfileHeader = ({ name }: Props) => {
   const navigate = useNavigate();
   return (
     <div className="fixed top-0 w-full z-50">
@@ -12,7 +14,7 @@ const PublicProfileHeader = () => {
           <button onClick={() => navigate(-1)}>
             <BiArrowBack size={20} />
           </button>
-          <p className="text-lg font-semibold text-[#333333]">@Owen</p>
+          <p className="text-lg font-semibold text-[#333333]">@{name}</p>
         </div>
         <button onClick={() => navigate(RoutesPath.settings)}>
           <AiOutlineMore color="#232324" size={20} />

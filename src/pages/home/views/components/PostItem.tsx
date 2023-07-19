@@ -17,7 +17,9 @@ const PostItem = ({ data }: Props) => {
     <div className="my-10">
       <div className="flex items-center justify-between">
         <div
-          onClick={() => navigate(RoutesPath.PublicUserProfile)}
+          onClick={() =>
+            navigate(RoutesPath.PublicUserProfile, { state: data.user })
+          }
           className="flex items-center gap-3"
         >
           <UserAvatar

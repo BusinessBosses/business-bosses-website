@@ -7,6 +7,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { User } from "../../../common/interfaces/user";
 import { Chat } from "../../../common/interfaces/chat";
 import { useAppSelector } from "../../../redux/store/store";
+import trimText from "../../../common/functions/trimText";
 
 const ChatRoomPage = () => {
   const navigate = useNavigate();
@@ -57,7 +58,9 @@ const ChatRoomPage = () => {
               <h4 className="text-[#383838] font-bold capitalize">
                 {chatParty?.username}
               </h4>
-              <p className="text-[#6B6969] text-sm">{chatParty?.bio}</p>
+              <p className="text-[#6B6969] text-sm line-clamp-1">
+                {trimText(chatParty?.bio ?? "", 20)}
+              </p>
             </div>
           </div>
           <FiMoreVertical />
@@ -75,7 +78,13 @@ const ChatRoomPage = () => {
                     : "flex justify-start my-5"
                 }
               >
-                <div className="bg-primary rounded-b-lg p-2 rounded-tl-lg">
+                <div
+                  className={
+                    message.senderUid === profile?.uid
+                      ? "bg-primary rounded-b-lg p-2 rounded-tl-lg"
+                      : "bg-primary rounded-b-lg p-2 rounded-tr-lg"
+                  }
+                >
                   <img
                     src={message.image}
                     className="w-44 h-44 rounded-lg"
@@ -94,7 +103,13 @@ const ChatRoomPage = () => {
                     : "flex justify-start my-5"
                 }
               >
-                <div className="bg-primary rounded-b-lg p-2 rounded-tl-lg">
+                <div
+                  className={
+                    message.senderUid === profile?.uid
+                      ? "bg-primary rounded-b-lg p-2 rounded-tl-lg"
+                      : "bg-primary rounded-b-lg p-2 rounded-tr-lg"
+                  }
+                >
                   <p className="text-white">{message.messageText}</p>
                 </div>
               </div>

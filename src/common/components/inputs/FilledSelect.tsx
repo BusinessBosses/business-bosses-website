@@ -26,7 +26,7 @@ const FilledSelect = ({
       >
         {data.map((item, index) => {
           return (
-            <option key={index} selected={label === item} value={item}>
+            <option key={index} value={item}>
               {item}
             </option>
           );

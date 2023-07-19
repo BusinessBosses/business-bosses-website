@@ -56,7 +56,7 @@ const EditProfilePage = () => {
               label="Gender"
             />
             <div className="my-5">
-              <label className="text-[#333333] text-sm font-[700]">
+              <label className="text-[#333333] text-sm font-[700] ">
                 Location
               </label>
               <CountryDropdown
@@ -68,7 +68,7 @@ const EditProfilePage = () => {
             <FilledTextarea onchange={() => {}} label="Bio" />
             <div className="my-5">
               <label className="text-[#333333] text-sm font-[700]">Title</label>
-              <div className="flex items-center justify-between bg-[#f4f4f4] p-3">
+              <div className="flex items-center justify-between rounded-lg bg-[#f4f4f4] p-3">
                 <p>Software engineer</p>
                 <IoIosArrowForward />
               </div>
@@ -81,7 +81,7 @@ const EditProfilePage = () => {
                 additionalInfo: !expansionState.additionalInfo,
               })
             }
-            className="my-5 bg-[#f4f4f4] p-3 flex items-center justify-between"
+            className="m bg-[#f4f4f4] p-3 flex items-center justify-between"
           >
             <p>Additional Information (Optional)</p>
             {!expansionState.additionalInfo ? (
@@ -110,7 +110,7 @@ const EditProfilePage = () => {
             <FilledInput onchange={() => {}} label="Twitter" />
           </div>
 
-          <div className="my-5">
+          <div className="my-">
             <div
               onClick={() =>
                 setExpansionState({
@@ -118,7 +118,7 @@ const EditProfilePage = () => {
                   achievments: !expansionState.achievments,
                 })
               }
-              className="my-5 bg-[#f4f4f4] p-3 flex items-center justify-between"
+              className="my- bg-[#f4f4f4] p-3 flex items-center justify-between"
             >
               <h3 className=" font-bold">Achievements</h3>
               {!expansionState.achievments ? (
@@ -152,7 +152,7 @@ const EditProfilePage = () => {
             </div>
           </div>
 
-          <div className="my-5">
+          <div className="my-">
             <div
               onClick={() =>
                 setExpansionState({
@@ -160,7 +160,7 @@ const EditProfilePage = () => {
                   products: !expansionState.products,
                 })
               }
-              className="my-5 bg-[#f4f4f4] p-3 flex items-center justify-between"
+              className="my- bg-[#f4f4f4] p-3 flex items-center justify-between"
             >
               <h3 className=" font-bold">Products</h3>
               {!expansionState.products ? (
@@ -192,7 +192,13 @@ const EditProfilePage = () => {
             </div>
           </div>
 
-          <FilledButton onClick={() => {}} text="Save" className="w-full p-3" />
+          <div className="px-5">
+            <FilledButton
+              onClick={() => {}}
+              text="Save"
+              className="w-full p-3"
+            />
+          </div>
         </form>
       </div>
     </div>

@@ -5,6 +5,7 @@ const People = () => {
   return (
     <div className="">
       <h3 className="text-[#333333] text-xl font-semibold">Recommended</h3>
+      {/* <ConnectTile />
       <ConnectTile />
       <ConnectTile />
       <ConnectTile />
@@ -12,8 +13,7 @@ const People = () => {
       <ConnectTile />
       <ConnectTile />
       <ConnectTile />
-      <ConnectTile />
-      <ConnectTile />
+      <ConnectTile /> */}
     </div>
   );
 };

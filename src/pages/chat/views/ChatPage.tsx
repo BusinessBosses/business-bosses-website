@@ -33,7 +33,7 @@ const ChatPage = () => {
                   },
                 });
               }}
-              className="flex items-center gap-3"
+              className="flex items-center my-5 gap-3"
             >
               <UserAvatar
                 imageURL={

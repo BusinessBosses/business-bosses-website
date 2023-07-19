@@ -1,18 +1,17 @@
-import React from "react";
 import Post from "./Post";
-
-const Posts = () => {
+import { Post as PostProp } from "../../../../common/interfaces/post";
+interface Props {
+  posts: PostProp[];
+}
+const Posts = ({ posts }: Props) => {
   return (
     <div className="grid grid-cols-2 gap-3 px-5">
-      {[1, 2, 3, 4, 5, 6].map((item) => {
+      {posts.map((post) => {
         return (
           <Post
-            key={item}
-            imgUrl={
-              item % 2 === 0
-                ? "https://cdn.pixabay.com/photo/2023/06/12/11/34/mushrooms-8058299_640.jpg"
-                : undefined
-            }
+            key={post.postId}
+            title={post.title}
+            imgUrl={post.images ? post.images[0] : undefined}
           />
         );
       })}
