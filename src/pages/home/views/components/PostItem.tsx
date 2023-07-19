@@ -78,6 +78,7 @@ const PostItem = ({ data }: Props) => {
           <div className="mt-2">
             <img
               src={data.images[0]}
+              crossOrigin="anonymous"
               alt=""
               className="rounded-lg w-full h-64 object-cover"
             />
