@@ -140,7 +140,7 @@ const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
           </p>
         </div>
       </div>
-
+      <div className="pb-3">
       <button
         onClick={() => navigate(RoutesPath.createPost)}
         className="p-3 bg-primary rounded-xl text-white flex items-center"
@@ -154,6 +154,7 @@ const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
           style={{ width: '18px', height: '18px' }}
         />
       </button>
+      </div>
     </div>
   );
 };

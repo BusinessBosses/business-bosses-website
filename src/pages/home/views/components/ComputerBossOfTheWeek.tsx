@@ -7,7 +7,7 @@ import FilledButton from "../../../../common/components/buttons/FilledButton";
 import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
 const ComputerBossOfTheWeek = () => {
   return (
-    <div className="bg-[#EAEAEA] p-5 rounded-xl">
+    <div className="bg-[#f4f4f4] p-5 rounded-2xl">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <img src={Assets.Logo} className="w-8 h-8" alt="" />

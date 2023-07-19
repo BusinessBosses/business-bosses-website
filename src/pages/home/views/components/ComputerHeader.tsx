@@ -35,32 +35,24 @@ const ComputerHeader = () => {
   return (
     <div className="fixed bg-white top-0 w-full z-50">
       <div
-        className="flex items-center justify-between mx-5"
-        style={{ marginLeft: "150px", marginRight: "150px" }}
+        className="flex items-end justify-between  mr-40 ml-40" 
+
       >
         <div className="flex items-center flex-grow">
           <img src={Assets.Logo} className="w-12 h-12 my-3" alt="" onClick={() => navigate(RoutesPath.home)} />
-          <div className="mobile-only"><div className="flex items-center gap-2 ml-10">
-            <button
-              onClick={() => navigate(RoutesPath.homeSearch)}
-              className="flex items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg"
-            >
-              <CiSearch className="text-[#A9A9A9]" />
-              <p className="text-[#A9A9A9] text-sm">Search people & posts</p>
-            </button>
-          </div></div>
+
           <div className="computer-only"><div className="flex items-center gap-2 ml-10">
             <button
               onClick={openPopup}
               className="flex items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg"
-            style={{width:'400px'}}>
-              <CiSearch className="text-[#A9A9A9]" size={(20)}/>
+              style={{ width: '400px' }}>
+              <CiSearch className="text-[#A9A9A9]" size={(20)} />
               <p className="text-[#A9A9A9] text-sm">Search people & posts</p>
             </button>
             {isPopupOpen && (
               <div className="overlay">
                 <div className="popup">
-                  <button onClick={closePopup} style={{paddingBottom:20}}>
+                  <button onClick={closePopup} style={{ paddingBottom: 20 }}>
                     <BiX size={20} />
                   </button>
 

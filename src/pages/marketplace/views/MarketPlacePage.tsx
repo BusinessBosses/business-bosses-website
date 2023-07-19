@@ -4,37 +4,53 @@ import MarketItem from "./components/MarketItem";
 import MobileBottomNav from "../../home/views/components/MobileBottomNav";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
+import { ReactNode } from "react";
+import Popup from "reactjs-popup";
+import { IoIosMore } from "react-icons/io";
+import RoutesPath from "../../../constants/Routes";
+import { useNavigate } from "react-router-dom";
+
 const MarketPlacePage = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="mobile-only">
-        <div className="fixed top-0 w-full z-50">
-          <div className="flex items-center p-5 justify-between bg-white">
-            <p className="text-lg">Marketplace</p>
-            <CiSearch size={20} />
+        <div className="fixed top-0 w-full z-50" style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)' }}>
+          <div className="flex items-center justify-between bg-white px-3 py-2">
+            <p className="text-lg font-semibold text-[#333333]">Marketplace</p>
+            <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
           </div>
         </div>
 
-        <div className="mt-20">
+        <div style={{ height: '30%', overflow: 'hidden' }}>
           <MobileMarketIntro />
         </div>
 
-        <div className="p-5">
+        <div style={{ height: '40%', overflow: 'hidden' }}>
           {[1, 2, 3, 4, 5, 6, 7].map((market) => (
             <MarketItem key={market} />
           ))}
         </div>
-        <div className="my-20"></div>
-        <MobileBottomNav currentIndex={2} />
 
+        <MobileBottomNav currentIndex={2} />
       </div>
 
-
-      <div className="computer-only">
+      <div className="computer-only flex">
         <ComputerHeader />
-        <div className="computer-content">
-          <div className="firstsection">
-            <div className="fixed flex items-center">
+        <div className="computer-content flex" style={{ height: '100%', width: '100%' }}>
+        <div className="firstsection ml-40 mr-5" style={{
+            width: '30%',
+
+            flexGrow: 0,
+            overflow: 'scroll',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            height: '100%'
+
+          }} >
+            <div className="flex items-center " onClick={() => navigate(RoutesPath.myProfile)}>
+
               <UserAvatar
                 imageSize="h-24 w-24"
                 imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
@@ -46,30 +62,74 @@ const MarketPlacePage = () => {
                 <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
               </div>
               <div className="flex-grow" />
+              <Popup
+                trigger={
+                  <div>
+                    <IoIosMore size={20} />
+                  </div>
+                }
+                position="left top"
+                on="click"
+                closeOnDocumentClick
+                contentStyle={{ padding: "0px", border: "none" }}
+              // arrow={false}
+              >
+                {
+                  (((close: any) => (
+                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                      <button
+                        onClick={() => {
+                          close();
+                        }}
+                        className="menu-item"
+                      >
+                        Hide
+                      </button>
+                      <button
+                        onClick={() => {
+                          close();
+                        }}
+                        className="menu-item"
+                      >
+                        Report
+                      </button>
+                    </div>
+                  )) as unknown) as ReactNode
+                }
+              </Popup>
+
+
             </div>
-
-
-
           </div>
-          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{paddingLeft:20,paddingRight:20}} >
+         
+          
+          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0, overflow: 'hidden', borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)', boxSizing: 'border-box', borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((market) => (
               <MarketItem key={market} />
             ))}
           </div>
-          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection" style={{}}>
 
-
+          <div
+            className="lastsection ml-5 mr-40"
+            style={{
+              width: '30%',
+              flexGrow: 0,
+              overflow: 'scroll', 
+              position: 'sticky',
+              top: 0,
+              zIndex: 1,
+              height: '100%' 
+            }}
+          >
+            <div className="w-30" style={{ position: "sticky" }}>
+              <MobileMarketIntro />
+            </div>
           </div>
+
 
         </div>
       </div>
     </div>
-
-
-
-
   );
 };
 

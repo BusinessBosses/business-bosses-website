@@ -36,8 +36,7 @@
 .computer-content {
   display: flex;
   flex-direction: row;
-  margin-left: 150px;
-  margin-right: 150px;
+ 
 
 
 
@@ -52,14 +51,13 @@
 
 .firstsection {
   width: 30%;
-  padding-right: 20px;
-  padding-top: 90px;
+  padding-top: 80px;
 }
 
 .lastsection {
   width: 30%;
-  padding-left: 20px;
-  padding-top: 90px;
+  
+  padding-top: 80px;
 }
 
 .selected-tab {

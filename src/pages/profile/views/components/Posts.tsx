@@ -3,7 +3,7 @@ import Post from "./Post";
 
 const Posts = () => {
   return (
-    <div className="grid grid-cols-2 gap-3 px-5">
+    <div className="grid grid-cols-2 gap-3 px-5 pt-5">
       {[1, 2, 3, 4, 5, 6].map((item) => {
         return (
           <Post

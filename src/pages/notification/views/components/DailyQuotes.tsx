@@ -20,7 +20,7 @@ const DailyQuotes = () => {
       </div>
 
       <div className="computer-only">
-        <div className="bg-[#EAEAEA] p-5 rounded-xl">
+        <div className="bg-[#f4f4f4] p-5 rounded-xl">
           <div className="flex items-center gap-3">
             <img src={Assets.Logo} className="w-8 h-8" alt="" />
             <h3 className="text-2xl font-semibold">Today’s Quote</h3>

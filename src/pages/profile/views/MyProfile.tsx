@@ -23,7 +23,7 @@ const MyProfile = () => {
           {currentTabIndex === 0 ? <About /> : null}
           {currentTabIndex === 1 ? <Posts /> : null}
         </div>
-        <div className="my-20"></div>
+        <div className="mt-20"></div>
         <MobileBottomNav currentIndex={3} />
       </div>
 

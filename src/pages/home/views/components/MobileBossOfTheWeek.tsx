@@ -57,7 +57,7 @@ const MobileBossOfTheWeek = () => {
         </div>
       </div>
 
-      <div className="bg-[#F4F4F4] flex items-center justify-between p-2 rounded-lg mt-2">
+      <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
         <small className="text-xs text-[#545151]">Boss Up by</small>
         <p className="text-[#545151] text-sm">
           Business Bosses Company Limited

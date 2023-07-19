@@ -4,14 +4,14 @@ interface Props {
 }
 const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
   return (
-    <div className="mt-20 sticky top-16 bg-white z-50">
-      <div className="flex items-center justify-between p-5">
+    <div className="sticky bg-white z-50">
+      <div className="flex items-center justify-between" style={{paddingLeft:20, paddingRight:20}}>
         <button
           onClick={() => onChangeRoute(0)}
           className={`${
             currentIndex === 0
-              ? "text-[#333333] font-semibold border-b-2 border-b-primary"
-              : "text-[#A9A9A9]"
+              ? "text-[#333333] font-semibold border-b-2 border-b-primary pb-2 pt-2"
+              : "text-[#A9A9A9] pb-2 pt-2"
           }`}
         >
           Challenge
@@ -20,8 +20,8 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
           onClick={() => onChangeRoute(1)}
           className={`${
             currentIndex === 1
-              ? "text-[#333333] font-semibold border-b-2 border-b-primary"
-              : "text-[#A9A9A9]"
+              ? "text-[#333333] font-semibold border-b-2 border-b-primary pb-2 pt-2"
+              : "text-[#A9A9A9] pb-2 pt-2"
           }`}
         >
           Learning
@@ -30,8 +30,8 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
           onClick={() => onChangeRoute(2)}
           className={`${
             currentIndex === 2
-              ? "text-[#333333] font-semibold border-b-2 border-b-primary"
-              : "text-[#A9A9A9]"
+              ? "text-[#333333] font-semibold border-b-2 border-b-primary pb-2 pt-2"
+              : "text-[#A9A9A9] pb-2 pt-2"
           }`}
         >
           Opportunities

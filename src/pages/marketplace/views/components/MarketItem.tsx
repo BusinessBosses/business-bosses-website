@@ -6,12 +6,17 @@ import { AiTwotoneStar } from "react-icons/ai";
 
 const MarketItem = () => {
   return (
-    <div className="my-10">
+    <div>
+    <div className="my-5"style={{paddingLeft:20, paddingRight:20}}>
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <UserAvatar imageURL="https://cdn.pixabay.com/photo/2023/06/02/14/12/woman-8035772_640.jpg" />
-          <div className="">
-            <p className="text-[#333333] text-lg">Isaac Akin</p>
+          <div className="mobile-only">
+            <p className="text-[#333333] text-sm" style={{fontWeight:'600'}}>Isaac Akin</p>
+            <p className="text-xs text-[#777777]">Supplier of survey</p>
+          </div>
+          <div className="computer-only">
+            <p className="text-[#333333] text-s" style={{fontWeight:'600'}}>Isaac Akin</p>
             <p className="text-sm text-[#777777]">Supplier of survey</p>
           </div>
         </div>
@@ -19,11 +24,14 @@ const MarketItem = () => {
       </div>
       <div className="mt-2">
         <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
-        <p className="text-[#232324] font-bold my-2">$3000.45</p>
-        <p className="text-sm text-[#303133]">
+        <p className="text-[#232324] font-bold my-0">$3000.45</p>
+        <p className="text-sm text-[#303133] mobile-only" style={{fontSize:13}}>
           For you to be effective at networking you should make it a hobby
         </p>
-        <div className="my-2 flex items-center justify-between">
+        <p className="text-sm text-[#303133] computer-only" style={{fontSize:14}}>
+          For you to be effective at networking you should make it a hobby
+        </p>
+        <div className="my-0 flex items-center justify-between">
           <div className="flex text-[#878787] gap-1">
             <MdLocationPin />
             <small>Abuja</small>
@@ -71,6 +79,9 @@ const MarketItem = () => {
         </div>
       </div>
     </div>
+     <div className="mobile-only" style={{ height: "7px", width: "100%", background: "#f4f4f4" }}></div>
+     <div className="computer-only" style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>
+     </div>
   );
 };
 

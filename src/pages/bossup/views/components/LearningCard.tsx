@@ -7,7 +7,7 @@ const LearningCard = () => {
   return (
     <div
       onClick={() => navigate(RoutesPath.forum)}
-      className="bg-white shadow p-2 rounded-lg"
+      className="bg-white shadow p-2 rounded-xl"
     >
       <div className="flex items-center justify-between mb-3">
         <p className="text-[#333333] text-sm ">Affiliate Marketing</p>
