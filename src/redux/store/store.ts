@@ -5,13 +5,17 @@ import UserSlice from '../slices/UserSlice';
 import ChatSlice from '../slices/ChatSlice';
 import forumSlice from '../slices/ForumSlice';
 import IndustrySlice from '../slices/IndustrySlice';
+import marketSlice from '../slices/MarketSlice';
+import notificationSlice from '../slices/NotificationSlice';
 const store = configureStore({
     reducer: {
         post: postSlice,
         user: UserSlice,
         chat: ChatSlice,
         forum: forumSlice,
-        industry: IndustrySlice
+        industry: IndustrySlice,
+        market: marketSlice,
+        notification: notificationSlice
     },
     devTools: process.env.NODE_ENV !== 'production',
 })

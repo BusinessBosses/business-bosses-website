@@ -6,12 +6,14 @@ import { User } from '../../common/interfaces/user';
 
 
 interface UserState {
-    profile: User | null
+    profile: User | null,
+    bossup: User | null
 }
 
 // Define the initial state using that type
 const initialState: UserState = {
-    profile: null
+    profile: null,
+    bossup: null
 }
 
 export const userSlice = createSlice({
@@ -23,9 +25,13 @@ export const userSlice = createSlice({
         saveUserData: (state, action: PayloadAction<User>) => {
             state.profile = action.payload
         },
+
+        saveBossupData: (state, action: PayloadAction<User>) => {
+            state.bossup = action.payload
+        },
     },
 })
 
-export const { saveUserData } = userSlice.actions
+export const { saveUserData, saveBossupData } = userSlice.actions
 
 export default userSlice.reducer

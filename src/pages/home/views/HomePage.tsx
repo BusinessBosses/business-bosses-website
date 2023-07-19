@@ -9,19 +9,21 @@ import MobileHeader from "./components/MobileHeader";
 import PostItem from "./components/PostItem";
 const HomePage = () => {
   const posts = useAppSelector((state) => state.post.mixedPosts);
-  const profile = useAppSelector((state) => state.user.profile);
+  const profile = useAppSelector((state) => state.user);
   const chats = useAppSelector((state) => state.chat.chats);
   return (
     <div className=" ">
       <MobileHeader
-        coins={profile?.coinscount}
-        unseenNotification={profile?.unReadCount! > 0}
+        coins={profile?.profile!.coinscount}
+        unseenNotification={profile?.profile!.unReadCount! > 0}
         unseenChat={
-          !!chats.find((fd) => fd.senderUid !== profile?.uid && !fd.seen)
+          !!chats.find(
+            (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
+          )
         }
       />
       <div className="mt-20">
-        <MobileBossOfTheWeek />
+        <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
       </div>
       <div className="p-5">
         {posts.map((post: MixedPostState, index: number) => {

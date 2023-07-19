@@ -7,6 +7,7 @@ import RoutesPath from "../../../../constants/Routes";
 import Popup from "reactjs-popup";
 import { Post } from "../../../../common/interfaces/post";
 import trimText from "../../../../common/functions/trimText";
+import formatDate from "../../../../common/functions/formatDate";
 interface Props {
   data: Post;
 }
@@ -114,7 +115,7 @@ const PostItem = ({ data }: Props) => {
             />
             <PostAction count="" icon={Assets.Share} onClick={() => {}} />
           </div>
-          <small className="text-[#B4B4B4]">6 days ago</small>
+          <small className="text-[#B4B4B4]">{formatDate(data.timestamp)}</small>
         </div>
       </div>
     </div>

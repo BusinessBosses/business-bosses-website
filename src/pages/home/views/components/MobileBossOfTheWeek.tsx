@@ -5,7 +5,11 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
-const MobileBossOfTheWeek = () => {
+import { User } from "../../../../common/interfaces/user";
+interface Props {
+  bossOfTheWeek: User;
+}
+const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   return (
     <div className="bg-[#EAEAEA] p-5">
       <div className="flex items-start justify-between">
@@ -21,14 +25,17 @@ const MobileBossOfTheWeek = () => {
         <UserAvatar
           imageSize="h-24 w-24"
           isRanked
-          imageURL="https://cdn.pixabay.com/photo/2023/06/02/14/12/woman-8035772_640.jpg"
+          imageURL={
+            bossOfTheWeek.photoUrl ??
+            "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+          }
         />
         <div className="w-1/2">
-          <p className="text-lg text-[#333333] font-medium">Isaac Akin</p>
-          <p className="text-sm text-[#333333]">Manufacturer</p>
-          <p className="text-xs text-[#777777]">
-            For you to be effective at networking you should make it a hobby
+          <p className="text-lg text-[#333333] font-medium capitalize">
+            {bossOfTheWeek.username}
           </p>
+          <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
+          <p className="text-xs text-[#777777]">{bossOfTheWeek.bio}</p>
           <div className="flex items-center gap-3 mt-1">
             <FilledButton
               onClick={() => {}}

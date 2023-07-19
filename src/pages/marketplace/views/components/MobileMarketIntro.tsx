@@ -28,12 +28,12 @@ const MobileMarketIntro = () => {
       <div className="bg-marketLinear p-3 mt-2 rounded-lg">
         <div className="flex gap-3">
           <img
-            src="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
+            src="http://44.210.87.234/learningImages/marketplace.jpg"
             alt=""
             className="w-32 h-20 rounded-lg"
           />
           <p className="text-[#383838] text-sm">
-            Ideas on how to create things easily
+            {"- Sell your products and services \n - Find Supplies"}
           </p>
         </div>
         <div className="flex items-center justify-between mt-2">

@@ -5,6 +5,7 @@ import Assets from "../../../assets";
 import Popup from "reactjs-popup";
 import { Forum } from "../../interfaces/forum";
 import trimText from "../../functions/trimText";
+import formatDate from "../../functions/formatDate";
 interface Props {
   data: Forum;
 }
@@ -111,7 +112,9 @@ const ForumItem = ({ data }: Props) => {
             />
             <PostAction count="" icon={Assets.Share} onClick={() => {}} />
           </div>
-          <small className="text-[#B4B4B4]">6 days ago</small>
+          <small className="text-[#B4B4B4]">
+            {formatDate(data.timestamp!)}
+          </small>
         </div>
       </div>
     </div>

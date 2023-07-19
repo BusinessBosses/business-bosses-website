@@ -24,7 +24,7 @@ import serviceApi from "./services/serviceApi";
 import { useAppDispatch } from "./redux/store/store";
 import { addPostToState } from "./redux/slices/PostSlice";
 import FetchStatus from "./common/components/fetch_status/FetchStatus";
-import { saveUserData } from "./redux/slices/UserSlice";
+import { saveBossupData, saveUserData } from "./redux/slices/UserSlice";
 import HomeController from "./pages/home/controller/HomeController";
 import { saveChatsToState } from "./redux/slices/ChatSlice";
 import CommunitiesPage from "./pages/communities/views/CommunitiesPage";
@@ -33,16 +33,35 @@ const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
 
+  const fetchBossOfTheWeek = async () => {
+    const response = await serviceApi.fetch("/users/bossup");
+    if (response.success) {
+      dispatch(
+        saveBossupData({
+          ...response.data,
+          connecteds: response.data.connecteds.map((mp: any) => mp.userId),
+          connections: response.data.connections.map((mp: any) => mp.connect),
+          // interests: response.data.interests,
+        })
+      );
+    }
+  };
+
   const fetchData = async () => {
     setLoading(true);
     setErr(false);
     const response = await serviceApi.fetch("/init");
+    fetchBossOfTheWeek();
     if (response.success) {
       const processedPosts = HomeController.processData(response);
+      // console.log(response.data.user);
       dispatch(
         saveUserData({
           ...response.data.user,
           connecteds: response.data.connecteds,
+          connections: response.data.user.connections.map(
+            (mp: any) => mp.connect
+          ),
           interests: response.data.interests,
         })
       );
