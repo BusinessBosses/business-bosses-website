@@ -21,7 +21,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
             stroke={currentIndex === 0 ? primaryColor : strokeColor}
           />
         </button>
-        <button onClick={() => navigate("/bossup")}>
+        <button onClick={() => navigate("/communities")}>
           <Assets.BossupIcon
             stroke={currentIndex === 1 ? primaryColor : strokeColor}
           />

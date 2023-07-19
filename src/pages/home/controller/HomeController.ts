@@ -1,3 +1,4 @@
+import { Forum } from "../../../common/interfaces/forum";
 import { Post } from "../../../common/interfaces/post";
 import { MixedPostState } from "../../../redux/slices/PostSlice";
 
@@ -10,10 +11,10 @@ class HomeController {
             coins: mp.coins.map((cn: any) => cn.userId),
             likes: mp.likes.map((lk: any) => lk.userId),
         }));
-        const forums = response.data.posts.forums.rows.map((mp: Post) => ({
+        const forums = response.data.posts.forums.rows.map((mp: Forum) => ({
             ...mp,
-            coins: mp.coins.map((cn: any) => cn.userId),
-            likes: mp.likes.map((lk: any) => lk.userId),
+            coins: mp.coins!.map((cn: any) => cn.userId),
+            likes: mp.likes!.map((lk: any) => lk.userId),
         }));
 
         for (let index = 0; index < posts.length; index++) {

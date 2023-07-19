@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import RoutesPath from "./constants/Routes";
 import HomePage from "./pages/home/views/HomePage";
 import MarketPlacePage from "./pages/marketplace/views/MarketPlacePage";
-import BossupPage from "./pages/bossup/views/BossupPage";
 import Forum from "./pages/forum/views/Forum";
 import CreatePost from "./pages/CreatePost.tsx/views/CreatePost";
 import PromotePage from "./pages/promote/views/PromotePage";
@@ -28,6 +27,7 @@ import FetchStatus from "./common/components/fetch_status/FetchStatus";
 import { saveUserData } from "./redux/slices/UserSlice";
 import HomeController from "./pages/home/controller/HomeController";
 import { saveChatsToState } from "./redux/slices/ChatSlice";
+import CommunitiesPage from "./pages/communities/views/CommunitiesPage";
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -75,7 +75,7 @@ const App = () => {
       <Route path={RoutesPath.home} element={<HomePage />} />
       <Route path={RoutesPath.marketPlace} element={<MarketPlacePage />} />
       <Route path={RoutesPath.myProfile} element={<MyProfile />} />
-      <Route path={RoutesPath.bossup} element={<BossupPage />} />
+      <Route path={RoutesPath.communities} element={<CommunitiesPage />} />
       <Route path={RoutesPath.forum} element={<Forum />} />
       <Route path={RoutesPath.createPost} element={<CreatePost />} />
       <Route path={RoutesPath.promotePost} element={<PromotePage />} />

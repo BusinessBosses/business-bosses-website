@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import { FiMoreVertical } from "react-icons/fi";
 import Assets from "../../../assets";

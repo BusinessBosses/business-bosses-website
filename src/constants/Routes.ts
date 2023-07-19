@@ -1,6 +1,6 @@
 const home = "/";
 const marketPlace = "/market";
-const bossup = "/bossup/*";
+const communities = "/communities/*";
 const opportunities = "/opportunities";
 const learning = "/learning";
 const forum = "/forum";
@@ -24,7 +24,7 @@ const CreateListing = "/create-listing";
 const RoutesPath = {
     home,
     marketPlace,
-    bossup,
+    communities,
     opportunities,
     learning,
     forum,

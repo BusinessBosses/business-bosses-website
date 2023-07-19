@@ -65,11 +65,12 @@ const ForumItem = ({ data }: Props) => {
         </Popup>
       </div>
       <div className="mt-2">
-        <p className=" font-[500] text-black">{data.title}</p>
-        <p className="text-sm text-[#303133]">{data.description}</p>
+        <p className=" font-[500] text-black break-words">{data.title}</p>
+        <p className="text-sm text-[#303133] break-words">{data.description}</p>
         {data.images ? (
           <div className="mt-2">
             <img
+              loading="lazy"
               src={data.images[0]}
               alt=""
               className="rounded-lg w-full h-64 object-cover"
