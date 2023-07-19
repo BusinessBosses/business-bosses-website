@@ -23,7 +23,7 @@ const HomePage = () => {
         }
       />
       <div className="mt-20">
-        <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+        {/* <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} /> */}
       </div>
       <div className="p-5">
         {posts.map((post: MixedPostState, index: number) => {
