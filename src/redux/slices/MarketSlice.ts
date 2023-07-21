@@ -36,9 +36,16 @@ export const marketSlice = createSlice({
         addMarketsToState: (state, action: PayloadAction<Market[]>) => {
             state.markets = [...state.markets, ...action.payload]
         },
+        addNewListing: (state, action: PayloadAction<Market>) => {
+            state.markets.unshift(action.payload)
+        },
+
+        updateListing: (state, action: PayloadAction<{ index: number, post: Market }>) => {
+            state.markets[action.payload.index] = action.payload.post
+        }
     },
 })
 
-export const { incrementPage, addMarketsToState, saveCount, changeLoadingState } = marketSlice.actions
+export const { incrementPage, addMarketsToState, saveCount, changeLoadingState, addNewListing, updateListing } = marketSlice.actions
 
 export default marketSlice.reducer

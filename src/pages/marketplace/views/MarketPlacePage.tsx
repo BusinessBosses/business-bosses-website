@@ -8,13 +8,25 @@ import {
   addMarketsToState,
   incrementPage,
   saveCount,
+  updateListing,
 } from "../../../redux/slices/MarketSlice";
 import { useEffect, useState } from "react";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import { Market } from "../../../common/interfaces/Market";
-const MarketPlacePage = () => {
+import GeneralPostsController, {
+  CoinStruct,
+  LikeStruct,
+} from "../../../common/controllers/GeneralPostsController";
+import { Socket } from "socket.io-client";
+import { saveUserData } from "../../../redux/slices/UserSlice";
+import { Comment as CommentStruct } from "../../../common/interfaces/comment";
+interface Props {
+  socket: Socket;
+}
+const MarketPlacePage = ({ socket }: Props) => {
   const market = useAppSelector((state) => state.market);
   const [loading, setLoading] = useState<boolean>(false);
+  const profile = useAppSelector((state) => state.user);
   const [err, setErr] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const fetchCall = async () => {
@@ -38,6 +50,61 @@ const MarketPlacePage = () => {
     }
 
     setLoading(false);
+  };
+
+  const onLike = (args: LikeStruct, postIndex: number) => {
+    let post = market.markets[postIndex];
+    if (post.likes!.includes(profile.profile?.uid!)) {
+      post = {
+        ...post,
+        likes: post.likes!.filter((ft) => ft !== profile.profile!.uid),
+      };
+    } else {
+      post = {
+        ...post,
+        likes: [...post.likes!, profile.profile!.uid],
+      };
+    }
+    dispatch(updateListing({ index: postIndex, post }));
+    GeneralPostsController.like(args, socket);
+  };
+
+  const onCoin = (args: CoinStruct, postIndex: number) => {
+    let post = market.markets[postIndex];
+    if (post.coins!.includes(profile.profile?.uid!)) {
+      post = {
+        ...post,
+        coins: post.coins!.filter((ft) => ft !== profile.profile!.uid),
+      };
+      dispatch(
+        saveUserData({
+          ...profile.profile!,
+          coinscount: profile.profile!.coinscount! + 1,
+        })
+      );
+    } else {
+      post = {
+        ...post,
+        coins: [...post.coins!, profile.profile!.uid],
+      };
+      dispatch(
+        saveUserData({
+          ...profile.profile!,
+          coinscount: profile.profile!.coinscount! - 1,
+        })
+      );
+    }
+    dispatch(updateListing({ index: postIndex, post }));
+    GeneralPostsController.coin(args, socket);
+  };
+
+  const onComment = (comment: CommentStruct, postIndex: number) => {
+    let post = market.markets[postIndex];
+    post = {
+      ...post,
+      comments: [...post.comments!, comment],
+    };
+    dispatch(updateListing({ index: postIndex, post }));
   };
 
   useEffect(() => {
@@ -79,8 +146,37 @@ const MarketPlacePage = () => {
       ) : null}
 
       <div className="p-5">
-        {market.markets.map((market) => (
-          <MarketItem data={market} key={market.marketId} />
+        {market.markets.map((market: Market, index: number) => (
+          <MarketItem
+            onComment={(comment: CommentStruct) => {
+              onComment(comment, index);
+            }}
+            onLike={(postId: string) => {
+              onLike(
+                {
+                  postId,
+                  type: "marketplace",
+                  userId: profile.profile!.uid,
+                  receiverUid: market.user!.uid,
+                },
+                index
+              );
+            }}
+            onCoin={(postId: string) => {
+              onCoin(
+                {
+                  postId,
+                  type: "marketplace",
+                  userId: profile.profile!.uid,
+                  receiverUid: market.user!.uid,
+                  timestamp: Date.now(),
+                },
+                index
+              );
+            }}
+            data={market}
+            key={market.marketId}
+          />
         ))}
       </div>
       <div className="my-20"></div>

@@ -131,7 +131,10 @@ const App = () => {
   ) : (
     <Routes>
       <Route path={RoutesPath.home} element={<HomePage socket={socket} />} />
-      <Route path={RoutesPath.marketPlace} element={<MarketPlacePage />} />
+      <Route
+        path={RoutesPath.marketPlace}
+        element={<MarketPlacePage socket={socket} />}
+      />
       <Route path={RoutesPath.myProfile} element={<MyProfile />} />
       <Route
         path={RoutesPath.communities}

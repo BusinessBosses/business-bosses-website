@@ -6,12 +6,115 @@ import { AiTwotoneStar } from "react-icons/ai";
 import { Market } from "../../../../common/interfaces/Market";
 import trimText from "../../../../common/functions/trimText";
 import formatDate from "../../../../common/functions/formatDate";
+import Popup from "reactjs-popup";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../../redux/store/store";
+import { ReactNode, useRef, useState } from "react";
+import { Comment as CommentStruct } from "../../../../common/interfaces/comment";
+import RoutesPath from "../../../../constants/Routes";
+import { toast } from "react-toastify";
+import { v4 } from "uuid";
+import GeneralPostsController from "../../../../common/controllers/GeneralPostsController";
+import SharePopUp from "../../../../common/components/share/SharePopUp";
+import { BottomSheet } from "react-spring-bottom-sheet";
+import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
+import Comment from "../../../../common/components/comment/Comment";
 interface Props {
   data: Market;
+  onLike: Function;
+  onCoin: Function;
+  onComment: Function;
 }
-const MarketItem = ({ data }: Props) => {
+const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
+  const navigate = useNavigate();
+  const profile = useAppSelector((state) => state.user.profile);
+  const [comments, setComments] = useState<CommentStruct[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [err, setErr] = useState<boolean>(false);
+  const commentInputRef = useRef<HTMLInputElement>(null);
+  const [showShareDialog, setShowShareDialog] = useState<boolean>(false);
+
+  const fetchComments = async () => {
+    if (comments.length) return;
+    setLoading(true);
+    setErr(false);
+    const response = await GeneralPostsController.fetchComments(data.marketId);
+    if (response.success) {
+      setComments(response.data.rows);
+    } else {
+      setErr(true);
+    }
+    setLoading(false);
+  };
+
+  const makeComment = async () => {
+    if (!commentInputRef.current?.value.trim()) return;
+    const commentId = v4();
+    const newComment: CommentStruct = {
+      user: profile!,
+      comment: commentInputRef.current?.value.trim(),
+      commentId,
+      postId: data.marketId,
+      timestamp: Date.now(),
+      userId: profile!.uid,
+    };
+    setComments([...comments, newComment]);
+    const structuredComment = {
+      comment: commentInputRef.current?.value.trim(),
+      postId: data.marketId,
+      receiverUid: data.user!.uid,
+      timestamp: Date.now(),
+    };
+    onComment(structuredComment);
+    commentInputRef.current.value = "";
+
+    await GeneralPostsController.comment(structuredComment);
+  };
   return (
     <div className="my-10">
+      <SharePopUp
+        url={`${window.location.href}post?id=${data.marketId}`}
+        onClose={() => setShowShareDialog(false)}
+        open={showShareDialog}
+      />
+      <BottomSheet
+        scrollLocking={true}
+        onDismiss={() => setOpen(false)}
+        maxHeight={1000}
+        open={open}
+        footer={
+          <div className="flex items-center gap-2">
+            <input
+              ref={commentInputRef}
+              type="text"
+              className="outline-none border-none w-full "
+              placeholder="Comment..."
+              name=""
+              id=""
+            />
+            <button onClick={makeComment}>
+              <Assets.Send />
+            </button>
+          </div>
+        }
+      >
+        <div className="h-[50vh] overflow-y-auto">
+          {(loading || err) && (
+            <FetchStatus
+              error={err}
+              errorMessage="Something went wrong!!"
+              loading={loading}
+              onReload={() => {}}
+            />
+          )}
+          <div className="px-5">
+            {comments.map((comment: CommentStruct, index: number) => {
+              return <Comment comment={comment} key={index} />;
+            })}
+          </div>
+        </div>
+      </BottomSheet>
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <UserAvatar
@@ -27,7 +130,71 @@ const MarketItem = ({ data }: Props) => {
             </p>
           </div>
         </div>
-        <IoIosMore size={20} />
+        <Popup
+          trigger={
+            <div>
+              <IoIosMore size={20} />
+            </div>
+          }
+          position="left top"
+          on="click"
+          closeOnDocumentClick
+          contentStyle={{ padding: "0px", border: "none" }}
+        >
+          {
+            (((close: any) =>
+              data.user?.uid === profile?.uid ? (
+                <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                  <button
+                    onClick={() => {
+                      close();
+                      navigate(RoutesPath.CreateListing, { state: data });
+                    }}
+                    className="menu-item"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => {
+                      close();
+                      navigate(RoutesPath.promotePost, {
+                        state: data.marketId,
+                      });
+                    }}
+                    className="menu-item"
+                  >
+                    Promote
+                  </button>
+                </div>
+              ) : (
+                <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                  <button
+                    onClick={() => {
+                      close();
+                      toast.success("User Blocked");
+                      // GeneralPostsController.blockUser({ postId: data.postId });
+                    }}
+                    className="menu-item"
+                  >
+                    Block User
+                  </button>
+                  <button
+                    onClick={() => {
+                      close();
+                      toast.success("Post reported");
+                      // GeneralPostsController.reportPost({
+                      //   postId: data.postId,
+                      //   reason: "",
+                      // });
+                    }}
+                    className="menu-item"
+                  >
+                    Report Post
+                  </button>
+                </div>
+              )) as unknown) as ReactNode
+          }
+        </Popup>
       </div>
       <div className="mt-2">
         {data.promote ? (
@@ -86,20 +253,39 @@ const MarketItem = ({ data }: Props) => {
           <div className="flex gap-5">
             <PostAction
               count={data.likes!.length.toString()}
-              icon={Assets.Like}
-              onClick={() => {}}
+              icon={
+                data.likes?.includes(profile!.uid)
+                  ? Assets.LikeFilled
+                  : Assets.Like
+              }
+              onClick={() => {
+                onLike(data.marketId);
+              }}
             />
             <PostAction
               count={data.comments!.length.toString()}
               icon={Assets.Comment}
-              onClick={() => {}}
+              onClick={() => {
+                fetchComments();
+                setOpen(true);
+              }}
             />
+            {data.userId === profile!.uid ? null : (
+              <PostAction
+                count={data.coins!.length.toString()}
+                icon={Assets.Coin}
+                onClick={() => {
+                  onCoin(data.marketId);
+                }}
+              />
+            )}
             <PostAction
-              count={data.coins!.length.toString()}
-              icon={Assets.Coin}
-              onClick={() => {}}
+              count=""
+              icon={Assets.Share}
+              onClick={() => {
+                setShowShareDialog(true);
+              }}
             />
-            <PostAction count="" icon={Assets.Share} onClick={() => {}} />
           </div>
           <small className="text-[#B4B4B4]">
             {formatDate(data.timestamp!)}

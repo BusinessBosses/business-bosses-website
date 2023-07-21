@@ -232,15 +232,17 @@ const ForumItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 setOpen(true);
               }}
             />
-            <PostAction
-              count={data.coins!.length.toString()}
-              icon={Assets.Coin}
-              onClick={() => {
-                if (onCoin) {
-                  onCoin(data.forumId);
-                }
-              }}
-            />
+            {data.user?.uid === profile?.uid ? null : (
+              <PostAction
+                count={data.coins!.length.toString()}
+                icon={Assets.Coin}
+                onClick={() => {
+                  if (onCoin) {
+                    onCoin(data.forumId);
+                  }
+                }}
+              />
+            )}
             <PostAction
               count=""
               icon={Assets.Share}
