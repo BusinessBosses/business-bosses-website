@@ -6,11 +6,13 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import FilledButton from "../../../common/components/buttons/FilledButton";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
 
 const CreatePost = () => {
   const navigate = useNavigate();
   return (
     <div>
+      <div className="mobile-only">
       <div className="fixed top-0 w-full z-50">
         <CommonPageHeader title="Create Post" />
       </div>
@@ -53,6 +55,12 @@ const CreatePost = () => {
           </div>
         </div>
       </div>
+
+      </div>
+     
+
+
+    
     </div>
   );
 };

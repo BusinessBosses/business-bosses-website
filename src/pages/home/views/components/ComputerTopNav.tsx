@@ -2,16 +2,42 @@ import { BsPlusLg } from "react-icons/bs";
 import RoutesPath from "../../../../constants/Routes";
 import Assets from "../../../../assets";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { BiX } from "react-icons/bi";
+import CreatePost from "../../../CreatePost.tsx/views/CreatePost";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import FilledButton from "../../../../common/components/buttons/FilledButton";
+import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 
 interface Props {
   currentIndex: number;
   onTabClick: (index: number) => void;
 }
 
+
+
 const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
   const primaryColor = "#F21C29";
   const strokeColor = "#A9A9A9";
   const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+
+  useEffect(() => {
+    if (isPopupOpen) {
+      document.body.classList.add('popup-open');
+    } else {
+      document.body.classList.remove('popup-open');
+    }
+  }, [isPopupOpen]);
+
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
 
   const handleTabClick = (index: number) => {
     onTabClick(index);
@@ -141,19 +167,74 @@ const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
         </div>
       </div>
       <div className="pb-3">
-      <button
-        onClick={() => navigate(RoutesPath.createPost)}
-        className="p-3 bg-primary rounded-xl text-white flex items-center"
-        style={{ marginLeft: 100 }}
-      >
-        <p className="text-white font-semibold mr-2">Create Post</p>
-        <BsPlusLg
-          strokeWidth={1.2}
-          color="white"
-          className="mr-2"
-          style={{ width: '18px', height: '18px' }}
-        />
-      </button>
+        <button
+          onClick={openPopup}
+          className="p-3 bg-primary rounded-xl text-white flex items-center"
+          style={{ marginLeft: 100 }}
+        >
+          <p className="text-white font-semibold mr-2">Create Post</p>
+          <BsPlusLg
+            strokeWidth={1.2}
+            color="white"
+            className="mr-2"
+            style={{ width: '18px', height: '18px' }}
+          />
+        </button>
+        {isPopupOpen && (
+          <div className="overlay">
+            <div className="popup">
+              <button onClick={closePopup} style={{ paddingBottom: 20 }}>
+                <BiX size={20} />
+              </button>
+
+              {/* CreatePost Component */}
+              <div className="computer-only">
+              <p className="text-[#333333] text-xl font-bold">Create Post</p>
+                <div className="my-7"></div>
+                <div className="p-0">
+                  <div className="flex items-center gap-3">
+                    <UserAvatar imageURL="https://cdn.pixabay.com/photo/2023/06/03/16/05/spotted-laughingtrush-8037974__340.png" />
+                    <p className="text-[#333333] text-lg font-medium">Isaac Akin</p>
+                  </div>
+
+                  <div className=" mt-7">
+                    <textarea
+                      name=""
+                      id=""
+                      placeholder="What’s on your mind?"
+                      className="w-full outline-none border-[1px] border-[#EAEAEA] placeholder:text-[#A9A9A9] rounded-lg p-3 text-sm resize-none bg-[#F4F4F4]"
+                      rows={8}
+                    ></textarea>
+
+                    <div className="flex mt-4 items-center gap-3">
+                      <p className="text-[#333333]">Add Image</p>
+                      <button className="bg-[#F4F4F4] p-2.5 rounded-full">
+                        <img src={Assets.Gallery} alt="" />
+                      </button>
+                    </div>
+
+                    <div className="flex items-center justify-between mt-5">
+                      <img src={Assets.Rocket} alt="" />
+                      <p className="text-[#373737] font-semibold">Boost Post</p>
+                      <MdOutlineKeyboardArrowRight size={24} className="text-primary" />
+                    </div>
+                    <div className="mt-10">
+                      <FilledButton
+                        onClick={() => {
+                          navigate(RoutesPath.promotePost);
+                        }}
+                        text="Post"
+                        className="w-full py-3"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* End of CreatePost Component */}
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );

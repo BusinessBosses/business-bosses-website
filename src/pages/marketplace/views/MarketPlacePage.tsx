@@ -22,7 +22,7 @@ const MarketPlacePage = () => {
           </div>
         </div>
 
-        <div style={{ height: '30%', overflow: 'hidden' }}>
+        <div style={{ height: '30%', overflow: 'hidden' ,paddingTop:45}}>
           <MobileMarketIntro />
         </div>
 
@@ -103,7 +103,7 @@ const MarketPlacePage = () => {
           </div>
          
           
-          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0, overflow: 'hidden', borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)', boxSizing: 'border-box', borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
+          <div className="computer-main-content mt-5" style={{ width: '40%', flexGrow: 0, overflow: 'hidden', borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)', boxSizing: 'border-box', borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((market) => (
               <MarketItem key={market} />
             ))}
