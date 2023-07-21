@@ -3,8 +3,11 @@ import CommonPageHeader from "../../../common/components/headers/CommonPageHeade
 import Assets from "../../../assets";
 import FilledButton from "../../../common/components/buttons/FilledButton";
 import { MdContentCopy } from "react-icons/md";
+import { useAppSelector } from "../../../redux/store/store";
+import { toast } from "react-toastify";
 
 const InvitePage = () => {
+  const profile = useAppSelector((state) => state.user.profile);
   return (
     <div>
       <div className="fixed top-0 w-full z-50">
@@ -30,10 +33,13 @@ const InvitePage = () => {
         <div className="flex justify-between p-5">
           <div className="">
             <small className="text-[#707070]">Invite ID:</small>
-            <p className="text-[#333333]">zSSFrdggfyhjgjggig</p>
+            <p className="text-[#333333]">{profile?.inviteId}</p>
           </div>
           <FilledButton
-            onClick={() => {}}
+            onClick={async () => {
+              await navigator.clipboard.writeText(profile?.inviteId ?? "");
+              toast.success("Copied");
+            }}
             text="Copy InviteID"
             icon={<MdContentCopy />}
           />
@@ -42,7 +48,7 @@ const InvitePage = () => {
         <div className="border-t-2 border-[#F6F6F6]" />
         <div className="flex items-center justify-between p-5">
           <small className="text-[#777777]">Accepted Invitation</small>
-          <small className="text-[#333333]">1</small>
+          <small className="text-[#333333]">{profile?.invitations}</small>
         </div>
         <div className="border-t-2 border-[#F6F6F6]" />
 

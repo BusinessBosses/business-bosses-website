@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { IoIosMore } from "react-icons/io";
 import UserAvatar from "../avatars/UserAvatar";
 import Assets from "../../../assets";
@@ -6,14 +6,123 @@ import Popup from "reactjs-popup";
 import { Forum } from "../../interfaces/forum";
 import trimText from "../../functions/trimText";
 import formatDate from "../../functions/formatDate";
+import { useAppSelector } from "../../../redux/store/store";
+import RoutesPath from "../../../constants/Routes";
+import { useNavigate } from "react-router-dom";
+import { BottomSheet } from "react-spring-bottom-sheet";
+import "react-spring-bottom-sheet/dist/style.css";
+import GeneralPostsController from "../../controllers/GeneralPostsController";
+import { Comment as CommentStruct } from "../../interfaces/comment";
+import FetchStatus from "../fetch_status/FetchStatus";
+import Comment from "../comment/Comment";
+import { v4 } from "uuid";
+import { toast } from "react-toastify";
+import SharePopUp from "../share/SharePopUp";
+
 interface Props {
   data: Forum;
+  onLike?: Function;
+  onCoin?: Function;
+  onComment?: Function;
 }
-const ForumItem = ({ data }: Props) => {
+const ForumItem = ({ data, onCoin, onLike, onComment }: Props) => {
+  const profile = useAppSelector((state) => state.user.profile);
+  const navigate = useNavigate();
+  const [comments, setComments] = useState<CommentStruct[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [err, setErr] = useState<boolean>(false);
+  const commentInputRef = useRef<HTMLInputElement>(null);
+  const [showShareDialog, setShowShareDialog] = useState<boolean>(false);
+
+  const fetchComments = async () => {
+    if (comments.length) return;
+    setLoading(true);
+    setErr(false);
+    const response = await GeneralPostsController.fetchComments(data.forumId);
+    if (response.success) {
+      setComments(response.data.rows);
+    } else {
+      setErr(true);
+    }
+    setLoading(false);
+  };
+  const makeComment = async () => {
+    if (!commentInputRef.current?.value.trim()) return;
+    const commentId = v4();
+    const newComment: CommentStruct = {
+      user: profile!,
+      comment: commentInputRef.current?.value.trim(),
+      commentId,
+      postId: data.forumId,
+      timestamp: Date.now(),
+      userId: profile!.uid,
+    };
+    setComments([...comments, newComment]);
+    const structuredComment = {
+      comment: commentInputRef.current?.value.trim(),
+      postId: data.forumId,
+      receiverUid: data.user!.uid,
+      timestamp: Date.now(),
+    };
+    if (onComment) {
+      onComment(structuredComment);
+    }
+    commentInputRef.current.value = "";
+
+    await GeneralPostsController.comment(structuredComment);
+  };
   return (
     <div className="my-10">
+      <SharePopUp
+        url={`${window.location.href}forum?id=${data.forumId}`}
+        onClose={() => setShowShareDialog(false)}
+        open={showShareDialog}
+      />
+      <BottomSheet
+        scrollLocking={true}
+        onDismiss={() => setOpen(false)}
+        maxHeight={1000}
+        open={open}
+        footer={
+          <div className="flex items-center gap-2">
+            <input
+              ref={commentInputRef}
+              type="text"
+              className="outline-none border-none w-full "
+              placeholder="Comment..."
+              name=""
+              id=""
+            />
+            <button onClick={makeComment}>
+              <Assets.Send />
+            </button>
+          </div>
+        }
+      >
+        <div className="h-[50vh] overflow-y-auto">
+          {(loading || err) && (
+            <FetchStatus
+              error={err}
+              errorMessage="Something went wrong!!"
+              loading={loading}
+              onReload={() => {}}
+            />
+          )}
+          <div className="px-5">
+            {comments.map((comment: CommentStruct, index: number) => {
+              return <Comment comment={comment} key={index} />;
+            })}
+          </div>
+        </div>
+      </BottomSheet>
       <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
+        <div
+          onClick={() =>
+            navigate(RoutesPath.PublicUserProfile, { state: data.user })
+          }
+          className="flex items-center gap-3"
+        >
           <UserAvatar
             imageURL={
               data.user?.photoUrl ??
@@ -47,18 +156,25 @@ const ForumItem = ({ data }: Props) => {
                 <button
                   onClick={() => {
                     close();
+                    toast.success("User Blocked");
+                    GeneralPostsController.blockUser({ postId: data.forumId });
                   }}
                   className="menu-item"
                 >
-                  Hide
+                  Block User
                 </button>
                 <button
                   onClick={() => {
                     close();
+                    toast.success("Post reported");
+                    GeneralPostsController.reportPost({
+                      postId: data.forumId,
+                      reason: "",
+                    });
                   }}
                   className="menu-item"
                 >
-                  Report
+                  Report Post
                 </button>
               </div>
             )) as unknown) as ReactNode
@@ -97,20 +213,41 @@ const ForumItem = ({ data }: Props) => {
           <div className="flex gap-5">
             <PostAction
               count={data.likes!.length.toString()}
-              icon={Assets.Like}
-              onClick={() => {}}
+              icon={
+                data.likes!.includes(profile!.uid)
+                  ? Assets.LikeFilled
+                  : Assets.Like
+              }
+              onClick={() => {
+                if (onLike) {
+                  onLike(data.forumId);
+                }
+              }}
             />
             <PostAction
               count={data.comments!.length.toString()}
               icon={Assets.Comment}
-              onClick={() => {}}
+              onClick={() => {
+                fetchComments();
+                setOpen(true);
+              }}
             />
             <PostAction
               count={data.coins!.length.toString()}
               icon={Assets.Coin}
-              onClick={() => {}}
+              onClick={() => {
+                if (onCoin) {
+                  onCoin(data.forumId);
+                }
+              }}
             />
-            <PostAction count="" icon={Assets.Share} onClick={() => {}} />
+            <PostAction
+              count=""
+              icon={Assets.Share}
+              onClick={() => {
+                setShowShareDialog(true);
+              }}
+            />
           </div>
           <small className="text-[#B4B4B4]">
             {formatDate(data.timestamp!)}

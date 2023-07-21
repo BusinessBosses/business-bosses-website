@@ -26,7 +26,7 @@ class HomeController {
         }
 
         const mixedData: MixedPostState[] = [...frms, ...psts].sort(
-            (a, b) => a.data.timestamp - b.data.timestamp
+            (a, b) => b.data.timestamp - a.data.timestamp
         );
 
         return mixedData;

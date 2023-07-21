@@ -36,9 +36,12 @@ export const forumSlice = createSlice({
         addForumsToState: (state, action: PayloadAction<Forum[]>) => {
             state.forums = [...state.forums, ...action.payload]
         },
+        updateForum: (state, action: PayloadAction<{ index: number, forum: Forum }>) => {
+            state.forums[action.payload.index] = action.payload.forum
+        }
     },
 })
 
-export const { incrementPage, addForumsToState, saveCount } = forumSlice.actions
+export const { incrementPage, addForumsToState, saveCount, changeLoadingState, updateForum } = forumSlice.actions
 
 export default forumSlice.reducer

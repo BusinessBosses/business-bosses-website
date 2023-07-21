@@ -28,11 +28,17 @@ import { saveBossupData, saveUserData } from "./redux/slices/UserSlice";
 import HomeController from "./pages/home/controller/HomeController";
 import { saveChatsToState } from "./redux/slices/ChatSlice";
 import CommunitiesPage from "./pages/communities/views/CommunitiesPage";
+import { useSocket } from "./hooks/useSockets";
+import { socketUrl } from "./config/config";
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
-
+  let socket = useSocket(socketUrl, {
+    reconnectionDelay: 10000,
+    transports: ["websocket"],
+    autoConnect: false,
+  });
   const fetchBossOfTheWeek = async () => {
     const response = await serviceApi.fetch("/users/bossup");
     if (response.success) {
@@ -41,7 +47,6 @@ const App = () => {
           ...response.data,
           connecteds: response.data.connecteds.map((mp: any) => mp.userId),
           connections: response.data.connections.map((mp: any) => mp.connect),
-          // interests: response.data.interests,
         })
       );
     }
@@ -54,6 +59,7 @@ const App = () => {
     fetchBossOfTheWeek();
     if (response.success) {
       const processedPosts = HomeController.processData(response);
+      socket.emit("handshake", response.data.user.uid);
       dispatch(
         saveUserData({
           ...response.data.user,
@@ -74,6 +80,40 @@ const App = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const StartListeners = () => {
+    /** Connection / reconnection listeners */
+    socket.io.on("reconnect", (attempt) => {
+      // console.info("Reconnected on attempt: " + attempt);
+      SendHandshake();
+    });
+
+    socket.on("handshake", (data) => {
+      // console.log(data);
+    });
+
+    socket.io.on("reconnect_attempt", (attempt) => {
+      // console.info("Reconnection Attempt: " + attempt);
+    });
+
+    socket.io.on("reconnect_error", (error) => {
+      // console.info("Reconnection error: " + error);
+    });
+
+    socket.io.on("reconnect_failed", () => {
+      // console.info("Reconnection failure.");
+    });
+  };
+
+  const SendHandshake = async () => {
+    // console.info("Sending handshake to server ...");
+  };
+
+  useEffect(() => {
+    socket.connect();
+    StartListeners();
+    SendHandshake();
+  }, []);
   return loading ? (
     <FetchStatus
       error={err}
@@ -90,11 +130,14 @@ const App = () => {
     />
   ) : (
     <Routes>
-      <Route path={RoutesPath.home} element={<HomePage />} />
+      <Route path={RoutesPath.home} element={<HomePage socket={socket} />} />
       <Route path={RoutesPath.marketPlace} element={<MarketPlacePage />} />
       <Route path={RoutesPath.myProfile} element={<MyProfile />} />
-      <Route path={RoutesPath.communities} element={<CommunitiesPage />} />
-      <Route path={RoutesPath.forum} element={<Forum />} />
+      <Route
+        path={RoutesPath.communities}
+        element={<CommunitiesPage socket={socket} />}
+      />
+      <Route path={RoutesPath.forum} element={<Forum socket={socket} />} />
       <Route path={RoutesPath.createPost} element={<CreatePost />} />
       <Route path={RoutesPath.promotePost} element={<PromotePage />} />
       <Route path={RoutesPath.settings} element={<SettingsPage />} />

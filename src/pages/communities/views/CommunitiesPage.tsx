@@ -17,8 +17,11 @@ import {
 import CommunitiesController from "../controller/CommunitiesController";
 import { Forum } from "../../../common/interfaces/forum";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
-
-const CommunitiesPage = () => {
+import { Socket } from "socket.io-client";
+interface Props {
+  socket: Socket;
+}
+const CommunitiesPage = ({ socket }: Props) => {
   const tabs: string[] = ["", RoutesPath.learning, RoutesPath.opportunities];
   const location = useLocation();
   const navigate = useNavigate();
@@ -119,7 +122,10 @@ const CommunitiesPage = () => {
         />
       ) : (
         <Routes>
-          <Route index element={<Challenge forums={forums} />} />
+          <Route
+            index
+            element={<Challenge socket={socket} forums={forums} />}
+          />
           <Route path={RoutesPath.learning} element={<Learning />} />
           <Route path={RoutesPath.opportunities} element={<Opportunities />} />
         </Routes>
