@@ -50,8 +50,30 @@ class ServiceApi {
 
                 }
             })
-            console.log(response.data)
             return response.data
+        } catch (error) {
+            return this.handleErrors(error)
+        }
+    }
+
+
+    async uploadFile(file: File) {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            const response = await axios.post('http://44.210.87.234/upload.php', formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+
+            if (response.data.success) {
+                return response.data
+            } else {
+                toast.error(response.data.message);
+                return null
+            }
+
         } catch (error) {
             return this.handleErrors(error)
         }
@@ -63,7 +85,14 @@ class ServiceApi {
             const response = await axiosClient.put(
                 this.appendToURL(url),
                 payload,
-                this.setupHeaders(is_attached)
+                {
+                    headers: {
+                        // Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
+                        Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
+
+                    }
+                }
+                // this.setupHeaders(is_attached)
             );
 
             return !resolve ? response.data : { ...response.data };

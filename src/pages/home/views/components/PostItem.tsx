@@ -148,37 +148,62 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           contentStyle={{ padding: "0px", border: "none" }}
         >
           {
-            (((close: any) => (
-              <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                <button
-                  onClick={() => {
-                    close();
-                    toast.success("User Blocked");
-                    GeneralPostsController.blockUser({ postId: data.postId });
-                  }}
-                  className="menu-item"
-                >
-                  Block User
-                </button>
-                <button
-                  onClick={() => {
-                    close();
-                    toast.success("Post reported");
-                    GeneralPostsController.reportPost({
-                      postId: data.postId,
-                      reason: "",
-                    });
-                  }}
-                  className="menu-item"
-                >
-                  Report Post
-                </button>
-              </div>
-            )) as unknown) as ReactNode
+            (((close: any) =>
+              data.user.uid === profile?.uid ? (
+                <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                  <button
+                    onClick={() => {
+                      close();
+                      navigate(RoutesPath.createPost, { state: data });
+                    }}
+                    className="menu-item"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => {
+                      close();
+                      navigate(RoutesPath.promotePost, { state: data.postId });
+                    }}
+                    className="menu-item"
+                  >
+                    Promote
+                  </button>
+                </div>
+              ) : (
+                <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                  <button
+                    onClick={() => {
+                      close();
+                      toast.success("User Blocked");
+                      GeneralPostsController.blockUser({ postId: data.postId });
+                    }}
+                    className="menu-item"
+                  >
+                    Block User
+                  </button>
+                  <button
+                    onClick={() => {
+                      close();
+                      toast.success("Post reported");
+                      GeneralPostsController.reportPost({
+                        postId: data.postId,
+                        reason: "",
+                      });
+                    }}
+                    className="menu-item"
+                  >
+                    Report Post
+                  </button>
+                </div>
+              )) as unknown) as ReactNode
           }
         </Popup>
       </div>
       <div className="mt-2">
+        {data.promote ? (
+          <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
+        ) : null}
         <p className="text-sm text-[#303133] break-words">{data.title}</p>
         {data.images ? (
           <div className="mt-2">

@@ -40,12 +40,16 @@ export const postSlice = createSlice({
             state.mixedPosts = [...state.mixedPosts, ...action.payload]
         },
 
+        addNewPost: (state, action: PayloadAction<MixedPostState>) => {
+            state.mixedPosts.unshift(action.payload)
+        },
+
         updatePost: (state, action: PayloadAction<{ index: number, post: MixedPostState }>) => {
             state.mixedPosts[action.payload.index] = action.payload.post
         }
     },
 })
 
-export const { incrementPage, addPostToState, changeLoadingState, updatePost } = postSlice.actions
+export const { incrementPage, addPostToState, changeLoadingState, updatePost, addNewPost } = postSlice.actions
 
 export default postSlice.reducer
