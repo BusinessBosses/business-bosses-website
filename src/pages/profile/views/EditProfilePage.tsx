@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 import Assets from "../../../assets";
 import {
@@ -11,16 +11,17 @@ import FilledInput from "../../../common/components/inputs/FilledInput";
 import FilledSelect from "../../../common/components/inputs/FilledSelect";
 import { CountryDropdown } from "react-country-region-selector";
 import FilledTextarea from "../../../common/components/inputs/FilledTextarea";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosMore } from "react-icons/io";
 import FilledButton from "../../../common/components/buttons/FilledButton";
 import { BsFillPlusCircleFill } from "react-icons/bs";
-import ComputerHeader from "../../home/views/components/ComputerHeader";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import RoutesPath from "../../../constants/Routes";
 import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
+import Popup from "reactjs-popup";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
 
 const EditProfilePage = () => {
   const navigate = useNavigate();
@@ -210,42 +211,94 @@ const EditProfilePage = () => {
       <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
-          <div className="firstsection">
-            <div className="flex items-center fixed" onClick={() => navigate(RoutesPath.myProfile)}>
+          <div className="firstsection ml-0 mr-5 ml-5 lg:ml-40" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            height: '100%'
+          }}>
+            <div className="" >
 
-              <UserAvatar
-                imageSize="h-24 w-24"
-                imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
-              />
-              <div className="ml-4">
-                <p className="text-xl font-semibold">Isaac Akin</p>
-                <p className="text-lg font-medium">Consultant</p>
-                <p className="font-medium">Digital Blogger</p>
-                <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
+
+              <div className="flex items-center " onClick={() => navigate(RoutesPath.myProfile)}>
+
+                <UserAvatar
+                  imageSize="h-24 w-24"
+                  imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
+                />
+                <div className="ml-4">
+                  <p className="text-xl font-semibold">Isaac Akin</p>
+                  <p className="text-lg font-medium">Consultant</p>
+                  <p className="font-medium">Digital Blogger</p>
+                  <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
+                </div>
+
+                <div className="flex-grow" />
+                <Popup
+                  trigger={
+                    <div>
+                      <IoIosMore size={20} />
+                    </div>
+                  }
+                  position="left top"
+                  on="click"
+                  closeOnDocumentClick
+                  contentStyle={{ padding: "0px", border: "none" }}
+                // arrow={false}
+                >
+                  {
+                    (((close: any) => (
+                      <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                        <button
+                          onClick={() => {
+                            close();
+                          }}
+                          className="menu-item"
+                        >
+                          Hide
+                        </button>
+                        <button
+                          onClick={() => {
+                            close();
+                          }}
+                          className="menu-item"
+                        >
+                          Report
+                        </button>
+                      </div>
+                    )) as unknown) as ReactNode
+                  }
+                </Popup>
+
+
               </div>
-              <div className="flex-grow" />
             </div>
 
 
 
           </div>
+
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ paddingTop: 50, paddingLeft: 20, paddingRight: 20 }} >
+          <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
             <div className=" min-h-screen h-full">
 
               <div className="bg-white p-5 flex items-center justify-between">
                 <button onClick={() => navigate(-1)}>
                   <BiArrowBack size={20} />
                 </button>
-                <p className="text-xl font-medium" style={{paddingTop:0}}>{"Edit Profile"}</p>
+                <p className="text-xl font-medium" style={{ paddingTop: 0 }}>{"Edit Profile"}</p>
                 <div />
               </div>
               <div className="py-5">
                 <div className="flex items-center justify-center ">
-                  <div className="bg-[#F4F4F4] p-8 rounded-full relative">
-                    <Assets.User />
+                  <div className="bg-[#F4F4F4] p-10 rounded-full relative">
+                  <Assets.User style={{ width: "100px", height: "100px" }} />
+
                     <button className="bg-primary absolute bottom-1 right-1 p-1 rounded-full text-white">
-                      <AiOutlineCamera />
+                      <AiOutlineCamera size={30}/>
                     </button>
                   </div>
                 </div>
@@ -255,7 +308,7 @@ const EditProfilePage = () => {
                     e.preventDefault();
                   }}
                 >
-                  <div className="px-5">
+                  <div className="px-5 ">
                     <FilledInput onchange={() => { }} label="Username" />
                     <FilledInput onchange={() => { }} label="Email" />
                     <FilledSelect
@@ -273,7 +326,7 @@ const EditProfilePage = () => {
                         Location
                       </label>
                       <CountryDropdown
-                        classes="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-3"
+                        classes="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-5"
                         value=""
                         onChange={(val) => { }}
                       />
@@ -281,7 +334,7 @@ const EditProfilePage = () => {
                     <FilledTextarea onchange={() => { }} label="Bio" />
                     <div className="my-5">
                       <label className="text-[#333333] text-sm font-[700]">Title</label>
-                      <div className="flex items-center justify-between bg-[#f4f4f4] p-3">
+                      <div className="flex items-center rounded-lg justify-between bg-[#f4f4f4] p-5">
                         <p>Software engineer</p>
                         <IoIosArrowForward />
                       </div>
@@ -294,7 +347,7 @@ const EditProfilePage = () => {
                         additionalInfo: !expansionState.additionalInfo,
                       })
                     }
-                    className="my-5 bg-[#f4f4f4] p-3 flex items-center justify-between"
+                    className="my-5 bg-[#ffffff] pt-5 pl-5 pr-5 flex items-center justify-between font-bold" style={{borderTop: '1.2px solid rgba(0, 0, 0, 0.1)',}}
                   >
                     <p>Additional Information (Optional)</p>
                     {!expansionState.additionalInfo ? (
@@ -312,7 +365,7 @@ const EditProfilePage = () => {
                       <label className="text-[#333333] text-sm font-[700]">
                         Industry
                       </label>
-                      <div className="flex items-center justify-between bg-[#f4f4f4] p-3">
+                      <div className="flex items-center rounded-lg justify-between bg-[#f4f4f4] p-5">
                         <p>Business Bosses</p>
                         <IoIosArrowForward />
                       </div>
@@ -330,7 +383,7 @@ const EditProfilePage = () => {
                           achievments: !expansionState.achievments,
                         })
                       }
-                      className="my-5 bg-[#f4f4f4] p-3 flex items-center justify-between"
+                      className="my-5 bg-[#ffffff] pt-5 pl-5 pr-5 flex items-center justify-between font-bold" style={{borderTop: '1.2px solid rgba(0, 0, 0, 0.1)'}}
                     >
                       <h3 className=" font-bold">Achievements</h3>
                       {!expansionState.achievments ? (
@@ -371,7 +424,7 @@ const EditProfilePage = () => {
                           products: !expansionState.products,
                         })
                       }
-                      className="my-5 bg-[#f4f4f4] p-3 flex items-center justify-between"
+                      className="my-5 bg-[#ffffff] pt-5 pl-5 pr-5 flex items-center justify-between font-bold"style={{borderTop: '1.2px solid rgba(0, 0, 0, 0.1)'}}
                     >
                       <h3 className=" font-bold">Products</h3>
                       {!expansionState.products ? (
@@ -402,16 +455,23 @@ const EditProfilePage = () => {
                       ))}
                     </div>
                   </div>
-
-                  <FilledButton onClick={() => { }} text="Save" className="w-full p-3" />
+                  <div className="p-5" style={{borderTop: '1.2px solid rgba(0, 0, 0, 0.1)'}}>
+                    <FilledButton onClick={() => { }} text="Save" className="w-full p-4" /></div>
                 </form>
               </div>
             </div>
 
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection">
-            <div className="fixed" style={{ paddingRight: 150 }}>
+          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-40" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+          }}>
+            <div className="" >
               <ComputerBossOfTheWeek />
               <div className="bg-[#F4F4F4] flex items-center justify-between p-2 rounded-lg mt-2">
                 <small className="text-xs text-[#545151]">Boss Up by</small>

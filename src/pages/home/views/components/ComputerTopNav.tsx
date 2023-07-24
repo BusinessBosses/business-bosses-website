@@ -142,17 +142,26 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
             />
           </button>
         );
-      case 3:
-        return (
-          null
-        );
-      case 4:
-        return (
-          null
-        );
+      
 
       default:
-        return null;
+        return (<button
+          onClick={openPopup}
+          className={`p-3 ${"bg-primary"
+            } rounded-xl text-white flex items-center`}
+          style={{ marginLeft: 100 }}
+          key={index}
+        >
+          <p className="text-white font-semibold mr-2">
+            {"Create Post"}
+          </p>
+          <BsPlusLg
+            strokeWidth={1.2}
+            color="white"
+            className="mr-2"
+            style={{ width: "18px", height: "18px" }}
+          />
+        </button>);
     }
   };
 

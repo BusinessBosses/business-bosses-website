@@ -35,7 +35,7 @@ const NotificationPage = () => {
       <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
-        <div className="firstsection ml-40 mr-5" style={{
+        <div className="firstsection ml-5 mr-5 lg:ml-40" style={{
             width: '30%',
 
             flexGrow: 0,
@@ -43,7 +43,6 @@ const NotificationPage = () => {
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            height: '100%'
 
           }} >
             <div className="flex items-center " onClick={() => navigate(RoutesPath.myProfile)}>
@@ -111,16 +110,21 @@ const NotificationPage = () => {
               <Notification />
               <Notification />
               <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
+              <Notification />
             </div>
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-40 mb-40" style={{width: '30%',
+          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-40" style={{width: '30%',
             flexGrow: 0,
             overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            height: '100%'}}>
+            }}>
             <div className="" >
             < DailyQuotes />
             </div>

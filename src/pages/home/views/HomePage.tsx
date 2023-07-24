@@ -37,17 +37,14 @@ const HomePage = () => {
       <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
-          <div className="firstsection ml-40 mr-5 pl-5 " style={{
+          <div className="firstsection ml-5 lg:ml-40 mr-5 pl-0" style={{
             width: '30%',
-            borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)',
-
-
             flexGrow: 0,
             overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            height: '100%'
+            
           }}>
             <div className="" >
 
@@ -116,14 +113,16 @@ const HomePage = () => {
             ))}
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-40 mb-40" style={{
+          <div className="lastsection ml-5 mr-5 lg:mr-40 pr-0 mb-0" style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            height: '100%'
+            
+          
+            
           }}>
             <div className="" >
               <ComputerBossOfTheWeek />
@@ -133,13 +132,16 @@ const HomePage = () => {
                   Business Bosses Company Limited
                 </p>
                 <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+                
 
               </div>
 
             </div>
+            
 
 
           </div>
+          
 
         </div>
       </div>

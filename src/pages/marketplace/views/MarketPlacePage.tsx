@@ -10,6 +10,7 @@ import { IoIosMore } from "react-icons/io";
 import RoutesPath from "../../../constants/Routes";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { BiBorderRight } from "react-icons/bi";
 
 const MarketPlacePage = () => {
   const navigate = useNavigate();
@@ -39,79 +40,83 @@ const MarketPlacePage = () => {
       <div className="computer-only flex">
         <ComputerHeader />
         <div className="computer-content flex" style={{ height: '100%', width: '100%' }}>
-        <div className="firstsection ml-40 mr-5" style={{
+        <div className="firstsection ml-5 mr-5 pl-0 lg:ml-40 " style={{
             width: '30%',
-
             flexGrow: 0,
-            overflow: 'scroll',
+            overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            height: '100%'
+          }}>
+            <div className="" >
 
-          }} >
-            <div className="flex items-center " onClick={() => navigate(RoutesPath.myProfile)}>
 
-              <UserAvatar
-                imageSize="h-24 w-24"
-                imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
-              />
-              <div className="ml-4">
-                <p className="text-xl font-semibold">Isaac Akin</p>
-                <p className="text-lg font-medium">Consultant</p>
-                <p className="font-medium">Digital Blogger</p>
-                <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
-              </div>
-              <div className="flex-grow" />
-              <Popup
-                trigger={
-                  <div>
-                    <IoIosMore size={20} />
-                  </div>
-                }
-                position="left top"
-                on="click"
-                closeOnDocumentClick
-                contentStyle={{ padding: "0px", border: "none" }}
-              // arrow={false}
-              >
-                {
-                  (((close: any) => (
-                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                      <button
-                        onClick={() => {
-                          close();
-                        }}
-                        className="menu-item"
-                      >
-                        Hide
-                      </button>
-                      <button
-                        onClick={() => {
-                          close();
-                        }}
-                        className="menu-item"
-                      >
-                        Report
-                      </button>
+              <div className="flex items-center " onClick={() => navigate(RoutesPath.myProfile)}>
+
+                <UserAvatar
+                  imageSize="h-24 w-24"
+                  imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
+                />
+                <div className="ml-4">
+                  <p className="text-xl font-semibold">Isaac Akin</p>
+                  <p className="text-lg font-medium">Consultant</p>
+                  <p className="font-medium">Digital Blogger</p>
+                  <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
+                </div>
+
+                <div className="flex-grow" />
+                <Popup
+                  trigger={
+                    <div>
+                      <IoIosMore size={20} />
                     </div>
-                  )) as unknown) as ReactNode
-                }
-              </Popup>
+                  }
+                  position="left top"
+                  on="click"
+                  closeOnDocumentClick
+                  contentStyle={{ padding: "0px", border: "none" }}
+                // arrow={false}
+                >
+                  {
+                    (((close: any) => (
+                      <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                        <button
+                          onClick={() => {
+                            close();
+                          }}
+                          className="menu-item"
+                        >
+                          Hide
+                        </button>
+                        <button
+                          onClick={() => {
+                            close();
+                          }}
+                          className="menu-item"
+                        >
+                          Report
+                        </button>
+                      </div>
+                    )) as unknown) as ReactNode
+                  }
+                </Popup>
 
 
+              </div>
             </div>
+
+
+
           </div>
-         
           
-          <div className="computer-main-content mt-5" style={{ width: '40%', flexGrow: 0, overflow: 'hidden', borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)', boxSizing: 'border-box', borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
+          <div className="computer-main-content mt-5" style={{ width: '40%', flexGrow: 0, borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)', boxSizing: 'border-box', borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((market) => (
               <MarketItem key={market} />
             ))}
           </div>
 
           <div
-            className="lastsection ml-5 mr-40"
+            className="lastsection ml-5 mr-5 lg:mr-40 "
             style={{
               width: '30%',
               flexGrow: 0,
@@ -119,7 +124,6 @@ const MarketPlacePage = () => {
               position: 'sticky',
               top: 0,
               zIndex: 1,
-              height: '100%' 
             }}
           >
             <div className="w-30" style={{ position: "sticky" }}>

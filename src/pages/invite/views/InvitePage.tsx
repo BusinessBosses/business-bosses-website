@@ -67,7 +67,7 @@ const InvitePage = () => {
       <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
-        <div className="firstsection ml-40 mr-5 " style={{
+        <div className="firstsection ml-5 mr-5 lg:ml-40" style={{
             width: '30%',
 
             flexGrow: 0,
@@ -184,14 +184,14 @@ const InvitePage = () => {
               </p>
             </div>
           </div>
-          <div style={{height:1000, borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-40 mb-40" style={{width: '30%',
+          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="lastsection ml-5 mr-5 mb-0 lg:mr-40" style={{width: '30%',
             flexGrow: 0,
             overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            height: '100%'}}>
+            }}>
             <div className="" >
               <ComputerBossOfTheWeek />
               <div className="bg-[#F4F4F4] flex items-center justify-between p-2 rounded-lg mt-2">

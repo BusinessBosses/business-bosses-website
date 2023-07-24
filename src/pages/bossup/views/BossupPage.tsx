@@ -147,68 +147,73 @@ const BossupPage = () => {
               currentRoute={currentRoute}
             />
           </div>
-          <div className="firstsection ml-40 mr-5" style={{
+          <div className="firstsection ml-5 mr-5 pl-0 lg:ml-40 " style={{
             width: '30%',
-
             flexGrow: 0,
             overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            height: '100%'
+          }}>
+            <div className="" >
 
-          }} >
-            <div className="flex items-center " onClick={() => navigate(RoutesPath.myProfile)}>
 
-              <UserAvatar
-                imageSize="h-24 w-24"
-                imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
-              />
-              <div className="ml-4">
-                <p className="text-xl font-semibold">Isaac Akin</p>
-                <p className="text-lg font-medium">Consultant</p>
-                <p className="font-medium">Digital Blogger</p>
-                <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
-              </div>
-              <div className="flex-grow" />
-              <Popup
-                trigger={
-                  <div>
-                    <IoIosMore size={20} />
-                  </div>
-                }
-                position="left top"
-                on="click"
-                closeOnDocumentClick
-                contentStyle={{ padding: "0px", border: "none" }}
-              // arrow={false}
-              >
-                {
-                  (((close: any) => (
-                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                      <button
-                        onClick={() => {
-                          close();
-                        }}
-                        className="menu-item"
-                      >
-                        Hide
-                      </button>
-                      <button
-                        onClick={() => {
-                          close();
-                        }}
-                        className="menu-item"
-                      >
-                        Report
-                      </button>
+              <div className="flex items-center " onClick={() => navigate(RoutesPath.myProfile)}>
+
+                <UserAvatar
+                  imageSize="h-24 w-24"
+                  imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
+                />
+                <div className="ml-4">
+                  <p className="text-xl font-semibold">Isaac Akin</p>
+                  <p className="text-lg font-medium">Consultant</p>
+                  <p className="font-medium">Digital Blogger</p>
+                  <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
+                </div>
+
+                <div className="flex-grow" />
+                <Popup
+                  trigger={
+                    <div>
+                      <IoIosMore size={20} />
                     </div>
-                  )) as unknown) as ReactNode
-                }
-              </Popup>
+                  }
+                  position="left top"
+                  on="click"
+                  closeOnDocumentClick
+                  contentStyle={{ padding: "0px", border: "none" }}
+                // arrow={false}
+                >
+                  {
+                    (((close: any) => (
+                      <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                        <button
+                          onClick={() => {
+                            close();
+                          }}
+                          className="menu-item"
+                        >
+                          Hide
+                        </button>
+                        <button
+                          onClick={() => {
+                            close();
+                          }}
+                          className="menu-item"
+                        >
+                          Report
+                        </button>
+                      </div>
+                    )) as unknown) as ReactNode
+                  }
+                </Popup>
 
 
+              </div>
             </div>
+
+
+
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
           <div className="computer-main-content" style={{ width: '40%', position: 'sticky', top: '0' }}>
@@ -237,14 +242,13 @@ const BossupPage = () => {
             <div className="my-20"></div>
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-40 mb-40" style={{
+          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-40 pr-0" style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            height: '100%'
           }}>
             {renderLastSectionContent()}
 
