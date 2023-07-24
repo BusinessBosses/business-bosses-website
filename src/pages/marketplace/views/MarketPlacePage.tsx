@@ -40,7 +40,7 @@ const MarketPlacePage = () => {
       <div className="computer-only flex">
         <ComputerHeader />
         <div className="computer-content flex" style={{ height: '100%', width: '100%' }}>
-        <div className="firstsection ml-5 mr-5 pl-0 lg:ml-40 " style={{
+        <div className="firstsection ml-5 mr-5 pl-0 lg:ml-20 " style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
@@ -116,7 +116,7 @@ const MarketPlacePage = () => {
           </div>
 
           <div
-            className="lastsection ml-5 mr-5 lg:mr-40 "
+            className="lastsection ml-5 mr-5 lg:mr-20 "
             style={{
               width: '30%',
               flexGrow: 0,

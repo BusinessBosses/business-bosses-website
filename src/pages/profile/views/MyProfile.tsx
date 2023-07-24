@@ -35,7 +35,7 @@ const MyProfile = () => {
       <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
-        <div className="firstsection ml-0 mr-5 pl-5 lg:ml-40" style={{
+        <div className="firstsection ml-0 mr-5 pl-5 lg:ml-20" style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
@@ -120,7 +120,7 @@ const MyProfile = () => {
 
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-40" style={{
+          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-20" style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',

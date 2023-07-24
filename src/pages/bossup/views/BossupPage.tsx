@@ -147,7 +147,7 @@ const BossupPage = () => {
               currentRoute={currentRoute}
             />
           </div>
-          <div className="firstsection ml-5 mr-5 pl-0 lg:ml-40 " style={{
+          <div className="firstsection ml-5 mr-5 pl-0 lg:ml-20 " style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
@@ -242,7 +242,7 @@ const BossupPage = () => {
             <div className="my-20"></div>
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-40 pr-0" style={{
+          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0" style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
