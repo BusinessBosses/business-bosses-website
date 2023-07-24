@@ -28,9 +28,14 @@ export const chatSlice = createSlice({
             state.chats.push(action.payload)
         },
 
+        removeChat: (state, action: PayloadAction<number>) => {
+            state.chats.splice(action.payload, 1)
+        },
+
+
     },
 })
 
-export const { saveNewChat, saveChatsToState } = chatSlice.actions
+export const { saveNewChat, saveChatsToState, removeChat } = chatSlice.actions
 
 export default chatSlice.reducer

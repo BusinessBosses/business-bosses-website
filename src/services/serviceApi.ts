@@ -24,8 +24,8 @@ class ServiceApi {
             const response = await axios.get(this.appendToURL(path), {
                 headers: {
                     // Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
-                    // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkZGRiN2ZkYi03YTk5LTRkY2MtOGY2MC04NmFkZDY1ZWMzNjQiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk2MTYxNjMsImV4cCI6MTcyMTE3Mzc2M30.JGfspVty3ZHojEJblFqMDSkN1w2PVkZ674pY6SrPPuY'
-                    Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
+                    Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkZGRiN2ZkYi03YTk5LTRkY2MtOGY2MC04NmFkZDY1ZWMzNjQiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2OTAwNDkwMTcsImV4cCI6MTcyMTYwNjYxN30.xTa3p2voX-f4s_ANHYGnnJsRLu414eKQjUUzH5ayMhw'
+                    // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
                 }
             });
             // console.log(response.data)

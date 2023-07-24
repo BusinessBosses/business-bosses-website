@@ -45,7 +45,11 @@ const ChatPage = () => {
                 <h4 className="text-[#383838] text-xl capitalize">
                   {chat.user?.username}
                 </h4>
-                <p className="text-[#6B6969]">{chat.messageText ?? "Image"}</p>
+                <p className="text-[#6B6969]">
+                  {!!chat.messageText && chat.messageText !== ""
+                    ? chat.messageText
+                    : "Image"}
+                </p>
               </div>
             </div>
           );

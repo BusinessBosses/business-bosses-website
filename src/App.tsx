@@ -155,7 +155,10 @@ const App = () => {
       <Route path={RoutesPath.verifyOtp} element={<OtpVerificationPage />} />
       <Route path={RoutesPath.editProfile} element={<EditProfilePage />} />
       <Route path={RoutesPath.chats} element={<ChatPage />} />
-      <Route path={RoutesPath.ChatRoom} element={<ChatRoomPage />} />
+      <Route
+        path={RoutesPath.ChatRoom}
+        element={<ChatRoomPage socket={socket} />}
+      />
       <Route path={RoutesPath.CreateListing} element={<CreateListing />} />
       <Route
         path={RoutesPath.PublicUserProfile}

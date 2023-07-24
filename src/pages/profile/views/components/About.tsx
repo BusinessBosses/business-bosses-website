@@ -28,7 +28,7 @@ const About = ({ data }: Props) => {
           </button>
         ) : null}
       </div>
-      {data.achievements ? (
+      {data.achievements && data.achievements.length ? (
         <div className="my-4">
           <h3 className="text-xl font-medium">Achievements</h3>
           {data.achievements.map((achievement: string, index: number) => (
