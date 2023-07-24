@@ -30,6 +30,7 @@ import { saveChatsToState } from "./redux/slices/ChatSlice";
 import CommunitiesPage from "./pages/communities/views/CommunitiesPage";
 import { useSocket } from "./hooks/useSockets";
 import { socketUrl } from "./config/config";
+import CreateBossup from "./pages/communities/views/CreateBossup";
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -141,6 +142,7 @@ const App = () => {
         element={<CommunitiesPage socket={socket} />}
       />
       <Route path={RoutesPath.forum} element={<Forum socket={socket} />} />
+      <Route path={RoutesPath.CreateBossup} element={<CreateBossup />} />
       <Route path={RoutesPath.createPost} element={<CreatePost />} />
       <Route path={RoutesPath.promotePost} element={<PromotePage />} />
       <Route path={RoutesPath.settings} element={<SettingsPage />} />

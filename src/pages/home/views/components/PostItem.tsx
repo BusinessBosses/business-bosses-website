@@ -250,15 +250,13 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 setOpen(true);
               }}
             />
-            {data.user.uid === profile?.uid ? null : (
-              <PostAction
-                count={data.coins.length.toString()}
-                icon={Assets.Coin}
-                onClick={() => {
-                  onCoin(data.postId);
-                }}
-              />
-            )}
+            <PostAction
+              count={data.coins.length.toString()}
+              icon={Assets.Coin}
+              onClick={() => {
+                onCoin(data.postId);
+              }}
+            />
             <PostAction
               count=""
               icon={Assets.Share}

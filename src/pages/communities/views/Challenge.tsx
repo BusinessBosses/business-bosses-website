@@ -14,6 +14,9 @@ import { saveUserData } from "../../../redux/slices/UserSlice";
 import { Comment } from "../../../common/interfaces/comment";
 import { updateForum } from "../../../redux/slices/ForumSlice";
 import { Socket } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../constants/Routes";
+import serviceApi from "../../../services/serviceApi";
 interface Props {
   forums: Forum[];
   socket: Socket;
@@ -22,6 +25,7 @@ const Challenge = ({ forums, socket }: Props) => {
   const [industry, setIndustry] = useState<Industry | null>(null);
   const industries = useAppSelector((state) => state.industry.industries);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const forumsState = useAppSelector((state) => state.forum.forums);
   const profile = useAppSelector((state) => state.user.profile);
 
@@ -90,19 +94,48 @@ const Challenge = ({ forums, socket }: Props) => {
       setIndustry(filteredIndustries[0]);
     }
   }, [industries]);
+  const joinIndustry = async () => {
+    if (!!industry?.joinedUsers?.includes(profile!.uid)) {
+      const newJoinedUsers = industry.joinedUsers.filter(
+        (ft) => ft !== profile?.uid
+      );
+      setIndustry({ ...industry, joinedUsers: newJoinedUsers });
+    } else {
+      setIndustry({
+        ...industry,
+        joinedUsers: [...industry?.joinedUsers!, profile!.uid],
+      });
+    }
+    await serviceApi.update(
+      `/industry/join-leave-industry/${industry?.industryId}`
+    );
+  };
   return (
     <div>
       <ForumCard
+        onCreate={() => {
+          navigate(RoutesPath.CreateBossup, {
+            state: { industryId: industry?.industryId },
+          });
+        }}
+        createLabel="Enter Challenge"
         banner={industry?.photo!}
-        didJoin={false}
+        didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
         label={industry?.description ?? "Industry Description"}
         members={industry?.joinedUsers?.length ?? 0}
-        onJoin={() => {}}
+        onJoin={joinIndustry}
         topics={20}
       />
       <div className="p-5">
         {forums.map((forum: Forum, index: number) => (
           <ForumItem
+            onEdit={() => {
+              navigate(RoutesPath.CreateBossup, {
+                state: {
+                  post: forum,
+                },
+              });
+            }}
             onComment={(comment: Comment) => {
               onComment(comment, index);
             }}

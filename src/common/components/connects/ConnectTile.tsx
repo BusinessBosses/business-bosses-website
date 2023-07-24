@@ -1,10 +1,13 @@
 import UserAvatar from "../avatars/UserAvatar";
 import FilledButton from "../buttons/FilledButton";
 import { User } from "../../interfaces/user";
+import OutlinedButton from "../buttons/OutlinedButton";
 interface Props {
   profile: User;
+  connected: boolean;
+  onConnect: Function;
 }
-const ConnectTile = ({ profile }: Props) => {
+const ConnectTile = ({ profile, connected, onConnect }: Props) => {
   return (
     <div className="flex items-center justify-between my-10">
       <div className="flex items-start gap-3">
@@ -24,7 +27,21 @@ const ConnectTile = ({ profile }: Props) => {
           </p>
         </div>
       </div>
-      <FilledButton onClick={() => {}} text="Connect" />
+      {connected ? (
+        <OutlinedButton
+          onClick={() => {
+            onConnect(profile.uid);
+          }}
+          text="Connected"
+        />
+      ) : (
+        <FilledButton
+          onClick={() => {
+            onConnect(profile.uid);
+          }}
+          text="Connect"
+        />
+      )}
     </div>
   );
 };

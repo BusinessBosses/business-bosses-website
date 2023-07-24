@@ -6,6 +6,8 @@ import { User } from "../../../common/interfaces/user";
 import ConnectionsController from "../controller/ConnectionsController";
 import { useLocation, useNavigate } from "react-router-dom";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
+import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
+import { saveUserData } from "../../../redux/slices/UserSlice";
 
 const ConnectionsPage = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -16,6 +18,8 @@ const ConnectionsPage = () => {
   }>({ connecteds: [], connections: [], suggestedUsers: [] });
   const navigate = useNavigate();
   const location = useLocation();
+  const profile = useAppSelector((state) => state.user.profile);
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [err, setErr] = useState<boolean>(false);
   const fetchConnects = async (userId: string) => {
@@ -34,7 +38,23 @@ const ConnectionsPage = () => {
 
     setLoading(false);
   };
-
+  const connection = async (userId: string) => {
+    if (profile?.connecteds?.includes(userId)) {
+      const newUserData: User = {
+        ...profile,
+        connecteds: profile.connecteds?.filter((ft) => ft !== userId),
+      };
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.disConnect(userId);
+    } else {
+      const newUserData: User = {
+        ...profile,
+        connecteds: [...profile?.connecteds!, userId],
+      } as User;
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.connect(userId);
+    }
+  };
   useEffect(() => {
     const state = location.state;
     if (!!!state) {
@@ -75,17 +95,38 @@ const ConnectionsPage = () => {
       <div className="px-5 -mt-5">
         {currentIndex === 0
           ? data.connections.map((connect: User, index: number) => {
-              return <ConnectTile profile={connect} key={index} />;
+              return (
+                <ConnectTile
+                  connected={!!profile?.connecteds?.includes(connect.uid!)}
+                  onConnect={connection}
+                  profile={connect}
+                  key={index}
+                />
+              );
             })
           : null}
         {currentIndex === 1
           ? data.connecteds.map((connect: User, index: number) => {
-              return <ConnectTile profile={connect} key={index} />;
+              return (
+                <ConnectTile
+                  connected={!!profile?.connecteds?.includes(connect.uid!)}
+                  onConnect={connection}
+                  profile={connect}
+                  key={index}
+                />
+              );
             })
           : null}
         {currentIndex === 2
           ? data.suggestedUsers.map((connect: User, index: number) => {
-              return <ConnectTile profile={connect} key={index} />;
+              return (
+                <ConnectTile
+                  connected={!!profile?.connecteds?.includes(connect.uid!)}
+                  onConnect={connection}
+                  profile={connect}
+                  key={index}
+                />
+              );
             })
           : null}
       </div>

@@ -270,15 +270,13 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                 setOpen(true);
               }}
             />
-            {data.userId === profile!.uid ? null : (
-              <PostAction
-                count={data.coins!.length.toString()}
-                icon={Assets.Coin}
-                onClick={() => {
-                  onCoin(data.marketId);
-                }}
-              />
-            )}
+            <PostAction
+              count={data.coins!.length.toString()}
+              icon={Assets.Coin}
+              onClick={() => {
+                onCoin(data.marketId);
+              }}
+            />
             <PostAction
               count=""
               icon={Assets.Share}

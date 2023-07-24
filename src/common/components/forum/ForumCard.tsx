@@ -10,6 +10,8 @@ interface Props {
   topics: number;
   didJoin: boolean;
   onJoin: VoidFunction;
+  createLabel: string;
+  onCreate: VoidFunction;
 }
 const ForumCard = ({
   banner,
@@ -18,6 +20,8 @@ const ForumCard = ({
   members,
   onJoin,
   topics,
+  createLabel,
+  onCreate,
 }: Props) => {
   return (
     <div className="bg-[#EAEAEA] p-5">
@@ -28,8 +32,8 @@ const ForumCard = ({
         </div>
         <FilledButton
           icon={<AiOutlinePlus color="white" size={20} />}
-          onClick={() => {}}
-          text="Sell"
+          onClick={onCreate}
+          text={createLabel}
           className="px-12"
         />
       </div>

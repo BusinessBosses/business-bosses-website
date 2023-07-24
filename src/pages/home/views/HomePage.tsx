@@ -112,6 +112,7 @@ const HomePage = ({ socket }: Props) => {
           if (post.isForum) {
             return (
               <ForumItem
+                onEdit={() => {}}
                 onComment={(comment: Comment) => {
                   onComment(comment, index);
                 }}

@@ -24,8 +24,9 @@ interface Props {
   onLike?: Function;
   onCoin?: Function;
   onComment?: Function;
+  onEdit: VoidFunction;
 }
-const ForumItem = ({ data, onCoin, onLike, onComment }: Props) => {
+const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const navigate = useNavigate();
   const [comments, setComments] = useState<CommentStruct[]>([]);
@@ -151,33 +152,57 @@ const ForumItem = ({ data, onCoin, onLike, onComment }: Props) => {
           // arrow={false}
         >
           {
-            (((close: any) => (
-              <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                <button
-                  onClick={() => {
-                    close();
-                    toast.success("User Blocked");
-                    GeneralPostsController.blockUser({ postId: data.forumId });
-                  }}
-                  className="menu-item"
-                >
-                  Block User
-                </button>
-                <button
-                  onClick={() => {
-                    close();
-                    toast.success("Post reported");
-                    GeneralPostsController.reportPost({
-                      postId: data.forumId,
-                      reason: "",
-                    });
-                  }}
-                  className="menu-item"
-                >
-                  Report Post
-                </button>
-              </div>
-            )) as unknown) as ReactNode
+            (((close: any) =>
+              data.user!.uid === profile?.uid ? (
+                <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                  <button
+                    onClick={() => {
+                      close();
+                      onEdit();
+                    }}
+                    className="menu-item"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => {
+                      close();
+                      // navigate(RoutesPath.promotePost, { state: data.forumId });
+                    }}
+                    className="menu-item"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ) : (
+                <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                  <button
+                    onClick={() => {
+                      close();
+                      toast.success("User Blocked");
+                      GeneralPostsController.blockUser({
+                        postId: data.forumId,
+                      });
+                    }}
+                    className="menu-item"
+                  >
+                    Block User
+                  </button>
+                  <button
+                    onClick={() => {
+                      close();
+                      toast.success("Post reported");
+                      GeneralPostsController.reportPost({
+                        postId: data.forumId,
+                        reason: "",
+                      });
+                    }}
+                    className="menu-item"
+                  >
+                    Report Post
+                  </button>
+                </div>
+              )) as unknown) as ReactNode
           }
         </Popup>
       </div>
@@ -232,17 +257,15 @@ const ForumItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 setOpen(true);
               }}
             />
-            {data.user?.uid === profile?.uid ? null : (
-              <PostAction
-                count={data.coins!.length.toString()}
-                icon={Assets.Coin}
-                onClick={() => {
-                  if (onCoin) {
-                    onCoin(data.forumId);
-                  }
-                }}
-              />
-            )}
+            <PostAction
+              count={data.coins!.length.toString()}
+              icon={Assets.Coin}
+              onClick={() => {
+                if (onCoin) {
+                  onCoin(data.forumId);
+                }
+              }}
+            />
             <PostAction
               count=""
               icon={Assets.Share}

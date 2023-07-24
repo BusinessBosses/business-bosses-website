@@ -1,4 +1,3 @@
-import React from "react";
 import Assets from "../../../../assets";
 import { IoIosMore } from "react-icons/io";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
@@ -6,10 +5,34 @@ import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
 import { User } from "../../../../common/interfaces/user";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
+import { saveUserData } from "../../../../redux/slices/UserSlice";
+import ConnectionsController from "../../../connections/controller/ConnectionsController";
 interface Props {
   bossOfTheWeek: User;
 }
 const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
+  const profile = useAppSelector((state) => state.user.profile);
+  const dispatch = useAppDispatch();
+  const connection = async () => {
+    if (profile?.connecteds?.includes(bossOfTheWeek.uid!)) {
+      const newUserData: User = {
+        ...profile,
+        connecteds: profile.connecteds?.filter(
+          (ft) => ft !== bossOfTheWeek.uid!
+        ),
+      };
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.disConnect(bossOfTheWeek.uid!);
+    } else {
+      const newUserData: User = {
+        ...profile,
+        connecteds: [...profile?.connecteds!, bossOfTheWeek.uid],
+      } as User;
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.connect(bossOfTheWeek.uid!);
+    }
+  };
   return (
     <div className="bg-[#EAEAEA] p-5">
       <div className="flex items-start justify-between">
@@ -37,11 +60,19 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
           <p className="text-xs text-[#777777]">{bossOfTheWeek.bio}</p>
           <div className="flex items-center gap-3 mt-1">
-            <FilledButton
-              onClick={() => {}}
-              text="Connect"
-              className="px-2 py-1.5"
-            />
+            {!profile?.connecteds?.includes(bossOfTheWeek.uid!) ? (
+              <FilledButton
+                onClick={connection}
+                text="Connect"
+                className="px-2 py-1.5"
+              />
+            ) : (
+              <OutlinedButton
+                onClick={connection}
+                text="Connected"
+                className="px-2 py-1.5"
+              />
+            )}
             <OutlinedButton
               onClick={() => {}}
               text="Refer"
