@@ -9,6 +9,7 @@ import Popup from "reactjs-popup";
 import { IoIosMore } from "react-icons/io";
 import RoutesPath from "../../../constants/Routes";
 import { useNavigate } from "react-router-dom";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 const MarketPlacePage = () => {
   const navigate = useNavigate();
@@ -123,6 +124,14 @@ const MarketPlacePage = () => {
           >
             <div className="w-30" style={{ position: "sticky" }}>
               <MobileMarketIntro />
+              <div className="bg-[#F4F4F4] flex items-center justify-between p-2 rounded-lg mt-2">
+                <small className="text-xs text-[#545151]">Boss Up by</small>
+                <p className="text-[#545151] text-sm">
+                  Business Bosses Company Limited
+                </p>
+                <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+
+              </div>
             </div>
           </div>
 

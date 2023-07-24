@@ -6,11 +6,14 @@ import { useEffect, useState } from "react";
 import ComputerTopNav from "./ComputerTopNav";
 import HomeSearch from "../../../search/views/HomeSearch";
 import { BiX } from "react-icons/bi";
+import { useLocation } from "react-router-dom";
 
 const ComputerHeader = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const location = useLocation();
+  const currentRoute = location.pathname;
 
   useEffect(() => {
     if (isPopupOpen) {
@@ -30,6 +33,7 @@ const ComputerHeader = () => {
 
   const handleTabClick = (index: number) => {
     setCurrentIndex(index);
+    
   };
 
   return (
@@ -76,7 +80,7 @@ const ComputerHeader = () => {
           </div></div>
         </div>
         <div className="flex items-end gap-2"> {/* Modified flex items-center to flex items-end */}
-          <ComputerTopNav currentIndex={currentIndex} onTabClick={handleTabClick} />
+          <ComputerTopNav currentIndex={currentIndex} onTabClick={handleTabClick} currentRoute={currentRoute} />
         </div>
       </div>
       <div style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>

@@ -29,6 +29,8 @@
 
   .computer-only {
     display: block;
+    height: '100px';
+    overflow: 'hidden' ;
 
   }
 }
@@ -47,17 +49,28 @@
 .computer-main-content {
   width: 40%;
   padding-top: 50px;
+  overflow-y: auto;
+  height: 1000px;
+}
+
+.computer-main-content::-webkit-scrollbar {
+  width: 0px;
+  background-color: transparent;
 }
 
 .firstsection {
   width: 30%;
   padding-top: 80px;
+  border-left: '1.2px solid rgba(0, 0, 0, 0.1)' ;
+  
+
 }
 
 .lastsection {
   width: 30%;
   
   padding-top: 80px;
+
 }
 
 .selected-tab {

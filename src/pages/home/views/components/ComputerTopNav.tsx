@@ -9,18 +9,26 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 
+
 interface Props {
   currentIndex: number;
   onTabClick: (index: number) => void;
+  currentRoute: string;
+
 }
 
 
 
-const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
+const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
   const primaryColor = "#F21C29";
   const strokeColor = "#A9A9A9";
   const navigate = useNavigate();
-  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+
+
+
+
 
   useEffect(() => {
     if (isPopupOpen) {
@@ -38,6 +46,10 @@ const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
+
+
+
+
 
   const handleTabClick = (index: number) => {
     onTabClick(index);
@@ -57,8 +69,90 @@ const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
       case 4:
         navigate(RoutesPath.notifications);
         break;
+
+    }
+  };
+
+  const renderButton = (index: number) => {
+
+    switch (index) {
+
+      case 0:
+        return (
+          <button
+            onClick={openPopup}
+            className={`p-3 ${"bg-primary"
+              } rounded-xl text-white flex items-center`}
+            style={{ marginLeft: 100 }}
+            key={index}
+          >
+            <p className="text-white font-semibold mr-2">
+              {"Create Post"}
+            </p>
+            <BsPlusLg
+              strokeWidth={1.2}
+              color="white"
+              className="mr-2"
+              style={{ width: "18px", height: "18px" }}
+            />
+          </button>
+        );
+      case 1:
+        return (
+          <button
+            onClick={openPopup}
+            className={`p-3 ${"bg-primary"
+              } rounded-xl text-white flex items-center`}
+            style={{ marginLeft: 100 }}
+            key={index}
+          >
+            <p className="text-white font-semibold mr-2">
+              {currentRoute === '/bossup'
+                ? 'Enter Challenge'
+                : currentRoute === '/bossup/learning'
+                  ? 'Start A Topic'
+                  : 'Share opportunities'}
+            </p>
+
+            <BsPlusLg
+              strokeWidth={1.2}
+              color="white"
+              className="mr-2"
+              style={{ width: "18px", height: "18px" }}
+            />
+          </button>
+        );
+      case 2:
+        return (
+          <button
+            onClick={openPopup}
+            className={`p-3 ${"bg-primary"
+              } rounded-xl text-white flex items-center`}
+            style={{ marginLeft: 100 }}
+            key={index}
+          >
+            <p className="text-white font-semibold mr-2">
+              {"Sell"}
+            </p>
+            <BsPlusLg
+              strokeWidth={1.2}
+              color="white"
+              className="mr-2"
+              style={{ width: "18px", height: "18px" }}
+            />
+          </button>
+        );
+      case 3:
+        return (
+          null
+        );
+      case 4:
+        return (
+          null
+        );
+
       default:
-        break;
+        return null;
     }
   };
 
@@ -167,19 +261,7 @@ const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
         </div>
       </div>
       <div className="pb-3">
-        <button
-          onClick={openPopup}
-          className="p-3 bg-primary rounded-xl text-white flex items-center"
-          style={{ marginLeft: 100 }}
-        >
-          <p className="text-white font-semibold mr-2">Create Post</p>
-          <BsPlusLg
-            strokeWidth={1.2}
-            color="white"
-            className="mr-2"
-            style={{ width: '18px', height: '18px' }}
-          />
-        </button>
+        {renderButton(currentIndex)}
         {isPopupOpen && (
           <div className="overlay">
             <div className="popup">
@@ -189,7 +271,7 @@ const ComputerTopNav = ({ currentIndex, onTabClick }: Props) => {
 
               {/* CreatePost Component */}
               <div className="computer-only">
-              <p className="text-[#333333] text-xl font-bold">Create Post</p>
+                <p className="text-[#333333] text-xl font-bold">Create Post</p>
                 <div className="my-7"></div>
                 <div className="p-0">
                   <div className="flex items-center gap-3">

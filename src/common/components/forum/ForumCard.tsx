@@ -71,48 +71,49 @@ const ForumCard = ({
       </div>
 
 
-
-      <div className="bg-[#f4f4f4] computer-only rounded-2xl p-3 ">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <p>About</p>
+      <div>
+        <div className="computer-only">
+          <div className="flex items-center pb-3">
+            <p style={{ marginRight: "4px" }}>About</p>
             <BsInfoCircle />
           </div>
-          <FilledButton
-            icon={<AiOutlinePlus color="white" size={20} />}
-            onClick={() => { }}
-            text="Enter Challenge"
-            className="px-3"
-          />
         </div>
 
-        <div className="p-3 mt-2 rounded-2xl" style={{ backgroundColor: "#ffffff" }}>
-          <div className="flex items-center gap gap-3">
-            <img src={banner} alt="" className="w-32 h-20 rounded-lg" />
-            <p className="text-[#383838] text-lg font-bold">{'BossUp'}</p>
-          </div>
-          <p className="text-[#383838] text-l font-bold pt-5">{label}</p>
-          <div className="flex items-center  justify-between mt-2">
-            <div className="flex items-center gap-2 ">
-              <FiUsers className="text-primary" />
-              <p className="text-primary underline whitespace-nowrap text-sm">
-                Members: ({members.toString()})
-              </p>
+
+        <div className="bg-[#f4f4f4] computer-only rounded-2xl p-3 ">
+
+
+
+
+          <div className="p-3  rounded-2xl" style={{ backgroundColor: "#ffffff" }}>
+            <div className="flex items-center gap gap-3">
+              <img src={banner} alt="" className="w-32 h-20 rounded-lg" />
+              <p className="text-[#383838] text-lg font-bold">{'BossUp'}</p>
             </div>
-            <div className="bg-[#FFFFFF1A] whitespace-nowrap px-3 py-1 rounded-full">
-              <p className="text-sm text-[#232324]">
-                # Entries ({topics.toString()})
-              </p>
+            <p className="text-[#383838] text-l font-bold pt-5">{label}</p>
+            <div className="flex items-center  justify-between mt-2">
+              <div className="flex items-center gap-2 ">
+                <FiUsers className="text-primary" />
+                <p className="text-primary underline whitespace-nowrap text-sm">
+                  Members: ({members.toString()})
+                </p>
+              </div>
+              <div className="bg-[#FFFFFF1A] whitespace-nowrap px-3 py-1 rounded-full">
+                <p className="text-sm text-[#232324]">
+                  # Entries ({topics.toString()})
+                </p>
+              </div>
+              <button
+                onClick={onJoin}
+                className="bg-white px-6 py-1.5 text-primary rounded-xl " style={{ border: '2px solid', borderColor: 'primary' }}
+              >
+                {didJoin ? "Leave" : "Join"}
+              </button>
             </div>
-            <button
-              onClick={onJoin}
-              className="bg-white px-6 py-1.5 text-primary rounded-xl " style={{ border: '2px solid', borderColor: 'primary' }}
-            >
-              {didJoin ? "Leave" : "Join"}
-            </button>
           </div>
+
         </div>
-       
+
       </div>
     </div>
   );

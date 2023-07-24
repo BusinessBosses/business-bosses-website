@@ -14,16 +14,19 @@ import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import { IoIosMore } from "react-icons/io";
 import Popup from "reactjs-popup";
 import ForumItem from "../../../common/components/forum/ForumItem";
+import ComputerTopNav from "../../home/views/components/ComputerTopNav";
 
 const BossupPage = () => {
   const tabs: string[] = ["", RoutesPath.learning, RoutesPath.opportunities];
   const location = useLocation();
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentRoute, setCurrentRoute] = useState<string>("");
 
   const changeRoute = (index: number) => {
     setCurrentIndex(index);
     const tab: string = tabs[index].split("/").pop() ?? "";
+    setCurrentRoute(tab);
     navigate(tab);
   };
 
@@ -33,8 +36,10 @@ const BossupPage = () => {
     );
     if (findCurrentRouteIndex !== -1) {
       setCurrentIndex(findCurrentRouteIndex);
+      setCurrentRoute(tabs[findCurrentRouteIndex].split("/").pop() ?? "");
     } else {
       setCurrentIndex(0);
+      setCurrentRoute(tabs[0].split("/").pop() ?? "");
     }
   };
 
@@ -45,25 +50,37 @@ const BossupPage = () => {
   // Function to render the content in the lastsection div
   const renderLastSectionContent = () => {
     if (currentIndex === 1) {
-
-      return <div><div className="pb-5"><ForumCard
-        banner="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
-        didJoin={false}
-        label="Ideas on how to create things easily"
-        members={20}
-        onJoin={() => { }}
-        topics={20}
-      /></div><Learning /></div>;
+      return (
+        <div>
+          <div className="pb-5">
+            <ForumCard
+              banner="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
+              didJoin={false}
+              label="Ideas on how to create things easily"
+              members={20}
+              onJoin={() => { }}
+              topics={20}
+            />
+          </div>
+          <Learning />
+        </div>
+      );
     } else if (currentIndex === 2) {
-      return <div><div className="pb-5"><ForumCard
-        banner="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
-        didJoin={false}
-        label="Ideas on how to create things easily"
-        members={20}
-        onJoin={() => { }}
-        topics={20}
-      /></div><Opportunities /></div>;
-
+      return (
+        <div>
+          <div className="pb-5">
+            <ForumCard
+              banner="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
+              didJoin={false}
+              label="Ideas on how to create things easily"
+              members={20}
+              onJoin={() => { }}
+              topics={20}
+            />
+          </div>
+          <Opportunities />
+        </div>
+      );
     } else {
       // Default content for other tabs (assuming Challenge tab is displayed by default)
       return (
@@ -117,14 +134,24 @@ const BossupPage = () => {
         <MobileBottomNav currentIndex={1} />
       </div>
 
+
       <div className="computer-only">
+
         <ComputerHeader />
         <div className="computer-content">
+
+          <div style={{ visibility: "hidden", height: "", width: '0%', background: 'transparent' }}>
+            <ComputerTopNav
+              currentIndex={currentIndex}
+              onTabClick={changeRoute}
+              currentRoute={currentRoute}
+            />
+          </div>
           <div className="firstsection ml-40 mr-5" style={{
             width: '30%',
 
             flexGrow: 0,
-            overflow: 'scroll',
+            overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
@@ -184,37 +211,30 @@ const BossupPage = () => {
             </div>
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ width: '40%' }}>
-            <div className="" style={{ paddingTop: 30, paddingLeft: 20, paddingRight: 20, }}>
-              <button
-                onClick={() => navigate(RoutesPath.homeSearch)}
-                className="flex items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg"
-                style={{ width: '100%' }}
-              >
-                <CiSearch className="text-[#A9A9A9]" />
-                <p className="text-[#A9A9A9] text-sm">Search people & posts</p>
-              </button>
+          <div className="computer-main-content" style={{ width: '40%', position: 'sticky', top: '0' }}>
+            <div>
+              <div className="sticky top-100 mt-5">
+                <Tabs
+                  onChangeRoute={(index: number) => changeRoute(index)}
+                  currentIndex={currentIndex}
+                />
+              </div>
             </div>
 
-            <div className=""><Tabs
-              onChangeRoute={(index: number) => changeRoute(index)}
-              currentIndex={currentIndex}
-            /></div>
             <Routes>
               <Route index element={<Challenge />} />
-              <Route path={RoutesPath.learning} element={<div className="">
+              <Route path={RoutesPath.learning} element={<div>
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
                   <ForumItem key={post} />
                 ))}
               </div>} />
-              <Route path={RoutesPath.opportunities} element={<div className="">
+              <Route path={RoutesPath.opportunities} element={<div>
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
                   <ForumItem key={post} />
                 ))}
               </div>} />
             </Routes>
             <div className="my-20"></div>
-
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
           <div className="lastsection ml-5 mr-40 mb-40" style={{
@@ -227,11 +247,20 @@ const BossupPage = () => {
             height: '100%'
           }}>
             {renderLastSectionContent()}
+
           </div>
         </div>
       </div>
+
+
+
     </div>
   );
 };
 
 export default BossupPage;
+
+
+
+
+
