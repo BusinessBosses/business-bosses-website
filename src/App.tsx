@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import RoutesPath from "./constants/Routes";
 import HomePage from "./pages/home/views/HomePage";
 import MarketPlacePage from "./pages/marketplace/views/MarketPlacePage";
@@ -31,8 +31,16 @@ import CommunitiesPage from "./pages/communities/views/CommunitiesPage";
 import { useSocket } from "./hooks/useSockets";
 import { socketUrl } from "./config/config";
 import CreateBossup from "./pages/communities/views/CreateBossup";
+import Popup from "reactjs-popup";
+import { StorageEnum } from "./common/emums/StorageEmuns";
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [showAccessTokenDialog, setShowAccessTokenDialog] = useState<boolean>(
+    false
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   let socket = useSocket(socketUrl, {
@@ -74,12 +82,20 @@ const App = () => {
       dispatch(saveChatsToState(response.data.chats));
       dispatch(addPostToState(processedPosts));
     } else {
+      setErrorMessage(response.message);
       setErr(true);
     }
     setLoading(false);
   };
   useEffect(() => {
-    fetchData();
+    if (
+      localStorage.getItem(StorageEnum.UserId) &&
+      localStorage.getItem(StorageEnum.AccessToken)
+    ) {
+      fetchData();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const StartListeners = () => {
@@ -111,9 +127,16 @@ const App = () => {
   };
 
   useEffect(() => {
-    socket.connect();
-    StartListeners();
-    SendHandshake();
+    if (
+      localStorage.getItem(StorageEnum.UserId) &&
+      localStorage.getItem(StorageEnum.AccessToken)
+    ) {
+      socket.connect();
+      StartListeners();
+      SendHandshake();
+    } else {
+      navigate(RoutesPath.login);
+    }
   }, []);
   return loading ? (
     <FetchStatus
@@ -123,12 +146,50 @@ const App = () => {
       onReload={fetchData}
     />
   ) : err ? (
-    <FetchStatus
-      error={true}
-      errorMessage="Something went wrong!!"
-      loading={false}
-      onReload={fetchData}
-    />
+    errorMessage.toLowerCase() === "send a valid token" ||
+    errorMessage.toLowerCase() === "invalid token" ? (
+      <Popup
+        closeOnDocumentClick={false}
+        closeOnEscape={false}
+        overlayStyle={{
+          backdropFilter: "blur(5px)",
+          background: "rgba(0,0,0,.5)",
+        }}
+        modal
+        open={true}
+      >
+        <div className="flex justify-center px-3">
+          <div className=" bg-white p-5 rounded-lg xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full xs:w-full ">
+            <div className="">
+              <h1 className="text-2xl mb-5">Your AccessToken has Expired</h1>
+              <small className="text-sm text-black-80">
+                Your access token has expired. therefore, you will be required
+                to login again to generate a new one.
+              </small>
+              {/* <br /> */}
+              <div className="flex justify-end">
+                <button
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate(RoutesPath.login);
+                  }}
+                  className="text-primary outline-none border-none font-semibold"
+                >
+                  Generate New Access Token
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Popup>
+    ) : (
+      <FetchStatus
+        error={true}
+        errorMessage="Something went wrong!!"
+        loading={false}
+        onReload={fetchData}
+      />
+    )
   ) : (
     <Routes>
       <Route path={RoutesPath.home} element={<HomePage socket={socket} />} />
@@ -151,8 +212,14 @@ const App = () => {
       <Route path={RoutesPath.homeSearch} element={<HomeSearch />} />
       <Route path={RoutesPath.connections} element={<ConnectionsPage />} />
       <Route path={RoutesPath.register} element={<RegisterPage />} />
-      <Route path={RoutesPath.login} element={<LoginPage />} />
-      <Route path={RoutesPath.verifyOtp} element={<OtpVerificationPage />} />
+      <Route
+        path={RoutesPath.login}
+        element={<LoginPage onLoginSuccess={fetchData} />}
+      />
+      <Route
+        path={RoutesPath.verifyOtp}
+        element={<OtpVerificationPage onSuccess={fetchData} />}
+      />
       <Route path={RoutesPath.editProfile} element={<EditProfilePage />} />
       <Route path={RoutesPath.chats} element={<ChatPage />} />
       <Route

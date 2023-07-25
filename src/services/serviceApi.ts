@@ -23,8 +23,10 @@ class ServiceApi {
         try {
             const response = await axios.get(this.appendToURL(path), {
                 headers: {
-                    // Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
-                    Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkZGRiN2ZkYi03YTk5LTRkY2MtOGY2MC04NmFkZDY1ZWMzNjQiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2OTAwNDkwMTcsImV4cCI6MTcyMTYwNjYxN30.xTa3p2voX-f4s_ANHYGnnJsRLu414eKQjUUzH5ayMhw'
+                    Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
+                    // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkZGRiN2ZkYi03YTk5LTRkY2MtOGY2MC04NmFkZDY1ZWMzNjQiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2OTAyODE1NzQsImV4cCI6MTcyMTgzOTE3NH0.QNBmL0WK4-H_MT6CgXp8DDvnrJucQIun61rUVdDU2w4'
+
+                    // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkZGRiN2ZkYi03YTk5LTRkY2MtOGY2MC04NmFkZDY1ZWMzNjQiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2OTAwNDkwMTcsImV4cCI6MTcyMTYwNjYxN30.xTa3p2voX-f4s_ANHYGnnJsRLu414eKQjUUzH5ayMhw'
                     // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
                 }
             });
@@ -45,8 +47,8 @@ class ServiceApi {
         try {
             const response = await axios.post(this.appendToURL(path), payload, {
                 headers: {
-                    // Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
-                    Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
+                    Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
+                    // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
 
                 }
             })
@@ -87,8 +89,8 @@ class ServiceApi {
                 payload,
                 {
                     headers: {
-                        // Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
-                        Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
+                        Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
+                        // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
 
                     }
                 }

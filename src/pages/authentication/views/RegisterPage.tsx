@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import FilledButton from "../../../common/components/buttons/FilledButton";
 import GoogleButton from "../../../common/components/buttons/GoogleButton";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
@@ -6,10 +6,41 @@ import Assets from "../../../assets";
 import FilledInput from "../../../common/components/inputs/FilledInput";
 import RoutesPath from "../../../constants/Routes";
 import { useNavigate } from "react-router-dom";
+import AuthController from "../controller/AuthController";
 
 const RegisterPage = () => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const navigate = useNavigate();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const termsRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const register = async () => {
+    if (loading) return;
+    const username = usernameRef.current?.value.trim();
+    const email = emailRef.current?.value.trim();
+    const password = passwordRef.current?.value.trim();
+    const validate = AuthController.validateRegister({
+      username,
+      email,
+      password,
+      terms: termsRef.current?.checked,
+    });
+    if (validate) {
+      setLoading(true);
+      const response = await AuthController.registerRequest({
+        username,
+        email,
+        password,
+      });
+      if (response.success) {
+        navigate(RoutesPath.verifyOtp);
+      }
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="p-5">
@@ -40,12 +71,22 @@ const RegisterPage = () => {
           e.preventDefault();
         }}
       >
-        <FilledInput onchange={() => {}} placeholder="Username" />
-        <FilledInput onchange={() => {}} placeholder="Email" type="email" />
         <FilledInput
+          inputRef={usernameRef}
+          onchange={() => {}}
+          placeholder="Username"
+        />
+        <FilledInput
+          inputRef={emailRef}
+          onchange={() => {}}
+          placeholder="Email"
+          type="email"
+        />
+        <FilledInput
+          inputRef={passwordRef}
           onchange={(e) => {}}
           placeholder="Password"
-          type="password"
+          type={passwordVisible ? "text" : "password"}
           onPressSuffixIcon={() => setPasswordVisible((prev) => !prev)}
           suffixIcon={
             passwordVisible ? (
@@ -56,7 +97,14 @@ const RegisterPage = () => {
           }
         />
         <div className="flex items-center my-10 gap-4">
-          <input type="checkbox" className="acc accent-primary" name="" id="" />
+          <input
+            defaultChecked
+            ref={termsRef}
+            type="checkbox"
+            className="accent-primary"
+            name=""
+            id=""
+          />
           <div className="text-sm font-[800]">
             <span className="text-[#999797] ">I agree to the </span>
             <span className="text-primary underline"> Terms of Service </span>
@@ -68,10 +116,8 @@ const RegisterPage = () => {
 
         <div className="">
           <FilledButton
-            onClick={() => {
-              navigate(RoutesPath.verifyOtp);
-            }}
-            text="Sign In"
+            onClick={register}
+            text={loading ? "Authenticating" : "Sign Up"}
             className="w-full p-3"
           />
         </div>
