@@ -16,6 +16,7 @@ const RegisterPage = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const termsRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
   const register = async () => {
     if (loading) return;
     const username = usernameRef.current?.value.trim();
