@@ -2,9 +2,34 @@ import PinInput from "react-pin-input";
 import FilledButton from "../../../common/components/buttons/FilledButton";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
-
-const OtpVerificationPage = () => {
+import { useState } from "react";
+import AuthController from "../controller/AuthController";
+import { StorageEnum } from "../../../common/emums/StorageEmuns";
+interface Props {
+  onSuccess: VoidFunction;
+}
+const OtpVerificationPage = ({ onSuccess }: Props) => {
+  const [pin, setPin] = useState<string>("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const verify = async () => {
+    if (loading) return;
+    const validate = AuthController.validateOTPVerification(pin);
+    if (validate) {
+      setLoading(true);
+      const response = await AuthController.verificationRequest(pin);
+      if (response.success) {
+        localStorage.setItem(
+          StorageEnum.AccessToken,
+          response.data.accessToken
+        );
+        localStorage.setItem(StorageEnum.UserId, response.data.uid);
+        onSuccess();
+        navigate(RoutesPath.home);
+      }
+      setLoading(false);
+    }
+  };
   return (
     <div className="p-5">
       <div className="">
@@ -23,7 +48,9 @@ const OtpVerificationPage = () => {
           initialValue=""
           secret
           secretDelay={100}
-          onChange={(value, index) => {}}
+          onChange={(value, index) => {
+            setPin(value);
+          }}
           type="numeric"
           inputMode="number"
           style={{ padding: "5px", border: "none" }}
@@ -41,10 +68,8 @@ const OtpVerificationPage = () => {
 
       <FilledButton
         className="w-full p-3"
-        onClick={() => {
-          navigate(RoutesPath.home);
-        }}
-        text="Verify"
+        onClick={verify}
+        text={loading ? "Verifying..." : "Verify"}
       />
     </div>
   );

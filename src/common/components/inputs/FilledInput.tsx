@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from "react";
+import React, { ChangeEventHandler, LegacyRef } from "react";
 interface Props {
   defaultValue?: string;
   placeholder?: string;
@@ -8,6 +8,7 @@ interface Props {
   suffixIcon?: any;
   onPressSuffixIcon?: VoidFunction;
   label?: string;
+  inputRef?: LegacyRef<HTMLInputElement>;
 }
 const FilledInput = ({
   onchange,
@@ -18,6 +19,7 @@ const FilledInput = ({
   type,
   label,
   onPressSuffixIcon,
+  inputRef,
 }: Props) => {
   return (
     <div>
@@ -28,6 +30,7 @@ const FilledInput = ({
 
       <div className="bg-[#F4F4F4] rounded-lg p-3 flex items-center gap-2">
         <input
+          ref={inputRef}
           className={`border-none text-[#232324CC] outline-none w-full bg-transparent ${className}`}
           type={type ?? "text"}
           placeholder={placeholder}

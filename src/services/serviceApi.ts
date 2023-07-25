@@ -19,13 +19,18 @@ class ServiceApi {
 
     // GET API REQUEST
 
-    async fetch(path: string,) {
+    async fetch(path: string) {
         try {
             const response = await axios.get(this.appendToURL(path), {
                 headers: {
                     Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
+                    // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkZGRiN2ZkYi03YTk5LTRkY2MtOGY2MC04NmFkZDY1ZWMzNjQiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2OTAyODE1NzQsImV4cCI6MTcyMTgzOTE3NH0.QNBmL0WK4-H_MT6CgXp8DDvnrJucQIun61rUVdDU2w4'
+
+                    // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJkZGRiN2ZkYi03YTk5LTRkY2MtOGY2MC04NmFkZDY1ZWMzNjQiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2OTAwNDkwMTcsImV4cCI6MTcyMTYwNjYxN30.xTa3p2voX-f4s_ANHYGnnJsRLu414eKQjUUzH5ayMhw'
+                    // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
                 }
             });
+            // console.log(response.data)
             if (response.data.success) {
                 return response.data
             } else {
@@ -43,9 +48,34 @@ class ServiceApi {
             const response = await axios.post(this.appendToURL(path), payload, {
                 headers: {
                     Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
+                    // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
+
                 }
             })
             return response.data
+        } catch (error) {
+            return this.handleErrors(error)
+        }
+    }
+
+
+    async uploadFile(file: File) {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            const response = await axios.post('http://44.210.87.234/upload.php', formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+
+            if (response.data.success) {
+                return response.data
+            } else {
+                toast.error(response.data.message);
+                return null
+            }
+
         } catch (error) {
             return this.handleErrors(error)
         }
@@ -57,7 +87,14 @@ class ServiceApi {
             const response = await axiosClient.put(
                 this.appendToURL(url),
                 payload,
-                this.setupHeaders(is_attached)
+                {
+                    headers: {
+                        Authorization: `bearer ${localStorage.getItem(StorageEnum.AccessToken)}`
+                        // Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4ODQ0MTQ0My04N2YxLTQ5ZGEtOGEwZi0yMTIzOGE4ZmU3ZTYiLCJhY2Nlc3MiOiJhdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODk4NzAzMjQsImV4cCI6MTcyMTQyNzkyNH0.hcvJjpaVORwoRNyURQWicrpjj9iQaXwD2iLDYEQFQFU'
+
+                    }
+                }
+                // this.setupHeaders(is_attached)
             );
 
             return !resolve ? response.data : { ...response.data };

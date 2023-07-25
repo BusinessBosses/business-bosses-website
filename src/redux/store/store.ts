@@ -1,15 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import postSlice from '../slices/PostSlice';
+import UserSlice from '../slices/UserSlice';
+import ChatSlice from '../slices/ChatSlice';
+import forumSlice from '../slices/ForumSlice';
+import IndustrySlice from '../slices/IndustrySlice';
+import marketSlice from '../slices/MarketSlice';
+import notificationSlice from '../slices/NotificationSlice';
 const store = configureStore({
     reducer: {
-        post: postSlice
+        post: postSlice,
+        user: UserSlice,
+        chat: ChatSlice,
+        forum: forumSlice,
+        industry: IndustrySlice,
+        market: marketSlice,
+        notification: notificationSlice
     },
     devTools: process.env.NODE_ENV !== 'production',
 })
-// export type AppDispatch = typeof store.dispatch
-// export const useAppDispatch: () => AppDispatch = useDispatch
-// export type RootState = ReturnType<typeof store.getState>
 
 export type RootState = ReturnType<typeof store.getState>;
 export const useAppDispatch: () => typeof store.dispatch = useDispatch;

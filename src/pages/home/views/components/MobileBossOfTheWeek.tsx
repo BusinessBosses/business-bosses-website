@@ -1,58 +1,94 @@
-import React from "react";
 import Assets from "../../../../assets";
 import { IoIosMore } from "react-icons/io";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
-
-const MobileBossOfTheWeek = () => {
+import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
+import { User } from "../../../../common/interfaces/user";
+import { saveUserData } from "../../../../redux/slices/UserSlice";
+import ConnectionsController from "../../../connections/controller/ConnectionsController";
+interface Props {
+  bossOfTheWeek: User;
+}
+const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
+  const profile = useAppSelector((state) => state.user.profile);
+  const dispatch = useAppDispatch();
+  const connection = async () => {
+    if (profile?.connecteds?.includes(bossOfTheWeek.uid!)) {
+      const newUserData: User = {
+        ...profile,
+        connecteds: profile.connecteds?.filter(
+          (ft) => ft !== bossOfTheWeek.uid!
+        ),
+      };
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.disConnect(bossOfTheWeek.uid!);
+    } else {
+      const newUserData: User = {
+        ...profile,
+        connecteds: [...profile?.connecteds!, bossOfTheWeek.uid],
+      } as User;
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.connect(bossOfTheWeek.uid!);
+    }
+  };
   return (
     <div
       className="bg-[#EAEAEA]"
-      style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 10, paddingTop: 20 }}
+      style={{
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 10,
+        paddingTop: 20,
+      }}
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <img src={Assets.Logo} className="w-10 h-10" alt="" />
-          <p className="text-[#333333] text-2xl font-extrabold" style={{ fontWeight: "900", fontSize: 20 }}>
+          <p
+            className="text-[#333333] text-2xl font-extrabold"
+            style={{ fontWeight: "900", fontSize: 20 }}
+          >
             Boss of the week
           </p>
         </div>
         <IoIosMore size={23} />
       </div>
-      <div className="flex items-center gap-3">
-        {/* Display UserAvatar as a perfect circle */}
-        <div className="h-20 w-20" style={{ borderRadius: "50%", overflow: "hidden" }}>
-          <UserAvatar
-            imageSize="h-20 w-20"
-            isRanked
-            imageURL="https://cdn.pixabay.com/photo/2023/06/02/14/12/woman-8035772_640.jpg"
-          />
-        </div>
-
-        <div className="">
-          <p className="text-[#333333]" style={{ fontSize: 15, fontWeight: 600 }}>Isaac Akin</p>
-          <p className="text-[#555555]" style={{ fontSize: 13, fontWeight: "semi-bold" }}>Manufacturer</p>
-          <p className="text-[#777777]" style={{ fontSize: 12 }}>
-            For you to be effective at networking you should make it a hobby
+      <div className="flex items-center gap-3 mt-2">
+        <UserAvatar
+          imageSize="h-24 w-24"
+          isRanked
+          imageURL={
+            bossOfTheWeek.photoUrl ??
+            "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+          }
+        />
+        <div className="w-1/2">
+          <p className="text-lg text-[#333333] font-medium">
+            {bossOfTheWeek.username}
           </p>
-          <div className="flex items-center gap-2 mt-3">
-            <span style={{ fontSize: '13px' }}>
+          <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
+          <p className="text-xs text-[#777777]">{bossOfTheWeek.bio}</p>
+          <div className="flex items-center gap-3 mt-1">
+            {!profile?.connecteds?.includes(bossOfTheWeek.uid!) ? (
               <FilledButton
-                onClick={() => { }}
+                onClick={connection}
                 text="Connect"
-                className="px-3 py-2"
+                className="px-2 py-1.5"
               />
-            </span>
-
-            <span style={{ fontSize: '13px' }}>
+            ) : (
               <OutlinedButton
-                onClick={() => { }}
-                text="Refer"
-                className="px-3.5 py-1.5"
+                onClick={connection}
+                text="Connected"
+                className="px-2 py-1.5"
               />
-            </span>
+            )}
+            <OutlinedButton
+              onClick={() => {}}
+              text="Refer"
+              className="px-2 py-1.5"
+            />
           </div>
         </div>
       </div>

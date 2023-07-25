@@ -1,6 +1,6 @@
 const home = "/";
 const marketPlace = "/market";
-const bossup = "/bossup/*";
+const communities = "/communities/*";
 const opportunities = "/opportunities";
 const learning = "/learning";
 const forum = "/forum";
@@ -20,11 +20,12 @@ const register = "/auth/register";
 const login = "/auth/login";
 const verifyOtp = "/auth/verify";
 const CreateListing = "/create-listing";
+const CreateBossup = "/create-bossup";
 
 const RoutesPath = {
     home,
     marketPlace,
-    bossup,
+    communities,
     opportunities,
     learning,
     forum,
@@ -43,7 +44,8 @@ const RoutesPath = {
     editProfile,
     chats,
     ChatRoom,
-    CreateListing
+    CreateListing,
+    CreateBossup
 }
 
 export default RoutesPath

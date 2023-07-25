@@ -1,10 +1,11 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, LegacyRef } from "react";
 interface Props {
   defaultValue?: string;
   className?: string;
   onchange: ChangeEventHandler<HTMLInputElement>;
   label?: string;
   data: string[];
+  inputRef?: LegacyRef<HTMLSelectElement>;
 }
 const FilledSelect = ({
   onchange,
@@ -12,6 +13,7 @@ const FilledSelect = ({
   defaultValue,
   label,
   data,
+  inputRef,
 }: Props) => {
   return (
     <div className="my-5 ">
@@ -20,6 +22,7 @@ const FilledSelect = ({
       ) : null}
 
       <select
+        ref={inputRef}
         defaultValue={defaultValue}
         id={label}
         className="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-3 mobile-only"
@@ -40,7 +43,7 @@ const FilledSelect = ({
       >
         {data.map((item, index) => {
           return (
-            <option key={index} selected={label === item} value={item}>
+            <option key={index} value={item}>
               {item}
             </option>
           );

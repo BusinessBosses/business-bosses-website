@@ -1,10 +1,11 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, LegacyRef } from "react";
 interface Props {
   defaultValue?: string;
   placeholder?: string;
   className?: string;
   onchange: ChangeEventHandler<HTMLTextAreaElement>;
   label?: string;
+  inputRef?: LegacyRef<HTMLTextAreaElement>;
 }
 const FilledTextarea = ({
   onchange,
@@ -12,6 +13,7 @@ const FilledTextarea = ({
   defaultValue,
   label,
   placeholder,
+  inputRef,
 }: Props) => {
   return (
     <div className="my-5">
@@ -19,6 +21,7 @@ const FilledTextarea = ({
         <label className="text-[#333333] text-sm font-[700]">{label}</label>
       ) : null}
       <textarea
+        ref={inputRef}
         className={`border-none bg-[#F4F4F4] text-[#232324CC] outline-none w-full p-3 rounded-lg resize-none ${className}`}
         placeholder={placeholder}
         defaultValue={defaultValue}

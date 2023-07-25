@@ -1,498 +1,514 @@
-import React, { ReactNode, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 import Assets from "../../../assets";
 import {
   AiFillMinusCircle,
   AiOutlineCamera,
   AiOutlineClose,
-  AiOutlinePlus,
 } from "react-icons/ai";
 import FilledInput from "../../../common/components/inputs/FilledInput";
 import FilledSelect from "../../../common/components/inputs/FilledSelect";
 import { CountryDropdown } from "react-country-region-selector";
 import FilledTextarea from "../../../common/components/inputs/FilledTextarea";
-import { IoIosArrowForward, IoIosMore } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import FilledButton from "../../../common/components/buttons/FilledButton";
 import { BsFillPlusCircleFill } from "react-icons/bs";
-import UserAvatar from "../../../common/components/avatars/UserAvatar";
-import RoutesPath from "../../../constants/Routes";
-import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { BiArrowBack } from "react-icons/bi";
+import serviceApi from "../../../services/serviceApi";
 import Popup from "reactjs-popup";
-import ComputerHeader from "../../home/views/components/ComputerHeader";
+import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
+import { MdCancel } from "react-icons/md";
+import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
+import { User } from "../../../common/interfaces/user";
+import { saveUserData } from "../../../redux/slices/UserSlice";
+import ProfileController from "../controller/ProfileController";
+import { toast } from "react-toastify";
 
 const EditProfilePage = () => {
-  const navigate = useNavigate();
   const [expansionState, setExpansionState] = useState({
     additionalInfo: false,
     achievments: false,
     products: false,
   });
+  const profile = useAppSelector((state) => state.user.profile);
+  const [image, setImage] = useState<File | null>(null);
+  const [country, setCountry] = useState<string | null>(null);
+  const [category, setCategory] = useState<string | undefined>(undefined);
+  const [industry, setIndustry] = useState<string | undefined>(undefined);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [modalState, setModalState] = useState<{
+    category: boolean;
+    industry: boolean;
+  }>({ category: false, industry: false });
+  const [industries, setIndustries] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [updating, setUpdating] = useState<boolean>(false);
+  const [accomplishments, setAccomplishments] = useState<string[]>([]);
+
+  const [products, setProducts] = useState<string[]>([]);
+  const loadCategories = async () => {
+    const response = await serviceApi.fetch("/profession/all");
+    setLoading(true);
+    if (response.success) {
+      setCategories(response.data.rows.map((mp: any) => mp.title));
+    }
+    setLoading(false);
+  };
+
+  const loadInustries = async () => {
+    const response = await serviceApi.fetch("/industry/get");
+
+    setLoading(true);
+    if (response.success) {
+      setIndustries(response.data.rows.map((mp: any) => mp.industry));
+    }
+    setLoading(false);
+  };
+
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const ageRef = useRef<HTMLSelectElement>(null);
+  const genderRef = useRef<HTMLSelectElement>(null);
+  const bioRef = useRef<HTMLTextAreaElement>(null);
+  const companyRef = useRef<HTMLInputElement>(null);
+  const websiteRef = useRef<HTMLInputElement>(null);
+  const instagramRef = useRef<HTMLInputElement>(null);
+  const twitterRef = useRef<HTMLInputElement>(null);
+  const accomplishmentRef = useRef<HTMLInputElement>(null);
+  const productRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
+  const updateProfile = async () => {
+    const validator = ProfileController.validateProfileUpdate({
+      ...profile,
+      username: usernameRef.current!.value.trim(),
+      email: emailRef.current!.value.trim(),
+      bio: bioRef.current!.value.trim(),
+    } as User);
+    if (validator !== null) {
+      toast.error(validator);
+      return;
+    }
+    if (updating) return;
+    setUpdating(true);
+    if (image) {
+      const imageResponse = await serviceApi.uploadFile(image);
+      if (imageResponse) {
+        const newUserData: User = {
+          ...profile,
+          username: usernameRef.current!.value.trim(),
+          email: emailRef.current!.value.trim(),
+          ageRange: ageRef.current?.value.trim(),
+          gender: genderRef.current?.value.trim(),
+          bio: bioRef.current!.value.trim(),
+          companyName: companyRef.current?.value.trim(),
+          website: websiteRef.current?.value.trim(),
+          instagram: instagramRef.current?.value.trim(),
+          twitter: twitterRef.current?.value.trim(),
+          achievements: accomplishments,
+          productsandservices: products,
+          category: category,
+          industry: industry,
+          photoUrl: imageResponse.fileUrl,
+        } as User;
+        const response = await ProfileController.updateProfile(newUserData);
+        if (response.success) {
+          toast.success(response.message);
+          dispatch(saveUserData(newUserData));
+        }
+      }
+    } else {
+      const newUserData: User = {
+        ...profile,
+        username: usernameRef.current!.value.trim(),
+        email: emailRef.current!.value.trim(),
+        ageRange: ageRef.current?.value.trim(),
+        gender: genderRef.current?.value.trim(),
+        bio: bioRef.current!.value.trim(),
+        companyName: companyRef.current?.value.trim(),
+        website: websiteRef.current?.value.trim(),
+        instagram: instagramRef.current?.value.trim(),
+        twitter: twitterRef.current?.value.trim(),
+        achievements: accomplishments,
+        productsandservices: products,
+        category: category,
+        industry: industry,
+      } as User;
+      const response = await ProfileController.updateProfile(newUserData);
+      if (response.success) {
+        toast.success(response.message);
+        dispatch(saveUserData(newUserData));
+      }
+    }
+    setUpdating(false);
+  };
+
+  useEffect(() => {
+    setAccomplishments(profile?.achievements ?? []);
+    setProducts(profile?.productsandservices ?? []);
+    ageRef.current!.value = profile?.ageRange ?? "";
+    genderRef.current!.value = profile?.gender ?? "";
+  }, [profile]);
+
   return (
-    <div>
-      <div className="mobile-only">
-        <div className=" min-h-screen h-full">
-          <div className=" fixed top-0 w-full z-50">
-            <CommonPageHeader title="Edit Profile" />
-          </div>
-          <div className="w-full h-3 mt-16 bg-[#f4f4f4]"></div>
-          <div className="py-5">
-            <div className="flex items-center justify-center ">
-              <div className="bg-[#F4F4F4] p-8 rounded-full relative">
-                <Assets.User />
-                <button className="bg-primary absolute bottom-1 right-1 p-1 rounded-full text-white">
-                  <AiOutlineCamera />
-                </button>
-              </div>
+    <div className=" min-h-screen h-full">
+      <div className=" fixed top-0 w-full z-50">
+        <CommonPageHeader title="Edit Profile" />
+      </div>
+      <div className="w-full h-3 mt-16 bg-[#f4f4f4]"></div>
+      <Popup lockScroll modal open={modalState.category || modalState.industry}>
+        <div className=" min-h-screen bg-white  mb-20 min-w-full w-screen p-5">
+          <div className="overflow-y-scroll">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-medium">
+                {modalState.category ? "Profession" : "Industries"}
+              </h3>
+              <button
+                onClick={() => {
+                  setModalState({ category: false, industry: false });
+                }}
+              >
+                <MdCancel />
+              </button>
             </div>
-
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <div className="px-5">
-                <FilledInput onchange={() => { }} label="Username" />
-                <FilledInput onchange={() => { }} label="Email" />
-                <FilledSelect
-                  data={["10 - 15", "18 - 30", "24 - 56"]}
-                  onchange={() => { }}
-                  label="Age Range"
-                />
-                <FilledSelect
-                  data={["Male", "Female"]}
-                  onchange={() => { }}
-                  label="Gender"
-                />
-                <div className="my-5">
-                  <label className="text-[#333333] text-sm font-[700]">
-                    Location
-                  </label>
-                  <CountryDropdown
-                    classes="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-3"
-                    value=""
-                    onChange={(val) => { }}
-                  />
-                </div>
-                <FilledTextarea onchange={() => { }} label="Bio" />
-                <div className="my-5">
-                  <label className="text-[#333333] text-sm font-[700]">Title</label>
-                  <div className="flex items-center justify-between bg-[#f4f4f4] p-3">
-                    <p>Software engineer</p>
-                    <IoIosArrowForward />
-                  </div>
-                </div>
-              </div>
-              <div
-                onClick={() =>
-                  setExpansionState({
-                    ...expansionState,
-                    additionalInfo: !expansionState.additionalInfo,
+            {loading ? (
+              <FetchStatus
+                error={false}
+                errorMessage=""
+                loading
+                onReload={() => {}}
+              />
+            ) : null}
+            <ul className="mt-10 flex flex-col">
+              {modalState.category
+                ? categories.map((cat: string, index: number) => {
+                    return (
+                      <li
+                        className="outline-none border-none my-5"
+                        key={index}
+                        onClick={() => {
+                          setCategory(cat);
+                          setModalState({ category: false, industry: false });
+                        }}
+                      >
+                        {cat}
+                      </li>
+                    );
                   })
-                }
-                className="my-5 bg-[#f4f4f4] p-3 flex items-center justify-between"
+                : industries.map((cat: string, index: number) => {
+                    return (
+                      <li
+                        className="outline-none border-none my-5"
+                        key={index}
+                        onClick={() => {
+                          setIndustry(cat);
+                          setModalState({ category: false, industry: false });
+                        }}
+                      >
+                        {cat}
+                      </li>
+                    );
+                  })}
+            </ul>
+          </div>
+        </div>
+      </Popup>
+      <div className="py-5">
+        <div className="flex items-center justify-center ">
+          {profile?.photoUrl || image ? (
+            <div className="relative">
+              <img
+                className="w-24 h-24 rounded-full"
+                src={image ? URL.createObjectURL(image) : profile!.photoUrl}
+                alt=""
+              />
+              <label
+                htmlFor="avatar"
+                className="bg-primary absolute bottom-1 right-1 p-1 rounded-full text-white"
               >
-                <p>Additional Information (Optional)</p>
-                {!expansionState.additionalInfo ? (
-                  <BsFillPlusCircleFill />
-                ) : (
-                  <AiFillMinusCircle />
-                )}
-              </div>
+                <AiOutlineCamera />
+              </label>
+            </div>
+          ) : (
+            <div className="bg-[#F4F4F4] p-8 rounded-full relative">
+              <Assets.User className="w-10 h-10" />
+
+              <label
+                htmlFor="avatar"
+                className="bg-primary absolute bottom-1 right-1 p-1 rounded-full text-white"
+              >
+                <AiOutlineCamera />
+              </label>
+            </div>
+          )}
+        </div>
+        <input
+          type="file"
+          onChange={(e) => {
+            if (e.target.files?.length) {
+              setImage(e.target.files[0]);
+            }
+          }}
+          name=""
+          className="w-0 h-0"
+          id="avatar"
+        />
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <div className="px-5">
+            <FilledInput
+              defaultValue={profile?.username}
+              inputRef={usernameRef}
+              onchange={() => {}}
+              label="Username"
+            />
+            <FilledInput
+              defaultValue={profile?.email}
+              inputRef={emailRef}
+              onchange={() => {}}
+              label="Email"
+            />
+            <FilledSelect
+              defaultValue={profile?.ageRange}
+              inputRef={ageRef}
+              data={["10 - 15", "18 - 30", "24 - 56"]}
+              onchange={() => {}}
+              label="Age Range"
+            />
+            <FilledSelect
+              defaultValue={profile?.gender}
+              inputRef={genderRef}
+              data={["Male", "Female"]}
+              onchange={() => {}}
+              label="Gender"
+            />
+            <div className="my-5">
+              <label className="text-[#333333] text-sm font-[700] ">
+                Location
+              </label>
+              <CountryDropdown
+                classes="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-3"
+                value={country ?? profile?.location ?? ""}
+                onChange={(val) => {
+                  setCountry(val);
+                }}
+              />
+            </div>
+            <FilledTextarea
+              defaultValue={profile?.bio}
+              inputRef={bioRef}
+              onchange={() => {}}
+              label="Bio"
+            />
+            <div className="my-5">
+              <label className="text-[#333333] text-sm font-[700]">Title</label>
               <div
-                className={`${expansionState.additionalInfo ? "block" : "hidden"
-                  } px-5`}
+                onClick={() => {
+                  loadCategories();
+                  setModalState({ category: true, industry: false });
+                }}
+                className="flex items-center justify-between rounded-lg bg-[#f4f4f4] p-3"
               >
-                <FilledInput onchange={() => { }} label="Company Name" />
-                <div className="my-5">
-                  <label className="text-[#333333] text-sm font-[700]">
-                    Industry
-                  </label>
-                  <div className="flex items-center justify-between bg-[#f4f4f4] p-3">
-                    <p>Business Bosses</p>
-                    <IoIosArrowForward />
-                  </div>
-                </div>
-                <FilledInput onchange={() => { }} label="Website" />
-                <FilledInput onchange={() => { }} label="Instagram" />
-                <FilledInput onchange={() => { }} label="Twitter" />
+                <p>{category ?? profile?.category}</p>
+                <IoIosArrowForward />
               </div>
-
-              <div className="my-5">
-                <div
-                  onClick={() =>
-                    setExpansionState({
-                      ...expansionState,
-                      achievments: !expansionState.achievments,
-                    })
-                  }
-                  className="my-5 bg-[#f4f4f4] p-3 flex items-center justify-between"
-                >
-                  <h3 className=" font-bold">Achievements</h3>
-                  {!expansionState.achievments ? (
-                    <BsFillPlusCircleFill />
-                  ) : (
-                    <AiFillMinusCircle />
-                  )}
-                </div>
-                <div
-                  className={`${expansionState.achievments ? "block" : "hidden"
-                    } px-5`}
-                >
-                  <div className="flex items-center justify-between">
-                    <p className="text-[#333333]">Add Accomplishments</p>
-                    <button className="bg-[rgba(0,0,0,.1)] p-2 my-2 rounded-full">
-                      <AiOutlinePlus />
-                    </button>
-                  </div>
-                  {[1, 2, 3, 4, 5].map((item) => (
-                    <div key={item} className="relative my-5">
-                      <div className="flex items-center gap-3  bg-[rgba(0,0,0,.1)] p-2 rounded-lg">
-                        <img src={Assets.Trophy} alt="" />
-                        <p>Tech crunch distrupt</p>
-                      </div>
-                      <button className="absolute top-0 right-0 bg-red-500 p-1 rounded-full">
-                        <AiOutlineClose size={10} color="white" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="my-5">
-                <div
-                  onClick={() =>
-                    setExpansionState({
-                      ...expansionState,
-                      products: !expansionState.products,
-                    })
-                  }
-                  className="my-5 bg-[#f4f4f4] p-3 flex items-center justify-between"
-                >
-                  <h3 className=" font-bold">Products</h3>
-                  {!expansionState.products ? (
-                    <BsFillPlusCircleFill />
-                  ) : (
-                    <AiFillMinusCircle />
-                  )}
-                </div>
-                <div
-                  className={`${expansionState.products ? "block" : "hidden"} px-5`}
-                >
-                  <div className="flex items-center justify-between">
-                    <p className="text-[#333333]">Add Product</p>
-                    <button className="bg-[rgba(0,0,0,.1)] p-2 my-2 rounded-full">
-                      <AiOutlinePlus />
-                    </button>
-                  </div>
-                  {[1, 2, 3, 4, 5].map((item) => (
-                    <div key={item} className="relative my-5">
-                      <div className="flex items-center gap-3  bg-[rgba(0,0,0,.1)] p-2 rounded-lg">
-                        <img src={Assets.Product} alt="" />
-                        <p>Tech crunch distrupt</p>
-                      </div>
-                      <button className="absolute top-0 right-0 bg-red-500 p-1 rounded-full">
-                        <AiOutlineClose size={10} color="white" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <FilledButton onClick={() => { }} text="Save" className="w-full p-3" />
-            </form>
+            </div>
           </div>
-        </div>
-      </div>
+          <div
+            onClick={() =>
+              setExpansionState({
+                ...expansionState,
+                additionalInfo: !expansionState.additionalInfo,
+              })
+            }
+            className="m bg-[#f4f4f4] p-3 flex items-center justify-between"
+          >
+            <p>Additional Information (Optional)</p>
+            {!expansionState.additionalInfo ? (
+              <BsFillPlusCircleFill />
+            ) : (
+              <AiFillMinusCircle />
+            )}
+          </div>
+          <div
+            className={`${
+              expansionState.additionalInfo ? "block" : "hidden"
+            } px-5`}
+          >
+            <FilledInput
+              defaultValue={profile?.companyName}
+              inputRef={companyRef}
+              onchange={() => {}}
+              label="Company Name"
+            />
+            <div className="my-5">
+              <label className="text-[#333333] text-sm font-[700]">
+                Industry
+              </label>
+              <div
+                onClick={() => {
+                  loadInustries();
+                  setModalState({ category: false, industry: true });
+                }}
+                className="flex items-center justify-between bg-[#f4f4f4] p-3"
+              >
+                <p>{industry ?? profile?.industry}</p>
+                <IoIosArrowForward />
+              </div>
+            </div>
+            <FilledInput
+              defaultValue={profile?.website}
+              inputRef={websiteRef}
+              onchange={() => {}}
+              label="Website"
+            />
+            <FilledInput
+              defaultValue={profile?.instagram}
+              inputRef={instagramRef}
+              onchange={() => {}}
+              label="Instagram"
+            />
+            <FilledInput
+              defaultValue={profile?.twitter}
+              inputRef={twitterRef}
+              onchange={() => {}}
+              label="Twitter"
+            />
+          </div>
 
-
-      <div className="computer-only">
-        <ComputerHeader />
-        <div className="computer-content">
-          <div className="firstsection ml-0 mr-5 ml-5 lg:ml-20" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-            height: '100%'
-          }}>
-            <div className="" >
-
-
-              <div className="flex items-center " onClick={() => navigate(RoutesPath.myProfile)}>
-
-                <UserAvatar
-                  imageSize="h-24 w-24"
-                  imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
+          <div className="my-">
+            <div
+              onClick={() =>
+                setExpansionState({
+                  ...expansionState,
+                  achievments: !expansionState.achievments,
+                })
+              }
+              className="my- bg-[#f4f4f4] p-3 flex items-center justify-between"
+            >
+              <h3 className=" font-bold">Achievements</h3>
+              {!expansionState.achievments ? (
+                <BsFillPlusCircleFill />
+              ) : (
+                <AiFillMinusCircle />
+              )}
+            </div>
+            <div
+              className={`${
+                expansionState.achievments ? "block" : "hidden"
+              } px-5`}
+            >
+              <div className="flex items-center justify-between">
+                <FilledInput
+                  placeholder="Add achievement"
+                  onchange={() => {}}
+                  inputRef={accomplishmentRef}
                 />
-                <div className="ml-4">
-                  <p className="text-xl font-semibold">Isaac Akin</p>
-                  <p className="text-lg font-medium">Consultant</p>
-                  <p className="font-medium">Digital Blogger</p>
-                  <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
-                </div>
-
-                <div className="flex-grow" />
-                <Popup
-                  trigger={
-                    <div>
-                      <IoIosMore size={20} />
-                    </div>
-                  }
-                  position="left top"
-                  on="click"
-                  closeOnDocumentClick
-                  contentStyle={{ padding: "0px", border: "none" }}
-                // arrow={false}
-                >
-                  {
-                    (((close: any) => (
-                      <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                        <button
-                          onClick={() => {
-                            close();
-                          }}
-                          className="menu-item"
-                        >
-                          Hide
-                        </button>
-                        <button
-                          onClick={() => {
-                            close();
-                          }}
-                          className="menu-item"
-                        >
-                          Report
-                        </button>
-                      </div>
-                    )) as unknown) as ReactNode
-                  }
-                </Popup>
-
-
-              </div>
-            </div>
-
-
-
-          </div>
-
-          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
-            <div className=" min-h-screen h-full">
-
-              <div className="bg-white p-5 flex items-center justify-between">
-                <button onClick={() => navigate(-1)}>
-                  <BiArrowBack size={20} />
-                </button>
-                <p className="text-xl font-medium" style={{ paddingTop: 0 }}>{"Edit Profile"}</p>
-                <div />
-              </div>
-              <div className="py-5">
-                <div className="flex items-center justify-center ">
-                  <div className="bg-[#F4F4F4] p-10 rounded-full relative">
-                  <Assets.User style={{ width: "100px", height: "100px" }} />
-
-                    <button className="bg-primary absolute bottom-1 right-1 p-1 rounded-full text-white">
-                      <AiOutlineCamera size={30}/>
-                    </button>
-                  </div>
-                </div>
-
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
+                <button
+                  onClick={() => {
+                    if (!accomplishmentRef.current?.value.trim()) return;
+                    setAccomplishments([
+                      accomplishmentRef.current.value.trim(),
+                      ...accomplishments,
+                    ]);
+                    accomplishmentRef.current!.value = "";
                   }}
+                  className="bg-primary px-6 py-2 text-white rounded-lg"
                 >
-                  <div className="px-5 ">
-                    <FilledInput onchange={() => { }} label="Username" />
-                    <FilledInput onchange={() => { }} label="Email" />
-                    <FilledSelect
-                      data={["10 - 15", "18 - 30", "24 - 56"]}
-                      onchange={() => { }}
-                      label="Age Range"
-                    />
-                    <FilledSelect
-                      data={["Male", "Female"]}
-                      onchange={() => { }}
-                      label="Gender"
-                    />
-                    <div className="my-5">
-                      <label className="text-[#333333] text-sm font-[700]">
-                        Location
-                      </label>
-                      <CountryDropdown
-                        classes="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-5"
-                        value=""
-                        onChange={(val) => { }}
-                      />
-                    </div>
-                    <FilledTextarea onchange={() => { }} label="Bio" />
-                    <div className="my-5">
-                      <label className="text-[#333333] text-sm font-[700]">Title</label>
-                      <div className="flex items-center rounded-lg justify-between bg-[#f4f4f4] p-5">
-                        <p>Software engineer</p>
-                        <IoIosArrowForward />
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    onClick={() =>
-                      setExpansionState({
-                        ...expansionState,
-                        additionalInfo: !expansionState.additionalInfo,
-                      })
-                    }
-                    className="my-5 bg-[#ffffff] pt-5 pl-5 pr-5 flex items-center justify-between font-bold" style={{borderTop: '1.2px solid rgba(0, 0, 0, 0.1)',}}
-                  >
-                    <p>Additional Information (Optional)</p>
-                    {!expansionState.additionalInfo ? (
-                      <BsFillPlusCircleFill />
-                    ) : (
-                      <AiFillMinusCircle />
-                    )}
-                  </div>
-                  <div
-                    className={`${expansionState.additionalInfo ? "block" : "hidden"
-                      } px-5`}
-                  >
-                    <FilledInput onchange={() => { }} label="Company Name" />
-                    <div className="my-5">
-                      <label className="text-[#333333] text-sm font-[700]">
-                        Industry
-                      </label>
-                      <div className="flex items-center rounded-lg justify-between bg-[#f4f4f4] p-5">
-                        <p>Business Bosses</p>
-                        <IoIosArrowForward />
-                      </div>
-                    </div>
-                    <FilledInput onchange={() => { }} label="Website" />
-                    <FilledInput onchange={() => { }} label="Instagram" />
-                    <FilledInput onchange={() => { }} label="Twitter" />
-                  </div>
-
-                  <div className="my-5">
-                    <div
-                      onClick={() =>
-                        setExpansionState({
-                          ...expansionState,
-                          achievments: !expansionState.achievments,
-                        })
-                      }
-                      className="my-5 bg-[#ffffff] pt-5 pl-5 pr-5 flex items-center justify-between font-bold" style={{borderTop: '1.2px solid rgba(0, 0, 0, 0.1)'}}
-                    >
-                      <h3 className=" font-bold">Achievements</h3>
-                      {!expansionState.achievments ? (
-                        <BsFillPlusCircleFill />
-                      ) : (
-                        <AiFillMinusCircle />
-                      )}
-                    </div>
-                    <div
-                      className={`${expansionState.achievments ? "block" : "hidden"
-                        } px-5`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <p className="text-[#333333]">Add Accomplishments</p>
-                        <button className="bg-[rgba(0,0,0,.1)] p-2 my-2 rounded-full">
-                          <AiOutlinePlus />
-                        </button>
-                      </div>
-                      {[1, 2, 3, 4, 5].map((item) => (
-                        <div key={item} className="relative my-5">
-                          <div className="flex items-center gap-3  bg-[rgba(0,0,0,.1)] p-2 rounded-lg">
-                            <img src={Assets.Trophy} alt="" />
-                            <p>Tech crunch distrupt</p>
-                          </div>
-                          <button className="absolute top-0 right-0 bg-red-500 p-1 rounded-full">
-                            <AiOutlineClose size={10} color="white" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="my-5">
-                    <div
-                      onClick={() =>
-                        setExpansionState({
-                          ...expansionState,
-                          products: !expansionState.products,
-                        })
-                      }
-                      className="my-5 bg-[#ffffff] pt-5 pl-5 pr-5 flex items-center justify-between font-bold"style={{borderTop: '1.2px solid rgba(0, 0, 0, 0.1)'}}
-                    >
-                      <h3 className=" font-bold">Products</h3>
-                      {!expansionState.products ? (
-                        <BsFillPlusCircleFill />
-                      ) : (
-                        <AiFillMinusCircle />
-                      )}
-                    </div>
-                    <div
-                      className={`${expansionState.products ? "block" : "hidden"} px-5`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <p className="text-[#333333]">Add Product</p>
-                        <button className="bg-[rgba(0,0,0,.1)] p-2 my-2 rounded-full">
-                          <AiOutlinePlus />
-                        </button>
-                      </div>
-                      {[1, 2, 3, 4, 5].map((item) => (
-                        <div key={item} className="relative my-5">
-                          <div className="flex items-center gap-3  bg-[rgba(0,0,0,.1)] p-2 rounded-lg">
-                            <img src={Assets.Product} alt="" />
-                            <p>Tech crunch distrupt</p>
-                          </div>
-                          <button className="absolute top-0 right-0 bg-red-500 p-1 rounded-full">
-                            <AiOutlineClose size={10} color="white" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="p-5" style={{borderTop: '1.2px solid rgba(0, 0, 0, 0.1)'}}>
-                    <FilledButton onClick={() => { }} text="Save" className="w-full p-4" /></div>
-                </form>
+                  Add
+                </button>
               </div>
+              {accomplishments.map((item: string, index: number) => (
+                <div key={index} className="relative my-5">
+                  <div className="flex items-center gap-3  bg-[rgba(0,0,0,.1)] p-2 rounded-lg">
+                    <img src={Assets.Trophy} alt="" />
+                    <p>{item}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const newData = accomplishments.filter(
+                        (ft) => ft !== item
+                      );
+                      setAccomplishments(newData);
+                    }}
+                    className="absolute top-0 right-0 bg-red-500 p-1 rounded-full"
+                  >
+                    <AiOutlineClose size={10} color="white" />
+                  </button>
+                </div>
+              ))}
             </div>
-
-          </div>
-          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-20" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-          }}>
-            <div className="" >
-              <ComputerBossOfTheWeek />
-              <div className="bg-[#F4F4F4] flex items-center justify-between p-2 rounded-lg mt-2">
-                <small className="text-xs text-[#545151]">Boss Up by</small>
-                <p className="text-[#545151] text-sm">
-                  Business Bosses Company Limited
-                </p>
-                <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
-
-              </div>
-
-            </div>
-
-
           </div>
 
-        </div>
+          <div className="my-">
+            <div
+              onClick={() =>
+                setExpansionState({
+                  ...expansionState,
+                  products: !expansionState.products,
+                })
+              }
+              className="my- bg-[#f4f4f4] p-3 flex items-center justify-between"
+            >
+              <h3 className=" font-bold">Products</h3>
+              {!expansionState.products ? (
+                <BsFillPlusCircleFill />
+              ) : (
+                <AiFillMinusCircle />
+              )}
+            </div>
+            <div
+              className={`${expansionState.products ? "block" : "hidden"} px-5`}
+            >
+              <div className="flex items-center justify-between">
+                <FilledInput
+                  placeholder="Add Product"
+                  onchange={() => {}}
+                  inputRef={productRef}
+                />
+                <button
+                  onClick={() => {
+                    if (!productRef.current?.value.trim()) return;
+                    setProducts([productRef.current.value.trim(), ...products]);
+                    productRef.current!.value = "";
+                  }}
+                  className="bg-primary px-6 py-2 text-white rounded-lg"
+                >
+                  Add
+                </button>
+              </div>
+              {products.map((item: string, index: number) => (
+                <div key={index} className="relative my-5">
+                  <div className="flex items-center gap-3  bg-[rgba(0,0,0,.1)] p-2 rounded-lg">
+                    <img src={Assets.Product} alt="" />
+                    <p>{item}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const newData = products.filter((ft) => ft !== item);
+                      setProducts(newData);
+                    }}
+                    className="absolute top-0 right-0 bg-red-500 p-1 rounded-full"
+                  >
+                    <AiOutlineClose size={10} color="white" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="px-5 mt-20 mb-10">
+            <FilledButton
+              onClick={updateProfile}
+              text={updating ? "Updating Profile..." : "Save"}
+              className="w-full p-3"
+            />
+          </div>
+        </form>
       </div>
-
-
     </div>
-
   );
 };
 

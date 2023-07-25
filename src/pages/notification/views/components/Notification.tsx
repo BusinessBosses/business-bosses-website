@@ -1,19 +1,18 @@
-import React from "react";
 import Assets from "../../../../assets";
-
-const Notification = () => {
+import { NotificationProp } from "../../../../common/interfaces/notification";
+interface Props {
+  data: NotificationProp;
+}
+const Notification = ({ data }: Props) => {
   return (
-    <div className="">
-      <h4 className="my-5">16 Jun 23</h4>
+    <div className="my-5">
       <div className="flex items-center gap-3 mt-2">
         <div className="">
           <img src={Assets.ActiveNotification} alt="" />
         </div>
         <div className="">
-          <h4>Post Comment</h4>
-          <small className="line-clamp-1">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          </small>
+          <h4>{data.title}</h4>
+          <small className="line-clamp-1">{data.message}</small>
         </div>
       </div>
     </div>

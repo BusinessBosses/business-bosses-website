@@ -1,151 +1,186 @@
+import { Socket } from "socket.io-client";
+import ForumItem from "../../../common/components/forum/ForumItem";
+import GeneralPostsController, {
+  CoinStruct,
+  LikeStruct,
+} from "../../../common/controllers/GeneralPostsController";
+import { Forum } from "../../../common/interfaces/forum";
+import { Post } from "../../../common/interfaces/post";
+import { MixedPostState, updatePost } from "../../../redux/slices/PostSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "./components/MobileBossOfTheWeek";
 import MobileBottomNav from "./components/MobileBottomNav";
 import MobileHeader from "./components/MobileHeader";
 import PostItem from "./components/PostItem";
-import ComputerHeader from "./components/ComputerHeader";
-import ComputerBossOfTheWeek from "./components/ComputerBossOfTheWeek";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import MyProfileHeader from "../../profile/views/components/MyProfileHeader";
-import UserAvatar from "../../../common/components/avatars/UserAvatar";
-import RoutesPath from "../../../constants/Routes";
-import { useNavigate } from "react-router-dom";
-import { IoIosMore } from "react-icons/io";
-import { ReactNode } from "react";
-import Popup from "reactjs-popup";
+import { saveUserData } from "../../../redux/slices/UserSlice";
+import { Comment } from "../../../common/interfaces/comment";
+interface Props {
+  socket: Socket;
+}
+const HomePage = ({ socket }: Props) => {
+  const dispatch = useAppDispatch();
+  const posts = useAppSelector((state) => state.post.mixedPosts);
+  const profile = useAppSelector((state) => state.user);
+  const chats = useAppSelector((state) => state.chat.chats);
+  const onLike = (args: LikeStruct, postIndex: number) => {
+    let post = posts[postIndex];
+    if (post.data.likes!.includes(profile.profile?.uid!)) {
+      post = {
+        ...post,
+        data: {
+          ...post.data,
+          likes: post.data.likes!.filter((ft) => ft !== profile.profile!.uid),
+        },
+      };
+    } else {
+      post = {
+        ...post,
+        data: {
+          ...post.data,
+          likes: [...post.data.likes!, profile.profile!.uid],
+        },
+      };
+    }
+    dispatch(updatePost({ index: postIndex, post }));
+    GeneralPostsController.like(args, socket);
+  };
 
+  const onCoin = (args: CoinStruct, postIndex: number) => {
+    let post = posts[postIndex];
+    if (post.data.coins!.includes(profile.profile?.uid!)) {
+      post = {
+        ...post,
+        data: {
+          ...post.data,
+          coins: post.data.coins!.filter((ft) => ft !== profile.profile!.uid),
+        },
+      };
+      dispatch(
+        saveUserData({
+          ...profile.profile!,
+          coinscount: profile.profile!.coinscount! + 1,
+        })
+      );
+    } else {
+      post = {
+        ...post,
+        data: {
+          ...post.data,
+          coins: [...post.data.coins!, profile.profile!.uid],
+        },
+      };
+      dispatch(
+        saveUserData({
+          ...profile.profile!,
+          coinscount: profile.profile!.coinscount! - 1,
+        })
+      );
+    }
+    dispatch(updatePost({ index: postIndex, post }));
+    GeneralPostsController.coin(args, socket);
+  };
 
-const HomePage = () => {
-  const navigate = useNavigate();
+  const onComment = (comment: Comment, postIndex: number) => {
+    let post = posts[postIndex];
+    post = {
+      ...post,
+      data: {
+        ...post.data,
+        comments: [...post.data.comments!, comment],
+      },
+    };
+    dispatch(updatePost({ index: postIndex, post }));
+  };
   return (
-    <div>
-      <div className="mobile-only">
-        <MobileHeader />
-        <div className="" style={{ paddingTop: 45 }}>
-          <MobileBossOfTheWeek />
-        </div>
-        <div className="p-0">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
-            <PostItem key={post} />
-          ))}
-
-        </div>
-        <div className="my-20"></div>
-        <MobileBottomNav currentIndex={0} />
+    <div className=" ">
+      <MobileHeader
+        coins={profile?.profile!.coinscount}
+        unseenNotification={profile?.profile!.unReadCount! > 0}
+        unseenChat={
+          !!chats.find(
+            (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
+          )
+        }
+      />
+      <div className="mt-20">
+        {profile.bossup ? (
+          <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+        ) : null}
       </div>
-
-
-      <div className="computer-only">
-        <ComputerHeader />
-        <div className="computer-content">
-          <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-            
-          }}>
-            <div className="" >
-
-
-              <div className="flex items-center " onClick={() => navigate(RoutesPath.myProfile)}>
-
-                <UserAvatar
-                  imageSize="h-24 w-24"
-                  imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
-                />
-                <div className="ml-4">
-                  <p className="text-xl font-semibold">Isaac Akin</p>
-                  <p className="text-lg font-medium">Consultant</p>
-                  <p className="font-medium">Digital Blogger</p>
-                  <p className="text-sm font-light text-[#A9A9A9]">United Kingdom</p>
-                </div>
-
-                <div className="flex-grow" />
-                <Popup
-                  trigger={
-                    <div>
-                      <IoIosMore size={20} />
-                    </div>
-                  }
-                  position="left top"
-                  on="click"
-                  closeOnDocumentClick
-                  contentStyle={{ padding: "0px", border: "none" }}
-                // arrow={false}
-                >
-                  {
-                    (((close: any) => (
-                      <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                        <button
-                          onClick={() => {
-                            close();
-                          }}
-                          className="menu-item"
-                        >
-                          Hide
-                        </button>
-                        <button
-                          onClick={() => {
-                            close();
-                          }}
-                          className="menu-item"
-                        >
-                          Report
-                        </button>
-                      </div>
-                    )) as unknown) as ReactNode
-                  }
-                </Popup>
-
-
-              </div>
-            </div>
-
-
-
-          </div>
-          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
-              <PostItem key={post} />
-            ))}
-          </div>
-          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-            
-          
-            
-          }}>
-            <div className="" >
-              <ComputerBossOfTheWeek />
-              <div className="bg-[#F4F4F4] flex items-center justify-between p-2 rounded-lg mt-2">
-                <small className="text-xs text-[#545151]">Boss Up by</small>
-                <p className="text-[#545151] text-sm">
-                  Business Bosses Company Limited
-                </p>
-                <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
-                
-
-              </div>
-
-            </div>
-            
-
-
-          </div>
-          
-
-        </div>
+      <div className="p-5">
+        {posts.map((post: MixedPostState, index: number) => {
+          if (post.isForum) {
+            return (
+              <ForumItem
+                onEdit={() => {}}
+                onComment={(comment: Comment) => {
+                  onComment(comment, index);
+                }}
+                onLike={(postId: string) => {
+                  onLike(
+                    {
+                      postId,
+                      type: "forum",
+                      userId: profile.profile!.uid,
+                      receiverUid: post.data.user!.uid,
+                    },
+                    index
+                  );
+                }}
+                onCoin={(postId: string) => {
+                  onCoin(
+                    {
+                      postId,
+                      type: "forum",
+                      userId: profile.profile!.uid,
+                      receiverUid: post.data.user!.uid,
+                      timestamp: Date.now(),
+                    },
+                    index
+                  );
+                }}
+                data={post.data as Forum}
+                key={index}
+              />
+            );
+          } else {
+            return (
+              <PostItem
+                onComment={(comment: Comment) => {
+                  onComment(comment, index);
+                }}
+                onLike={(postId: string) => {
+                  onLike(
+                    {
+                      postId,
+                      type: "post",
+                      userId: profile.profile!.uid,
+                      receiverUid: post.data.user!.uid,
+                    },
+                    index
+                  );
+                }}
+                onCoin={(postId: string) => {
+                  onCoin(
+                    {
+                      postId,
+                      type: "post",
+                      userId: profile.profile!.uid,
+                      receiverUid: post.data.user!.uid,
+                      timestamp: Date.now(),
+                    },
+                    index
+                  );
+                }}
+                data={post.data as Post}
+                key={index}
+              />
+            );
+          }
+        })}
       </div>
-
+      <div className="my-20"></div>
+      <MobileBottomNav currentIndex={0} />
     </div>
   );
 };

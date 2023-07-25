@@ -15,12 +15,7 @@ const Post = ({ imgUrl, title }: Props) => {
         />
       ) : (
         <div className="bg-[rgba(0,0,0,0.1)] h-36 p-3 rounded-lg text-sm ">
-          <p className="line-clamp-6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto
-            vero ab aperiam dolorum quaerat perferendis ex atque nostrum vitae
-            magni voluptatibus, veritatis magnam, minima molestiae, illum
-            accusamus error corrupti ut.
-          </p>
+          <p className="line-clamp-6">{title}</p>
         </div>
       )}
       <button className="absolute top-2 right-2 bg-white rounded-full p-1">
