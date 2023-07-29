@@ -3,6 +3,7 @@ import { BsInfoCircle } from "react-icons/bs";
 import FilledButton from "../buttons/FilledButton";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiUsers } from "react-icons/fi";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 interface Props {
   banner: string;
   label: string;
@@ -38,7 +39,7 @@ const ForumCard = ({
         />
       </div>
 
-      <div className="bg-marketLinear p-3 mt-2 rounded-lg">
+      <div className="bg-[#ffffff] p-3 mt-2 rounded-lg">
         <div className="flex gap-3">
           <img src={banner} alt="" className="w-32 h-20 rounded-lg" />
           <p className="text-[#383838] text-sm">{label}</p>
@@ -63,12 +64,16 @@ const ForumCard = ({
           </button>
         </div>
       </div>
-      <div className="bg-[#F4F4F4] flex items-center justify-between p-2 rounded-lg mt-2">
-        <small className="text-xs text-[#545151]">Boss Up by</small>
-        <p className="text-[#545151] text-sm">
-          Business Bosses Company Limited
-        </p>
+      <div className="mobile-only"><div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
+        <div className="flex items-center">
+          <small className="text-xs text-[#545151] pr-2" style={{ paddingRight: 10 , borderRight: '1.2px solid rgba(0, 0, 0, 0.5)' }}>
+            Boss Up by
+          </small>
+          <p className="text-[#545151] text-sm pl-2" >Business Bosses Company Limited </p>
+        </div>
+        <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
       </div>
+    </div>
     </div>
   );
 };

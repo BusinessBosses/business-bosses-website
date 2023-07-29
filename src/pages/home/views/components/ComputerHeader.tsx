@@ -7,6 +7,7 @@ import RoutesPath from "../../../../constants/Routes";
 import Assets from "../../../../assets";
 import { CiSearch } from "react-icons/ci";
 import { BiX } from "react-icons/bi";
+import { useAppSelector } from "../../../../redux/store/store";
 
 const ComputerHeader = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,6 +15,9 @@ const ComputerHeader = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const location = useLocation();
   const currentRoute = location.pathname;
+  const posts = useAppSelector((state) => state.post.mixedPosts);
+  const profile = useAppSelector((state) => state.user);
+  const chats = useAppSelector((state) => state.chat.chats);
 
   useEffect(() => {
     if (isPopupOpen) {
@@ -61,12 +65,17 @@ const ComputerHeader = () => {
         </div>
         <div className="flex items-center gap-2">
           {/* Show search icon on small screens */}
-          <div className="lg:hidden">
+          <div className="lg:hidden ml-5 mr-5">
             <div className="bg-[#f4f4f4] rounded-full p-2 cursor-pointer" onClick={openPopup}>
               <CiSearch className="text-[#333333]" size={23} style={{ strokeWidth: 1 }} />
             </div>
           </div>
-          <ComputerTopNav currentIndex={currentIndex} onTabClick={handleTabClick} currentRoute={currentRoute} />
+          <ComputerTopNav currentIndex={currentIndex} onTabClick={handleTabClick} currentRoute={currentRoute} unseenNotification={profile?.profile!.unReadCount! > 0}
+          unseenChat={
+            !!chats.find(
+              (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
+            )
+          } />
         </div>
       </div>
       <div style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>

@@ -17,11 +17,21 @@ const Learning = () => {
   }, [industries]);
 
   return (
-    <div className="">
-      <div className="grid grid-cols-2 gap-3">
-        {learningIndustries.map((industry) => {
-          return <IndustryCard industry={industry} key={industry.industryId} />;
-        })}
+    <div>
+      <div className="mobile-only bg-[#F4F4F4] p-5">
+        <div className="grid grid-cols-2 gap-3">
+          {learningIndustries.map((industry) => {
+            return <IndustryCard industry={industry} key={industry.industryId} />;
+          })}
+        </div>
+      </div>
+
+      <div className="computer-only rounded-2xl" style={{backgroundColor:"#F4F4F4",paddingLeft:10,paddingRight:10, paddingTop:10, paddingBottom:10}}>
+        <div className="grid grid-cols-2 gap-3">
+          {learningIndustries.map((industry) => {
+            return <IndustryCard industry={industry} key={industry.industryId} />;
+          })}
+        </div>
       </div>
     </div>
   );

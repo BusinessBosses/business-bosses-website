@@ -13,6 +13,7 @@ import moment from "moment";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 import DailyQuotes from "./components/DailyQuotes";
 import Notification from "./components/Notification";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
 
 const NotificationPage = () => {
   const notification = useAppSelector((state) => state.notification);
@@ -47,51 +48,144 @@ const NotificationPage = () => {
   }, []);
   return (
     <div>
-      <div className="fixed top-0 w-full z-50">
-        <CommonPageHeader title="Notifications" />
-      </div>
-      <div className="my-16"></div>
+      <div className="mobile-only">
+        <div className="fixed top-0 w-full z-50">
+          <CommonPageHeader title="Notifications" />
+        </div>
+        <div className="my-16"></div>
 
-      {loading ? (
-        <FetchStatus
-          error={false}
-          errorMessage="Something went wrong!!"
-          loading={true}
-          onReload={() => {}}
-        />
-      ) : err ? (
-        <FetchStatus
-          error={true}
-          errorMessage="Something went wrong!!"
-          loading={false}
-          onReload={fetchCall}
-        />
-      ) : (
-        <div>
-          <DailyQuotes quote={notification.quote} />
+        {loading ? (
+          <FetchStatus
+            error={false}
+            errorMessage="Something went wrong!!"
+            loading={true}
+            onReload={() => { }}
+          />
+        ) : err ? (
+          <FetchStatus
+            error={true}
+            errorMessage="Something went wrong!!"
+            loading={false}
+            onReload={fetchCall}
+          />
+        ) : (
+          <div>
+            <DailyQuotes quote={notification.quote} />
 
-          <div className="p-5">
-            <h3 className="text-xl font-medium">Activity</h3>
-            {notification.notifications.map((data, index, notifications) => {
-              const currentdate = moment(data.timestamp).format("DD MMM YY");
-              const recentdate =
-                index === 0
-                  ? null
-                  : moment(notifications[index - 1].timestamp).format(
+            <div className="p-5">
+              <h3 className="text-xl font-medium">Activity</h3>
+              {notification.notifications.map((data, index, notifications) => {
+                const currentdate = moment(data.timestamp).format("DD MMM YY");
+                const recentdate =
+                  index === 0
+                    ? null
+                    : moment(notifications[index - 1].timestamp).format(
                       "DD MMM YY"
                     );
-              return (
-                <div key={data.notificationId} className="">
-                  {index === 0 || currentdate !== recentdate ? (
-                    <h4 className="my-5">{currentdate}</h4>
-                  ) : null}
-                  <Notification data={data} />
-                </div>
-              );
-            })}
+                return (
+                  <div key={data.notificationId} className="">
+                    {index === 0 || currentdate !== recentdate ? (
+                      <h4 className="my-5">{currentdate}</h4>
+                    ) : null}
+                    <Notification data={data} />
+                  </div>
+                );
+              })}
+            </div>
           </div>
+        )}
+      </div>
+
+
+      <div className="computer-only">
+        <ComputerHeader />
+        <div className="computer-content">
+          <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+
+          }}>
+            <div className="" >
+              <div className=" flex items-center gap-3">
+                {/* <ComputerProfileDetails data={profile.profile!} /> */}
+              </div>
+
+            </div>
+          </div>
+          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
+            {loading ? (
+              <FetchStatus
+                error={false}
+                errorMessage="Something went wrong!!"
+                loading={true}
+                onReload={() => { }}
+              />
+            ) : err ? (
+              <FetchStatus
+                error={true}
+                errorMessage="Something went wrong!!"
+                loading={false}
+                onReload={fetchCall}
+              />
+            ) : (
+              <div>
+                
+
+                <div className="p-5">
+                  <h3 className="text-xl font-medium">Activity</h3>
+                  {notification.notifications.map((data, index, notifications) => {
+                    const currentdate = moment(data.timestamp).format("DD MMM YY");
+                    const recentdate =
+                      index === 0
+                        ? null
+                        : moment(notifications[index - 1].timestamp).format(
+                          "DD MMM YY"
+                        );
+                    return (
+                      <div key={data.notificationId} className="">
+                        {index === 0 || currentdate !== recentdate ? (
+                          <h4 className="my-5">{currentdate}</h4>
+                        ) : null}
+                        <Notification data={data} />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            paddingTop:80,
+
+
+          }}>
+
+            <div className="rounded-xl overflow-hidden" style={{}}>
+            <DailyQuotes quote={notification.quote} />
+             
+            </div>
+
+
+          </div>
+
+
         </div>
-      )}
+
+
+
+      </div>
     </div>
   );
 };

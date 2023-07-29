@@ -18,6 +18,8 @@ import CommunitiesController from "../controller/CommunitiesController";
 import { Forum } from "../../../common/interfaces/forum";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import { Socket } from "socket.io-client";
+import ForumCard from "../../../common/components/forum/ForumCard";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
 interface Props {
   socket: Socket;
 }
@@ -54,6 +56,49 @@ const CommunitiesPage = ({ socket }: Props) => {
   useEffect(() => {
     initRoute();
   }, []);
+
+
+  const renderLastSectionContent = () => {
+    if (currentIndex === 1) {
+      return (
+        <div>
+          <div className="pb-5">
+            {/* <ForumCard
+              banner="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
+              didJoin={false}
+              label="Ideas on how to create things easily"
+              members={20}
+              onJoin={() => { } }
+              topics={20} createLabel={""} onCreate={undefined}            /> */}
+          </div>
+          <Learning />
+        </div>
+      );
+    } else if (currentIndex === 2) {
+      return (
+        <div>
+          <div className="pb-5">
+            {/* <ForumCard
+              banner="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
+              didJoin={false}
+              label="Ideas on how to create things easily"
+              members={20}
+              onJoin={() => { }}
+              topics={20}
+            /> */}
+          </div>
+          <Opportunities />
+        </div>
+      );
+    } else {
+      // Default content for other tabs (assuming Challenge tab is displayed by default)
+      return (
+        <div className=" ">
+
+        </div>
+      );
+    }
+  };
 
   const fetchCall = async () => {
     setForumErr(false);
@@ -95,44 +140,111 @@ const CommunitiesPage = ({ socket }: Props) => {
 
   return (
     <div>
-      <div className="fixed top-0 w-full z-50">
-        <div className="flex items-center p-5 justify-between bg-white">
-          <p className="text-lg">Boss Up</p>
-          <CiSearch size={20} />
+      <div className="mobile-only">
+        <div className="fixed top-0 left-0 w-screen h-screen z-50">
+          <div className="fixed top-0 left-0 w-full bg-white shadow-lg">
+            <div className="flex items-center px-5 justify-between bg-white">
+              <p className="text-lg font-semibold text-[#333333]">Boss Up</p>
+              <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
+            </div>
+
+            <div className="">
+              <Tabs
+                onChangeRoute={(index: number) => changeRoute(index)}
+                currentIndex={currentIndex}
+              />
+            </div>
+          </div>
+        </div>
+
+        {forumLoading || industryLoading || !!!industries.length ? (
+          <FetchStatus
+            error={false}
+            errorMessage="Something went wrong!!"
+            loading={true}
+            onReload={fetchCall}
+          />
+        ) : forumErr || industryErr ? (
+          <FetchStatus
+            error={true}
+            errorMessage="Something went wrong!!"
+            loading={false}
+            onReload={fetchCall}
+          />
+        ) : (
+          <div className="" style={{paddingTop:70}}>
+          <Routes>
+            <Route
+              index
+              element={<Challenge socket={socket} forums={forums} />}
+            />
+            <Route path={RoutesPath.learning} element={<Learning />} />
+            <Route path={RoutesPath.opportunities} element={<Opportunities />} />
+          </Routes>
+          </div>
+        )}
+        <div className="my-20"></div>
+        <MobileBottomNav currentIndex={1} />
+      </div>
+
+      <div className="computer-only">
+        <ComputerHeader />
+        <div className="computer-content">
+          <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+
+          }}>
+            <div className="" >
+              <div className=" flex items-center gap-3">
+                {/* <ComputerProfileDetails data={profile.profile!} /> */}
+              </div>
+
+            </div>
+          </div>
+          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
+            <div>
+              <div className="sticky top-100 mt-5">
+                <Tabs
+                  onChangeRoute={(index: number) => changeRoute(index)}
+                  currentIndex={currentIndex}
+                />
+              </div>
+            </div>
+            <Challenge socket={socket} forums={forums} />
+
+
+          </div>
+          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            paddingTop: 65,
+          }}>
+            {renderLastSectionContent()}
+
+          </div>
+
+
+
+
         </div>
       </div>
-      <Tabs
-        onChangeRoute={(index: number) => changeRoute(index)}
-        currentIndex={currentIndex}
-      />
 
-      {forumLoading || industryLoading || !!!industries.length ? (
-        <FetchStatus
-          error={false}
-          errorMessage="Something went wrong!!"
-          loading={true}
-          onReload={fetchCall}
-        />
-      ) : forumErr || industryErr ? (
-        <FetchStatus
-          error={true}
-          errorMessage="Something went wrong!!"
-          loading={false}
-          onReload={fetchCall}
-        />
-      ) : (
-        <Routes>
-          <Route
-            index
-            element={<Challenge socket={socket} forums={forums} />}
-          />
-          <Route path={RoutesPath.learning} element={<Learning />} />
-          <Route path={RoutesPath.opportunities} element={<Opportunities />} />
-        </Routes>
-      )}
-      <div className="my-20"></div>
-      <MobileBottomNav currentIndex={1} />
     </div>
+
+
+
+
   );
 };
 

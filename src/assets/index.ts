@@ -30,6 +30,7 @@ import Trophy from "./icons/trophy.svg";
 import Product from "./icons/product.svg";
 import Invite from "./icons/invitepicture.png";
 import ActiveNotification from "./icons/active_notification.svg";
+import { ReactComponent as Backbutton } from "./icons/backbutton.svg"
 
 
 
@@ -66,6 +67,7 @@ const Assets = {
     User,
     Send,
     File,
-    Upload
+    Upload,
+    Backbutton,
 };
 export default Assets;

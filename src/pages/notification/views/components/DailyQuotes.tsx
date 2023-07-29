@@ -13,11 +13,9 @@ const DailyQuotes = ({ quote }: Props) => {
             <h3 className="text-2xl font-semibold">Today’s Quote</h3>
           </div>
           <p className="text-[#6B6969] text-sm mt-3">
-            Lorem ipsum dolor sit amet consectetur. Cras viverra porta eget
-            congue massa eget pellentesque a. Enim molestie massa arcu vitae dui
-            pharetra viverra varius mus. Ullamcorper quam in turpis sit
+            {quote.message}
           </p>
-          <h4 className="font-bold mt-2 text-end">Benjamin Franklin</h4>
+          <h4 className="font-bold mt-2 text-end">{quote.by}</h4>
         </div>
       </div>
 
@@ -28,15 +26,11 @@ const DailyQuotes = ({ quote }: Props) => {
             <h3 className="text-2xl font-semibold">Today’s Quote</h3>
           </div>
           <p className="text-[#6B6969] text-sm mt-5">
-            Lorem ipsum dolor sit amet consectetur. Cras viverra porta eget
-            congue massa eget pellentesque a. Enim molestie massa arcu vitae dui
-            pharetra viverra varius mus. Ullamcorper quam in turpis sit
+            {quote.message}
           </p>
-          <h4 className="font-bold mt-5 text-start">Benjamin Franklin</h4>
+          <h4 className="font-bold mt-5 text-start">{quote.by}</h4>
         </div>
       </div>
-      <p className="text-[#6B6969] text-sm mt-3">{quote.message}</p>
-      <h4 className="font-bold mt-2 text-end">{quote.by}</h4>
     </div>
   );
 };

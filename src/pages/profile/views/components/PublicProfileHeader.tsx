@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import { AiOutlineMore, AiOutlineSetting } from "react-icons/ai";
 import { BiArrowBack } from "react-icons/bi";
+import Assets from "../../../../assets";
 interface Props {
   name: string;
 }
@@ -14,7 +15,7 @@ const PublicProfileHeader = ({ name }: Props) => {
       <div className="flex items-center p-5 justify-between bg-white">
         <div className="flex items-center gap-5">
           <button onClick={() => navigate(-1)}>
-            <BiArrowBack size={20} />
+           <Assets.Backbutton/>
           </button>
           <p className="text-lg font-semibold text-[#333333]">@{name}</p>
         </div>
@@ -28,7 +29,7 @@ const PublicProfileHeader = ({ name }: Props) => {
       <div className="flex items-center p-5 justify-between bg-white">
         <div className="flex items-center gap-5">
           <button onClick={() => navigate(-1)}>
-            <BiArrowBack size={20} />
+          <Assets.Backbutton/>
           </button>
           <p className="text-2xl font-semibold text-[#333333]">@Owen</p>
         </div>

@@ -1,7 +1,7 @@
 import { CiSearch } from "react-icons/ci";
 import MarketItem from "./components/MarketItem";
 import MobileBottomNav from "../../home/views/components/MobileBottomNav";
-import MobileMarketIntro from "./components/MobileMarketIntro";
+import MobileMarketIntro from "./components/MarketIntro";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import { useEffect, useState } from "react";
 import MarketController from "../controller/MarketController";
@@ -19,6 +19,8 @@ import GeneralPostsController, {
 import { saveUserData } from "../../../redux/slices/UserSlice";
 import { Comment as CommentStruct } from "../../../common/interfaces/comment";
 import { Socket } from "socket.io-client";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 interface Props {
   socket: Socket;
 }
@@ -114,7 +116,7 @@ const MarketPlacePage = ({ socket }: Props) => {
 
   return (
     <div>
-      <div className="mobile-only">
+      <div className="mobile-only" style={{ paddingTop: 45 }}>
         <div
           className="fixed top-0 w-full z-50"
           style={{ boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)" }}
@@ -125,11 +127,11 @@ const MarketPlacePage = ({ socket }: Props) => {
           </div>
         </div>
 
-        <div className="mt-20">
+        <div className="">
           <MobileMarketIntro />
         </div>
 
-        <div className="p-5">
+        <div className="">
           {market.markets.map((market: Market, index: number) => (
             <MarketItem
               onComment={(comment: CommentStruct) => {
@@ -165,6 +167,93 @@ const MarketPlacePage = ({ socket }: Props) => {
         </div>
         <div className="my-20"></div>
         <MobileBottomNav currentIndex={2} />
+      </div>
+
+
+      <div className="computer-only" style={{ paddingTop: 45 }}>
+        <ComputerHeader />
+        <div className="computer-content">
+          <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+
+          }}>
+            <div className="" >
+              <div className=" flex items-center gap-3">
+                <ComputerProfileDetails data={profile.profile!} />
+              </div>
+
+            </div>
+          </div>
+          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="computer-main-content" style={{ paddingTop: 20, width: '40%', flexGrow: 0 }} >
+            <div className="">
+              {market.markets.map((market: Market, index: number) => (
+                <MarketItem
+                  onComment={(comment: CommentStruct) => {
+                    onComment(comment, index);
+                  }}
+                  onLike={(postId: string) => {
+                    onLike(
+                      {
+                        postId,
+                        type: "marketplace",
+                        userId: profile.profile!.uid,
+                        receiverUid: market.user!.uid,
+                      },
+                      index
+                    );
+                  }}
+                  onCoin={(postId: string) => {
+                    onCoin(
+                      {
+                        postId,
+                        type: "marketplace",
+                        userId: profile.profile!.uid,
+                        receiverUid: market.user!.uid,
+                        timestamp: Date.now(),
+                      },
+                      index
+                    );
+                  }}
+                  data={market}
+                  key={market.marketId}
+                />
+              ))}
+            </div>
+            <div className="my-20"></div>
+
+
+          </div>
+          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="lastsection ml-5 mr-5 lg:mr-20" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            paddingTop: 30,
+
+
+
+          }}>
+
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              <MobileMarketIntro />
+            </div>
+
+
+          </div>
+
+
+
+
+        </div>
       </div>
     </div>
   );

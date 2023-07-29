@@ -35,7 +35,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   };
   return (
     <div
-      className="bg-[#EAEAEA]"
+      className="bg-[#EAEAEA] "
       style={{
         paddingLeft: 20,
         paddingRight: 20,
@@ -70,7 +70,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           </p>
           <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
           <p className="text-xs text-[#777777]">{bossOfTheWeek.bio}</p>
-          <div className="flex items-center gap-3 mt-1">
+          <div className="flex items-center gap-3 mt-1 lg:mb-4">
             {!profile?.connecteds?.includes(bossOfTheWeek.uid!) ? (
               <FilledButton
                 onClick={connection}
@@ -85,7 +85,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
               />
             )}
             <OutlinedButton
-              onClick={() => {}}
+              onClick={() => { }}
               text="Refer"
               className="px-2 py-1.5"
             />
@@ -93,13 +93,17 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         </div>
       </div>
 
-      <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
-        <small className="text-xs text-[#545151]">Boss Up by</small>
-        <p className="text-[#545151] text-sm">
-          Business Bosses Company Limited
-        </p>
+      <div className="mobile-only"><div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
+        <div className="flex items-center">
+          <small className="text-xs text-[#545151] pr-2" style={{ paddingRight: 10 , borderRight: '1.2px solid rgba(0, 0, 0, 0.5)' }}>
+            Boss Up by
+          </small>
+          <p className="text-[#545151] text-sm pl-2" >Business Bosses Company Limited </p>
+        </div>
         <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
       </div>
+      </div>
+
     </div>
   );
 };

@@ -14,12 +14,14 @@ interface Props {
   currentIndex: number;
   onTabClick: (index: number) => void;
   currentRoute: string;
+  unseenChat?: boolean;
+  unseenNotification?: boolean;
 
 }
 
 
 
-const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
+const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute, unseenChat, unseenNotification }: Props) => {
   const primaryColor = "#F21C29";
   const strokeColor = "#A9A9A9";
   const navigate = useNavigate();
@@ -58,7 +60,7 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
         navigate(RoutesPath.home);
         break;
       case 1:
-        navigate("/bossup");
+        navigate("/communities");
         break;
       case 2:
         navigate(RoutesPath.marketPlace);
@@ -142,7 +144,7 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
             />
           </button>
         );
-      
+
 
       default:
         return (<button
@@ -232,11 +234,18 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
         className={`tab ${currentIndex === 3 ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(3)}
       >
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center relative"> {/* Add 'relative' class here */}
+
           <Assets.Messagenoback
             stroke={currentIndex === 3 ? primaryColor : strokeColor}
             style={{ width: '22px', height: '22px' }}
           />
+
+          {unseenChat ? (
+
+            < div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
+          ) : null}
+
           <p
             className={
               currentIndex === 3
@@ -247,27 +256,36 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
             Messages
           </p>
         </div>
+
       </div>
 
       <div
         className={`tab ${currentIndex === 4 ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(4)}
       >
-        <div className="flex flex-col items-center">
-          <Assets.Notifnoback
-            stroke={currentIndex === 4 ? primaryColor : strokeColor}
-            style={{ width: '22px', height: '22px' }}
-          />
-          <p
-            className={
-              currentIndex === 4
-                ? "text-primary font-semibold"
-                : "text-gray-500"
-            }
-          >
-            Notifications
-          </p>
-        </div>
+        <div className="flex flex-col items-center relative"> {/* Add 'relative' class here */}
+  {/* Your notification icon */}
+  <Assets.Notifnoback
+    stroke={currentIndex === 4 ? primaryColor : strokeColor}
+    style={{ width: '22px', height: '22px' }}
+  />
+
+  {unseenNotification ? (
+ 
+    <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
+  ) : null}
+
+  <p
+    className={
+      currentIndex === 4
+        ? "text-primary font-semibold"
+        : "text-gray-500"
+    }
+  >
+    Notifications
+  </p>
+</div>
+
       </div>
       <div className="pb-3">
         {renderButton(currentIndex)}
