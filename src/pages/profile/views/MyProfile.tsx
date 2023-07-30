@@ -88,6 +88,7 @@ const MyProfile = () => {
 
       <div className="computer-only">
 
+
         <ComputerHeader />
         <div className="computer-content">
           <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
@@ -110,6 +111,8 @@ const MyProfile = () => {
 
 
           <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
+
+          <div className="sticky" ><MyProfileHeader /></div>
 
             <MyProfileDetails data={profile.profile!} />
 
