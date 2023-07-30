@@ -49,10 +49,10 @@ const NotificationPage = () => {
   return (
     <div>
       <div className="mobile-only">
-        <div className="fixed top-0 w-full z-50">
+        <div           className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 20px 40px rgba(0, 0, 0, 0.02)' }}>
           <CommonPageHeader title="Notifications" />
         </div>
-        <div className="my-16"></div>
+        
 
         {loading ? (
           <FetchStatus
