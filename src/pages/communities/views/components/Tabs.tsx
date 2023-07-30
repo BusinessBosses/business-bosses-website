@@ -5,7 +5,7 @@ interface Props {
 const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
   return (
     <div className="sticky bg-white z-50">
-      <div className="flex items-center justify-between" style={{paddingLeft:20, paddingRight:20}}>
+      <div className="grid grid-cols-3 items-center justify-between">
         <button
           onClick={() => onChangeRoute(0)}
           className={`${

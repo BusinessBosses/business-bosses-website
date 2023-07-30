@@ -37,10 +37,14 @@ const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const [showAccessTokenDialog, setShowAccessTokenDialog] = useState<boolean>(
     false
   );
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   let socket = useSocket(socketUrl, {
@@ -209,7 +213,7 @@ const App = () => {
       <Route path={RoutesPath.settings} element={<SettingsPage />} />
       <Route path={RoutesPath.invite} element={<InvitePage />} />
       <Route path={RoutesPath.notifications} element={<NotificationPage />} />
-      <Route path={RoutesPath.homeSearch} element={<HomeSearch />} />
+      <Route path={RoutesPath.homeSearch} element={<HomeSearch onClosePopup={closePopup}/>} />
       <Route path={RoutesPath.connections} element={<ConnectionsPage />} />
       <Route
         path={RoutesPath.register}

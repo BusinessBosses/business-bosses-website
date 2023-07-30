@@ -170,7 +170,7 @@ const CreateBossup = () => {
           </button>
         </div>
       </div>
-      <div className="mt-32 px-5">
+      <div className="mt-32 px-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();

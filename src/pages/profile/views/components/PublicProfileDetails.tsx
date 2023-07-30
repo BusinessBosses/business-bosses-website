@@ -33,7 +33,7 @@ const PublicProfileDetails = ({ data }: Props) => {
   };
   return (
     <div>
-    <div className="mt-20 px-5 mobile-only">
+    <div className="mt-20 px-4 mobile-only">
       <div className=" flex items-center gap-3">
         <UserAvatar
           imageSize="h-24 w-24"

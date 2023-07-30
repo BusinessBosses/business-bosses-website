@@ -32,7 +32,7 @@ const People = ({ recommendedConnections, loading, isSearching }: Props) => {
   };
   return (
     <div className="">
-      <h3 className="text-[#333333] text-xl font-semibold">
+      <h3 className="text-[#333333] text-xl font-semibold mt-5 pl-4">
         {isSearching ? "Searched Result" : "Recommended"}
       </h3>
       {loading ? (
@@ -45,12 +45,14 @@ const People = ({ recommendedConnections, loading, isSearching }: Props) => {
       ) : null}
       {recommendedConnections.map((connect: User, index: number) => {
         return (
+          <div className="px-4">
           <ConnectTile
             connected={!!profile?.connecteds?.includes(connect.uid!)}
             onConnect={connection}
             profile={connect}
             key={index}
           />
+          </div>
         );
       })}
       {/* <ConnectTile />

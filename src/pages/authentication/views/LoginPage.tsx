@@ -61,6 +61,8 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
   });
 
   const login = async () => {
+    // alert(emailRef.current?.value);
+    // return;
     if (loading) return;
     const validate = AuthController.validateLogin({
       email: emailRef.current?.value.trim(),
@@ -156,11 +158,10 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
 
         <div className="">
           <FilledButton
-            onClick={() => {
-              if (loading) return;
-              login();
-            }}
-            text={loading ? "Authenticating..." : "Sign Up"}
+            onClick={login}
+            text={loading ? "Authenticating..." : "Sign in"}
+
+
             className="w-full p-3"
           />
         </div>

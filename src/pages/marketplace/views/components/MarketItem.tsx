@@ -72,7 +72,9 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
     await GeneralPostsController.comment(structuredComment);
   };
   return (
-    <div className="my-10">
+    
+    <div>
+    <div className="mt-5 px-4">
       <SharePopUp
         url={`${window.location.href}post?id=${data.marketId}`}
         onClose={() => setShowShareDialog(false)}
@@ -108,7 +110,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
               onReload={() => {}}
             />
           )}
-          <div className="px-5">
+          <div className="px-4">
             {comments.map((comment: CommentStruct, index: number) => {
               return <Comment comment={comment} key={index} />;
             })}
@@ -249,7 +251,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             </div>
           </div>
         ) : null}
-        <div className="mt-5 flex items-center justify-between">
+        <div className="mt-5 flex items-center justify-between mb-3">
           <div className="flex gap-5">
             <PostAction
               count={data.likes!.length.toString()}
@@ -290,6 +292,10 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
           </small>
         </div>
       </div>
+
+    </div>
+    <div className="mobile-only " style={{ height: "7px", width: "100%", background: "#f4f4f4" }}></div>
+      <div className="computer-only" style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>
     </div>
   );
 };

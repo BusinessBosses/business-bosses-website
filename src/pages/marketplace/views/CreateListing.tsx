@@ -177,7 +177,7 @@ const CreateListing = () => {
           </button>
         </div>
       </div>
-      <div className="mt-20 px-5">
+      <div className="mt-20 px-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();

@@ -1,43 +1,45 @@
 import { BsPlusLg } from "react-icons/bs";
 import RoutesPath from "../../../../constants/Routes";
 import Assets from "../../../../assets";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BiX } from "react-icons/bi";
 import CreatePost from "../../../CreatePost.tsx/views/CreatePost";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
-
+import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
+import { onChangeRoute } from "../../../../redux/slices/RouteSlice";
 
 interface Props {
-  currentIndex: number;
-  onTabClick: (index: number) => void;
+  // currentIndex: number;
+  // onTabClick: (index: number) => void;
   currentRoute: string;
-
+  unseenChat?: boolean;
+  unseenNotification?: boolean;
 }
 
-
-
-const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
+const ComputerTopNav = ({
+  // currentIndex,
+  // onTabClick,
+  currentRoute,
+  unseenChat,
+  unseenNotification,
+}: Props) => {
   const primaryColor = "#F21C29";
   const strokeColor = "#A9A9A9";
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-
-
-
-
+  const dispatch = useAppDispatch();
+  const currentIndex = useAppSelector((state) => state.route.currentIndex);
 
   useEffect(() => {
     if (isPopupOpen) {
-      document.body.classList.add('popup-open');
+      document.body.classList.add("popup-open");
     } else {
-      document.body.classList.remove('popup-open');
+      document.body.classList.remove("popup-open");
     }
   }, [isPopupOpen]);
-
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -47,18 +49,14 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
     setIsPopupOpen(false);
   };
 
-
-
-
-
   const handleTabClick = (index: number) => {
-    onTabClick(index);
+    dispatch(onChangeRoute(index));
     switch (index) {
       case 0:
         navigate(RoutesPath.home);
         break;
       case 1:
-        navigate("/bossup");
+        navigate("/communities");
         break;
       case 2:
         navigate(RoutesPath.marketPlace);
@@ -69,26 +67,20 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
       case 4:
         navigate(RoutesPath.notifications);
         break;
-
     }
   };
 
   const renderButton = (index: number) => {
-
     switch (index) {
-
       case 0:
         return (
           <button
             onClick={openPopup}
-            className={`p-3 ${"bg-primary"
-              } rounded-xl text-white flex items-center`}
+            className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
           >
-            <p className="text-white font-semibold mr-2">
-              {"Create Post"}
-            </p>
+            <p className="text-white font-semibold mr-2">{"Create Post"}</p>
             <BsPlusLg
               strokeWidth={1.2}
               color="white"
@@ -101,17 +93,16 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
         return (
           <button
             onClick={openPopup}
-            className={`p-3 ${"bg-primary"
-              } rounded-xl text-white flex items-center`}
+            className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
           >
             <p className="text-white font-semibold mr-2">
-              {currentRoute === '/bossup'
-                ? 'Enter Challenge'
-                : currentRoute === '/bossup/learning'
-                  ? 'Start A Topic'
-                  : 'Share opportunities'}
+              {currentRoute === "/communities"
+                ? "Enter Challenge"
+                : currentRoute === "/communities/learning"
+                ? "Start A Topic"
+                : "Share opportunities"}
             </p>
 
             <BsPlusLg
@@ -126,14 +117,11 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
         return (
           <button
             onClick={openPopup}
-            className={`p-3 ${"bg-primary"
-              } rounded-xl text-white flex items-center`}
+            className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
           >
-            <p className="text-white font-semibold mr-2">
-              {"Sell"}
-            </p>
+            <p className="text-white font-semibold mr-2">{"Sell"}</p>
             <BsPlusLg
               strokeWidth={1.2}
               color="white"
@@ -142,39 +130,37 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
             />
           </button>
         );
-      
 
       default:
-        return (<button
-          onClick={openPopup}
-          className={`p-3 ${"bg-primary"
-            } rounded-xl text-white flex items-center`}
-          style={{ marginLeft: 100 }}
-          key={index}
-        >
-          <p className="text-white font-semibold mr-2">
-            {"Create Post"}
-          </p>
-          <BsPlusLg
-            strokeWidth={1.2}
-            color="white"
-            className="mr-2"
-            style={{ width: "18px", height: "18px" }}
-          />
-        </button>);
+        return (
+          <button
+            onClick={openPopup}
+            className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
+            style={{ marginLeft: 100 }}
+            key={index}
+          >
+            <p className="text-white font-semibold mr-2">{"Create Post"}</p>
+            <BsPlusLg
+              strokeWidth={1.2}
+              color="white"
+              className="mr-2"
+              style={{ width: "18px", height: "18px" }}
+            />
+          </button>
+        );
     }
   };
 
   return (
-    <div className="flex justify-between" style={{ gap: '20px' }}>
+    <div className="flex justify-between" style={{ gap: "20px" }}>
       <div
         className={`tab ${currentIndex === 0 ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(0)}
       >
         <div className="flex flex-col items-center">
           <Assets.Home
-            stroke={currentIndex === 0 ? primaryColor : strokeColor}
-            style={{ width: '20px', height: '19px' }}
+            stroke="currentIndex === 1 ? primaryColor : strokeColor"
+            style={{ width: "25px", height: "22px" }}
           />
           <p
             className={
@@ -194,7 +180,8 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
       >
         <div className="flex flex-col items-center">
           <Assets.BossupIcon
-            stroke={currentIndex === 1 ? primaryColor : strokeColor}
+            fill={currentIndex === 1 ? primaryColor : strokeColor}
+            style={{ width: "35px", height: "20px" }}
           />
           <p
             className={
@@ -232,11 +219,16 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
         className={`tab ${currentIndex === 3 ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(3)}
       >
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center relative">
+          {" "}
+          {/* Add 'relative' class here */}
           <Assets.Messagenoback
             stroke={currentIndex === 3 ? primaryColor : strokeColor}
-            style={{ width: '22px', height: '22px' }}
+            style={{ width: "22px", height: "22px" }}
           />
+          {unseenChat ? (
+            <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
+          ) : null}
           <p
             className={
               currentIndex === 3
@@ -253,11 +245,17 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
         className={`tab ${currentIndex === 4 ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(4)}
       >
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center relative">
+          {" "}
+          {/* Add 'relative' class here */}
+          {/* Your notification icon */}
           <Assets.Notifnoback
             stroke={currentIndex === 4 ? primaryColor : strokeColor}
-            style={{ width: '22px', height: '22px' }}
+            style={{ width: "22px", height: "22px" }}
           />
+          {unseenNotification ? (
+            <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
+          ) : null}
           <p
             className={
               currentIndex === 4
@@ -285,7 +283,9 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
                 <div className="p-0">
                   <div className="flex items-center gap-3">
                     <UserAvatar imageURL="https://cdn.pixabay.com/photo/2023/06/03/16/05/spotted-laughingtrush-8037974__340.png" />
-                    <p className="text-[#333333] text-lg font-medium">Isaac Akin</p>
+                    <p className="text-[#333333] text-lg font-medium">
+                      Isaac Akin
+                    </p>
                   </div>
 
                   <div className=" mt-7">
@@ -307,7 +307,10 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
                     <div className="flex items-center justify-between mt-5">
                       <img src={Assets.Rocket} alt="" />
                       <p className="text-[#373737] font-semibold">Boost Post</p>
-                      <MdOutlineKeyboardArrowRight size={24} className="text-primary" />
+                      <MdOutlineKeyboardArrowRight
+                        size={24}
+                        className="text-primary"
+                      />
                     </div>
                     <div className="mt-10">
                       <FilledButton
@@ -325,7 +328,6 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute }: Props) => {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

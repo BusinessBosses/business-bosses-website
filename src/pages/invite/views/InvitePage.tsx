@@ -20,10 +20,9 @@ const InvitePage = () => {
   return (
     <div>
       <div className="mobile-only">
-        <div className="fixed top-0 w-full z-50">
+      <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
           <CommonPageHeader title="Invite" />
         </div>
-        <div className="my-16"></div>
         <div className="bg-[#f4f4f4] w-full h-5" />
 
         <div className="flex flex-col items-center p-5">
