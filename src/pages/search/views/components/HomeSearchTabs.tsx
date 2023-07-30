@@ -5,14 +5,14 @@ interface Props {
 
 const HomeSearchTabs = ({ currentIndex, onChangeRoute }: Props) => {
   return (
-    <div className="sticky top-16 bg-white z-50">
-      <div className="grid grid-cols-2 items-center justify-between p-5">
+    <div className="sticky top-0 bg-white z-50">
+      <div className="grid grid-cols-2 items-center justify-between mt-3">
         <button
           onClick={() => onChangeRoute(0)}
           className={`${
             currentIndex === 0
-              ? "text-[#333333] w-full flex-grow border-b-2 border-b-primary"
-              : "text-[#A9A9A9]"
+              ? "text-[#333333] w-full flex-grow border-b-2 pb-2 border-b-primary"
+              : "text-[#A9A9A9] pb-2"
           }`}
         >
           People
@@ -21,8 +21,8 @@ const HomeSearchTabs = ({ currentIndex, onChangeRoute }: Props) => {
           onClick={() => onChangeRoute(1)}
           className={`${
             currentIndex === 1
-              ? "text-[#333333] w-full flex-grow border-b-2 border-b-primary"
-              : "text-[#A9A9A9]"
+              ? "text-[#333333] w-full flex-grow border-b-2 pb-2 border-b-primary"
+              : "text-[#A9A9A9] pb-2"
           }`}
         >
           Posts

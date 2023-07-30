@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
- // Use 'all' to import all icons from react-icons package
 import ComputerTopNav from "./ComputerTopNav";
 import HomeSearch from "../../../search/views/HomeSearch";
 import RoutesPath from "../../../../constants/Routes";
 import Assets from "../../../../assets";
 import { CiSearch } from "react-icons/ci";
-import { BiX } from "react-icons/bi";
 import { useAppSelector } from "../../../../redux/store/store";
 
 const ComputerHeader = () => {
@@ -15,7 +13,6 @@ const ComputerHeader = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const location = useLocation();
   const currentRoute = location.pathname;
-  const posts = useAppSelector((state) => state.post.mixedPosts);
   const profile = useAppSelector((state) => state.user);
   const chats = useAppSelector((state) => state.chat.chats);
 
@@ -35,7 +32,7 @@ const ComputerHeader = () => {
     setIsPopupOpen(false);
   };
 
-  const handleTabClick = (index: number) => {
+  const handleTabClick = (index:number) => {
     setCurrentIndex(index);
   };
 
@@ -50,7 +47,6 @@ const ComputerHeader = () => {
             onClick={() => navigate(RoutesPath.home)}
           />
           <div className="computer-only">
-            {/* Show search bar on large screens */}
             <div className="hidden lg:block">
               <button
                 onClick={openPopup}
@@ -64,36 +60,29 @@ const ComputerHeader = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {/* Show search icon on small screens */}
           <div className="lg:hidden ml-5 mr-5">
             <div className="bg-[#f4f4f4] rounded-full p-2 cursor-pointer" onClick={openPopup}>
               <CiSearch className="text-[#333333]" size={23} style={{ strokeWidth: 1 }} />
             </div>
           </div>
-          <ComputerTopNav currentIndex={currentIndex} onTabClick={handleTabClick} currentRoute={currentRoute} unseenNotification={profile?.profile!.unReadCount! > 0}
-          unseenChat={
-            !!chats.find(
-              (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
-            )
-          } />
+          <ComputerTopNav
+            currentIndex={currentIndex}
+            onTabClick={handleTabClick}
+            currentRoute={currentRoute}
+            unseenNotification={profile?.profile!.unReadCount! > 0}
+            unseenChat={
+              !!chats.find(
+                (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
+              )
+            }
+          />
         </div>
       </div>
       <div style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>
       {isPopupOpen && (
         <div className="overlay">
-          <div className="popup">
-            <button onClick={closePopup} style={{ paddingBottom: 20 }}>
-              <BiX size={20} />
-            </button>
-            <div className="bg-[#F4F4F4] flex items-center gap-3 py-2 px-6 rounded-lg">
-              <CiSearch className="text-[#A9A9A9]" size={20} />
-              <input
-                type="search"
-                placeholder="search"
-                className="placeholder:text-[#A9A9A9] bg-transparent outline-none border-none"
-              />
-            </div>
-            <HomeSearch />
+          <div className="popup" style={{overflowY:"scroll"}}>
+            <HomeSearch onClosePopup={closePopup} />
           </div>
         </div>
       )}
