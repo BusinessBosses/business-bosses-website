@@ -20,6 +20,8 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
   const termsRef = useRef<HTMLInputElement>(null);
 
   const login = async () => {
+    // alert(emailRef.current?.value);
+    // return;
     if (loading) return;
     const validate = AuthController.validateLogin({
       email: emailRef.current?.value.trim(),

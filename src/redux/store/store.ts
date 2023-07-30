@@ -7,6 +7,7 @@ import forumSlice from '../slices/ForumSlice';
 import IndustrySlice from '../slices/IndustrySlice';
 import marketSlice from '../slices/MarketSlice';
 import notificationSlice from '../slices/NotificationSlice';
+import routeSlice from '../slices/RouteSlice';
 const store = configureStore({
     reducer: {
         post: postSlice,
@@ -15,7 +16,8 @@ const store = configureStore({
         forum: forumSlice,
         industry: IndustrySlice,
         market: marketSlice,
-        notification: notificationSlice
+        notification: notificationSlice,
+        route: routeSlice
     },
     devTools: process.env.NODE_ENV !== 'production',
 })

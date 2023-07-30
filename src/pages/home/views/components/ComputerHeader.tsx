@@ -8,7 +8,6 @@ import { CiSearch } from "react-icons/ci";
 import { useAppSelector } from "../../../../redux/store/store";
 
 const ComputerHeader = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const location = useLocation();
@@ -32,12 +31,15 @@ const ComputerHeader = () => {
     setIsPopupOpen(false);
   };
 
-  const handleTabClick = (index:number) => {
-    setCurrentIndex(index);
-  };
+  // const handleTabClick = (index: number) => {
+  //   setCurrentIndex(index);
+  // };
 
   return (
-    <div className="bg-white top-0 w-full z-50"style={{position: 'sticky', top: 0, zIndex: 999}}>
+    <div
+      className="bg-white top-0 w-full z-50"
+      style={{ position: "sticky", top: 0, zIndex: 999 }}
+    >
       <div className="flex items-end justify-between mr-5 ml-5 lg:ml-20 lg:mr-20">
         <div className="flex items-center flex-grow">
           <img
@@ -61,13 +63,20 @@ const ComputerHeader = () => {
         </div>
         <div className="flex items-center gap-2">
           <div className="lg:hidden ml-5 mr-5">
-            <div className="bg-[#f4f4f4] rounded-full p-2 cursor-pointer" onClick={openPopup}>
-              <CiSearch className="text-[#333333]" size={23} style={{ strokeWidth: 1 }} />
+            <div
+              className="bg-[#f4f4f4] rounded-full p-2 cursor-pointer"
+              onClick={openPopup}
+            >
+              <CiSearch
+                className="text-[#333333]"
+                size={23}
+                style={{ strokeWidth: 1 }}
+              />
             </div>
           </div>
           <ComputerTopNav
-            currentIndex={currentIndex}
-            onTabClick={handleTabClick}
+            // currentIndex={currentIndex}
+            // onTabClick={handleTabClick}
             currentRoute={currentRoute}
             unseenNotification={profile?.profile!.unReadCount! > 0}
             unseenChat={
@@ -78,10 +87,16 @@ const ComputerHeader = () => {
           />
         </div>
       </div>
-      <div style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>
+      <div
+        style={{
+          height: "1.2px",
+          width: "100%",
+          background: "rgba(0, 0, 0, 0.1)",
+        }}
+      ></div>
       {isPopupOpen && (
         <div className="overlay">
-          <div className="popup" style={{overflowY:"scroll"}}>
+          <div className="popup" style={{ overflowY: "scroll" }}>
             <HomeSearch onClosePopup={closePopup} />
           </div>
         </div>

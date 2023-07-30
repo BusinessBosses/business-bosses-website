@@ -4,6 +4,7 @@ import serviceApi from "../../../services/serviceApi";
 class Authentication {
     validateLogin(data: LoginStruct): boolean {
         if (!!!data.email) {
+            console.log(data.email)
             toast.error("Invalid Email");
             return false
         } else if (!!!data.password) {
