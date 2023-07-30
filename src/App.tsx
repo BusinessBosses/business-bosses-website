@@ -211,7 +211,10 @@ const App = () => {
       <Route path={RoutesPath.notifications} element={<NotificationPage />} />
       <Route path={RoutesPath.homeSearch} element={<HomeSearch />} />
       <Route path={RoutesPath.connections} element={<ConnectionsPage />} />
-      <Route path={RoutesPath.register} element={<RegisterPage />} />
+      <Route
+        path={RoutesPath.register}
+        element={<RegisterPage onSuccess={fetchData} />}
+      />
       <Route
         path={RoutesPath.login}
         element={<LoginPage onLoginSuccess={fetchData} />}

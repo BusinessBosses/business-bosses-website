@@ -42,13 +42,21 @@ class Authentication {
     }
 
 
-    async registerRequest(args: RegisterStruct) {
-        const response = await serviceApi.post('/auth/sign-up', args);
+    async googleLoginRequest(args: { email: string, token: string }) {
+        const response = await serviceApi.post('/auth/google-sign-in', args);
         return response;
     }
 
-    async verificationRequest(otp: string) {
-        const response = await serviceApi.post('/auth/verify', { otp });
+
+
+
+    async registerRequest(args: RegisterStruct) {
+        const response = await serviceApi.post('/auth/web-sign-up', args);
+        return response;
+    }
+
+    async verificationRequest(args: { otp: string, email: string }) {
+        const response = await serviceApi.post('/auth/validate-otp', args);
         return response;
     }
 

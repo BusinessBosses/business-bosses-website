@@ -22,8 +22,10 @@ import { User } from "../../../common/interfaces/user";
 import { saveUserData } from "../../../redux/slices/UserSlice";
 import ProfileController from "../controller/ProfileController";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 const EditProfilePage = () => {
+  const location = useLocation();
   const [expansionState, setExpansionState] = useState({
     additionalInfo: false,
     achievments: false,
@@ -142,6 +144,10 @@ const EditProfilePage = () => {
   };
 
   useEffect(() => {
+    const state = location.state;
+    if (state && !profile) {
+      dispatch(saveUserData(state));
+    }
     setAccomplishments(profile?.achievements ?? []);
     setProducts(profile?.productsandservices ?? []);
     ageRef.current!.value = profile?.ageRange ?? "";

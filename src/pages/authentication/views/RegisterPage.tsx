@@ -7,8 +7,14 @@ import FilledInput from "../../../common/components/inputs/FilledInput";
 import RoutesPath from "../../../constants/Routes";
 import { useNavigate } from "react-router-dom";
 import AuthController from "../controller/AuthController";
-
-const RegisterPage = () => {
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { StorageEnum } from "../../../common/emums/StorageEmuns";
+interface Props {
+  onSuccess: VoidFunction;
+}
+const RegisterPage = ({ onSuccess }: Props) => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
@@ -16,6 +22,44 @@ const RegisterPage = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const termsRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const googleAuth = useGoogleLogin({
+    onSuccess: async (credentialResponse) => {
+      try {
+        setLoading(true);
+        const user = await axios.get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${credentialResponse.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${credentialResponse.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        if (user.data.id) {
+          const response = await AuthController.googleLoginRequest({
+            email: user.data.email,
+            token: credentialResponse.access_token,
+          });
+          if (response.success) {
+            localStorage.setItem(
+              StorageEnum.AccessToken,
+              response.data.accessToken
+            );
+            localStorage.setItem(StorageEnum.UserId, response.data.uid);
+            onSuccess();
+            navigate(RoutesPath.editProfile, { state: response.data });
+          }
+        }
+        setLoading(false);
+      } catch (error) {
+        toast.error("Something went Wrong!");
+      }
+    },
+    onError: () => {
+      toast.error("OOPS!! Something went wrong");
+    },
+  });
 
   const register = async () => {
     if (loading) return;
@@ -36,7 +80,7 @@ const RegisterPage = () => {
         password,
       });
       if (response.success) {
-        navigate(RoutesPath.verifyOtp);
+        navigate(RoutesPath.verifyOtp, { state: email });
       }
       setLoading(false);
     }
@@ -127,7 +171,10 @@ const RegisterPage = () => {
           <div className="bg-[#A9A9A999] h-[1px] w-full" />
         </div>
         <GoogleButton
-          onClick={() => {}}
+          onClick={() => {
+            if (loading) return;
+            googleAuth();
+          }}
           text="Sign in with Google"
           className="w-full p-3"
         />

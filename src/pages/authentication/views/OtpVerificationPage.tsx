@@ -1,8 +1,8 @@
 import PinInput from "react-pin-input";
 import FilledButton from "../../../common/components/buttons/FilledButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthController from "../controller/AuthController";
 import { StorageEnum } from "../../../common/emums/StorageEmuns";
 interface Props {
@@ -10,14 +10,19 @@ interface Props {
 }
 const OtpVerificationPage = ({ onSuccess }: Props) => {
   const [pin, setPin] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
   const verify = async () => {
     if (loading) return;
     const validate = AuthController.validateOTPVerification(pin);
     if (validate) {
       setLoading(true);
-      const response = await AuthController.verificationRequest(pin);
+      const response = await AuthController.verificationRequest({
+        otp: pin,
+        email,
+      });
       if (response.success) {
         localStorage.setItem(
           StorageEnum.AccessToken,
@@ -25,11 +30,20 @@ const OtpVerificationPage = ({ onSuccess }: Props) => {
         );
         localStorage.setItem(StorageEnum.UserId, response.data.uid);
         onSuccess();
-        navigate(RoutesPath.home);
+        navigate(RoutesPath.editProfile, { state: response.data });
       }
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const state = location.state;
+    if (!state) {
+      navigate(-1);
+    } else {
+      setEmail(state);
+    }
+  }, []);
   return (
     <div className="p-5">
       <div className="">
