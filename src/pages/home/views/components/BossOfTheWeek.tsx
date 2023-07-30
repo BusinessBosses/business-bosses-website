@@ -61,12 +61,12 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           }
         />
         <div className="w-3/4">
-          <p className="text-lg text-[#333333] font-medium">
+          <p className="text-md text-[#333333] font-semibold">
             {bossOfTheWeek.username}
           </p>
           <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
           <p className="text-xs text-[#777777]">{bossOfTheWeek.bio}</p>
-          <div className="flex items-center gap-3 mt-1 lg:mb-4">
+          <div className="flex items-center gap-3 mt-2 mb-2 lg:mb-4">
             {!profile?.connecteds?.includes(bossOfTheWeek.uid!) ? (
               <FilledButton
                 onClick={connection}
