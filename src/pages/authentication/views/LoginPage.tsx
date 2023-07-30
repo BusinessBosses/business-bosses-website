@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import AuthController from "../controller/AuthController";
 import { StorageEnum } from "../../../common/emums/StorageEmuns";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { toast } from "react-toastify";
 interface Props {
   onLoginSuccess: VoidFunction;
 }
@@ -18,6 +21,44 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const termsRef = useRef<HTMLInputElement>(null);
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (credentialResponse) => {
+      try {
+        setLoading(true);
+        const user = await axios.get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${credentialResponse.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${credentialResponse.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        if (user.data.id) {
+          const response = await AuthController.googleLoginRequest({
+            email: user.data.email,
+            token: credentialResponse.access_token,
+          });
+          if (response.success) {
+            localStorage.setItem(
+              StorageEnum.AccessToken,
+              response.data.accessToken
+            );
+            localStorage.setItem(StorageEnum.UserId, response.data.uid);
+            onLoginSuccess();
+            navigate(RoutesPath.home);
+          }
+        }
+        setLoading(false);
+      } catch (error) {
+        toast.error("Something went Wrong!");
+      }
+    },
+    onError: () => {
+      toast.error("OOPS!! Something went wrong");
+    },
+  });
 
   const login = async () => {
     // alert(emailRef.current?.value);
@@ -119,6 +160,8 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           <FilledButton
             onClick={login}
             text={loading ? "Authenticating..." : "Sign in"}
+
+
             className="w-full p-3"
           />
         </div>
@@ -127,8 +170,9 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           <p className="text-[#383838CC] font-[400]">or</p>
           <div className="bg-[#A9A9A999] h-[1px] w-full" />
         </div>
+
         <GoogleButton
-          onClick={() => {}}
+          onClick={googleLogin}
           text="Sign up with Google"
           className="w-full p-3"
         />
