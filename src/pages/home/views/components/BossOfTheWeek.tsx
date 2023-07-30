@@ -60,7 +60,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
             "https://cdn-icons-png.flaticon.com/128/149/149071.png"
           }
         />
-        <div className="w-1/2">
+        <div className="w-3/4">
           <p className="text-lg text-[#333333] font-medium">
             {bossOfTheWeek.username}
           </p>
