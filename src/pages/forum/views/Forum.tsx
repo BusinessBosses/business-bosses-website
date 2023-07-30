@@ -286,7 +286,8 @@ const Forum = ({ socket }: Props) => {
   };
   return (
     <div>
-      <div className="fixed top-0 w-full z-50">
+    <div className="mobile-only">
+    <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
         <CommonPageHeader title={industry?.industry ?? ""} />
       </div>
       <Popup lockScroll modal open={openModal}>
@@ -307,7 +308,7 @@ const Forum = ({ socket }: Props) => {
               </button>
             </div>
           </div>
-          <div className="mt-20 px-5">
+          <div className="mt-20 px-4">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -414,7 +415,6 @@ const Forum = ({ socket }: Props) => {
           </div>
         </div>
       </Popup>
-      <div className="my-16"></div>
       {industry ? (
         <ForumCard
           onCreate={() => {
@@ -451,7 +451,7 @@ const Forum = ({ socket }: Props) => {
           }}
         />
       ) : null}
-      <div className="p-5">
+      <div className="">
         {forums.map((forum: ForumProp, index: number) => (
           <ForumItem
             onEdit={() => {
@@ -489,6 +489,7 @@ const Forum = ({ socket }: Props) => {
           />
         ))}
       </div>
+    </div>
     </div>
   );
 };

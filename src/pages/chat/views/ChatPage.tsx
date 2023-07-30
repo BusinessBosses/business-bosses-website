@@ -21,10 +21,10 @@ const ChatPage = () => {
   return (
     <div>
       <div className="mobile-only">
-        <div className="fixed top-0 w-full z-50">
+      <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
           <CommonPageHeader title="Chat" />
         </div>
-        <div className="mt-20 px-5">
+        <div className="px-4">
           {uniqueChats.map((chat, index) => {
             return (
               <div
@@ -82,72 +82,72 @@ const ChatPage = () => {
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
 
-        
-
-        <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
-          <p>Chat</p>
-
-        </div>
-
-        <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-        <div className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0" style={{
-          width: '30%',
-          flexGrow: 0,
-          overflow: 'none',
-          position: 'sticky',
-          top: 0,
-          zIndex: 1,
 
 
+          <div className="computer-main-content p-5" style={{ width: '40%', flexGrow: 0 }} >
+            <p>Chat</p>
 
-        }}>
+          </div>
 
-          <div className="rounded-xl overflow-hidden" style={{}}>
-            {/* <div className="fixed top-0 w-full z-50">
+          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+
+
+
+          }}>
+
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              {/* <div className="fixed top-0 w-full z-50">
               <CommonPageHeader title="Chat" />
             </div> */}
-            <div className="mt-20 px-5">
-              {uniqueChats.map((chat, index) => {
-                return (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      navigate(RoutesPath.ChatRoom, {
-                        state: {
-                          user: chat.user,
-                        },
-                      });
-                    }}
-                    className="flex items-center my-5 gap-3"
-                  >
-                    <UserAvatar
-                      imageURL={
-                        chat.user?.photoUrl ??
-                        "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-                      }
-                    />
-                    <div className="">
-                      <h4 className="text-[#383838] text-xl capitalize">
-                        {chat.user?.username}
-                      </h4>
-                      <p className="text-[#6B6969]">
-                        {!!chat.messageText && chat.messageText !== ""
-                          ? chat.messageText
-                          : "Image"}
-                      </p>
+              <div className="">
+                {uniqueChats.map((chat, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        navigate(RoutesPath.ChatRoom, {
+                          state: {
+                            user: chat.user,
+                          },
+                        });
+                      }}
+                      className="flex items-center my-5 gap-3"
+                    >
+                      <UserAvatar
+                        imageURL={
+                          chat.user?.photoUrl ??
+                          "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+                        }
+                      />
+                      <div className="">
+                        <h4 className="text-[#383838] text-xl capitalize">
+                          {chat.user?.username}
+                        </h4>
+                        <p className="text-[#6B6969]">
+                          {!!chat.messageText && chat.messageText !== ""
+                            ? chat.messageText
+                            : "Image"}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
             </div>
+
 
           </div>
 
 
         </div>
-
-
-      </div>
       </div>
     </div>
   );

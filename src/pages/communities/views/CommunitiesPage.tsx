@@ -20,6 +20,9 @@ import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import { Socket } from "socket.io-client";
 import ForumCard from "../../../common/components/forum/ForumCard";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
+import { BsInfoCircle } from "react-icons/bs";
+import { Industry } from "../../../common/interfaces/industry";
+import serviceApi from "../../../services/serviceApi";
 interface Props {
   socket: Socket;
 }
@@ -35,6 +38,13 @@ const CommunitiesPage = ({ socket }: Props) => {
   const industries = useAppSelector((state) => state.forum.forums);
   const forums = useAppSelector((state) => state.forum.forums);
   const dispatch = useAppDispatch();
+
+  const [industry, setIndustry] = useState<Industry | null>(null);
+  const profile = useAppSelector((state) => state.user.profile);
+
+
+
+
   const changeRoute = (index: number) => {
     setCurrentIndex(index);
     const tab: string = tabs[index].split("/").pop() ?? "";
@@ -58,18 +68,53 @@ const CommunitiesPage = ({ socket }: Props) => {
   }, []);
 
 
+  const joinIndustry = async () => {
+    if (!!industry?.joinedUsers?.includes(profile!.uid)) {
+      const newJoinedUsers = industry.joinedUsers.filter(
+        (ft) => ft !== profile?.uid
+      );
+      setIndustry({ ...industry, joinedUsers: newJoinedUsers });
+    } else {
+      setIndustry({
+        ...industry,
+        joinedUsers: [...industry?.joinedUsers!, profile!.uid],
+      });
+    }
+    await serviceApi.update(
+      `/industry/join-leave-industry/${industry?.industryId}`
+    );
+  };
+
+
   const renderLastSectionContent = () => {
     if (currentIndex === 1) {
       return (
         <div>
+          <div className="flex items-center mt-5 pb-2">
+            <div className="flex items-center">
+              <p className="text-lg font-semibold text-[#333333]">Learning</p>
+            </div>
+            <div className="flex items-center ml-auto gap-1">
+              <p>Info</p>
+              <BsInfoCircle />
+            </div>
+          </div>
+
           <div className="pb-5">
-            {/* <ForumCard
-              banner="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
-              didJoin={false}
-              label="Ideas on how to create things easily"
-              members={20}
-              onJoin={() => { } }
-              topics={20} createLabel={""} onCreate={undefined}            /> */}
+            <ForumCard
+              onCreate={() => {
+                navigate(RoutesPath.CreateBossup, {
+                  state: { industryId: industry?.industryId },
+                });
+              }}
+              createLabel="Enter Challenge"
+              banner={industry?.photo!}
+              didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
+              label={industry?.description ?? "Industry Description"}
+              members={industry?.joinedUsers?.length ?? 0}
+              onJoin={joinIndustry}
+              topics={20}
+            />
           </div>
           <Learning />
         </div>
@@ -77,15 +122,31 @@ const CommunitiesPage = ({ socket }: Props) => {
     } else if (currentIndex === 2) {
       return (
         <div>
+          <div className="flex items-center mt-5 pb-2">
+            <div className="flex items-center">
+              <p className="text-lg font-semibold text-[#333333]">Opportunities</p>
+            </div>
+            <div className="flex items-center ml-auto gap-1">
+              <p>Info</p>
+              <BsInfoCircle />
+            </div>
+          </div>
+
           <div className="pb-5">
-            {/* <ForumCard
-              banner="https://cdn.pixabay.com/photo/2023/05/28/09/24/south-tyrol-8023224__340.jpg"
-              didJoin={false}
-              label="Ideas on how to create things easily"
-              members={20}
-              onJoin={() => { }}
+            <ForumCard
+              onCreate={() => {
+                navigate(RoutesPath.CreateBossup, {
+                  state: { industryId: industry?.industryId },
+                });
+              }}
+              createLabel="Enter Challenge"
+              banner={industry?.photo!}
+              didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
+              label={industry?.description ?? "Industry Description"}
+              members={industry?.joinedUsers?.length ?? 0}
+              onJoin={joinIndustry}
               topics={20}
-            /> */}
+            />
           </div>
           <Opportunities />
         </div>
@@ -94,6 +155,29 @@ const CommunitiesPage = ({ socket }: Props) => {
       // Default content for other tabs (assuming Challenge tab is displayed by default)
       return (
         <div className=" ">
+          <div className="flex items-center mt-5 pb-2">
+            <div className="flex items-center">
+              <p className="text-lg font-semibold text-[#333333]">Boss Up Challenge</p>
+            </div>
+            <div className="flex items-center ml-auto gap-1">
+              <p>About</p>
+              <BsInfoCircle />
+            </div>
+          </div>
+          <ForumCard
+            onCreate={() => {
+              navigate(RoutesPath.CreateBossup, {
+                state: { industryId: industry?.industryId },
+              });
+            }}
+            createLabel="Enter Challenge"
+            banner={industry?.photo!}
+            didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
+            label={industry?.description ?? "Industry Description"}
+            members={industry?.joinedUsers?.length ?? 0}
+            onJoin={joinIndustry}
+            topics={20}
+          />
 
         </div>
       );
@@ -141,9 +225,9 @@ const CommunitiesPage = ({ socket }: Props) => {
   return (
     <div>
       <div className="mobile-only">
-        <div className="fixed top-0 left-0 w-screen h-screen z-50">
-          <div className="fixed top-0 left-0 w-full bg-white shadow-lg">
-            <div className="flex items-center px-5 justify-between bg-white">
+      <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 20px 40px rgba(0, 0, 0, 0.02)' }}>
+          <div className=" bg-white" style={{ position: 'sticky', top: 0, zIndex: 999 }}>
+            <div className="flex items-center px-4 justify-between bg-white" style={{ position: 'sticky', top: 0, zIndex: 999 }}>
               <p className="text-lg font-semibold text-[#333333]">Boss Up</p>
               <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
             </div>
@@ -172,15 +256,15 @@ const CommunitiesPage = ({ socket }: Props) => {
             onReload={fetchCall}
           />
         ) : (
-          <div className="" style={{paddingTop:70}}>
-          <Routes>
-            <Route
-              index
-              element={<Challenge socket={socket} forums={forums} />}
-            />
-            <Route path={RoutesPath.learning} element={<Learning />} />
-            <Route path={RoutesPath.opportunities} element={<Opportunities />} />
-          </Routes>
+          <div className="">
+            <Routes>
+              <Route
+                index
+                element={<Challenge socket={socket} forums={forums} />}
+              />
+              <Route path={RoutesPath.learning} element={<Learning />} />
+              <Route path={RoutesPath.opportunities} element={<Opportunities />} />
+            </Routes>
           </div>
         )}
         <div className="my-20"></div>
@@ -207,19 +291,16 @@ const CommunitiesPage = ({ socket }: Props) => {
             </div>
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
-            <div>
-              <div className="sticky top-100 mt-5">
-                <Tabs
-                  onChangeRoute={(index: number) => changeRoute(index)}
-                  currentIndex={currentIndex}
-                />
-              </div>
+          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0, }}>
+            <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
+              <Tabs
+                onChangeRoute={(index: number) => changeRoute(index)}
+                currentIndex={currentIndex}
+              />
             </div>
             <Challenge socket={socket} forums={forums} />
-
-
           </div>
+
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
           <div className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0" style={{
             width: '30%',
@@ -228,7 +309,6 @@ const CommunitiesPage = ({ socket }: Props) => {
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            paddingTop: 65,
           }}>
             {renderLastSectionContent()}
 

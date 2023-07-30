@@ -74,7 +74,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
   return (
     
     <div>
-    <div className="mt-5 px-5">
+    <div className="mt-5 px-4">
       <SharePopUp
         url={`${window.location.href}post?id=${data.marketId}`}
         onClose={() => setShowShareDialog(false)}
@@ -110,7 +110,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
               onReload={() => {}}
             />
           )}
-          <div className="px-5">
+          <div className="px-4">
             {comments.map((comment: CommentStruct, index: number) => {
               return <Comment comment={comment} key={index} />;
             })}

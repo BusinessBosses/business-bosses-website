@@ -96,11 +96,11 @@ const ChatRoomPage = ({ socket }: Props) => {
   return (
     <div>
     <div className="mobile-only bg-[#f4f4f4] min-h-screen h-full">
-      <div className="fixed bg-white top-0 w-full z-50 px-5 py-3">
+    <div className="px-4 py-3" style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button onClick={() => navigate(-1)}>
-              <BiArrowBack size={20} />
+              <Assets.Backbutton/>
             </button>
             <UserAvatar
               imageSize="w-10 h-10"
@@ -121,7 +121,7 @@ const ChatRoomPage = ({ socket }: Props) => {
           <FiMoreVertical />
         </div>
       </div>
-      <div className="mt-20 py-5 px-5">
+      <div className="py-3 px-4">
         {messages.map((message, index) => {
           if (message.image) {
             return (
@@ -176,9 +176,10 @@ const ChatRoomPage = ({ socket }: Props) => {
         <div ref={scrollRef} />
       </div>
       <div className="fixed bottom-2 w-full">
-        <div className="bg-white shadow mx-5 rounded-full p-3 gap-1 flex items-center justify-between">
-          <label htmlFor="file">
-            <img src={Assets.Gallery} alt="" />
+        <div className="bg-white shadow mx-4 rounded-full p-3 gap-1 flex items-center justify-between">
+          <label htmlFor="file" className="cursor-pointer">
+            <div className="mr-3">
+            <img  src={Assets.Gallery} alt="" /></div>
           </label>
           <input
             ref={messageRef}
@@ -194,7 +195,7 @@ const ChatRoomPage = ({ socket }: Props) => {
                 sendMessage(e.target.files[0]);
               }
             }}
-            className="w-0 h-0"
+            className="w-0 h-0 opacity-0 cursor-pointer"
             type="file"
             name=""
             id="file"
@@ -209,12 +210,12 @@ const ChatRoomPage = ({ socket }: Props) => {
           </button>
         </div>
       </div>
-    </div>
+      </div>
 
 
 
     <div className="computer-only bg-[#f4f4f4] min-h-screen h-full">
-      <div className=" bg-white top-0 z-50 px-5 py-5 mt-5" style={{
+      <div className=" bg-white top-0 z-50 px-4 py-5 mt-5" style={{
         width: '100%',
         flexGrow: 0,
         position: 'sticky',
@@ -242,7 +243,7 @@ const ChatRoomPage = ({ socket }: Props) => {
        
       </div>
       <div style={{ borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-      <div className="mt-20 py-5 px-5">
+      <div className="mt-20 py-5 px-4">
         <div className="flex justify-end my-5">
           <div className="bg-primary rounded-b-lg p-2 rounded-tl-lg">
             <p className="text-white">hi</p>

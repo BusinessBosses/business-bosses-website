@@ -111,7 +111,7 @@ const HomePage = ({ socket }: Props) => {
             )
           }
         />
-        <div className="" style={{ paddingTop: 54 }}>
+        <div className="">
           {profile.bossup ? (
             <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
           ) : null}
@@ -196,7 +196,7 @@ const HomePage = ({ socket }: Props) => {
         <ComputerHeader />
 
         <div className="computer-content">
-          <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
+          <div className="firstsection ml-5 lg:ml-20 mr-5" style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
@@ -213,7 +213,7 @@ const HomePage = ({ socket }: Props) => {
             </div>
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
+          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
             {posts.map((post: MixedPostState, index: number) => {
               if (post.isForum) {
                 return (
@@ -287,14 +287,14 @@ const HomePage = ({ socket }: Props) => {
 
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0" style={{
+          <div className="lastsection ml-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0" style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            paddingTop:80,
+        
 
 
 

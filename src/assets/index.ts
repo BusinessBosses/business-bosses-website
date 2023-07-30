@@ -3,7 +3,7 @@ import { ReactComponent as ProfileIcon } from "./icons/profile.svg";
 import { ReactComponent as Messagenoback } from "./icons/message.svg";
 import { ReactComponent as Notifnoback } from "./icons/notifications.svg";
 import NotificationIcon from "./icons/notifications.svg";
-import { ReactComponent as BossupIcon } from "./icons/bossup.svg";
+import { ReactComponent as BossupIcon } from "./icons/bossupicon.svg";
 import Badge from "./icons/badge.svg";
 import Logo from "./icons/logo.png";
 import { ReactComponent as Home } from "./icons/home.svg";

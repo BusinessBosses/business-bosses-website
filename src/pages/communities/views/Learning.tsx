@@ -18,7 +18,7 @@ const Learning = () => {
 
   return (
     <div>
-      <div className="mobile-only bg-[#F4F4F4] p-5">
+      <div className="mobile-only bg-[#F4F4F4] px-4 py-3">
         <div className="grid grid-cols-2 gap-3">
           {learningIndustries.map((industry) => {
             return <IndustryCard industry={industry} key={industry.industryId} />;

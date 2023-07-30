@@ -16,7 +16,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
 
   return (
     <div
-      className="fixed w-full bottom-0 bg-white px-5 pb-4 pt-1 pt-2"
+      className="fixed w-full bottom-0 bg-white px-4 pb-4 pt-1 pt-2"
       style={{ fontSize: "12px", boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)" }}
     >
       <div className="flex w-full justify-between items-center">

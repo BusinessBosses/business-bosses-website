@@ -257,7 +257,7 @@ const EditProfilePage = () => {
             e.preventDefault();
           }}
         >
-          <div className="px-5">
+          <div className="px-4">
             <FilledInput
               defaultValue={profile?.username}
               inputRef={usernameRef}
@@ -335,7 +335,7 @@ const EditProfilePage = () => {
           <div
             className={`${
               expansionState.additionalInfo ? "block" : "hidden"
-            } px-5`}
+            } px-4`}
           >
             <FilledInput
               defaultValue={profile?.companyName}
@@ -398,7 +398,7 @@ const EditProfilePage = () => {
             <div
               className={`${
                 expansionState.achievments ? "block" : "hidden"
-              } px-5`}
+              } px-4`}
             >
               <div className="flex items-center justify-between">
                 <FilledInput
@@ -460,7 +460,7 @@ const EditProfilePage = () => {
               )}
             </div>
             <div
-              className={`${expansionState.products ? "block" : "hidden"} px-5`}
+              className={`${expansionState.products ? "block" : "hidden"} px-4`}
             >
               <div className="flex items-center justify-between">
                 <FilledInput
@@ -499,7 +499,7 @@ const EditProfilePage = () => {
             </div>
           </div>
 
-          <div className="px-5 mt-20 mb-10">
+          <div className="px-4 mt-20 mb-10">
             <FilledButton
               onClick={updateProfile}
               text={updating ? "Updating Profile..." : "Save"}

@@ -9,7 +9,7 @@ const CommonPageHeader = ({ title }: Props) => {
   return (
     <div>
       <div className="mobile-only">
-        <div className="bg-white p-5 flex items-center justify-between">
+        <div className="bg-white px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <button onClick={() => navigate(-1)}>
               <Assets.Backbutton/>

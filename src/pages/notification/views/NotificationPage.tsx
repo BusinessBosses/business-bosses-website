@@ -117,7 +117,7 @@ const NotificationPage = () => {
             </div>
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
+          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
             {loading ? (
               <FetchStatus
                 error={false}
@@ -160,14 +160,13 @@ const NotificationPage = () => {
             )}
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0" style={{
+          <div className="lastsection ml-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0" style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            paddingTop:80,
 
 
           }}>

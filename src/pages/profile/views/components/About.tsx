@@ -7,7 +7,7 @@ interface Props {
 }
 const About = ({ data }: Props) => {
   return (
-    <div className="px-5 pt-10">
+    <div className="px-4 pt-10">
       <p>{data.bio}</p>
       <div className="flex items-center gap-4 mt-3">
         {data.website ? (

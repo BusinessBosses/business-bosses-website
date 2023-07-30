@@ -116,7 +116,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
         <div className="">
           <FilledButton
             onClick={login}
-            text={loading ? "Authenticating..." : "Sign Up"}
+            text={loading ? "Authenticating..." : "Sign in"}
             className="w-full p-3"
           />
         </div>

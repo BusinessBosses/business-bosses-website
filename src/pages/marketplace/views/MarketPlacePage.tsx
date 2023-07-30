@@ -116,11 +116,9 @@ const MarketPlacePage = ({ socket }: Props) => {
 
   return (
     <div>
-      <div className="mobile-only" style={{ paddingTop: 45 }}>
+      <div className="mobile-only" style={{}}>
         <div
-          className="fixed top-0 w-full z-50"
-          style={{ boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)" }}
-        >
+          className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 20px 40px rgba(0, 0, 0, 0.02)' }}>
           <div className="flex items-center justify-between bg-white px-3 py-2">
             <p className="text-lg font-semibold text-[#333333]">Marketplace</p>
             <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
@@ -170,7 +168,7 @@ const MarketPlacePage = ({ socket }: Props) => {
       </div>
 
 
-      <div className="computer-only" style={{ paddingTop: 45 }}>
+      <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
           <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
@@ -190,7 +188,7 @@ const MarketPlacePage = ({ socket }: Props) => {
             </div>
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ paddingTop: 20, width: '40%', flexGrow: 0 }} >
+          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
             <div className="">
               {market.markets.map((market: Market, index: number) => (
                 <MarketItem
@@ -230,14 +228,14 @@ const MarketPlacePage = ({ socket }: Props) => {
 
           </div>
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 lg:mr-20" style={{
+          <div className="lastsection ml-5 mr-5 mt-5 lg:mr-20" style={{
             width: '30%',
             flexGrow: 0,
             overflow: 'none',
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            paddingTop: 30,
+     
 
 
 

@@ -153,11 +153,11 @@ const CreatePost = () => {
   return (
     <div>
       <div className="mobile-only">
-        <div className="fixed top-0 w-full z-50">
+        <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.02)' }}>
           <CommonPageHeader title="Create Post" />
         </div>
-        <div className="my-20"></div>
-        <div className="p-5">
+
+        <div className="px-4 mt-5">
           <div className="flex items-center gap-3">
             <UserAvatar
               imageURL={
@@ -170,7 +170,7 @@ const CreatePost = () => {
             </p>
           </div>
 
-          <div className=" mt-7">
+          <div className=" mt-5">
             <textarea
               ref={postTitleRef}
               name=""
@@ -184,26 +184,24 @@ const CreatePost = () => {
             {stateProps ? null : (
               <div className="flex mt-4 items-center gap-3">
                 <p className="text-[#333333]">Add Image</p>
-                <label
-                  htmlFor="file"
-                  className="bg-[#F4F4F4] p-2.5 rounded-full"
-                >
+                <label htmlFor="file" className="bg-[#F4F4F4] p-2.5 rounded-full cursor-pointer">
                   <img src={Assets.Gallery} alt="" />
                 </label>
+                <input
+                  type="file"
+                  className="w-0 h-0 absolute top-0 left-0 opacity-0 cursor-pointer"
+                  accept="images/*"
+                  onChange={(e) => {
+                    if (!e.target.files?.length) return;
+                    if (images.length === 4) return;
+                    setImages([...images, e.target.files[0]]);
+                  }}
+                  name=""
+                  id="file"
+                />
               </div>
             )}
-            <input
-              type="file"
-              className="w-0 h-0"
-              accept="images/*"
-              onChange={(e) => {
-                if (!e.target.files?.length) return;
-                if (images.length == 4) return;
-                setImages([...images, e.target.files[0]]);
-              }}
-              name=""
-              id="file"
-            />
+
             {stateProps ? (
               <div className="grid grid-cols-4 gap-4 mb-10">
                 {stateProps.images?.map((img: string, index: number) => {
@@ -237,8 +235,13 @@ const CreatePost = () => {
               </div>
             )}
             <div className="flex items-center justify-between mt-5">
-              <img src={Assets.Rocket} alt="" />
-              <p className="text-[#373737] font-semibold">Boost Post</p>
+              <div className="flex items-center gap-2">
+                <img src={Assets.Rocket} alt="" />
+                <div className="flex flex-col">
+                  <p className="text-[#373737] font-semibold">Boost this Post</p>
+                  <p className="text-[#555555] text-xs mt-1">Reach wider audience and get more views.</p>
+                </div>
+              </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   ref={boostPostRef}
@@ -250,6 +253,7 @@ const CreatePost = () => {
               </label>
               {/* <MdOutlineKeyboardArrowRight size={24} className="text-primary" /> */}
             </div>
+
             <div className="mt-10">
               <FilledButton
                 onClick={stateProps ? updatePostFn : createPost}

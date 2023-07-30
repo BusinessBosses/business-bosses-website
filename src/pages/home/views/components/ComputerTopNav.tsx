@@ -109,9 +109,9 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute, unseenChat, un
             key={index}
           >
             <p className="text-white font-semibold mr-2">
-              {currentRoute === '/bossup'
+              {currentRoute === '/communities'
                 ? 'Enter Challenge'
-                : currentRoute === '/bossup/learning'
+                : currentRoute === '/communities/learning'
                   ? 'Start A Topic'
                   : 'Share opportunities'}
             </p>
@@ -175,8 +175,8 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute, unseenChat, un
       >
         <div className="flex flex-col items-center">
           <Assets.Home
-            stroke={currentIndex === 0 ? primaryColor : strokeColor}
-            style={{ width: '20px', height: '19px' }}
+          stroke="currentIndex === 1 ? primaryColor : strokeColor"
+            style={{ width: '25px', height: '22px'}}
           />
           <p
             className={
@@ -187,6 +187,7 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute, unseenChat, un
           >
             Home
           </p>
+
         </div>
       </div>
 
@@ -196,7 +197,9 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute, unseenChat, un
       >
         <div className="flex flex-col items-center">
           <Assets.BossupIcon
-            stroke={currentIndex === 1 ? primaryColor : strokeColor}
+            fill={currentIndex === 1 ? primaryColor : strokeColor}
+            style={{ width: '35px', height: '20px'}}
+
           />
           <p
             className={
@@ -264,27 +267,27 @@ const ComputerTopNav = ({ currentIndex, onTabClick, currentRoute, unseenChat, un
         onClick={() => handleTabClick(4)}
       >
         <div className="flex flex-col items-center relative"> {/* Add 'relative' class here */}
-  {/* Your notification icon */}
-  <Assets.Notifnoback
-    stroke={currentIndex === 4 ? primaryColor : strokeColor}
-    style={{ width: '22px', height: '22px' }}
-  />
+          {/* Your notification icon */}
+          <Assets.Notifnoback
+            stroke={currentIndex === 4 ? primaryColor : strokeColor}
+            style={{ width: '22px', height: '22px' }}
+          />
 
-  {unseenNotification ? (
- 
-    <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
-  ) : null}
+          {unseenNotification ? (
 
-  <p
-    className={
-      currentIndex === 4
-        ? "text-primary font-semibold"
-        : "text-gray-500"
-    }
-  >
-    Notifications
-  </p>
-</div>
+            <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
+          ) : null}
+
+          <p
+            className={
+              currentIndex === 4
+                ? "text-primary font-semibold"
+                : "text-gray-500"
+            }
+          >
+            Notifications
+          </p>
+        </div>
 
       </div>
       <div className="pb-3">

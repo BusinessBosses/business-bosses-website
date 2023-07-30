@@ -35,12 +35,8 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   };
   return (
     <div
-      className="bg-[#EAEAEA] "
+      className="bg-[#EAEAEA] px-4 py-3"
       style={{
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingBottom: 10,
-        paddingTop: 20,
       }}
     >
       <div className="flex items-start justify-between">

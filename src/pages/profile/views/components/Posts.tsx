@@ -5,7 +5,7 @@ interface Props {
 }
 const Posts = ({ posts }: Props) => {
   return (
-    <div className="grid grid-cols-2 gap-3 px-5">
+    <div className="grid grid-cols-2 gap-3 px-4">
       {posts.map((post) => {
         return (
           <Post

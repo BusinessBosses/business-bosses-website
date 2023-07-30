@@ -11,12 +11,9 @@ const MarketIntro = () => {
   return (
     <div>
       <div
-        className="bg-[#EAEAEA] mobile-only"
+        className="bg-[#EAEAEA] mobile-only px-4 py-3"
         style={{
-          paddingLeft: 20,
-          paddingRight: 20,
-          paddingBottom: 10,
-          paddingTop: 20,
+          
         }}
       >
         <div className="flex items-center justify-between">
@@ -122,13 +119,7 @@ const MarketIntro = () => {
             </div>
           </div>
 
-          <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
-            <small className="text-xs text-[#545151]">Boss Up by</small>
-            <p className="text-[#545151] text-sm">
-              Business Bosses Company Limited
-            </p>
-            <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
-          </div>
+        
         </div>
 
 

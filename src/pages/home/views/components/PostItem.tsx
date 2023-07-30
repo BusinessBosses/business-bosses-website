@@ -72,7 +72,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
   return (
     <div>
-      <div className="mt-5 px-5">
+      <div className="mt-5 px-4">
         <SharePopUp
           url={`${window.location.href}post?id=${data.postId}`}
           onClose={() => setShowShareDialog(false)}
@@ -108,7 +108,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 onReload={() => { }}
               />
             )}
-            <div className="px-5">
+            <div className="px-4">
               {comments.map((comment: CommentStruct, index: number) => {
                 return <Comment comment={comment} key={index} />;
               })}

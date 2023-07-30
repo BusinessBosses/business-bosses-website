@@ -66,14 +66,14 @@ const ConnectionsPage = () => {
   }, []);
   return (
     <div>
-      <div className="fixed top-0 w-full z-50">
+       <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff' }}>
         <CommonPageHeader title="Connections" />
-      </div>
-      <div className="my-16" />
-      <Tabs
+        <Tabs
         currentIndex={currentIndex}
         onChangeRoute={(index: number) => setCurrentIndex(index)}
       />
+      </div>
+     
       {loading ? (
         <FetchStatus
           error={false}
@@ -92,7 +92,7 @@ const ConnectionsPage = () => {
           }}
         />
       ) : null}
-      <div className="px-5 -mt-5">
+      <div className="px-4 -mt-5">
         {currentIndex === 0
           ? data.connections.map((connect: User, index: number) => {
               return (
