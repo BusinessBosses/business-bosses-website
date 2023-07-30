@@ -110,7 +110,7 @@ const PublicUserProfile = () => {
             </div>
           </div>
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ paddingTop: 80, width: '40%', flexGrow: 0 }} >
+          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
             <PublicProfileHeader name={publicUser?.username ?? ""} />
 
             {loading ? (
@@ -146,8 +146,6 @@ const PublicUserProfile = () => {
                 </div>
               </div>
             )}
-
-
           </div>
 
           <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>

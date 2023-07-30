@@ -11,7 +11,7 @@ const PublicProfileHeader = ({ name }: Props) => {
   return (
     <div>
 
-    <div className="fixed top-0 w-full z-50 mobile-only">
+<div className="mobile-only mb-5" style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
       <div className="flex items-center p-5 justify-between bg-white">
         <div className="flex items-center gap-5">
           <button onClick={() => navigate(-1)}>
@@ -25,7 +25,7 @@ const PublicProfileHeader = ({ name }: Props) => {
       </div>
     </div>
 
-    <div className="computer-only mt-5 top-0 w-full z-50">
+    <div className="computer-only top-0 w-full z-50">
       <div className="flex items-center p-5 justify-between bg-white">
         <div className="flex items-center gap-5">
           <button onClick={() => navigate(-1)}>

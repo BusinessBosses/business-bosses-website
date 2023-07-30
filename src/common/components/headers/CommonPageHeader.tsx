@@ -21,9 +21,9 @@ const CommonPageHeader = ({ title }: Props) => {
 
 
 
-      <div className="computer-only bg-white pb-5 mt-10 flex items-center justify-between">
+      <div className="computer-only bg-white pb-5 mt-5 px-4 flex items-center justify-between">
         <div className="flex items-center"> {/* Wrapping div */}
-          <button onClick={() => navigate(-1)} className="flex items-center mr-5">
+          <button onClick={() => navigate(-1) } className="flex items-center mr-5">
           <Assets.Backbutton/>
           </button>
           <p className="text-2xl font-bold">{title}</p>

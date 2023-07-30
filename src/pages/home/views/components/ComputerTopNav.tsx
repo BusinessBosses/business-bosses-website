@@ -12,6 +12,8 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import { onChangeRoute } from "../../../../redux/slices/RouteSlice";
 import CreateBossup from "../../../communities/views/CreateBossup";
 import CreateListing from "../../../marketplace/views/CreateListing";
+import Forum from "../../../forum/views/Forum";
+import { Socket } from "socket.io-client";
 
 interface Props {
   // currentIndex: number;
@@ -274,23 +276,80 @@ const ComputerTopNav = ({
         {isPopupOpen && (
           <div className="overlay">
             <div className="popup">
-
-
-
               <div className="computer-only">
                 {currentIndex === 0 ? (
-                  <CreatePost />
+                  <div>
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                      <div className="flex items-center"> {/* Wrapping div */}
+                        <button onClick={() => closePopup()} className="flex items-center mr-5">
+                          <Assets.Backbutton />
+                        </button>
+                        <p className="text-2xl font-bold">Create Post</p>
+                      </div>
+                      <div />
+                    </div>
+                    <CreatePost /></div>
                 ) : currentIndex === 1 ? (
                   currentRoute === "/communities"
-                ? <CreateBossup/>
-                : currentRoute === "/communities/learning"
-                  ? "Start A Topic"
-                  : "Share opportunities"
-                ) :currentIndex === 2 ? (
-                  <CreateListing />
+                    ? <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                      <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                        <div className="flex items-center"> {/* Wrapping div */}
+                          <button onClick={() => closePopup()} className="flex items-center mr-5">
+                            <Assets.Backbutton />
+                          </button>
+                          <p className="text-2xl font-bold">Introduce your Business</p>
+                        </div>
+                        <div />
+                      </div>
+                      <CreateBossup /></div>
+                    : currentRoute === "/communities/learning"
+                      ? <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                        <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                          <div className="flex items-center"> {/* Wrapping div */}
+                            <button onClick={() => closePopup()} className="flex items-center mr-5">
+                              <Assets.Backbutton />
+                            </button>
+                            <p className="text-2xl font-bold">Start a Topic</p>
+                          </div>
+                          <div />
+                        </div>
+                      </div>
+                      : <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                        <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                          <div className="flex items-center"> {/* Wrapping div */}
+                            <button onClick={() => closePopup()} className="flex items-center mr-5">
+                              <Assets.Backbutton />
+                            </button>
+                            <p className="text-2xl font-bold">Share Opportunities</p>
+                          </div>
+                          <div />
+                        </div>
+                      </div>
+                ) : currentIndex === 2 ? (
+                  <div>
+                  <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                    <div className="flex items-center"> {/* Wrapping div */}
+                      <button onClick={() => closePopup()} className="flex items-center mr-5">
+                        <Assets.Backbutton />
+                      </button>
+                      <p className="text-2xl font-bold">Create Listing</p>
+                    </div>
+                    <div />
+                  </div>
+                  <CreateListing /></div>
                 ) : (
-                  /* JSX for all other cases */
-                  <CreatePost />
+
+                  <div>
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                      <div className="flex items-center"> {/* Wrapping div */}
+                        <button onClick={() => closePopup()} className="flex items-center mr-5">
+                          <Assets.Backbutton />
+                        </button>
+                        <p className="text-2xl font-bold">Create Post</p>
+                      </div>
+                      <div />
+                    </div>
+                    <CreatePost /></div>
                 )}
 
               </div>
