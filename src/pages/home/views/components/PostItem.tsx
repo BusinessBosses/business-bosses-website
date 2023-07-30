@@ -78,7 +78,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           onClose={() => setShowShareDialog(false)}
           open={showShareDialog}
         />
-        <BottomSheet
+        <div className="mobile-only"><BottomSheet
           scrollLocking={true}
           onDismiss={() => setOpen(false)}
           maxHeight={1000}
@@ -114,7 +114,45 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               })}
             </div>
           </div>
-        </BottomSheet>
+        </BottomSheet></div>
+        <div className="computer-only"><BottomSheet
+          scrollLocking={true}
+          onDismiss={() => setOpen(false)}
+          maxHeight={1000}
+          open={open}
+          footer={
+            <div className="flex items-center gap-2">
+              <input
+                ref={commentInputRef}
+                type="text"
+                className="outline-none border-none w-full "
+                placeholder="Comment..."
+                name=""
+                id=""
+              />
+              <button onClick={makeComment}>
+                <Assets.Send />
+              </button>
+            </div>
+          }
+        >
+          <div className="h-[50vh] overflow-y-auto">
+            {(loading || err) && (
+              <FetchStatus
+                error={err}
+                errorMessage="Something went wrong!!"
+                loading={loading}
+                onReload={() => { }}
+              />
+            )}
+            <div className="px-4">
+              {comments.map((comment: CommentStruct, index: number) => {
+                return <Comment comment={comment} key={index} />;
+              })}
+            </div>
+          </div>
+        </BottomSheet></div>
+        
         <div className="flex items-start justify-between">
           <div
             onClick={() =>

@@ -165,7 +165,7 @@ const CreateListing = () => {
 
   return (
     <div className=" min-h-screen h-full">
-      <div className="fixed top-0 w-full z-50">
+          <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
         <div className="bg-white flex items-center p-5 justify-between">
           <h1 className="text-xl font-[500]">Create Listing</h1>
           <button
@@ -289,18 +289,23 @@ const CreateListing = () => {
             </div>
           )}
           <div className="flex items-center justify-between my-10">
-            <img src={Assets.Rocket} alt="" />
-            <p className="text-[#373737] font-semibold">Boost Post</p>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                ref={boostPostRef}
-                type="checkbox"
-                value=""
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-0 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-            </label>
-          </div>
+  <div className="flex items-center gap-3">
+    <img src={Assets.Rocket} alt="" />
+    <div className="flex flex-col">
+      <p className="text-[#373737] font-semibold">Boost this Listing</p>
+      <p className="text-[#555555] text-xs mt-1">Reach wider audience and get more views.</p>
+    </div>
+  </div>
+  <label className="relative inline-flex items-center cursor-pointer">
+    <input
+      ref={boostPostRef}
+      type="checkbox"
+      value=""
+      className="sr-only peer"
+    />
+    <div className="w-11 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-0 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+  </label>
+</div>
 
           <FilledButton
             onClick={stateProps ? updatePostFn : createPost}
