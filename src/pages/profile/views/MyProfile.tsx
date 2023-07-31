@@ -76,7 +76,8 @@ const MyProfile = () => {
                 }}
               />
             ) : (
-              <Posts posts={profile.posts} />
+              <div className="mt-4">
+              <Posts posts={profile.posts} /></div>
             )
           ) : null}
         </div>
@@ -86,6 +87,7 @@ const MyProfile = () => {
 
 
       <div className="computer-only">
+
 
         <ComputerHeader />
         <div className="computer-content">
@@ -108,7 +110,9 @@ const MyProfile = () => {
           <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
 
 
-          <div className="computer-main-content" style={{ paddingTop: 10, width: '40%', flexGrow: 0 }} >
+          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
+
+          <div className="sticky" ><MyProfileHeader /></div>
 
             <MyProfileDetails data={profile.profile!} />
 
@@ -159,7 +163,7 @@ const MyProfile = () => {
 
           }}>
 
-            <div className="rounded-xl overflow-hidden" style={{}}>
+            <div className="rounded-xl overflow-hidden mt-5" style={{}}>
               {profile.bossup ? (
                 <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
               ) : null}

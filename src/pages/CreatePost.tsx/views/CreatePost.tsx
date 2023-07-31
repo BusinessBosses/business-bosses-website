@@ -152,9 +152,11 @@ const CreatePost = () => {
   }, []);
   return (
     <div>
-      <div className="mobile-only">
+      <div className="">
         <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.02)' }}>
-          <CommonPageHeader title="Create Post" />
+        <div className="mobile-only px-4">
+            <CommonPageHeader title="Create Post" /></div>
+          
         </div>
 
         <div className="px-4 mt-5">
@@ -264,6 +266,10 @@ const CreatePost = () => {
           </div>
         </div>
       </div>
+
+
+
+
     </div>
   );
 };
