@@ -8,12 +8,15 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import { User } from "../../../../common/interfaces/user";
 import { saveUserData } from "../../../../redux/slices/UserSlice";
 import ConnectionsController from "../../../connections/controller/ConnectionsController";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../../constants/Routes";
 interface Props {
   bossOfTheWeek: User;
 }
 const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const connection = async () => {
     if (profile?.connecteds?.includes(bossOfTheWeek.uid!)) {
       const newUserData: User = {
@@ -34,11 +37,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
     }
   };
   return (
-    <div
-      className="bg-[#EAEAEA] px-4 py-3"
-      style={{
-      }}
-    >
+    <div className="bg-[#EAEAEA] px-4 py-3" style={{}}>
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <img src={Assets.Logo} className="w-10 h-10" alt="" />
@@ -81,7 +80,9 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
               />
             )}
             <OutlinedButton
-              onClick={() => { }}
+              onClick={() => {
+                navigate(RoutesPath.refer, { state: bossOfTheWeek.uid });
+              }}
               text="Refer"
               className="px-2 py-1.5"
             />
@@ -89,17 +90,25 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         </div>
       </div>
 
-      <div className="mobile-only"><div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
-        <div className="flex items-center">
-          <small className="text-xs text-[#545151] pr-2" style={{ paddingRight: 10 , borderRight: '1.2px solid rgba(0, 0, 0, 0.5)' }}>
-            Boss Up by
-          </small>
-          <p className="text-[#545151] text-sm pl-2" >Business Bosses Company Limited </p>
+      <div className="mobile-only">
+        <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
+          <div className="flex items-center">
+            <small
+              className="text-xs text-[#545151] pr-2"
+              style={{
+                paddingRight: 10,
+                borderRight: "1.2px solid rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              Boss Up by
+            </small>
+            <p className="text-[#545151] text-sm pl-2">
+              Business Bosses Company Limited{" "}
+            </p>
+          </div>
+          <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
         </div>
-        <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
       </div>
-      </div>
-
     </div>
   );
 };
