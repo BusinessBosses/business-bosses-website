@@ -164,9 +164,9 @@ const CreateListing = () => {
   }, []);
 
   return (
-    <div className=" min-h-screen h-full">
-      <div className="fixed top-0 w-full z-50">
-        <div className="bg-white flex items-center p-5 justify-between">
+    <div className="">
+      <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
+        <div className="mobile-only bg-white flex items-center p-5 justify-between">
           <h1 className="text-xl font-[500]">Create Listing</h1>
           <button
             onClick={() => {
@@ -177,7 +177,7 @@ const CreateListing = () => {
           </button>
         </div>
       </div>
-      <div className="mt-20 px-5">
+      <div className="mt-20 px-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -191,14 +191,14 @@ const CreateListing = () => {
           <FilledInput
             defaultValue={stateProps?.price}
             inputRef={priceRef}
-            onchange={() => {}}
+            onchange={() => { }}
             placeholder="Enter Price"
             className="text-sm"
           />
           <FilledTextarea
             defaultValue={stateProps?.description}
             inputRef={descriptionRef}
-            onchange={() => {}}
+            onchange={() => { }}
             placeholder="Describe your listing"
             className="text-sm"
           />
@@ -220,7 +220,7 @@ const CreateListing = () => {
               "Business Services & Events",
               "Other",
             ]}
-            onchange={(e) => {}}
+            onchange={(e) => { }}
           />
 
           <div className="my-10">
@@ -289,8 +289,13 @@ const CreateListing = () => {
             </div>
           )}
           <div className="flex items-center justify-between my-10">
-            <img src={Assets.Rocket} alt="" />
-            <p className="text-[#373737] font-semibold">Boost Post</p>
+            <div className="flex items-center gap-3">
+              <img src={Assets.Rocket} alt="" />
+              <div className="flex flex-col">
+                <p className="text-[#373737] font-semibold">Boost this Listing</p>
+                <p className="text-[#555555] text-xs mt-1">Reach wider audience and get more views.</p>
+              </div>
+            </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 ref={boostPostRef}

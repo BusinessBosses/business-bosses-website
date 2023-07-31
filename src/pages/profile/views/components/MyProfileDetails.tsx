@@ -13,7 +13,8 @@ interface Props {
 const MyProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
   return (
-    <div className="mt-20 px-5">
+    <div>
+    <div className="mt-5 px-4">
       <div className=" flex items-center gap-3">
         <UserAvatar
           imageSize="h-24 w-24"
@@ -99,6 +100,8 @@ const MyProfileDetails = ({ data }: Props) => {
           className="w-full border-[1px] py-1"
         />
       </div>
+    </div>
+
     </div>
   );
 };

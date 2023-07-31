@@ -4,6 +4,7 @@ import serviceApi from "../../../services/serviceApi";
 class Authentication {
     validateLogin(data: LoginStruct): boolean {
         if (!!!data.email) {
+            console.log(data.email)
             toast.error("Invalid Email");
             return false
         } else if (!!!data.password) {
@@ -42,13 +43,41 @@ class Authentication {
     }
 
 
-    async registerRequest(args: RegisterStruct) {
-        const response = await serviceApi.post('/auth/sign-up', args);
+    async googleLoginRequest(args: { email: string, token: string }) {
+        const response = await serviceApi.post('/auth/google-sign-in', args);
         return response;
     }
 
-    async verificationRequest(otp: string) {
-        const response = await serviceApi.post('/auth/verify', { otp });
+
+
+
+    async registerRequest(args: RegisterStruct) {
+        const response = await serviceApi.post('/auth/web-sign-up', args);
+        return response;
+    }
+
+    async verificationRequest(args: { otp: string, email: string }) {
+        const response = await serviceApi.post('/auth/validate-otp', args);
+        return response;
+    }
+
+    async verifyEmail(args: { otp: string, email: string }) {
+        const response = await serviceApi.post('/auth/verify-email', args);
+        return response;
+    }
+
+    async requestOpt(email: string) {
+        const response = await serviceApi.post("/auth/request-otp", {
+            email,
+        });
+        return response;
+    }
+
+    async resetPassword(email: string, newPassword: string) {
+        const response = await serviceApi.post("/auth/reset-password", {
+            email,
+            newPassword,
+        });
         return response;
     }
 

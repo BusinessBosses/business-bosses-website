@@ -157,9 +157,9 @@ const CreateBossup = () => {
   }, []);
 
   return (
-    <div className=" min-h-screen h-full">
-      <div className="fixed top-0 w-full z-50">
-        <div className="bg-white flex items-center p-5 justify-between">
+    <div className="">
+      <div className="mobile-only fixed top-0 w-full z-50">
+        <div className="bg-white flex items-center px-4 mt-5 justify-between">
           <h1 className="text-xl font-[500]">Introduce Your Business</h1>
           <button
             onClick={() => {
@@ -170,7 +170,7 @@ const CreateBossup = () => {
           </button>
         </div>
       </div>
-      <div className="mt-32 px-5">
+      <div className="mt-32 px-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();

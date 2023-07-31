@@ -19,8 +19,10 @@ const connections = "/connections";
 const register = "/auth/register";
 const login = "/auth/login";
 const verifyOtp = "/auth/verify";
+const forgotPassword = "/auth/forgot-password";
 const CreateListing = "/create-listing";
 const CreateBossup = "/create-bossup";
+const refer = "/refer";
 
 const RoutesPath = {
     home,
@@ -45,7 +47,9 @@ const RoutesPath = {
     chats,
     ChatRoom,
     CreateListing,
-    CreateBossup
+    CreateBossup,
+    forgotPassword,
+    refer
 }
 
 export default RoutesPath

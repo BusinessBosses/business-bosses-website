@@ -4,8 +4,8 @@ interface Props {
 }
 const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
   return (
-    <div className="sticky top-16 bg-white z-50">
-      <div className="grid grid-cols-3 items-center justify-between p-5">
+    <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
+      <div className="grid grid-cols-3 items-center justify-between p-0">
         <button
           onClick={() => onChangeRoute(0)}
           className={`${

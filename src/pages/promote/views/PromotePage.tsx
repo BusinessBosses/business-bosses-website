@@ -104,7 +104,7 @@ const PromotePage = () => {
 
   return (
     <div>
-      <div className="fixed top-0 w-full z-50">
+        <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
         <CommonPageHeader title="Boost Post" />
       </div>
       <div className="my-20"></div>

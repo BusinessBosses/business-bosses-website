@@ -5,11 +5,11 @@ import RoutesPath from "../../../../constants/Routes";
 const MyProfileHeader = () => {
   const navigate = useNavigate();
   return (
-    <div className="fixed top-0 w-full z-50">
-      <div className="flex items-center p-5 justify-between bg-white">
+    <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 20px 40px rgba(0, 0, 0, 0.02)' }}>
+      <div className="flex items-center p-5 justify-between bg-white px-3 py-2">
         <p className="text-lg font-semibold text-[#333333]">My Profile</p>
         <button onClick={() => navigate(RoutesPath.settings)}>
-          <LuSettings color="#232324" size={20} />
+          <LuSettings size={40} style={{padding:5}} strokeWidth={1.8} color="#232324"  />
         </button>
       </div>
     </div>

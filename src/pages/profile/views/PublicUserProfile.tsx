@@ -9,6 +9,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "../../../common/interfaces/user";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import About from "./components/About";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
+import ComputerProfileDetails from "./components/ComputerProfiledetails";
 const PublicUserProfile = () => {
   const [currentTabIndex, setCurrentTabIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,41 +51,130 @@ const PublicUserProfile = () => {
   }, []);
   return (
     <div>
-      <PublicProfileHeader name={publicUser?.username ?? ""} />
+      <div className="mobile-only">
+        <PublicProfileHeader name={publicUser?.username ?? ""} />
 
-      {loading ? (
-        <FetchStatus
-          error={false}
-          errorMessage="Something went wrong!!"
-          loading={true}
-          onReload={() => {}}
-        />
-      ) : err ? (
-        <FetchStatus
-          error={true}
-          errorMessage="Something went wrong!!"
-          loading={false}
-          onReload={() => {
-            fetchPosts(publicUser?.uid!);
-          }}
-        />
-      ) : (
-        <div>
-          {publicUser ? <PublicProfileDetails data={publicUser!} /> : null}
+        {loading ? (
+          <FetchStatus
+            error={false}
+            errorMessage="Something went wrong!!"
+            loading={true}
+            onReload={() => { }}
+          />
+        ) : err ? (
+          <FetchStatus
+            error={true}
+            errorMessage="Something went wrong!!"
+            loading={false}
+            onReload={() => {
+              fetchPosts(publicUser?.uid!);
+            }}
+          />
+        ) : (
+          <div>
+            {publicUser ? <PublicProfileDetails data={publicUser!} /> : null}
 
-          <div className="mt-3">
-            <Tabs
-              currentIndex={currentTabIndex}
-              onChangeRoute={(index: number) => setCurrentTabIndex(index)}
-            />
+            <div className="mt-3">
+              <Tabs
+                currentIndex={currentTabIndex}
+                onChangeRoute={(index: number) => setCurrentTabIndex(index)}
+              />
 
-            {currentTabIndex === 0 && publicUser ? (
-              <About data={publicUser!} />
-            ) : null}
-            {currentTabIndex === 1 ? <Posts posts={posts} /> : null}
+              {currentTabIndex === 0 && publicUser ? (
+                <About data={publicUser!} />
+              ) : null}
+              {currentTabIndex === 1 ? <Posts posts={posts} /> : null}
+            </div>
           </div>
+        )}
+      </div>
+
+      <div className="computer-only">
+        <ComputerHeader />
+
+        <div className="computer-content">
+          <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+
+          }}>
+            <div className="" >
+              <div className=" flex items-center gap-3">
+                {/* <ComputerProfileDetails data={profile.profile!} /> */}
+              </div>
+
+            </div>
+          </div>
+          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
+            <PublicProfileHeader name={publicUser?.username ?? ""} />
+
+            {loading ? (
+              <FetchStatus
+                error={false}
+                errorMessage="Something went wrong!!"
+                loading={true}
+                onReload={() => { }}
+              />
+            ) : err ? (
+              <FetchStatus
+                error={true}
+                errorMessage="Something went wrong!!"
+                loading={false}
+                onReload={() => {
+                  fetchPosts(publicUser?.uid!);
+                }}
+              />
+            ) : (
+              <div>
+                {publicUser ? <PublicProfileDetails data={publicUser!} /> : null}
+
+                <div className="mt-3">
+                  <Tabs
+                    currentIndex={currentTabIndex}
+                    onChangeRoute={(index: number) => setCurrentTabIndex(index)}
+                  />
+
+                  {currentTabIndex === 0 && publicUser ? (
+                    <About data={publicUser!} />
+                  ) : null}
+                  {currentTabIndex === 1 ? <Posts posts={posts} /> : null}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0" style={{
+            width: '30%',
+            flexGrow: 0,
+            overflow: 'none',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+
+
+
+          }}>
+
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              {/* {profile.bossup ? (
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+              ) : null} */}
+            </div>
+
+
+          </div>
+
+
         </div>
-      )}
+
+
+      </div>
     </div>
   );
 };

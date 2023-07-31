@@ -8,9 +8,10 @@ interface Props {
 const IndustryCard = ({ industry }: Props) => {
   const navigate = useNavigate();
   return (
+    <div>
     <div
+      className="bg-white shadow p-2 rounded-xl mobile-only"
       onClick={() => navigate(RoutesPath.forum, { state: industry })}
-      className="bg-white shadow p-2 rounded-lg"
     >
       <div className="flex items-center justify-between mb-3">
         <p className="text-[#333333] text-sm ">{industry.industry}</p>
@@ -18,9 +19,25 @@ const IndustryCard = ({ industry }: Props) => {
       </div>
       <img
         src={industry.photo}
-        className="h-20 w-full rounded-lg object-cover"
+        className="h-25 w-full rounded-lg object-cover"
         alt=""
       />
+    </div>
+
+    <div
+      className="bg-white shadow p-2 rounded-xl computer-only"
+      onClick={() => navigate(RoutesPath.forum, { state: industry })}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[#333333] text-sm ">{industry.industry}</p>
+        <MdOutlineKeyboardArrowRight className="text-primary" />
+      </div>
+      <img
+        src={industry.photo}
+        className="h-30 w-full rounded-lg object-cover"
+        alt=""
+      />
+    </div>
     </div>
   );
 };

@@ -1,10 +1,12 @@
-import MessageIcon from "./icons/message.svg";
+import  MessageIcon from "./icons/message.svg";
 import { ReactComponent as ProfileIcon } from "./icons/profile.svg";
+import { ReactComponent as Messagenoback } from "./icons/message.svg";
+import { ReactComponent as Notifnoback } from "./icons/notifications.svg";
 import NotificationIcon from "./icons/notifications.svg";
 import { ReactComponent as BossupIcon } from "./icons/bossup.svg";
 import Badge from "./icons/badge.svg";
 import Logo from "./icons/logo.png";
-import { ReactComponent as Home } from "./icons/home.svg";
+import { ReactComponent as Home } from "./icons/homeicon.svg";
 import { ReactComponent as User } from "./icons/person.svg";
 import { ReactComponent as MarketPlace } from "./icons/marketplace.svg";
 import { ReactComponent as Private } from "./icons/private.svg";
@@ -28,6 +30,7 @@ import Trophy from "./icons/trophy.svg";
 import Product from "./icons/product.svg";
 import Invite from "./icons/invitepicture.png";
 import ActiveNotification from "./icons/active_notification.svg";
+import { ReactComponent as Backbutton } from "./icons/backbutton.svg"
 
 
 
@@ -56,12 +59,15 @@ const Assets = {
     Product,
     Invite,
     ActiveNotification,
+    Notifnoback,
+    Messagenoback,
     Private,
     Visible,
     Google,
     User,
     Send,
     File,
-    Upload
+    Upload,
+    Backbutton,
 };
 export default Assets;

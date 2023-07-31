@@ -26,6 +26,8 @@ import RoutesPath from "../../../constants/Routes";
 import FilledInput from "../../../common/components/inputs/FilledInput";
 import FilledTextarea from "../../../common/components/inputs/FilledTextarea";
 import serviceApi from "../../../services/serviceApi";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
 interface Props {
   socket: Socket;
 }
@@ -286,109 +288,118 @@ const Forum = ({ socket }: Props) => {
   };
   return (
     <div>
-      <div className="fixed top-0 w-full z-50">
-        <CommonPageHeader title={industry?.industry ?? ""} />
-      </div>
-      <Popup lockScroll modal open={openModal}>
-        <div className=" min-h-screen h-full bg-white overflow-auto mb-20 min-w-full w-screen">
-          <div className=" top-0 w-full z-50">
-            <div className="bg-white flex items-center p-5 justify-between">
-              <h1 className="text-xl font-[500]">
-                {industry?.categoryId === AppConstants.LEARNINGID
-                  ? "Start a Topic"
-                  : "Share Opportunities"}
-              </h1>
-              <button
-                onClick={() => {
-                  setOpenModal(false);
+      <div className="mobile-only">
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            backgroundColor: "#fff",
+            borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <CommonPageHeader title={industry?.industry ?? ""} />
+        </div>
+        <Popup lockScroll modal open={openModal}>
+          <div className=" min-h-screen h-full bg-white overflow-auto mb-20 min-w-full w-screen">
+            <div className=" top-0 w-full z-50">
+              <div className="bg-white flex items-center p-5 justify-between">
+                <h1 className="text-xl font-[500]">
+                  {industry?.categoryId === AppConstants.LEARNINGID
+                    ? "Start a Topic"
+                    : "Share Opportunities"}
+                </h1>
+                <button
+                  onClick={() => {
+                    setOpenModal(false);
+                  }}
+                >
+                  <AiOutlineClose />
+                </button>
+              </div>
+            </div>
+            <div className="mt-20 px-4">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (stateProps) {
+                    updatePostFn();
+                  } else {
+                    createPost();
+                  }
                 }}
               >
-                <AiOutlineClose />
-              </button>
-            </div>
-          </div>
-          <div className="mt-20 px-5">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (stateProps) {
-                  updatePostFn();
-                } else {
-                  createPost();
-                }
-              }}
-            >
-              <FilledInput
-                defaultValue={stateProps?.title}
-                inputRef={titleRef}
-                onchange={() => {}}
-                placeholder="Enter Business name"
-                className="text-sm"
-              />
-              <FilledTextarea
-                defaultValue={stateProps?.description}
-                inputRef={descriptionRef}
-                onchange={() => {}}
-                placeholder="Describe your business"
-                className="text-sm"
-              />
+                <FilledInput
+                  defaultValue={stateProps?.title}
+                  inputRef={titleRef}
+                  onchange={() => {}}
+                  placeholder="Enter Business name"
+                  className="text-sm"
+                />
+                <FilledTextarea
+                  defaultValue={stateProps?.description}
+                  inputRef={descriptionRef}
+                  onchange={() => {}}
+                  placeholder="Describe your business"
+                  className="text-sm"
+                />
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Assets.File />
-                  <small className="text-[#BABABA]">Add attachment</small>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Assets.File />
+                    <small className="text-[#BABABA]">Add attachment</small>
+                  </div>
+                  <label htmlFor="file">
+                    <Assets.Upload />
+                  </label>
                 </div>
-                <label htmlFor="file">
-                  <Assets.Upload />
-                </label>
-              </div>
-              <input
-                type="file"
-                className="w-0 h-0"
-                accept="images/*"
-                onChange={(e) => {
-                  if (!e.target.files?.length) return;
-                  if (images.length === 4) return;
-                  setImages([...images, e.target.files[0]]);
-                }}
-                name=""
-                id="file"
-              />
-              {stateProps ? (
-                <div className="grid grid-cols-4 gap-4 mb-10">
-                  {stateProps.images?.map((img: string, index: number) => {
-                    return (
-                      <div key={index} className="relative">
-                        <img
-                          alt=""
-                          className="h-16 rounded-lg object-cover w-full"
-                          src={img}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="grid grid-cols-4 gap-4 mb-10">
-                  {images.map((img: File, index: number) => {
-                    return (
-                      <div key={index} className="relative">
-                        <img
-                          alt=""
-                          className="h-16 rounded-lg object-cover w-full"
-                          src={URL.createObjectURL(img)}
-                        />
-                        <div className="absolute top-0 right-0">
-                          <button onClick={() => removeImage(img.name)}>
-                            <MdCancel color="red" />
-                          </button>
+                <input
+                  type="file"
+                  className="w-0 h-0"
+                  accept="images/*"
+                  onChange={(e) => {
+                    if (!e.target.files?.length) return;
+                    if (images.length === 4) return;
+                    setImages([...images, e.target.files[0]]);
+                  }}
+                  name=""
+                  id="file"
+                />
+                {stateProps ? (
+                  <div className="grid grid-cols-4 gap-4 mb-10">
+                    {stateProps.images?.map((img: string, index: number) => {
+                      return (
+                        <div key={index} className="relative">
+                          <img
+                            alt=""
+                            className="h-16 rounded-lg object-cover w-full"
+                            src={img}
+                          />
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-              {/* <div className="flex items-center justify-between my-10">
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-4 gap-4 mb-10">
+                    {images.map((img: File, index: number) => {
+                      return (
+                        <div key={index} className="relative">
+                          <img
+                            alt=""
+                            className="h-16 rounded-lg object-cover w-full"
+                            src={URL.createObjectURL(img)}
+                          />
+                          <div className="absolute top-0 right-0">
+                            <button onClick={() => removeImage(img.name)}>
+                              <MdCancel color="red" />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+                {/* <div className="flex items-center justify-between my-10">
             <img src={Assets.Rocket} alt="" />
             <p className="text-[#373737] font-semibold">Boost Post</p>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -402,92 +413,208 @@ const Forum = ({ socket }: Props) => {
             </label>
           </div> */}
 
-              <FilledButton
-                onClick={stateProps ? updatePostFn : createPost}
-                text={
-                  processing ? "Posting..." : stateProps ? "Update" : "Post"
-                }
-                className="w-full p-3"
-              />
-              <div className="my-10"></div>
-            </form>
+                <FilledButton
+                  onClick={stateProps ? updatePostFn : createPost}
+                  text={
+                    processing ? "Posting..." : stateProps ? "Update" : "Post"
+                  }
+                  className="w-full p-3"
+                />
+                <div className="my-10"></div>
+              </form>
+            </div>
           </div>
-        </div>
-      </Popup>
-      <div className="my-16"></div>
-      {industry ? (
-        <ForumCard
-          onCreate={() => {
-            setOpenModal(true);
-          }}
-          createLabel={
-            industry.categoryId === AppConstants.LEARNINGID
-              ? "Start a topic"
-              : "Share Opportunities"
-          }
-          banner={industry?.photo!}
-          didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
-          label={industry?.description ?? "Industry description"}
-          members={industry?.joinedUsers?.length ?? 0}
-          onJoin={joinIndustry}
-          topics={count}
-        />
-      ) : null}
-      {loading ? (
-        <FetchStatus
-          error={false}
-          errorMessage="Something went wrong!!"
-          loading={true}
-          onReload={() => {}}
-        />
-      ) : null}
-      {err ? (
-        <FetchStatus
-          error={true}
-          errorMessage="Something went wrong!!"
-          loading={false}
-          onReload={() => {
-            fetchForums(industry?.industryId!);
-          }}
-        />
-      ) : null}
-      <div className="p-5">
-        {forums.map((forum: ForumProp, index: number) => (
-          <ForumItem
-            onEdit={() => {
-              setStateProps(forum);
+        </Popup>
+        {industry ? (
+          <ForumCard
+            onCreate={() => {
               setOpenModal(true);
             }}
-            onComment={(comment: Comment) => {
-              onComment(comment, index);
-            }}
-            onLike={(postId: string) => {
-              onLike(
-                {
-                  postId,
-                  type: "forum",
-                  userId: profile!.uid,
-                  receiverUid: forum.user!.uid,
-                },
-                index
-              );
-            }}
-            onCoin={(postId: string) => {
-              onCoin(
-                {
-                  postId,
-                  type: "forum",
-                  userId: profile!.uid,
-                  receiverUid: forum.user!.uid,
-                  timestamp: Date.now(),
-                },
-                index
-              );
-            }}
-            key={forum.forumId}
-            data={forum}
+            createLabel={
+              industry.categoryId === AppConstants.LEARNINGID
+                ? "Start a topic"
+                : "Share Opportunities"
+            }
+            banner={industry?.photo!}
+            didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
+            label={industry?.description ?? "Industry description"}
+            members={industry?.joinedUsers?.length ?? 0}
+            onJoin={joinIndustry}
+            topics={count}
           />
-        ))}
+        ) : null}
+        {loading ? (
+          <FetchStatus
+            error={false}
+            errorMessage="Something went wrong!!"
+            loading={true}
+            onReload={() => {}}
+          />
+        ) : null}
+        {err ? (
+          <FetchStatus
+            error={true}
+            errorMessage="Something went wrong!!"
+            loading={false}
+            onReload={() => {
+              fetchForums(industry?.industryId!);
+            }}
+          />
+        ) : null}
+        <div className="">
+          {forums.map((forum: ForumProp, index: number) => (
+            <ForumItem
+              onEdit={() => {
+                setStateProps(forum);
+                setOpenModal(true);
+              }}
+              onComment={(comment: Comment) => {
+                onComment(comment, index);
+              }}
+              onLike={(postId: string) => {
+                onLike(
+                  {
+                    postId,
+                    type: "forum",
+                    userId: profile!.uid,
+                    receiverUid: forum.user!.uid,
+                  },
+                  index
+                );
+              }}
+              onCoin={(postId: string) => {
+                onCoin(
+                  {
+                    postId,
+                    type: "forum",
+                    userId: profile!.uid,
+                    receiverUid: forum.user!.uid,
+                    timestamp: Date.now(),
+                  },
+                  index
+                );
+              }}
+              key={forum.forumId}
+              data={forum}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="computer-only">
+        <ComputerHeader />
+        <div className="computer-content">
+          <div
+            className="firstsection ml-5 lg:ml-20 mr-5 pl-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
+              <div className=" flex items-center gap-3">
+                <ComputerProfileDetails data={profile!} />
+              </div>
+            </div>
+          </div>
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="computer-main-content"
+            style={{ width: "40%", flexGrow: 0 }}
+          >
+            {loading ? (
+              <FetchStatus
+                error={false}
+                errorMessage="Something went wrong!!"
+                loading={true}
+                onReload={() => {}}
+              />
+            ) : null}
+            {err ? (
+              <FetchStatus
+                error={true}
+                errorMessage="Something went wrong!!"
+                loading={false}
+                onReload={() => {
+                  fetchForums(industry?.industryId!);
+                }}
+              />
+            ) : null}
+            <div className="">
+              {forums.map((forum: ForumProp, index: number) => (
+                <ForumItem
+                  onEdit={() => {
+                    setStateProps(forum);
+                    setOpenModal(true);
+                  }}
+                  onComment={(comment: Comment) => {
+                    onComment(comment, index);
+                  }}
+                  onLike={(postId: string) => {
+                    onLike(
+                      {
+                        postId,
+                        type: "forum",
+                        userId: profile!.uid,
+                        receiverUid: forum.user!.uid,
+                      },
+                      index
+                    );
+                  }}
+                  onCoin={(postId: string) => {
+                    onCoin(
+                      {
+                        postId,
+                        type: "forum",
+                        userId: profile!.uid,
+                        receiverUid: forum.user!.uid,
+                        timestamp: Date.now(),
+                      },
+                      index
+                    );
+                  }}
+                  key={forum.forumId}
+                  data={forum}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            {industry ? (
+              <ForumCard
+                onCreate={() => {
+                  setOpenModal(true);
+                }}
+                createLabel={
+                  industry.categoryId === AppConstants.LEARNINGID
+                    ? "Start a topic"
+                    : "Share Opportunities"
+                }
+                banner={industry?.photo!}
+                didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
+                label={industry?.description ?? "Industry description"}
+                members={industry?.joinedUsers?.length ?? 0}
+                onJoin={joinIndustry}
+                topics={count}
+              />
+            ) : null}
+          </div>
+        </div>
       </div>
     </div>
   );

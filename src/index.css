@@ -5,7 +5,107 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap');
 
 * {
- font-family: 'Nunito Sans', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+@media only screen and (max-width: 768px) {
+
+  /* Mobile styles */
+  .mobile-only {
+    display: block;
+  }
+
+  .computer-only {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+
+  /* Computer styles */
+  .mobile-only {
+    display: none;
+  }
+
+  .computer-only {
+    display: block;
+    height: '100px';
+    overflow: 'hidden' ;
+
+  }
+}
+
+.computer-content {
+  display: flex;
+  flex-direction: row;
+ 
+
+
+
+
+
+}
+
+.computer-main-content {
+  width: 40%;
+  overflow-y: auto;
+  height: 1000px;
+}
+
+.computer-main-content::-webkit-scrollbar {
+  width: 0px;
+  background-color: transparent;
+}
+
+.firstsection {
+  width: 30%;
+  border-left: '1.2px solid rgba(0, 0, 0, 0.1)' ;
+  
+
+}
+
+.lastsection {
+  width: 30%;
+
+}
+
+.selected-tab {
+  position: relative;
+}
+
+.selected-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 3px;
+  background-color: #F21C29;
 }
 
 
+
+/* CSS */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background-color: #fff;
+  width: 30%;
+  height: 90%;
+  border-radius: 20px;
+  box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.2);
+}
+
+body.popup-open {
+  overflow: hidden;
+}
