@@ -2,15 +2,22 @@ import PinInput from "react-pin-input";
 import FilledButton from "../../../common/components/buttons/FilledButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AuthController from "../controller/AuthController";
 import { StorageEnum } from "../../../common/emums/StorageEmuns";
+import FilledInput from "../../../common/components/inputs/FilledInput";
+import Popup from "reactjs-popup";
 interface Props {
   onSuccess: VoidFunction;
 }
 const OtpVerificationPage = ({ onSuccess }: Props) => {
   const [pin, setPin] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const newPasswordRef = useRef<HTMLInputElement>(null);
+  const [openResetPasswordDialog, setOpenResetPasswordDialog] = useState<
+    boolean
+  >(false);
+  const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,20 +26,59 @@ const OtpVerificationPage = ({ onSuccess }: Props) => {
     const validate = AuthController.validateOTPVerification(pin);
     if (validate) {
       setLoading(true);
-      const response = await AuthController.verificationRequest({
-        otp: pin,
-        email,
-      });
-      if (response.success) {
-        localStorage.setItem(
-          StorageEnum.AccessToken,
-          response.data.accessToken
-        );
-        localStorage.setItem(StorageEnum.UserId, response.data.uid);
-        onSuccess();
-        navigate(RoutesPath.editProfile, { state: response.data });
+      if (isForgotPassword) {
+        const response = await AuthController.verifyEmail({
+          otp: pin,
+          email,
+        });
+        if (response.success) {
+          localStorage.setItem(
+            StorageEnum.AccessToken,
+            response.data.accessToken
+          );
+          localStorage.setItem(StorageEnum.UserId, response.data.uid);
+          setLoading(false);
+
+          setOpenResetPasswordDialog(true);
+          return;
+        }
+      } else {
+        const response = await AuthController.verificationRequest({
+          otp: pin,
+          email,
+        });
+        if (response.success) {
+          localStorage.setItem(
+            StorageEnum.AccessToken,
+            response.data.accessToken
+          );
+          localStorage.setItem(StorageEnum.UserId, response.data.uid);
+
+          onSuccess();
+          navigate(RoutesPath.editProfile, { state: response.data });
+        }
       }
       setLoading(false);
+    }
+  };
+
+  const resetPassword = async () => {
+    if (!!!newPasswordRef.current?.value.trim()) return;
+    if (loading) return;
+    setLoading(true);
+    const response = await AuthController.resetPassword(
+      email,
+      newPasswordRef.current.value.trim()
+    );
+    if (response.success) {
+      onSuccess();
+      if (response.data.bio) {
+        navigate(RoutesPath.home);
+        return;
+      } else {
+        navigate(RoutesPath.editProfile, { state: response.data });
+        return;
+      }
     }
   };
 
@@ -41,11 +87,47 @@ const OtpVerificationPage = ({ onSuccess }: Props) => {
     if (!state) {
       navigate(-1);
     } else {
-      setEmail(state);
+      setEmail(state.email);
+      setIsForgotPassword(state.isForgotPassword);
     }
   }, []);
   return (
     <div className="p-5">
+      <Popup
+        closeOnDocumentClick={false}
+        closeOnEscape={false}
+        overlayStyle={{
+          backdropFilter: "blur(5px)",
+          background: "rgba(0,0,0,.5)",
+        }}
+        modal
+        open={openResetPasswordDialog}
+      >
+        <div className="flex justify-center px-3">
+          <div className=" bg-white p-5 rounded-lg xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full xs:w-full ">
+            <div className="">
+              <h1 className="text-2xl mb-5">Reset Password</h1>
+              <small className="text-sm text-black-80">
+                Reset Password For {email}
+              </small>
+              {/* <br /> */}
+              <div className="">
+                <FilledInput
+                  inputRef={newPasswordRef}
+                  label="Set New Password"
+                  placeholder="input password"
+                  onchange={() => {}}
+                />
+                <FilledButton
+                  onClick={resetPassword}
+                  text={loading ? "Processing..." : "Reset Password"}
+                  className="w-full p-3"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Popup>
       <div className="">
         <h1 className="text-primary text-3xl my-10 font-[800] text-center">
           Business Bosses

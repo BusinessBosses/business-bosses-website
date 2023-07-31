@@ -21,7 +21,15 @@ const ChatPage = () => {
   return (
     <div>
       <div className="mobile-only">
-      <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            backgroundColor: "#fff",
+            borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <CommonPageHeader title="Chat" />
         </div>
         <div className="px-4">
@@ -64,44 +72,44 @@ const ChatPage = () => {
         <ComputerHeader />
 
         <div className="computer-content">
-          <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-
-          }}>
-            <div className="" >
+          <div
+            className="firstsection ml-5 lg:ml-20 mr-5 pl-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
               <div className=" flex items-center gap-3">
-                {/* <ComputerProfileDetails data={profile.profile!} /> */}
+                <ComputerProfileDetails data={profile!} />
               </div>
-
             </div>
           </div>
-          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
 
-
-
-          <div className="computer-main-content p-5" style={{ width: '40%', flexGrow: 0 }} >
+          <div
+            className="computer-main-content p-5"
+            style={{ width: "40%", flexGrow: 0 }}
+          >
             <p>Chat</p>
-
           </div>
 
-          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-
-
-
-          }}>
-
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {/* <div className="fixed top-0 w-full z-50">
               <CommonPageHeader title="Chat" />
@@ -140,13 +148,8 @@ const ChatPage = () => {
                   );
                 })}
               </div>
-
             </div>
-
-
           </div>
-
-
         </div>
       </div>
     </div>

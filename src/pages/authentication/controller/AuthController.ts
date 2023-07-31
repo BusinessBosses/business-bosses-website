@@ -61,6 +61,26 @@ class Authentication {
         return response;
     }
 
+    async verifyEmail(args: { otp: string, email: string }) {
+        const response = await serviceApi.post('/auth/verify-email', args);
+        return response;
+    }
+
+    async requestOpt(email: string) {
+        const response = await serviceApi.post("/auth/request-otp", {
+            email,
+        });
+        return response;
+    }
+
+    async resetPassword(email: string, newPassword: string) {
+        const response = await serviceApi.post("/auth/reset-password", {
+            email,
+            newPassword,
+        });
+        return response;
+    }
+
 
     validateOTPVerification(otp: string): boolean {
         if (otp.length < 6) {

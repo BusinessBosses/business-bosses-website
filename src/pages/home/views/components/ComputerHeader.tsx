@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ComputerTopNav from "./ComputerTopNav";
 import HomeSearch from "../../../search/views/HomeSearch";
 import RoutesPath from "../../../../constants/Routes";
 import Assets from "../../../../assets";
 import { CiSearch } from "react-icons/ci";
-import { useAppSelector } from "../../../../redux/store/store";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
+import { onChangeRoute } from "../../../../redux/slices/RouteSlice";
 
 const ComputerHeader = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const ComputerHeader = () => {
   const currentRoute = location.pathname;
   const profile = useAppSelector((state) => state.user);
   const chats = useAppSelector((state) => state.chat.chats);
-
+  const dispatch = useAppDispatch();
   useEffect(() => {
     if (isPopupOpen) {
       document.body.classList.add("popup-open");
@@ -31,10 +32,6 @@ const ComputerHeader = () => {
     setIsPopupOpen(false);
   };
 
-  // const handleTabClick = (index: number) => {
-  //   setCurrentIndex(index);
-  // };
-
   return (
     <div
       className="bg-white top-0 w-full z-50"
@@ -46,7 +43,10 @@ const ComputerHeader = () => {
             src={Assets.Logo}
             className="w-12 h-12 my-3 cursor-pointer"
             alt=""
-            onClick={() => navigate(RoutesPath.home)}
+            onClick={() => {
+              dispatch(onChangeRoute(0));
+              navigate(RoutesPath.home);
+            }}
           />
           <div className="computer-only">
             <div className="hidden lg:block">
@@ -75,8 +75,6 @@ const ComputerHeader = () => {
             </div>
           </div>
           <ComputerTopNav
-            // currentIndex={currentIndex}
-            // onTabClick={handleTabClick}
             currentRoute={currentRoute}
             unseenNotification={profile?.profile!.unReadCount! > 0}
             unseenChat={
