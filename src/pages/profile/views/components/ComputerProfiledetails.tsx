@@ -17,9 +17,16 @@ const ComputerProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user);
 
+  // Function to handle the click event
+  const handleProfileClick = () => {
+    // Example: Navigate to a specific route when the profile is clicked
+    navigate(RoutesPath.myProfile, { state: { userId: data.uid } });
+  };
+
   return (
-    <div>
-      <div className="mt-20 px-4 ">
+    <div onClick={handleProfileClick} style={{ cursor: "pointer" }}>
+      {/* Make the entire component clickable */}
+      <div className="mt-5">
         <div className="flex items-center gap-3">
           <UserAvatar
             imageSize="h-24 w-24"
