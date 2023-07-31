@@ -23,7 +23,6 @@ import ComputerProfileDetails from "../../profile/views/components/ComputerProfi
 
 interface Props {
   socket: Socket;
-
 }
 const HomePage = ({ socket }: Props) => {
   const dispatch = useAppDispatch();
@@ -121,7 +120,7 @@ const HomePage = ({ socket }: Props) => {
           if (post.isForum) {
             return (
               <ForumItem
-                onEdit={() => { }}
+                onEdit={() => {}}
                 onComment={(comment: Comment) => {
                   onComment(comment, index);
                 }}
@@ -191,34 +190,37 @@ const HomePage = ({ socket }: Props) => {
         <MobileBottomNav currentIndex={0} />
       </div>
 
-
       <div className="computer-only">
         <ComputerHeader />
 
         <div className="computer-content">
-          <div className="firstsection ml-5 lg:ml-20 mr-5" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-
-          }}>
-            <div className="" >
+          <div
+            className="firstsection ml-5 lg:ml-20 mr-5"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
               <div className=" flex items-center gap-3">
                 <ComputerProfileDetails data={profile.profile!} />
               </div>
-
             </div>
           </div>
-          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="computer-main-content"
+            style={{ width: "40%", flexGrow: 0 }}
+          >
             {posts.map((post: MixedPostState, index: number) => {
               if (post.isForum) {
                 return (
                   <ForumItem
-                    onEdit={() => { }}
+                    onEdit={() => {}}
                     onComment={(comment: Comment) => {
                       onComment(comment, index);
                     }}
@@ -284,34 +286,25 @@ const HomePage = ({ socket }: Props) => {
                 );
               }
             })}
-
           </div>
-          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-        
-
-
-
-          }}>
-
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection ml-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
                 <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
               ) : null}
             </div>
-
-
           </div>
-
-
-
-
         </div>
       </div>
     </div>

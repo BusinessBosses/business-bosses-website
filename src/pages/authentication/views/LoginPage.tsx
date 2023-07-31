@@ -61,8 +61,6 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
   });
 
   const login = async () => {
-    // alert(emailRef.current?.value);
-    // return;
     if (loading) return;
     const validate = AuthController.validateLogin({
       email: emailRef.current?.value.trim(),
@@ -138,6 +136,16 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
             )
           }
         />
+        <div className="flex items-center justify-end">
+          <button
+            onClick={() => {
+              navigate(RoutesPath.forgotPassword);
+            }}
+            className="underline text-sm"
+          >
+            Forgot Password?
+          </button>
+        </div>
         <div className="flex items-center my-10 gap-4">
           <input
             defaultChecked
@@ -160,8 +168,6 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           <FilledButton
             onClick={login}
             text={loading ? "Authenticating..." : "Sign in"}
-
-
             className="w-full p-3"
           />
         </div>

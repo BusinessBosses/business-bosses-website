@@ -33,6 +33,7 @@ import { socketUrl } from "./config/config";
 import CreateBossup from "./pages/communities/views/CreateBossup";
 import Popup from "reactjs-popup";
 import { StorageEnum } from "./common/emums/StorageEmuns";
+import RequestOtpForForgotPassword from "./pages/authentication/RequestOtpForForgotPassword";
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -213,7 +214,10 @@ const App = () => {
       <Route path={RoutesPath.settings} element={<SettingsPage />} />
       <Route path={RoutesPath.invite} element={<InvitePage />} />
       <Route path={RoutesPath.notifications} element={<NotificationPage />} />
-      <Route path={RoutesPath.homeSearch} element={<HomeSearch onClosePopup={closePopup}/>} />
+      <Route
+        path={RoutesPath.homeSearch}
+        element={<HomeSearch onClosePopup={closePopup} />}
+      />
       <Route path={RoutesPath.connections} element={<ConnectionsPage />} />
       <Route
         path={RoutesPath.register}
@@ -226,6 +230,10 @@ const App = () => {
       <Route
         path={RoutesPath.verifyOtp}
         element={<OtpVerificationPage onSuccess={fetchData} />}
+      />
+      <Route
+        path={RoutesPath.forgotPassword}
+        element={<RequestOtpForForgotPassword />}
       />
       <Route path={RoutesPath.editProfile} element={<EditProfilePage />} />
       <Route path={RoutesPath.chats} element={<ChatPage />} />

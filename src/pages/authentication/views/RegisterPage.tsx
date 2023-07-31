@@ -80,7 +80,12 @@ const RegisterPage = ({ onSuccess }: Props) => {
         password,
       });
       if (response.success) {
-        navigate(RoutesPath.verifyOtp, { state: email });
+        navigate(RoutesPath.verifyOtp, {
+          state: {
+            email,
+            isForgotPassword: false,
+          },
+        });
       }
       setLoading(false);
     }

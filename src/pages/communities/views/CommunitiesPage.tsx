@@ -23,6 +23,7 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import { BsInfoCircle } from "react-icons/bs";
 import { Industry } from "../../../common/interfaces/industry";
 import serviceApi from "../../../services/serviceApi";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 interface Props {
   socket: Socket;
 }
@@ -41,9 +42,6 @@ const CommunitiesPage = ({ socket }: Props) => {
 
   const [industry, setIndustry] = useState<Industry | null>(null);
   const profile = useAppSelector((state) => state.user.profile);
-
-
-
 
   const changeRoute = (index: number) => {
     setCurrentIndex(index);
@@ -67,7 +65,6 @@ const CommunitiesPage = ({ socket }: Props) => {
     initRoute();
   }, []);
 
-
   const joinIndustry = async () => {
     if (!!industry?.joinedUsers?.includes(profile!.uid)) {
       const newJoinedUsers = industry.joinedUsers.filter(
@@ -84,7 +81,6 @@ const CommunitiesPage = ({ socket }: Props) => {
       `/industry/join-leave-industry/${industry?.industryId}`
     );
   };
-
 
   const renderLastSectionContent = () => {
     if (currentIndex === 1) {
@@ -124,7 +120,9 @@ const CommunitiesPage = ({ socket }: Props) => {
         <div>
           <div className="flex items-center mt-5 pb-2">
             <div className="flex items-center">
-              <p className="text-lg font-semibold text-[#333333]">Opportunities</p>
+              <p className="text-lg font-semibold text-[#333333]">
+                Opportunities
+              </p>
             </div>
             <div className="flex items-center ml-auto gap-1">
               <p>Info</p>
@@ -157,7 +155,9 @@ const CommunitiesPage = ({ socket }: Props) => {
         <div className=" ">
           <div className="flex items-center mt-5 pb-2">
             <div className="flex items-center">
-              <p className="text-lg font-semibold text-[#333333]">Boss Up Challenge</p>
+              <p className="text-lg font-semibold text-[#333333]">
+                Boss Up Challenge
+              </p>
             </div>
             <div className="flex items-center ml-auto gap-1">
               <p>About</p>
@@ -178,7 +178,6 @@ const CommunitiesPage = ({ socket }: Props) => {
             onJoin={joinIndustry}
             topics={20}
           />
-
         </div>
       );
     }
@@ -225,9 +224,24 @@ const CommunitiesPage = ({ socket }: Props) => {
   return (
     <div>
       <div className="mobile-only">
-      <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 20px 40px rgba(0, 0, 0, 0.02)' }}>
-          <div className=" bg-white" style={{ position: 'sticky', top: 0, zIndex: 999 }}>
-            <div className="flex items-center px-4 justify-between bg-white" style={{ position: 'sticky', top: 0, zIndex: 999 }}>
+        <div
+          className="bg-white top-0 w-full z-50"
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 999,
+            borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
+          }}
+        >
+          <div
+            className=" bg-white"
+            style={{ position: "sticky", top: 0, zIndex: 999 }}
+          >
+            <div
+              className="flex items-center px-4 justify-between bg-white"
+              style={{ position: "sticky", top: 0, zIndex: 999 }}
+            >
               <p className="text-lg font-semibold text-[#333333]">Boss Up</p>
               <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
             </div>
@@ -263,7 +277,10 @@ const CommunitiesPage = ({ socket }: Props) => {
                 element={<Challenge socket={socket} forums={forums} />}
               />
               <Route path={RoutesPath.learning} element={<Learning />} />
-              <Route path={RoutesPath.opportunities} element={<Opportunities />} />
+              <Route
+                path={RoutesPath.opportunities}
+                element={<Opportunities />}
+              />
             </Routes>
           </div>
         )}
@@ -274,25 +291,37 @@ const CommunitiesPage = ({ socket }: Props) => {
       <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
-          <div className="firstsection ml-5 lg:ml-20 mr-5 pl-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-
-          }}>
-            <div className="" >
+          <div
+            className="firstsection ml-5 lg:ml-20 mr-5 pl-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
               <div className=" flex items-center gap-3">
-                {/* <ComputerProfileDetails data={profile.profile!} /> */}
+                <ComputerProfileDetails data={profile!} />
               </div>
-
             </div>
           </div>
-          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0, }}>
-            <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="computer-main-content"
+            style={{ width: "40%", flexGrow: 0 }}
+          >
+            <div
+              style={{
+                position: "sticky",
+                top: 0,
+                zIndex: 1,
+                backgroundColor: "#fff",
+                borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
+              }}
+            >
               <Tabs
                 onChangeRoute={(index: number) => changeRoute(index)}
                 currentIndex={currentIndex}
@@ -301,30 +330,23 @@ const CommunitiesPage = ({ socket }: Props) => {
             <Challenge socket={socket} forums={forums} />
           </div>
 
-          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-          }}>
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
             {renderLastSectionContent()}
-
           </div>
-
-
-
-
         </div>
       </div>
-
     </div>
-
-
-
-
   );
 };
 
