@@ -585,7 +585,7 @@ const Forum = ({ socket }: Props) => {
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
           <div
-            className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0"
+            className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0 mt-5"
             style={{
               width: "30%",
               flexGrow: 0,
@@ -595,6 +595,12 @@ const Forum = ({ socket }: Props) => {
               zIndex: 1,
             }}
           >
+            <div className="flex items-center gap-2 pb-5">
+            <button onClick={() => navigate(-1)}>
+              <Assets.Backbutton/>
+            </button>
+            <p className="text-xl font-medium">{industry?.industry}</p>
+          </div>
             {industry ? (
               <ForumCard
                 onCreate={() => {

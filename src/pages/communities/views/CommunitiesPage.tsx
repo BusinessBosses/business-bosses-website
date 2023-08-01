@@ -24,6 +24,8 @@ import { BsInfoCircle } from "react-icons/bs";
 import { Industry } from "../../../common/interfaces/industry";
 import serviceApi from "../../../services/serviceApi";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ChooseTile from "./choosetile";
+
 interface Props {
   socket: Socket;
 }
@@ -96,21 +98,7 @@ const CommunitiesPage = ({ socket }: Props) => {
             </div>
           </div>
 
-          <div className="pb-5">
-            <ForumCard
-              onCreate={() => {
-                navigate(RoutesPath.CreateBossup, {
-                  state: { industryId: industry?.industryId },
-                });
-              }}
-              createLabel="Enter Challenge"
-              banner={industry?.photo!}
-              didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
-              label={industry?.description ?? "Industry Description"}
-              members={industry?.joinedUsers?.length ?? 0}
-              onJoin={joinIndustry}
-              topics={20}
-            />
+          <div className="pb-2">
           </div>
           <Learning />
         </div>
@@ -130,21 +118,7 @@ const CommunitiesPage = ({ socket }: Props) => {
             </div>
           </div>
 
-          <div className="pb-5">
-            <ForumCard
-              onCreate={() => {
-                navigate(RoutesPath.CreateBossup, {
-                  state: { industryId: industry?.industryId },
-                });
-              }}
-              createLabel="Enter Challenge"
-              banner={industry?.photo!}
-              didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
-              label={industry?.description ?? "Industry Description"}
-              members={industry?.joinedUsers?.length ?? 0}
-              onJoin={joinIndustry}
-              topics={20}
-            />
+          <div className="pb-2">
           </div>
           <Opportunities />
         </div>
@@ -288,7 +262,7 @@ const CommunitiesPage = ({ socket }: Props) => {
         <MobileBottomNav currentIndex={1} />
       </div>
 
-      <div className="computer-only">
+      <div className="computer-only" >
         <ComputerHeader />
         <div className="computer-content">
           <div
@@ -327,23 +301,26 @@ const CommunitiesPage = ({ socket }: Props) => {
                 currentIndex={currentIndex}
               />
             </div>
-            <Challenge socket={socket} forums={forums} />
+            {currentIndex === 0 ? <Challenge socket={socket} forums={forums} /> : currentIndex === 1 ? <ChooseTile /> : <ChooseTile/>}
+
           </div>
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
           <div
-            className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0"
-            style={{
-              width: "30%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-            {renderLastSectionContent()}
-          </div>
+  className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0"
+  style={{
+    width: "30%",
+    flexGrow: 0,
+    overflow: "auto", 
+    position: "sticky",
+    top: 0,
+    zIndex: 1,
+    height: "100vh",
+    scrollbarWidth: "none"
+  }}
+>
+  {renderLastSectionContent()}
+</div>
         </div>
       </div>
     </div>
