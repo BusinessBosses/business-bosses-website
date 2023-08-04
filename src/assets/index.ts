@@ -32,6 +32,9 @@ import Product from "./icons/product.svg";
 import Invite from "./icons/invitepicture.png";
 import {ReactComponent as ActiveNotification} from "./icons/active_notification.svg";
 import { ReactComponent as Backbutton } from "./icons/backbutton.svg"
+import { ReactComponent as Appstorelogo } from "./icons/app-store.svg"
+import { ReactComponent as Playstorelogo } from "./icons/google-play.svg"
+import Authback from "./icons/authback.png"
 
 
 
@@ -71,5 +74,8 @@ const Assets = {
     File,
     Upload,
     Backbutton,
+    Appstorelogo,
+    Playstorelogo,
+    Authback,
 };
 export default Assets;
