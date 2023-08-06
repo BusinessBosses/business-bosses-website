@@ -10,13 +10,16 @@ interface UserState {
     profile: User | null,
     bossup: User | null,
     posts: Post[]
+    relevantUsers: User[]
 }
 
 // Define the initial state using that type
 const initialState: UserState = {
     profile: null,
     bossup: null,
-    posts: []
+    posts: [],
+    relevantUsers: []
+
 }
 
 export const userSlice = createSlice({
@@ -29,6 +32,10 @@ export const userSlice = createSlice({
             state.profile = action.payload
         },
 
+        storeRelevantUsers: (state, action: PayloadAction<User[]>) => {
+            state.relevantUsers = action.payload
+        },
+
         savePostsToState: (state, action: PayloadAction<Post[]>) => {
             state.posts = action.payload
         },
@@ -39,6 +46,6 @@ export const userSlice = createSlice({
     },
 })
 
-export const { saveUserData, saveBossupData, savePostsToState } = userSlice.actions
+export const { saveUserData, saveBossupData, savePostsToState, storeRelevantUsers } = userSlice.actions
 
 export default userSlice.reducer

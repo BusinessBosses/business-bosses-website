@@ -51,7 +51,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
           className="flex flex-col items-center "
         >
           <Assets.BossupIcon
-            stroke={currentIndex === 1 ? primaryColor : strokeColor}
+            fill={currentIndex === 1 ? primaryColor : strokeColor}
           />
           <p
             className={
@@ -120,6 +120,8 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
         >
           <Assets.ProfileIcon
             stroke={currentIndex === 3 ? primaryColor : strokeColor}
+            strokeWidth={2}
+           
           />
           <p
             className={

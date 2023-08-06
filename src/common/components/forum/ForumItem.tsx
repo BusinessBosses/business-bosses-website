@@ -75,217 +75,230 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
   };
   return (
     <div>
-    <div className="mt-5 px-4">
-      <SharePopUp
-        url={`${window.location.href}forum?id=${data.forumId}`}
-        onClose={() => setShowShareDialog(false)}
-        open={showShareDialog}
-      />
-      <BottomSheet
-        scrollLocking={true}
-        onDismiss={() => setOpen(false)}
-        maxHeight={1000}
-        open={open}
-        footer={
-          <div className="flex items-center gap-2">
-            <input
-              ref={commentInputRef}
-              type="text"
-              className="outline-none border-none w-full "
-              placeholder="Comment..."
-              name=""
-              id=""
-            />
-            <button onClick={makeComment}>
-              <Assets.Send />
-            </button>
-          </div>
-        }
-      >
-        <div className="h-[50vh] overflow-y-auto">
-          {(loading || err) && (
-            <FetchStatus
-              error={err}
-              errorMessage="Something went wrong!!"
-              loading={loading}
-              onReload={() => {}}
-            />
-          )}
-          <div className="px-4">
-            {comments.map((comment: CommentStruct, index: number) => {
-              return <Comment comment={comment} key={index} />;
-            })}
-          </div>
-        </div>
-      </BottomSheet>
-      <div className="flex items-start justify-between">
-        <div
-          onClick={() =>
-            navigate(RoutesPath.PublicUserProfile, { state: data.user })
-          }
-          className="flex items-center gap-3"
-        >
-          <UserAvatar
-            imageURL={
-              data.user?.photoUrl ??
-              "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-            }
-          />
-          <div className="">
-            <p className="text-[#333333] text-lg capitalize">
-              {data.user?.username}
-            </p>
-            <p className="text-sm text-[#777777]">
-              {trimText(data.user?.bio ?? "", 20)}
-            </p>
-          </div>
-        </div>
-        <Popup
-          trigger={
-            <div>
-              <IoIosMore size={20} />
+      <div className="mt-5 px-4">
+        <SharePopUp
+          url={`${window.location.href}forum?id=${data.forumId}`}
+          onClose={() => setShowShareDialog(false)}
+          open={showShareDialog}
+        />
+        <BottomSheet
+          scrollLocking={true}
+          onDismiss={() => setOpen(false)}
+          maxHeight={1000}
+          open={open}
+          footer={
+            <div className="flex items-center gap-2">
+              <input
+                ref={commentInputRef}
+                type="text"
+                className="outline-none border-none w-full "
+                placeholder="Comment..."
+                name=""
+                id=""
+              />
+              <button onClick={makeComment}>
+                <Assets.Send />
+              </button>
             </div>
           }
-          position="left top"
-          on="click"
-          closeOnDocumentClick
-          contentStyle={{ padding: "0px", border: "none" }}
-          // arrow={false}
         >
-          {
-            (((close: any) =>
-              data.user!.uid === profile?.uid ? (
-                <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                  <button
-                    onClick={() => {
-                      close();
-                      onEdit();
-                    }}
-                    className="menu-item"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => {
-                      close();
-                      // navigate(RoutesPath.promotePost, { state: data.forumId });
-                    }}
-                    className="menu-item"
-                  >
-                    Delete
-                  </button>
-                </div>
-              ) : (
-                <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                  <button
-                    onClick={() => {
-                      close();
-                      toast.success("User Blocked");
-                      GeneralPostsController.blockUser({
-                        postId: data.forumId,
-                      });
-                    }}
-                    className="menu-item"
-                  >
-                    Block User
-                  </button>
-                  <button
-                    onClick={() => {
-                      close();
-                      toast.success("Post reported");
-                      GeneralPostsController.reportPost({
-                        postId: data.forumId,
-                        reason: "",
-                      });
-                    }}
-                    className="menu-item"
-                  >
-                    Report Post
-                  </button>
-                </div>
-              )) as unknown) as ReactNode
-          }
-        </Popup>
-      </div>
-      <div className="mt-2">
-        <p className=" font-[500] text-black break-words">{data.title}</p>
-        <p className="text-sm text-[#303133] break-words">{data.description}</p>
-        {data.images ? (
-          <div className="mt-2">
-            <img
-              loading="lazy"
-              src={data.images[0]}
-              alt=""
-              className="rounded-lg w-full h-64 object-cover"
+          <div className="h-[50vh] overflow-y-auto">
+            {(loading || err) && (
+              <FetchStatus
+                error={err}
+                errorMessage="Something went wrong!!"
+                loading={loading}
+                onReload={() => {}}
+              />
+            )}
+            <div className="px-4">
+              {comments.map((comment: CommentStruct, index: number) => {
+                return <Comment comment={comment} key={index} />;
+              })}
+            </div>
+          </div>
+        </BottomSheet>
+        <div className="flex items-start justify-between">
+          <div
+            onClick={() =>
+              navigate(RoutesPath.PublicUserProfile, { state: data.user })
+            }
+            className="flex items-center gap-3"
+          >
+            <UserAvatar
+              imageURL={
+                data.user?.photoUrl ??
+                "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+              }
             />
-            <div className="flex overflow-x-scroll mt-2 hide-scroll-bar">
-              <div className="flex flex-nowrap gap-2">
-                {data.images.map((img) => (
-                  <div key={img} className="inline-block">
-                    <div className="w-20 h-20 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                      <img
-                        src={img}
-                        alt=""
-                        className="rounded-lg w-20 h-20 object-cover"
-                      />
-                    </div>
+            <div className="">
+              <p className="text-[#333333] text-lg capitalize">
+                {data.user?.username}
+              </p>
+              <p className="text-sm text-[#777777]">
+                {trimText(data.user?.bio ?? "", 20)}
+              </p>
+            </div>
+          </div>
+          <Popup
+            trigger={
+              <div>
+                <IoIosMore size={20} />
+              </div>
+            }
+            position="left top"
+            on="click"
+            closeOnDocumentClick
+            contentStyle={{ padding: "0px", border: "none" }}
+            // arrow={false}
+          >
+            {
+              (((close: any) =>
+                data.user!.uid === profile?.uid ? (
+                  <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                    <button
+                      onClick={() => {
+                        close();
+                        onEdit();
+                      }}
+                      className="menu-item"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => {
+                        close();
+                        // navigate(RoutesPath.promotePost, { state: data.forumId });
+                      }}
+                      className="menu-item"
+                    >
+                      Delete
+                    </button>
                   </div>
-                ))}
+                ) : (
+                  <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                    <button
+                      onClick={() => {
+                        close();
+                        toast.success("User Blocked");
+                        GeneralPostsController.blockUser({
+                          postId: data.forumId,
+                        });
+                      }}
+                      className="menu-item"
+                    >
+                      Block User
+                    </button>
+                    <button
+                      onClick={() => {
+                        close();
+                        toast.success("Post reported");
+                        GeneralPostsController.reportPost({
+                          postId: data.forumId,
+                          reason: "",
+                        });
+                      }}
+                      className="menu-item"
+                    >
+                      Report Post
+                    </button>
+                  </div>
+                )) as unknown) as ReactNode
+            }
+          </Popup>
+        </div>
+        <div className="mt-2">
+          <p className=" font-[500] text-black break-words">{data.title}</p>
+          <p className="text-sm text-[#303133] break-words">
+            {data.description}
+          </p>
+          {data.industry ? (
+            <p className="text-[#4E4B4B] text-xs my-2">{data.industry}</p>
+          ) : null}
+          {data.images ? (
+            <div className="mt-2">
+              <img
+                loading="lazy"
+                src={data.images[0]}
+                alt=""
+                className="rounded-lg w-full h-64 object-cover"
+              />
+              <div className="flex overflow-x-scroll mt-2 hide-scroll-bar">
+                <div className="flex flex-nowrap gap-2">
+                  {data.images.map((img) => (
+                    <div key={img} className="inline-block">
+                      <div className="w-20 h-20 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                        <img
+                          src={img}
+                          alt=""
+                          className="rounded-lg w-20 h-20 object-cover"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        ) : null}
-        <div className="mt-5 flex items-center justify-between mb-3">
-          <div className="flex gap-5">
-            <PostAction
-              count={data.likes!.length.toString()}
-              icon={
-                data.likes!.includes(profile!.uid)
-                  ? Assets.LikeFilled
-                  : Assets.Like
-              }
-              onClick={() => {
-                if (onLike) {
-                  onLike(data.forumId);
+          ) : null}
+          <div className="mt-5 flex items-center justify-between mb-3">
+            <div className="flex gap-5">
+              <PostAction
+                count={data.likes!.length.toString()}
+                icon={
+                  data.likes!.includes(profile!.uid)
+                    ? Assets.LikeFilled
+                    : Assets.Like
                 }
-              }}
-            />
-            <PostAction
-              count={data.comments!.length.toString()}
-              icon={Assets.Comment}
-              onClick={() => {
-                fetchComments();
-                setOpen(true);
-              }}
-            />
-            <PostAction
-              count={data.coins!.length.toString()}
-              icon={Assets.Coin}
-              onClick={() => {
-                if (onCoin) {
-                  onCoin(data.forumId);
-                }
-              }}
-            />
-            <PostAction
-              count=""
-              icon={Assets.Share}
-              onClick={() => {
-                setShowShareDialog(true);
-              }}
-            />
+                onClick={() => {
+                  if (onLike) {
+                    onLike(data.forumId);
+                  }
+                }}
+              />
+              <PostAction
+                count={data.comments!.length.toString()}
+                icon={Assets.Comment}
+                onClick={() => {
+                  fetchComments();
+                  setOpen(true);
+                }}
+              />
+              <PostAction
+                count={data.coins!.length.toString()}
+                icon={Assets.Coin}
+                onClick={() => {
+                  if (onCoin) {
+                    onCoin(data.forumId);
+                  }
+                }}
+              />
+              <PostAction
+                count=""
+                icon={Assets.Share}
+                onClick={() => {
+                  setShowShareDialog(true);
+                }}
+              />
+            </div>
+            <small className="text-[#B4B4B4]">
+              {formatDate(data.timestamp!)}
+            </small>
           </div>
-          <small className="text-[#B4B4B4]">
-            {formatDate(data.timestamp!)}
-          </small>
         </div>
-        </div>
-     
+      </div>
+      <div
+        className="mobile-only "
+        style={{ height: "7px", width: "100%", background: "#f4f4f4" }}
+      ></div>
+      <div
+        className="computer-only"
+        style={{
+          height: "1.2px",
+          width: "100%",
+          background: "rgba(0, 0, 0, 0.1)",
+        }}
+      ></div>
     </div>
-    <div className="mobile-only " style={{ height: "7px", width: "100%", background: "#f4f4f4" }}></div>
-      <div className="computer-only" style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>
-    </div>
- 
   );
 };
 

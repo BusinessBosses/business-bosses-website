@@ -23,6 +23,7 @@ const forgotPassword = "/auth/forgot-password";
 const CreateListing = "/create-listing";
 const CreateBossup = "/create-bossup";
 const refer = "/refer";
+const subscriptionpage = "/subscriptionpage";
 
 const RoutesPath = {
     home,
@@ -49,7 +50,8 @@ const RoutesPath = {
     CreateListing,
     CreateBossup,
     forgotPassword,
-    refer
+    refer,
+    subscriptionpage,
 }
 
 export default RoutesPath
