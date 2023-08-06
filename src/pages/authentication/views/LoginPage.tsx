@@ -120,13 +120,13 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           {/* <FilledInput onchange={() => {}} placeholder="Username" /> */}
           <FilledInput
             inputRef={emailRef}
-            onchange={() => { }}
+            onchange={() => {}}
             placeholder="Email"
             type="email"
           />
           <FilledInput
             inputRef={passwordRef}
-            onchange={(e) => { }}
+            onchange={(e) => {}}
             placeholder="Password"
             type={passwordVisible ? "text" : "password"}
             onPressSuffixIcon={() => setPasswordVisible((prev) => !prev)}
@@ -186,89 +186,159 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           />
         </form>
 
-        <div className="" style={{ borderRadius: '20px', overflow: 'hidden', height: '60vh', width: '100%' }}>
+        <div
+          className=""
+          style={{
+            borderRadius: "20px",
+            overflow: "hidden",
+            height: "60vh",
+            width: "100%",
+          }}
+        >
           <ReactPlayer
             url="https://youtu.be/3gm6eBtWfi4"
             controls
             width="100%"
             height="100%"
             playing
-
           />
-
         </div>
 
-        <div className="p-5 mt-5" style={{
-          width: '100%', height: '40vh', backgroundColor: 'rgba(255, 255, 255, 1)'
-          , borderRadius: '20px', border: '1px solid white', backdropFilter: 'blur(1px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
-        }}>
-          <div className="" ><img src={Assets.Logo} className="w-20 h-20" alt="" /></div>
-          <div className="mb-3 text-[#232324] font-[600] text-xl pl-3">Business Bosses</div>
-          <div className="text-[#333333]" style={{ textAlign: 'center' }}>
+        <div
+          className="p-5 mt-5"
+          style={{
+            width: "100%",
+            height: "40vh",
+            backgroundColor: "rgba(255, 255, 255, 1)",
+            borderRadius: "20px",
+            border: "1px solid white",
+            backdropFilter: "blur(1px)",
+            WebkitBackdropFilter: "blur(10px)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div className="">
+            <img src={Assets.Logo} className="w-20 h-20" alt="" />
+          </div>
+          <div className="mb-3 text-[#232324] font-[600] text-xl pl-3">
+            Business Bosses
+          </div>
+          <div className="text-[#333333]" style={{ textAlign: "center" }}>
             No.1 App to Start, Grow And Promote Your Business.
           </div>
-          <div className="text-[#333333]" style={{ textAlign: 'center' }}>
+          <div className="text-[#333333]" style={{ textAlign: "center" }}>
             Join Now for free & Unlock Your Potential
           </div>
-          <div className="mt-3" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div
+            className="mt-3"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <div className="pr-2">
-              <Assets.Appstorelogo onClick={() => window.location.href = 'https://apps.apple.com/gh/app/business-bosses-networking/id1569332982'} />
+              <Assets.Appstorelogo
+                onClick={() =>
+                  (window.location.href =
+                    "https://apps.apple.com/gh/app/business-bosses-networking/id1569332982")
+                }
+              />
             </div>
             <div>
-              <Assets.Playstorelogo onClick={() => window.location.href = 'https://play.google.com/store/search?q=Business%20bosses&c=apps'} />
+              <Assets.Playstorelogo
+                onClick={() =>
+                  (window.location.href =
+                    "https://play.google.com/store/search?q=Business%20bosses&c=apps")
+                }
+              />
             </div>
           </div>
         </div>
-
       </div>
-
 
       <div className="computer-only">
         <div className="flex">
-          <div className="authlastsection bg-[#F4F4F4] w-full h-screen flex flex-col justify-center items-center lg:p-10 md:p-5 1xl:p-20 xl:p-20 2xl:p-20" style={{
-
-
-          }}>
-
-
-
-            <div className="" style={{ borderRadius: '20px', overflow: 'hidden', height: '60vh', width: '100%' }}>
+          <div
+            className="authlastsection bg-[#F4F4F4] w-full h-screen flex flex-col justify-center items-center lg:p-10 md:p-5 1xl:p-20 xl:p-20 2xl:p-20"
+            style={{}}
+          >
+            <div
+              className=""
+              style={{
+                borderRadius: "20px",
+                overflow: "hidden",
+                height: "60vh",
+                width: "100%",
+              }}
+            >
               <ReactPlayer
                 url="https://youtu.be/3gm6eBtWfi4"
                 controls
                 width="100%"
                 height="100%"
                 playing
-
               />
-
             </div>
 
-            <div className="p-5 mt-5" style={{
-              width: '100%', height: '40vh', backgroundColor: 'rgba(255, 255, 255, 1)'
-              , borderRadius: '20px', border: '1px solid white', backdropFilter: 'blur(1px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'
-            }}>
-              <div className="" ><img src={Assets.Logo} className="w-20 h-20" alt="" /></div>
-              <div className="mb-3 text-[#232324] font-[600] text-xl pl-3">Business Bosses</div>
-              <div className="text-[#333333]" style={{ textAlign: 'center' }}>
+            <div
+              className="p-5 mt-5"
+              style={{
+                width: "100%",
+                height: "40vh",
+                backgroundColor: "rgba(255, 255, 255, 1)",
+                borderRadius: "20px",
+                border: "1px solid white",
+                backdropFilter: "blur(1px)",
+                WebkitBackdropFilter: "blur(10px)",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div className="">
+                <img src={Assets.Logo} className="w-20 h-20" alt="" />
+              </div>
+              <div className="mb-3 text-[#232324] font-[600] text-xl pl-3">
+                Business Bosses
+              </div>
+              <div className="text-[#333333]" style={{ textAlign: "center" }}>
                 No.1 App to Start, Grow And Promote Your Business.
               </div>
-              <div className="text-[#333333]" style={{ textAlign: 'center' }}>
+              <div className="text-[#333333]" style={{ textAlign: "center" }}>
                 Join Now for free & Unlock Your Potential
               </div>
-              <div className="mt-3" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div
+                className="mt-3"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <div className="pr-2">
-                  <Assets.Appstorelogo onClick={() => window.location.href = 'https://apps.apple.com/gh/app/business-bosses-networking/id1569332982'} />
+                  <Assets.Appstorelogo
+                    onClick={() =>
+                      (window.location.href =
+                        "https://apps.apple.com/gh/app/business-bosses-networking/id1569332982")
+                    }
+                  />
                 </div>
                 <div>
-                  <Assets.Playstorelogo onClick={() => window.location.href = 'https://play.google.com/store/search?q=Business%20bosses&c=apps'} />
+                  <Assets.Playstorelogo
+                    onClick={() =>
+                      (window.location.href =
+                        "https://play.google.com/store/search?q=Business%20bosses&c=apps")
+                    }
+                  />
                 </div>
               </div>
             </div>
-
           </div>
-
-
 
           <div className="authfirstsection 1xl:p-40 2xl:p-40 xl:p-20 lg:p-10 md:p-5">
             <div className="flex items-center">
@@ -276,13 +346,12 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                 src={Assets.Logo}
                 className="w-12 h-12 my-3 cursor-pointer"
                 alt=""
-                onClick={() => {
-
-                }}
+                onClick={() => {}}
               />
-              <div className="text-[#232324] font-[600] text-xl pl-3">Business Bosses</div>
+              <div className="text-[#232324] font-[600] text-xl pl-3">
+                Business Bosses
+              </div>
             </div>
-
 
             <div className="flex items-start gap-10 my-10">
               <div className="flex items-center flex-col gap-1">
@@ -314,13 +383,13 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
               {/* <FilledInput onchange={() => {}} placeholder="Username" /> */}
               <FilledInput
                 inputRef={emailRef}
-                onchange={() => { }}
+                onchange={() => {}}
                 placeholder="Email"
                 type="email"
               />
               <FilledInput
                 inputRef={passwordRef}
-                onchange={(e) => { }}
+                onchange={(e) => {}}
                 placeholder="Password"
                 type={passwordVisible ? "text" : "password"}
                 onPressSuffixIcon={() => setPasswordVisible((prev) => !prev)}
@@ -334,6 +403,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
               />
               <div className="flex items-center justify-end">
                 <button
+                  type="button"
                   onClick={() => {
                     navigate(RoutesPath.forgotPassword);
                   }}
@@ -353,9 +423,15 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                 />
                 <div className="text-sm font-[800]">
                   <span className="text-[#999797] ">I agree to the </span>
-                  <span className="text-primary underline"> Terms of Service </span>
+                  <span className="text-primary underline">
+                    {" "}
+                    Terms of Service{" "}
+                  </span>
                   <span className="text-[#999797] "> and </span>
-                  <span className="text-primary underline"> Privacy Policy </span>
+                  <span className="text-primary underline">
+                    {" "}
+                    Privacy Policy{" "}
+                  </span>
                   <span className="text-[#999797] "> of Business Bosses </span>
                 </div>
               </div>
@@ -380,9 +456,6 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
               />
             </form>
           </div>
-
-
-
         </div>
       </div>
     </div>

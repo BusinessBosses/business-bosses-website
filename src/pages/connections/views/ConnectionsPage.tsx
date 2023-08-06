@@ -43,6 +43,7 @@ const ConnectionsPage = () => {
       const newUserData: User = {
         ...profile,
         connecteds: profile.connecteds?.filter((ft) => ft !== userId),
+        connectedCount: (profile?.connectedCount ?? 0) - 1,
       };
       dispatch(saveUserData(newUserData));
       await ConnectionsController.disConnect(userId);
@@ -50,6 +51,7 @@ const ConnectionsPage = () => {
       const newUserData: User = {
         ...profile,
         connecteds: [...profile?.connecteds!, userId],
+        connectedCount: (profile?.connectedCount ?? 0) + 1,
       } as User;
       dispatch(saveUserData(newUserData));
       await ConnectionsController.connect(userId);
@@ -66,14 +68,21 @@ const ConnectionsPage = () => {
   }, []);
   return (
     <div>
-       <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff' }}>
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          backgroundColor: "#fff",
+        }}
+      >
         <CommonPageHeader title="Connections" />
         <Tabs
-        currentIndex={currentIndex}
-        onChangeRoute={(index: number) => setCurrentIndex(index)}
-      />
+          currentIndex={currentIndex}
+          onChangeRoute={(index: number) => setCurrentIndex(index)}
+        />
       </div>
-     
+
       {loading ? (
         <FetchStatus
           error={false}

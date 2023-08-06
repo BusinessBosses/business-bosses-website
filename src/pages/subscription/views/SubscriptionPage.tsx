@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import SegmentedControl from "@react-native-segmented-control/segmented-control";
+import React, { useRef, useState } from "react";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
-import FilledButton from "../../../common/components/buttons/FilledButton";
-
+import SegmentedControl from "../../../common/components/segmented_control/SegmentedControl";
 const SubscriptionPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-
+  const controlRef = useRef<HTMLDivElement>(null);
   return (
     <div>
       <div className="mobile-only">
@@ -23,20 +21,21 @@ const SubscriptionPage = () => {
         </div>
 
         <div>Upgrade to a premium boss experience at only $49.99/year</div>
-        <div>Other Text comes here</div>
 
-        <FilledButton
-              onClick={() => { }}
-              text="Subscribe"
-              className="px-5 py-1.5"
-            />
-        </div>
-
-
-
-
-        
-      
+        <SegmentedControl
+          segments={[
+            { label: "One", ref: useRef<HTMLDivElement>(null), value: "One" },
+            { label: "Two", ref: useRef<HTMLDivElement>(null), value: "Two" },
+          ]}
+          controlRef={controlRef}
+          name=""
+          defaultIndex={selectedIndex}
+          callback={(_: string, index: number) => {
+            setSelectedIndex(index);
+          }}
+        />
+      </div>
+      SubscriptionPage
     </div>
   );
 };

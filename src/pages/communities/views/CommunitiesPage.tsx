@@ -98,8 +98,7 @@ const CommunitiesPage = ({ socket }: Props) => {
             </div>
           </div>
 
-          <div className="pb-2">
-          </div>
+          <div className="pb-2"></div>
           <Learning />
         </div>
       );
@@ -118,8 +117,7 @@ const CommunitiesPage = ({ socket }: Props) => {
             </div>
           </div>
 
-          <div className="pb-2">
-          </div>
+          <div className="pb-2"></div>
           <Opportunities />
         </div>
       );
@@ -262,7 +260,7 @@ const CommunitiesPage = ({ socket }: Props) => {
         <MobileBottomNav currentIndex={1} />
       </div>
 
-      <div className="computer-only" >
+      <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
           <div
@@ -301,8 +299,39 @@ const CommunitiesPage = ({ socket }: Props) => {
                 currentIndex={currentIndex}
               />
             </div>
-            {currentIndex === 0 ? <Challenge socket={socket} forums={forums} /> : currentIndex === 1 ? <ChooseTile /> : <ChooseTile />}
+            {currentIndex === 0 ? (
+              <Challenge socket={socket} forums={forums} />
+            ) : currentIndex === 1 ? (
+              <ChooseTile />
+            ) : (
+              <ChooseTile />
+            )}
 
+            {currentIndex === 0 ? (
+              <div className="">
+                {forumLoading || industryLoading || !!!industries.length ? (
+                  <FetchStatus
+                    error={false}
+                    errorMessage="Something went wrong!!"
+                    loading={true}
+                    onReload={fetchCall}
+                  />
+                ) : forumErr || industryErr ? (
+                  <FetchStatus
+                    error={true}
+                    errorMessage="Something went wrong!!"
+                    loading={false}
+                    onReload={fetchCall}
+                  />
+                ) : (
+                  <Challenge socket={socket} forums={forums} />
+                )}
+              </div>
+            ) : currentIndex === 1 ? (
+              <ChooseTile />
+            ) : (
+              <ChooseTile />
+            )}
           </div>
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
@@ -316,7 +345,7 @@ const CommunitiesPage = ({ socket }: Props) => {
               top: 0,
               zIndex: 1,
               height: "100vh",
-              scrollbarWidth: "none"
+              scrollbarWidth: "none",
             }}
           >
             {renderLastSectionContent()}

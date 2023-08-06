@@ -21,6 +21,7 @@ import { Comment as CommentStruct } from "../../../common/interfaces/comment";
 import { Socket } from "socket.io-client";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 interface Props {
   socket: Socket;
 }
@@ -118,7 +119,15 @@ const MarketPlacePage = ({ socket }: Props) => {
     <div>
       <div className="mobile-only" style={{}}>
         <div
-          className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 20px 40px rgba(0, 0, 0, 0.02)' }}>
+          className="bg-white top-0 w-full z-50"
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 999,
+            borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
+          }}
+        >
           <div className="flex items-center justify-between bg-white px-3 py-2">
             <p className="text-lg font-semibold text-[#333333]">Marketplace</p>
             <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
@@ -130,6 +139,22 @@ const MarketPlacePage = ({ socket }: Props) => {
         </div>
 
         <div className="">
+          {loading ? (
+            <FetchStatus
+              error={false}
+              errorMessage="Something went wrong!!"
+              loading={true}
+              onReload={() => {}}
+            />
+          ) : null}
+          {err ? (
+            <FetchStatus
+              error={true}
+              errorMessage="Something went wrong!!"
+              loading={false}
+              onReload={fetchCall}
+            />
+          ) : null}
           {market.markets.map((market: Market, index: number) => (
             <MarketItem
               onComment={(comment: CommentStruct) => {
@@ -167,29 +192,48 @@ const MarketPlacePage = ({ socket }: Props) => {
         <MobileBottomNav currentIndex={2} />
       </div>
 
-
       <div className="computer-only">
         <ComputerHeader />
         <div className="computer-content">
-          <div className="firstsection ml-5 lg:ml-20 pr-5 pl-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-
-          }}>
-            <div className="" >
+          <div
+            className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
               <div className=" flex items-center gap-3">
                 <ComputerProfileDetails data={profile.profile!} />
               </div>
-
             </div>
           </div>
-          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="computer-main-content"
+            style={{ width: "40%", flexGrow: 0 }}
+          >
             <div className="">
+              {loading ? (
+                <FetchStatus
+                  error={false}
+                  errorMessage="Something went wrong!!"
+                  loading={true}
+                  onReload={() => {}}
+                />
+              ) : null}
+              {err ? (
+                <FetchStatus
+                  error={true}
+                  errorMessage="Something went wrong!!"
+                  loading={false}
+                  onReload={fetchCall}
+                />
+              ) : null}
               {market.markets.map((market: Market, index: number) => (
                 <MarketItem
                   onComment={(comment: CommentStruct) => {
@@ -224,33 +268,23 @@ const MarketPlacePage = ({ socket }: Props) => {
               ))}
             </div>
             <div className="my-20"></div>
-
-
           </div>
-          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-          <div className="lastsection ml-5 mr-5 mt-5 lg:mr-20" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-     
-
-
-
-          }}>
-
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection ml-5 mr-5 mt-5 lg:mr-20"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
             <div className="rounded-xl overflow-hidden" style={{}}>
               <MobileMarketIntro />
             </div>
-
-
           </div>
-
-
-
-
         </div>
       </div>
     </div>

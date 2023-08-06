@@ -9,9 +9,12 @@ import { IoIosMore } from "react-icons/io";
 import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
+import { useAppSelector } from "../../../redux/store/store";
+import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 
 const SettingsPage = () => {
   const navigate = useNavigate();
+  const profile = useAppSelector((state) => state.user);
   return (
     <div>
       <div className="bg-[#f4f4f4] min-h-screen h-full mobile-only">
@@ -57,14 +60,21 @@ const SettingsPage = () => {
               <div className="flex items-center ">
                 <UserAvatar
                   imageSize="h-24 w-24"
-                  imageURL="https://cdn.pixabay.com/photo/2023/06/12/07/15/spider-8057853__340.jpg"
+                  imageURL={
+                    profile?.profile?.photoUrl ??
+                    "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+                  }
                 />
                 <div className="ml-4">
-                  <p className="text-xl font-semibold">Isaac Akin</p>
-                  <p className="text-lg font-medium">Consultant</p>
-                  <p className="font-medium">Digital Blogger</p>
+                  <p className="text-xl font-semibold capitalize">
+                    {profile?.profile?.username}
+                  </p>
+                  <p className="text-lg font-medium">
+                    {profile?.profile?.category}
+                  </p>
+                  <p className="font-medium">{profile?.profile?.companyName}</p>
                   <p className="text-sm font-light text-[#A9A9A9]">
-                    United Kingdom
+                    {profile?.profile?.location}
                   </p>
                 </div>
 
@@ -152,7 +162,9 @@ const SettingsPage = () => {
             }}
           >
             <div className="">
-              <ComputerBossOfTheWeek />
+              {profile?.bossup ? (
+                <ComputerBossOfTheWeek bossOfTheWeek={profile.bossup} />
+              ) : null}
               <div className="bg-[#F4F4F4] flex items-center justify-between p-2 rounded-lg mt-2">
                 <small className="text-xs text-[#545151]">Boss Up by</small>
                 <p className="text-[#545151] text-sm">
