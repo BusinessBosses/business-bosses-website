@@ -138,6 +138,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
         />
         <div className="flex items-center justify-end">
           <button
+            type="button"
             onClick={() => {
               navigate(RoutesPath.forgotPassword);
             }}
