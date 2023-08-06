@@ -8,7 +8,7 @@ const Notification = ({ data }: Props) => {
     <div className="my-5">
       <div className="flex items-center gap-3 mt-2">
         <div className="">
-          <img src={Assets.ActiveNotification} alt="" />
+          <Assets.ActiveNotification />
         </div>
         <div className="">
           <h4>{data.title}</h4>

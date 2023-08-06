@@ -8,6 +8,7 @@ import ChatController from "../controller/ChatController";
 import { Chat } from "../../../common/interfaces/chat";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ChooseTile from "../../communities/views/choosetile";
 
 const ChatPage = () => {
   const navigate = useNavigate();
@@ -73,7 +74,7 @@ const ChatPage = () => {
 
         <div className="computer-content">
           <div
-            className="firstsection ml-5 lg:ml-20 mr-5 pl-0"
+            className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
             style={{
               width: "30%",
               flexGrow: 0,
@@ -95,7 +96,7 @@ const ChatPage = () => {
             className="computer-main-content p-5"
             style={{ width: "40%", flexGrow: 0 }}
           >
-            <p>Chat</p>
+             <ChooseTile />
           </div>
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
@@ -111,9 +112,8 @@ const ChatPage = () => {
             }}
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
-              {/* <div className="fixed top-0 w-full z-50">
-              <CommonPageHeader title="Chat" />
-            </div> */}
+              <div className="mt-5 text-lg font-semibold text-[#333333]">Chats</div>
+              
               <div className="">
                 {uniqueChats.map((chat, index) => {
                   return (

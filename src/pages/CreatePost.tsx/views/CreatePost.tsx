@@ -153,7 +153,7 @@ const CreatePost = () => {
   return (
     <div>
       <div className="">
-        <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.02)' }}>
+        <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '15px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.02)' }}>
         <div className="mobile-only px-4">
             <CommonPageHeader title="Create Post" /></div>
           

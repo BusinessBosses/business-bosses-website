@@ -195,7 +195,7 @@ const HomePage = ({ socket }: Props) => {
 
         <div className="computer-content">
           <div
-            className="firstsection ml-5 lg:ml-20 mr-5"
+            className="firstsection ml-5 lg:ml-20 pr-5"
             style={{
               width: "30%",
               flexGrow: 0,
@@ -289,7 +289,7 @@ const HomePage = ({ socket }: Props) => {
           </div>
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
           <div
-            className="lastsection ml-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
+            className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
             style={{
               width: "30%",
               flexGrow: 0,

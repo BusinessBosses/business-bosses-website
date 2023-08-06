@@ -266,7 +266,7 @@ const CommunitiesPage = ({ socket }: Props) => {
         <ComputerHeader />
         <div className="computer-content">
           <div
-            className="firstsection ml-5 lg:ml-20 mr-5 pl-0"
+            className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
             style={{
               width: "30%",
               flexGrow: 0,
@@ -301,26 +301,26 @@ const CommunitiesPage = ({ socket }: Props) => {
                 currentIndex={currentIndex}
               />
             </div>
-            {currentIndex === 0 ? <Challenge socket={socket} forums={forums} /> : currentIndex === 1 ? <ChooseTile /> : <ChooseTile/>}
+            {currentIndex === 0 ? <Challenge socket={socket} forums={forums} /> : currentIndex === 1 ? <ChooseTile /> : <ChooseTile />}
 
           </div>
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
           <div
-  className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0"
-  style={{
-    width: "30%",
-    flexGrow: 0,
-    overflow: "auto", 
-    position: "sticky",
-    top: 0,
-    zIndex: 1,
-    height: "100vh",
-    scrollbarWidth: "none"
-  }}
->
-  {renderLastSectionContent()}
-</div>
+            className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "auto",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+              height: "100vh",
+              scrollbarWidth: "none"
+            }}
+          >
+            {renderLastSectionContent()}
+          </div>
         </div>
       </div>
     </div>
