@@ -12,6 +12,10 @@ import { removeChat, saveNewChat } from "../../../redux/slices/ChatSlice";
 import { v4 } from "uuid";
 import serviceApi from "../../../services/serviceApi";
 import { Socket } from "socket.io-client";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ChatController from "../controller/ChatController";
+import RoutesPath from "../../../constants/Routes";
 interface Props {
   socket: Socket;
 }
@@ -22,8 +26,13 @@ const ChatRoomPage = ({ socket }: Props) => {
   const [messages, setMessages] = useState<Chat[]>([]);
   const chats = useAppSelector((state) => state.chat.chats);
   const messageRef = useRef<HTMLInputElement>(null);
-  const profile = useAppSelector((state) => state.user.profile);
+  const profile = useAppSelector((state) => state.user);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [uniqueChats, setUniqueChats] = useState<Chat[]>([]);
+  useEffect(() => {
+    setUniqueChats(ChatController.reduceDuplicateChats(chats, profile?.profile!));
+  }, [chats]);
+  
   const dispatch = useAppDispatch();
   useEffect(() => {
     const state = location.state;
@@ -33,9 +42,9 @@ const ChatRoomPage = ({ socket }: Props) => {
       setChatParty(state.user);
       const filteredMessages = chats.filter(
         (ft) =>
-          (ft.senderUid === profile?.uid &&
+          (ft.senderUid === profile?.profile!.uid &&
             ft.receiverUid === chatParty?.uid) ||
-          (ft.senderUid === chatParty?.uid && ft.receiverUid === profile?.uid)
+          (ft.senderUid === chatParty?.uid && ft.receiverUid === profile?.profile!.uid)
       );
       setMessages(filteredMessages);
     }
@@ -54,7 +63,7 @@ const ChatRoomPage = ({ socket }: Props) => {
       messageId,
       receiverUid: chatParty?.uid!,
       seen: false,
-      senderUid: profile?.uid!,
+      senderUid: profile?.profile!.uid!,
       timestamp: Date.now(),
       image: image ? URL.createObjectURL(image!) : undefined,
       isRawImage: true,
@@ -95,186 +104,270 @@ const ChatRoomPage = ({ socket }: Props) => {
 
   return (
     <div>
-    <div className="mobile-only bg-[#f4f4f4] min-h-screen h-full">
-    <div className="px-4 py-3" style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button onClick={() => navigate(-1)}>
-              <Assets.Backbutton/>
-            </button>
-            <UserAvatar
-              imageSize="w-10 h-10"
-              imageURL={
-                chatParty?.photoUrl ??
-                "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-              }
-            />
-            <div className="">
-              <h4 className="text-[#383838] font-bold capitalize">
-                {chatParty?.username}
-              </h4>
-              <p className="text-[#6B6969] text-sm line-clamp-1">
-                {trimText(chatParty?.bio ?? "", 20)}
-              </p>
-            </div>
-          </div>
-          <FiMoreVertical />
-        </div>
-      </div>
-      <div className="py-3 px-4">
-        {messages.map((message, index) => {
-          if (message.image) {
-            return (
-              <div
-                key={index}
-                className={
-                  message.senderUid === profile?.uid
-                    ? "flex justify-end my-5"
-                    : "flex justify-start my-5"
+      <div className="mobile-only bg-[#f4f4f4] min-h-screen h-full">
+        <div className="px-4 py-3" style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button onClick={() => navigate(-1)}>
+                <Assets.Backbutton />
+              </button>
+              <UserAvatar
+                imageSize="w-10 h-10"
+                imageURL={
+                  chatParty?.photoUrl ??
+                  "https://cdn-icons-png.flaticon.com/128/149/149071.png"
                 }
-              >
+              />
+              <div className="">
+                <h4 className="text-[#383838] font-bold capitalize">
+                  {chatParty?.username}
+                </h4>
+                <p className="text-[#6B6969] text-sm line-clamp-1">
+                  {trimText(chatParty?.bio ?? "", 20)}
+                </p>
+              </div>
+            </div>
+            <FiMoreVertical />
+          </div>
+        </div>
+        <div className="py-3 px-4">
+          {messages.map((message, index) => {
+            if (message.image) {
+              return (
                 <div
+                  key={index}
                   className={
-                    message.senderUid === profile?.uid
-                      ? "bg-primary rounded-b-lg p-2 rounded-tl-lg"
-                      : "bg-primary rounded-b-lg p-2 rounded-tr-lg"
+                    message.senderUid === profile?.profile!.uid
+                      ? "flex justify-end my-5"
+                      : "flex justify-start my-5"
                   }
                 >
+                  <div
+                    className={
+                      message.senderUid === profile?.profile!.uid
+                        ? "bg-primary rounded-b-lg p-2 rounded-tl-lg"
+                        : "bg-primary rounded-b-lg p-2 rounded-tr-lg"
+                    }
+                  >
+                    <img
+                      src={message.image}
+                      className="w-44 h-44 rounded-lg"
+                      alt=""
+                    />
+                  </div>
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  key={index}
+                  className={
+                    message.senderUid === profile?.profile!.uid
+                      ? "flex justify-end my-5"
+                      : "flex justify-start my-5"
+                  }
+                >
+                  <div
+                    className={
+                      message.senderUid === profile?.profile!.uid
+                        ? "bg-primary rounded-b-lg p-2 rounded-tl-lg"
+                        : "bg-primary rounded-b-lg p-2 rounded-tr-lg"
+                    }
+                  >
+                    <p className="text-white">{message.messageText}</p>
+                  </div>
+                </div>
+              );
+            }
+          })}
+
+          <div className="my-14"></div>
+          <div ref={scrollRef} />
+        </div>
+        <div className="fixed bottom-2 w-full">
+          <div className="bg-white shadow mx-4 rounded-full p-3 gap-1 flex items-center justify-between">
+            <label htmlFor="file" className="cursor-pointer">
+              <div className="mr-3">
+                <img src={Assets.Gallery} alt="" /></div>
+            </label>
+            <input
+              ref={messageRef}
+              type="text"
+              placeholder="Type your messages..."
+              className="outline-none flex-grow border-none"
+              name=""
+              id=""
+            />
+            <input
+              onChange={(e) => {
+                if (e.target.files?.length) {
+                  sendMessage(e.target.files[0]);
+                }
+              }}
+              className="w-0 h-0 opacity-0 cursor-pointer"
+              type="file"
+              name=""
+              id="file"
+              accept="images/*"
+            />
+            <button
+              onClick={() => {
+                sendMessage();
+              }}
+            >
+              <Assets.Send />
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div className="computer-only bg-[#ffffff] min-h-screen h-full">
+        <ComputerHeader />
+        <div className="computer-content">
+          <div
+            className="firstsection ml-5 lg:ml-20 pr-5"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
+              <div className=" flex items-center gap-3">
+                <ComputerProfileDetails data={profile.profile!} />
+              </div>
+            </div>
+          </div>
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+
+          <div
+            className="computer-main-content"
+            style={{ width: "40%", flexGrow: 0 }}
+          >
+
+            <div className=" bg-white top-0 z-50 px-4 py-5 mt-5" style={{
+              width: '100%',
+              flexGrow: 0,
+              position: 'sticky',
+              top: 0,
+              zIndex: 1,
+
+            }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <button onClick={() => navigate(-1)}>
+                    <BiArrowBack size={20} />
+                  </button>
+                  <UserAvatar
+                    imageSize="w-10 h-10"
+                    imageURL="https://cdn.pixabay.com/photo/2023/06/25/13/19/woman-8087286_640.jpg"
+                  />
+                  <div className="">
+                    <h4 className="text-[#383838] font-bold">Ernest Awuku Junior</h4>
+                    <p className="text-[#6B6969] text-sm">Bio</p>
+                  </div>
+                </div>
+                <FiMoreVertical />
+
+              </div>
+
+            </div>
+            <div style={{ borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+            <div className="mt-20 py-5 px-4">
+              <div className="flex justify-end my-5">
+                <div className="bg-primary rounded-b-lg p-2 rounded-tl-lg">
+                  <p className="text-white">hi</p>
+                </div>
+              </div>
+              <div className="flex justify-end my-5">
+                <div className="bg-primary rounded-b-lg p-2 rounded-tl-lg">
                   <img
-                    src={message.image}
+                    src="https://cdn.pixabay.com/photo/2023/07/08/09/53/monastery-8114076_640.jpg"
                     className="w-44 h-44 rounded-lg"
                     alt=""
                   />
                 </div>
               </div>
-            );
-          } else {
-            return (
-              <div
-                key={index}
-                className={
-                  message.senderUid === profile?.uid
-                    ? "flex justify-end my-5"
-                    : "flex justify-start my-5"
-                }
-              >
-                <div
-                  className={
-                    message.senderUid === profile?.uid
-                      ? "bg-primary rounded-b-lg p-2 rounded-tl-lg"
-                      : "bg-primary rounded-b-lg p-2 rounded-tr-lg"
-                  }
-                >
-                  <p className="text-white">{message.messageText}</p>
-                </div>
-              </div>
-            );
-          }
-        })}
 
-        <div className="my-14"></div>
-        <div ref={scrollRef} />
-      </div>
-      <div className="fixed bottom-2 w-full">
-        <div className="bg-white shadow mx-4 rounded-full p-3 gap-1 flex items-center justify-between">
-          <label htmlFor="file" className="cursor-pointer">
-            <div className="mr-3">
-            <img  src={Assets.Gallery} alt="" /></div>
-          </label>
-          <input
-            ref={messageRef}
-            type="text"
-            placeholder="Type your messages..."
-            className="outline-none flex-grow border-none"
-            name=""
-            id=""
-          />
-          <input
-            onChange={(e) => {
-              if (e.target.files?.length) {
-                sendMessage(e.target.files[0]);
-              }
-            }}
-            className="w-0 h-0 opacity-0 cursor-pointer"
-            type="file"
-            name=""
-            id="file"
-            accept="images/*"
-          />
-          <button
-            onClick={() => {
-              sendMessage();
+            </div>
+            <div className=" fixed bottom-5">
+              <div className="bg-white shadow mx-5 rounded-full p-3 flex items-center justify-between">
+                <input
+                  type="text"
+                  placeholder="Type your messages..."
+                  className="outline-none flex-grow border-none"
+                  name=""
+                  id=""
+                />
+                <button>
+                  <Assets.Send />
+                </button>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
             }}
           >
-            <Assets.Send />
-          </button>
-        </div>
-      </div>
-      </div>
-
-
-
-    <div className="computer-only bg-[#f4f4f4] min-h-screen h-full">
-      <div className=" bg-white top-0 z-50 px-4 py-5 mt-5" style={{
-        width: '100%',
-        flexGrow: 0,
-        position: 'sticky',
-        top: 0,
-        zIndex: 1,
-       
-      }}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button onClick={() => navigate(-1)}>
-              <BiArrowBack size={20} />
-            </button>
-            <UserAvatar
-              imageSize="w-10 h-10"
-              imageURL="https://cdn.pixabay.com/photo/2023/06/25/13/19/woman-8087286_640.jpg"
-            />
-            <div className="">
-              <h4 className="text-[#383838] font-bold">Ernest Awuku Junior</h4>
-              <p className="text-[#6B6969] text-sm">Bio</p>
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              <div className="mt-5 text-lg font-semibold text-[#333333]">Chats</div>
+              
+              <div className="">
+                {uniqueChats.map((chat, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        navigate(RoutesPath.ChatRoom, {
+                          state: {
+                            user: chat.user,
+                          },
+                        });
+                      }}
+                      className="flex items-center my-5 gap-3"
+                    >
+                      <UserAvatar
+                        imageURL={
+                          chat.user?.photoUrl ??
+                          "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+                        }
+                      />
+                      <div className="">
+                        <h4 className="text-[#383838] text-xl capitalize">
+                          {chat.user?.username}
+                        </h4>
+                        <p className="text-[#6B6969]">
+                          {!!chat.messageText && chat.messageText !== ""
+                            ? chat.messageText
+                            : "Image"}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-          <FiMoreVertical />
-          
-        </div>
-       
-      </div>
-      <div style={{ borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-      <div className="mt-20 py-5 px-4">
-        <div className="flex justify-end my-5">
-          <div className="bg-primary rounded-b-lg p-2 rounded-tl-lg">
-            <p className="text-white">hi</p>
-          </div>
-        </div>
-        <div className="flex justify-end my-5">
-          <div className="bg-primary rounded-b-lg p-2 rounded-tl-lg">
-            <img
-              src="https://cdn.pixabay.com/photo/2023/07/08/09/53/monastery-8114076_640.jpg"
-              className="w-44 h-44 rounded-lg"
-              alt=""
-            />
-          </div>
-        </div>
-        
-      </div>
-      <div className=" fixed bottom-5">
-        <div className="bg-white shadow mx-5 rounded-full p-3 flex items-center justify-between">
-          <input
-            type="text"
-            placeholder="Type your messages..."
-            className="outline-none flex-grow border-none"
-            name=""
-            id=""
-          />
-          <button>
-            <Assets.Send />
-          </button>
+
+
         </div>
       </div>
-    </div>
 
 
 

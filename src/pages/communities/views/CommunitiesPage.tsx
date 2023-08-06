@@ -264,7 +264,7 @@ const CommunitiesPage = ({ socket }: Props) => {
         <ComputerHeader />
         <div className="computer-content">
           <div
-            className="firstsection ml-5 lg:ml-20 mr-5 pl-0"
+            className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
             style={{
               width: "30%",
               flexGrow: 0,
@@ -299,6 +299,14 @@ const CommunitiesPage = ({ socket }: Props) => {
                 currentIndex={currentIndex}
               />
             </div>
+            {currentIndex === 0 ? (
+              <Challenge socket={socket} forums={forums} />
+            ) : currentIndex === 1 ? (
+              <ChooseTile />
+            ) : (
+              <ChooseTile />
+            )}
+
             {currentIndex === 0 ? (
               <div className="">
                 {forumLoading || industryLoading || !!!industries.length ? (

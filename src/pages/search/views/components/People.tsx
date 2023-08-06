@@ -45,13 +45,12 @@ const People = ({ recommendedConnections, loading, isSearching }: Props) => {
       ) : null}
       {recommendedConnections.map((connect: User, index: number) => {
         return (
-          <div className="px-4">
-          <ConnectTile
-            connected={!!profile?.connecteds?.includes(connect.uid!)}
-            onConnect={connection}
-            profile={connect}
-            key={index}
-          />
+          <div key={index} className="px-4">
+            <ConnectTile
+              connected={!!profile?.connecteds?.includes(connect.uid!)}
+              onConnect={connection}
+              profile={connect}
+            />
           </div>
         );
       })}

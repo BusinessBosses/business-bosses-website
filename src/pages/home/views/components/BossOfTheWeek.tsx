@@ -24,6 +24,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         connecteds: profile.connecteds?.filter(
           (ft) => ft !== bossOfTheWeek.uid!
         ),
+        connectedCount: (profile?.connectedCount ?? 0) - 1,
       };
       dispatch(saveUserData(newUserData));
       await ConnectionsController.disConnect(bossOfTheWeek.uid!);
@@ -31,6 +32,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
       const newUserData: User = {
         ...profile,
         connecteds: [...profile?.connecteds!, bossOfTheWeek.uid],
+        connectedCount: (profile?.connectedCount ?? 0) + 1,
       } as User;
       dispatch(saveUserData(newUserData));
       await ConnectionsController.connect(bossOfTheWeek.uid!);

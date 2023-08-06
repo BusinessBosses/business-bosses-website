@@ -504,7 +504,7 @@ const Forum = ({ socket }: Props) => {
         <ComputerHeader />
         <div className="computer-content">
           <div
-            className="firstsection ml-5 lg:ml-20 mr-5 pl-0"
+            className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
             style={{
               width: "30%",
               flexGrow: 0,

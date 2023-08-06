@@ -163,7 +163,7 @@ const ComputerTopNav = ({
       >
         <div className="flex flex-col items-center">
           <Assets.Home
-            stroke="currentIndex === 1 ? primaryColor : strokeColor"
+            stroke={currentIndex === 0 ? primaryColor : strokeColor}
             style={{ width: "25px", height: "22px" }}
           />
           <p
@@ -185,7 +185,7 @@ const ComputerTopNav = ({
         <div className="flex flex-col items-center">
           <Assets.BossupIcon
             fill={currentIndex === 1 ? primaryColor : strokeColor}
-            style={{ width: "35px", height: "20px" }}
+            style={{ width: "33px", height: "23px" }}
           />
           <p
             className={
@@ -224,12 +224,14 @@ const ComputerTopNav = ({
         onClick={() => handleTabClick(3)}
       >
         <div className="flex flex-col items-center relative">
-          {" "}
-          {/* Add 'relative' class here */}
-          <Assets.Messagenoback
+          {currentIndex ===3?<Assets.Activemessage
             stroke={currentIndex === 3 ? primaryColor : strokeColor}
-            style={{ width: "22px", height: "22px" }}
-          />
+            style={{ width: "24px", height: "24px" }}
+          />:<Assets.Messagenoback
+          stroke={currentIndex === 3 ? primaryColor : strokeColor}
+          style={{ width: "24px", height: "24px" }}
+        />}
+          
           {unseenChat ? (
             <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
           ) : null}
@@ -250,13 +252,14 @@ const ComputerTopNav = ({
         onClick={() => handleTabClick(4)}
       >
         <div className="flex flex-col items-center relative">
-          {" "}
-          {/* Add 'relative' class here */}
-          {/* Your notification icon */}
-          <Assets.Notifnoback
-            stroke={currentIndex === 4 ? primaryColor : strokeColor}
-            style={{ width: "22px", height: "22px" }}
-          />
+         
+          {currentIndex === 4?<Assets.ActiveNotification
+            style={{ width: "24px", height: "25px" }}
+          />:<Assets.Notifnoback
+          style={{ width: "24px", height: "25px" }}
+        />}
+         
+          
           {unseenNotification ? (
             <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
           ) : null}

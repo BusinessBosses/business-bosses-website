@@ -21,15 +21,15 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
   const [recommendedConnections, setRecommendedConnections] = useState<User[]>(
     []
   );
+  const [recommendedPosts, setRecommendedPosts] = useState<Post[]>([]);
   const [searchedUsers, setSearchedUsers] = useState<User[]>([]);
   const [searchedPosts, setSearchedPosts] = useState<Post[]>([]);
   const fetchRecommendedConnections = async () => {
     setLoading(true);
-    const response = await serviceApi.fetch(
-      "/connection/getRecommendedConnections?page=0&size=100"
-    );
+    const response = await serviceApi.fetch("/search/get-recommended-data");
     if (response.success) {
-      setRecommendedConnections(response.data.rows);
+      setRecommendedConnections(response.data.recommendedUsers);
+      setRecommendedPosts(response.data.recommendedPosts);
     }
     setLoading(false);
   };
@@ -38,28 +38,47 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
     if (!searchRef.current?.value.trim()) return;
     if (loading) return;
     setLoading(true);
-    if (currentIndex === 0) {
-      setIsSearch(true);
-      const response = await serviceApi.fetch(
-        `/users/name/${searchRef.current.value.trim()}`
-      );
-      if (response.success) {
-        setSearchedUsers(response.data);
-      }
+    setIsSearch(true);
+    let searchQuery = "";
+    if (searchRef.current.value.trim().includes("#")) {
+      searchQuery = `%23${searchRef.current.value.trim().split("#")[1]}`;
     } else {
-      let searchQuery = "";
-      if (searchRef.current.value.trim().includes("#")) {
-        searchQuery = `%23${searchRef.current.value.trim().split("#")[1]}`;
-      } else {
-        searchQuery = searchRef.current.value.trim();
-      }
-      const response = await serviceApi.fetch(`/post/search/${searchQuery}`);
-      if (response.success) {
-        setSearchedPosts(response.data.rows);
-      }
+      searchQuery = searchRef.current.value.trim();
+    }
+    const response = await serviceApi.fetch(`/search/${searchQuery}`);
+    if (response.success) {
+      setSearchedUsers(response.data.users);
+      setSearchedPosts(response.data.posts.rows);
     }
     setLoading(false);
   };
+
+  // const onSearch = async () => {
+  //   if (!searchRef.current?.value.trim()) return;
+  //   if (loading) return;
+  //   setLoading(true);
+  //   if (currentIndex === 0) {
+  //     setIsSearch(true);
+  //     const response = await serviceApi.fetch(
+  //       `/users/name/${searchRef.current.value.trim()}`
+  //     );
+  //     if (response.success) {
+  //       setSearchedUsers(response.data);
+  //     }
+  //   } else {
+  //     let searchQuery = "";
+  //     if (searchRef.current.value.trim().includes("#")) {
+  //       searchQuery = `%23${searchRef.current.value.trim().split("#")[1]}`;
+  //     } else {
+  //       searchQuery = searchRef.current.value.trim();
+  //     }
+  //     const response = await serviceApi.fetch(`/post/search/${searchQuery}`);
+  //     if (response.success) {
+  //       setSearchedPosts(response.data.rows);
+  //     }
+  //   }
+  //   setLoading(false);
+  // };
 
   useEffect(() => {
     fetchRecommendedConnections();
@@ -78,19 +97,28 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
 
   return (
     <div>
-      <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.02)' }}>
+      <div
+        className="bg-white top-0 w-full z-50"
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 999,
+          borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.02)",
+        }}
+      >
         <div className="bg-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-grow px-4 pt-2.5 lg:pt-5">
               <div className="computer-only">
-              <button onClick={() => onClosePopup()}>
-                <Assets.Backbutton />
-              </button>
+                <button onClick={() => onClosePopup()}>
+                  <Assets.Backbutton />
+                </button>
               </div>
               <div className="mobile-only">
-              <button onClick={() => navigate(-1)}>
-                <Assets.Backbutton />
-              </button>
+                <button onClick={() => navigate(-1)}>
+                  <Assets.Backbutton />
+                </button>
               </div>
               <form
                 onSubmit={(e) => {
@@ -121,12 +149,9 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
             onChangeRoute={(index: number) => setCurrentIndex(index)}
           />
         </div>
-
       </div>
-      
+
       <div className="px-0">
-
-
         {currentIndex === 0 ? (
           <People
             loading={loading}
@@ -142,16 +167,29 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
               loading
               error={false}
               errorMessage=""
-              onReload={() => { }}
+              onReload={() => {}}
             />
-          ) : (
+          ) : isSearch ? (
             searchedPosts.map((post: Post, index: number) => {
               return (
                 <PostItem
+                  key={index}
                   data={post}
-                  onCoin={() => { }}
-                  onComment={() => { }}
-                  onLike={() => { }}
+                  onCoin={() => {}}
+                  onComment={() => {}}
+                  onLike={() => {}}
+                />
+              );
+            })
+          ) : (
+            recommendedPosts.map((post: Post, index: number) => {
+              return (
+                <PostItem
+                  key={index}
+                  data={post}
+                  onCoin={() => {}}
+                  onComment={() => {}}
+                  onLike={() => {}}
                 />
               );
             })

@@ -4,6 +4,7 @@ import { User } from "./user";
 export interface Forum {
     forumId: string;
     industryId: string;
+    industry?: string
     description?: string;
     title?: string;
     images?: string[];
@@ -13,4 +14,5 @@ export interface Forum {
     comments?: Comment[];
     user?: User;
     isRanked?: boolean;
+
 }
