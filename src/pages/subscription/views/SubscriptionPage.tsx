@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
+import FilledButton from "../../../common/components/buttons/FilledButton";
 
 const SubscriptionPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -22,16 +23,20 @@ const SubscriptionPage = () => {
         </div>
 
         <div>Upgrade to a premium boss experience at only $49.99/year</div>
+        <div>Other Text comes here</div>
 
-        <SegmentedControl
-          values={['One', 'Two']}
-          selectedIndex={selectedIndex}
-          onChange={(event) => {
-            setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
-          }}
-        />
-      </div>
-      SubscriptionPage
+        <FilledButton
+              onClick={() => { }}
+              text="Subscribe"
+              className="px-5 py-1.5"
+            />
+        </div>
+
+
+
+
+        
+      
     </div>
   );
 };
