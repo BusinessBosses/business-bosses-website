@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import Assets from "../../../assets";
@@ -26,6 +26,14 @@ const CreatePost = () => {
   const removeImage = (name: string) => {
     const newImageSet = images.filter((ft) => ft.name !== name);
     setImages(newImageSet);
+  };
+
+  const [characterCount, setCharacterCount] = useState(stateProps?.title?.length || 0);
+
+  const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const inputValue = event.target.value;
+    setCharacterCount(inputValue.length);
+
   };
 
   const createPost = async () => {
@@ -174,16 +182,33 @@ const CreatePost = () => {
 
 
           <div className=" mt-5">
-            <div className="px-4"><textarea 
-              ref={postTitleRef}
-              name=""
-              id=""
-              defaultValue={stateProps?.title}
-              placeholder="What’s on your mind?"
-              className="w-full outline-none border-[1px] border-[#EAEAEA] placeholder:text-[#A9A9A9] rounded-lg p-3 text-sm resize-none bg-[#F4F4F4]"
-              rows={8}
-            ></textarea></div>
-            
+          <div className="px-4">
+      <div style={{ position: 'relative' }}>
+        <textarea
+          ref={postTitleRef}
+          name=""
+          id=""
+          defaultValue={stateProps?.title}
+          placeholder="What’s on your mind?"
+          className="w-full outline-none border-[1px] border-[#EAEAEA] placeholder:text-[#A9A9A9] rounded-lg p-3 text-sm resize-none bg-[#F4F4F4]"
+          rows={8}
+          maxLength={300}
+          onChange={handleInputChange}
+        ></textarea>
+        <p
+          style={{
+            position: 'absolute',
+            bottom: '20px',
+            right: '50px',
+            fontSize: '12px',
+            color: '#A9A9A9',
+          }}
+        >
+          {characterCount}/300
+        </p>
+      </div>
+    </div>
+
 
             {stateProps ? null : (
               <div className="flex mt-4 px-4 items-center gap-3">
@@ -224,7 +249,7 @@ const CreatePost = () => {
                 })}
               </div>
             ) : (
-              <div className="grid px-4 grid-cols-4 gap-4 mb-10">
+              <div className="grid px-4 grid-cols-4 gap-4 mb-5">
                 {images.map((img: File, index: number) => {
                   return (
                     <div key={index} className="relative">
@@ -264,7 +289,7 @@ const CreatePost = () => {
             </div>
             <div style={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
 
-            <div className="mt-10 px-4">
+            <div className="mt-5 px-4">
               <FilledButton
                 onClick={stateProps ? updatePostFn : createPost}
                 text={loading ? "Posting..." : stateProps ? "Update" : "Post"}
