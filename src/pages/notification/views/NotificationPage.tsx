@@ -49,7 +49,7 @@ const NotificationPage = () => {
   }, []);
   return (
     <div>
-      <div className="mobile-only">
+      <div className="mobile-only bg-white">
         <div
           className="bg-white top-0 w-full z-50"
           style={{
@@ -82,7 +82,7 @@ const NotificationPage = () => {
             <DailyQuotes quote={notification.quote} />
 
             <div className="p-5">
-              <h3 className="text-xl font-medium">Activity</h3>
+              <h4 className="text-xl font-bold">Activity</h4>
               {notification.notifications.map((data, index, notifications) => {
                 const currentdate = moment(data.timestamp).format("DD MMM YY");
                 const recentdate =
@@ -147,7 +147,7 @@ const NotificationPage = () => {
             ) : (
               <div>
                 <div className="p-5">
-                  <h3 className="text-xl font-medium">Activity</h3>
+                  <p className="text-xl font-black">Activity</p>
                   {notification.notifications.map(
                     (data, index, notifications) => {
                       const currentdate = moment(data.timestamp).format(

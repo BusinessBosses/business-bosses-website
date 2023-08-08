@@ -162,7 +162,7 @@ const CreatePost = () => {
     <div>
       <div className="bg-white" style={{ height: "100vh" }}>
         <div className="bg-white top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
-          <div className="mobile-only px-4 bg-white">
+          <div className="mobile-only bg-white">
             <CommonPageHeader title="Create Post" /></div>
 
         </div>
@@ -182,32 +182,32 @@ const CreatePost = () => {
 
 
           <div className=" mt-5">
-          <div className="px-4">
-      <div style={{ position: 'relative' }}>
-        <textarea
-          ref={postTitleRef}
-          name=""
-          id=""
-          defaultValue={stateProps?.title}
-          placeholder="What’s on your mind?"
-          className="w-full outline-none border-[1px] border-[#EAEAEA] placeholder:text-[#A9A9A9] rounded-lg p-3 text-sm resize-none bg-[#F4F4F4]"
-          rows={8}
-          maxLength={300}
-          onChange={handleInputChange}
-        ></textarea>
-        <p
-          style={{
-            position: 'absolute',
-            bottom: '20px',
-            right: '50px',
-            fontSize: '12px',
-            color: '#A9A9A9',
-          }}
-        >
-          {characterCount}/300
-        </p>
-      </div>
-    </div>
+            <div className="px-4">
+              <div style={{ position: 'relative' }}>
+                <textarea
+                  ref={postTitleRef}
+                  name=""
+                  id=""
+                  defaultValue={stateProps?.title}
+                  placeholder="What’s on your mind?"
+                  className="w-full outline-none border-[1px] border-[#EAEAEA] placeholder:text-[#A9A9A9] rounded-lg p-3 text-sm resize-none bg-[#F4F4F4]"
+                  rows={8}
+                  maxLength={300}
+                  onChange={handleInputChange}
+                ></textarea>
+                <p
+                  style={{
+                    position: 'absolute',
+                    bottom: '20px',
+                    right: '50px',
+                    fontSize: '12px',
+                    color: '#A9A9A9',
+                  }}
+                >
+                  {characterCount}/300
+                </p>
+              </div>
+            </div>
 
 
             {stateProps ? null : (
