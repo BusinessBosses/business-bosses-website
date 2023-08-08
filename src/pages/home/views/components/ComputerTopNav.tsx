@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BiX } from "react-icons/bi";
 import CreatePost from "../../../CreatePost.tsx/views/CreatePost";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";

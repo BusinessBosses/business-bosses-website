@@ -17,6 +17,8 @@ import GeneralPostsController from "../../../../common/controllers/GeneralPostsC
 import { v4 } from "uuid";
 import { toast } from "react-toastify";
 import SharePopUp from "../../../../common/components/share/SharePopUp";
+import FilledButton from "../../../../common/components/buttons/FilledButton";
+import GreyButton from "../../../../common/components/buttons/Greybutton";
 interface Props {
   data: Post;
   onLike: Function;
@@ -152,7 +154,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
             </div>
           </div>
         </BottomSheet></div>
-        
+
         <div className="flex items-start justify-between">
           <div
             onClick={() =>
@@ -166,15 +168,19 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 "https://cdn-icons-png.flaticon.com/128/149/149071.png"
               }
             />
-            <div className="">
-              <p className="text-[#333333] text-lg capitalize">
-                {data.user.username}
+            <div className="flex-grow">
+              <p className="text-gray-700 font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
+                {data.user?.username}
+                {data.user?.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
               </p>
+
               <p className="text-sm text-[#777777]">
                 {trimText(data.user.bio ?? "", 20)}
               </p>
             </div>
           </div>
+          <GreyButton onClick={()=>{}} text={"Connect"} />
+
           <Popup
             trigger={
               <div>

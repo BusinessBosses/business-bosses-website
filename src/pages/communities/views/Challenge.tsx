@@ -112,7 +112,7 @@ const Challenge = ({ forums, socket }: Props) => {
   };
   return (
     <div>
-      <div className="mobile-only">
+      <div className="mobile-only bg-white">
       <ForumCard
         onCreate={() => {
           navigate(RoutesPath.CreateBossup, {
@@ -128,7 +128,7 @@ const Challenge = ({ forums, socket }: Props) => {
         topics={20}
       />
       </div>
-      <div className="">
+      <div className="bg-white">
         {forums.map((forum: Forum, index: number) => (
           <ForumItem
             onEdit={() => {

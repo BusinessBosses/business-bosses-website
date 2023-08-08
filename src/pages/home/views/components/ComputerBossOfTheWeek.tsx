@@ -1,7 +1,6 @@
 import React from "react";
 import Assets from "../../../../assets";
 import { IoIosMore } from "react-icons/io";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";

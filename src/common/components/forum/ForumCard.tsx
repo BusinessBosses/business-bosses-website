@@ -3,7 +3,7 @@ import { BsInfoCircle } from "react-icons/bs";
 import FilledButton from "../buttons/FilledButton";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiUsers } from "react-icons/fi";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import Assets from "../../../assets";
 interface Props {
   banner: string;
   label: string;
@@ -70,9 +70,9 @@ const ForumCard = ({
             <small className="text-xs text-[#545151] pr-2" style={{ paddingRight: 10, borderRight: '1.2px solid rgba(0, 0, 0, 0.5)' }}>
               Boss Up by
             </small>
-            <p className="text-[#545151] text-sm pl-2" >Business Bosses Company Limited </p>
+            <p className="text-[#545151] text-sm pl-2 py-1" >Business Bosses Company Limited </p>
           </div>
-          <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+          <Assets.Nexticon className="text-[#726F6F]" />
         </div>
         </div>
       </div>
@@ -113,7 +113,7 @@ const ForumCard = ({
               </small>
               <p className="text-[#545151] text-sm pl-2" >Business Bosses Company Limited </p>
             </div>
-            <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+            <Assets.Nexticon className="text-[#726F6F]" />
           </div>
           </div>
         </div>

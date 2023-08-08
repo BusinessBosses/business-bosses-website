@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import Assets from "../../../assets";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import Popup from "reactjs-popup";
@@ -170,7 +169,7 @@ const SettingsPage = () => {
                 <p className="text-[#545151] text-sm">
                   Business Bosses Company Limited
                 </p>
-                <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+                <Assets.Nexticon className="text-[#726F6F]" />
               </div>
             </div>
           </div>
@@ -195,7 +194,7 @@ const Tab = ({ onClick, text }: Props) => {
           className="bg-white flex p-3 rounded-lg my-3 items-center justify-between w-full "
         >
           <p className="text-sm">{text}</p>
-          <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+          <Assets.Nexticon className="text-[#726F6F]" />
         </button>
       </div>
 
@@ -205,7 +204,7 @@ const Tab = ({ onClick, text }: Props) => {
           className="bg-[#f4f4f4] flex p-4 rounded-lg my-3 items-center justify-between w-full "
         >
           <p className="text-sm">{text}</p>
-          <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+          <Assets.Nexticon className="text-[#726F6F]" />
         </button>
       </div>
     </div>

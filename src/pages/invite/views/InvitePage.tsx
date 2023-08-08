@@ -2,7 +2,6 @@ import React, { ReactNode } from "react";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 import Assets from "../../../assets";
 import FilledButton from "../../../common/components/buttons/FilledButton";
-import { MdContentCopy, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import { useAppSelector } from "../../../redux/store/store";
@@ -14,6 +13,7 @@ import { BiArrowBack } from "react-icons/bi";
 import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
 import { useNavigate } from "react-router-dom";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import { MdContentCopy } from "react-icons/md";
 
 const InvitePage = () => {
   const profile = useAppSelector((state) => state.user);

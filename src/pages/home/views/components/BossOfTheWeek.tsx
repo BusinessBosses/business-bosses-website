@@ -1,6 +1,5 @@
 import Assets from "../../../../assets";
 import { IoIosMore } from "react-icons/io";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
@@ -44,11 +43,12 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         <div className="flex items-center gap-3">
           <img src={Assets.Logo} className="w-10 h-10" alt="" />
           <p
-            className="text-[#333333] text-2xl font-extrabold"
-            style={{ fontWeight: "900", fontSize: 20 }}
+            className="text-[#333333] nuniblack text-2xl "
+            style={{ fontSize: 20 }}
           >
             Boss of the week
           </p>
+
         </div>
         <IoIosMore size={23} />
       </div>
@@ -61,9 +61,9 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
             "https://cdn-icons-png.flaticon.com/128/149/149071.png"
           }
         />
-        <div className="w-3/4">
+        <div className="w-3/4 ml-3">
           <p className="text-md text-[#333333] font-semibold">
-            {bossOfTheWeek.username}
+            {bossOfTheWeek.name}
           </p>
           <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
           <p className="text-xs text-[#777777]">{bossOfTheWeek.bio}</p>
@@ -75,7 +75,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
                 className="px-2 py-1.5"
               />
             ) : (
-              <OutlinedButton
+              <FilledButton
                 onClick={connection}
                 text="Connected"
                 className="px-2 py-1.5"
@@ -104,11 +104,11 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
             >
               Boss Up by
             </small>
-            <p className="text-[#545151] text-sm pl-2">
+            <p className="text-[#545151] font-semibold text-sm pl-2 py-1">
               Business Bosses Company Limited{" "}
             </p>
           </div>
-          <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+          <Assets.Nexticon className="text-[#232324]" width={20} />
         </div>
       </div>
     </div>

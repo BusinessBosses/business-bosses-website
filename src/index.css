@@ -135,3 +135,12 @@
 body.popup-open {
   overflow: hidden;
 }
+
+@font-face {
+  font-family: nuniblack;
+  src: url(/Users/ernestawuku/Documents/business-bosses-web/src/assets/fonts/NunitoSans-Black.ttf);
+}
+
+.nuniblack{
+  font-family: nuniblack;
+}

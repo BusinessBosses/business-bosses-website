@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import Assets from "../../../assets";
-import { MdCancel, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import FilledButton from "../../../common/components/buttons/FilledButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
@@ -11,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import CreatePostController from "../controller/CreatePostController";
 import { addNewPost, updatePost } from "../../../redux/slices/PostSlice";
 import { Post } from "../../../common/interfaces/post";
+import { MdCancel } from "react-icons/md";
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -152,28 +152,29 @@ const CreatePost = () => {
   }, []);
   return (
     <div>
-      <div className="">
-        <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '15px solid rgba(0, 0, 0, 0.1)', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.02)' }}>
-        <div className="mobile-only px-4">
+      <div className="bg-white" style={{ height: "100vh" }}>
+        <div className="bg-white top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
+          <div className="mobile-only px-4 bg-white">
             <CommonPageHeader title="Create Post" /></div>
-          
+
         </div>
 
-        <div className="px-4 mt-5">
-          <div className="flex items-center gap-3">
+        <div className=" bg-white pt-5 h-100vh" >
+          <div className="flex items-center px-4 gap-3">
             <UserAvatar
               imageURL={
                 profile?.photoUrl ??
                 "https://cdn-icons-png.flaticon.com/128/149/149071.png"
               }
             />
-            <p className="text-[#333333] text-lg font-medium">
+            <p className="text-[#333333] text-md font-semibold">
               {profile?.username}
             </p>
           </div>
 
+
           <div className=" mt-5">
-            <textarea
+            <div className="px-4"><textarea 
               ref={postTitleRef}
               name=""
               id=""
@@ -181,11 +182,12 @@ const CreatePost = () => {
               placeholder="What’s on your mind?"
               className="w-full outline-none border-[1px] border-[#EAEAEA] placeholder:text-[#A9A9A9] rounded-lg p-3 text-sm resize-none bg-[#F4F4F4]"
               rows={8}
-            ></textarea>
+            ></textarea></div>
+            
 
             {stateProps ? null : (
-              <div className="flex mt-4 items-center gap-3">
-                <p className="text-[#333333]">Add Image</p>
+              <div className="flex mt-4 px-4 items-center gap-3">
+                <p className="text-[#333333] text-sm font-bold">Add Image</p>
                 <label htmlFor="file" className="bg-[#F4F4F4] p-2.5 rounded-full cursor-pointer">
                   <img src={Assets.Gallery} alt="" />
                 </label>
@@ -201,11 +203,15 @@ const CreatePost = () => {
                   name=""
                   id="file"
                 />
+                <div className="text-primary text-xs flex-grow text-right">
+                  Max file size for images is <span className="text-red-500">10mb</span>
+                </div>
               </div>
+
             )}
 
             {stateProps ? (
-              <div className="grid grid-cols-4 gap-4 mb-10">
+              <div className="grid grid-cols-4 gap-4 px-4 mb-10">
                 {stateProps.images?.map((img: string, index: number) => {
                   return (
                     <div key={index} className="relative">
@@ -218,7 +224,7 @@ const CreatePost = () => {
                 })}
               </div>
             ) : (
-              <div className="grid grid-cols-4 gap-4 mb-10">
+              <div className="grid px-4 grid-cols-4 gap-4 mb-10">
                 {images.map((img: File, index: number) => {
                   return (
                     <div key={index} className="relative">
@@ -236,8 +242,9 @@ const CreatePost = () => {
                 })}
               </div>
             )}
-            <div className="flex items-center justify-between mt-5">
-              <div className="flex items-center gap-2">
+            <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
+            <div className="flex items-center justify-between my-3 px-4">
+              <div className="flex items-center gap-3">
                 <img src={Assets.Rocket} alt="" />
                 <div className="flex flex-col">
                   <p className="text-[#373737] font-semibold">Boost this Post</p>
@@ -253,10 +260,11 @@ const CreatePost = () => {
                 />
                 <div className="w-11 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-0 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
-              {/* <MdOutlineKeyboardArrowRight size={24} className="text-primary" /> */}
+              {/* <Assets.Nexticon size={24} className="text-primary" /> */}
             </div>
+            <div style={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
 
-            <div className="mt-10">
+            <div className="mt-10 px-4">
               <FilledButton
                 onClick={stateProps ? updatePostFn : createPost}
                 text={loading ? "Posting..." : stateProps ? "Update" : "Post"}

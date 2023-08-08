@@ -75,7 +75,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
   };
   return (
     <div>
-      <div className="mt-5 px-4">
+      <div className="pt-5 px-4 bg-white">
         <SharePopUp
           url={`${window.location.href}forum?id=${data.forumId}`}
           onClose={() => setShowShareDialog(false)}
@@ -108,7 +108,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                 error={err}
                 errorMessage="Something went wrong!!"
                 loading={loading}
-                onReload={() => {}}
+                onReload={() => { }}
               />
             )}
             <div className="px-4">
@@ -131,10 +131,14 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                 "https://cdn-icons-png.flaticon.com/128/149/149071.png"
               }
             />
-            <div className="">
-              <p className="text-[#333333] text-lg capitalize">
+            <div className="flex-grow">
+
+            <p className="text-gray-700 font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
                 {data.user?.username}
+                {data.user?.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
               </p>
+
+
               <p className="text-sm text-[#777777]">
                 {trimText(data.user?.bio ?? "", 20)}
               </p>
@@ -150,7 +154,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
             on="click"
             closeOnDocumentClick
             contentStyle={{ padding: "0px", border: "none" }}
-            // arrow={false}
+          // arrow={false}
           >
             {
               (((close: any) =>
