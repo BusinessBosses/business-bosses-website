@@ -89,7 +89,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
   };
   return (
     <div>
-      <div className="p-5 mobile-only">
+      <div className="p-5 mobile-only bg-white">
         <div className="flex items-start gap-10 my-10">
           <div className="flex items-center flex-col gap-1">
             <button
@@ -200,7 +200,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
             controls
             width="100%"
             height="100%"
-            playing
+          
           />
         </div>
 

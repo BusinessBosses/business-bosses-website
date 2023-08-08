@@ -94,7 +94,7 @@ const NotificationPage = () => {
                 return (
                   <div key={data.notificationId} className="">
                     {index === 0 || currentdate !== recentdate ? (
-                      <h4 className="my-5">{currentdate}</h4>
+                      <h4 className="my-5 text-sm font-[600]">{currentdate}</h4>
                     ) : null}
                     <Notification data={data} />
                   </div>

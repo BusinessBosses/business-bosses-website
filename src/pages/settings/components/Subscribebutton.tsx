@@ -9,7 +9,7 @@ const SubscribeButton = () => {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#EAEAEA', // Customize the background color as needed
+    backgroundColor: '#f1f1f1', // Customize the background color as needed
     color: '#333333', // Change the text color to #333333
     borderRadius: '50px', // Adjust the radius to make the rectangle more or less round
     padding: '7px 15px',
