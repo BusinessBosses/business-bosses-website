@@ -47,7 +47,7 @@ const MyProfile = () => {
   }, [profile.profile?.uid]);
   return (
     <div>
-      <div className="mobile-only">
+      <div className="mobile-only bg-white" style={{height:"100vh"}}>
         <MyProfileHeader />
         <MyProfileDetails data={profile.profile!} />
 

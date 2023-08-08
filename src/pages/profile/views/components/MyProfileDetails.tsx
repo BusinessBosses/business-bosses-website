@@ -18,7 +18,7 @@ const MyProfileDetails = ({ data }: Props) => {
     <div className="mt-5 px-4">
       <div className=" flex items-center gap-3">
         <UserAvatar
-          imageSize="h-24 w-24"
+          imageSize="h-30 w-30"
           imageURL={
             data.photoUrl ??
             "https://cdn-icons-png.flaticon.com/128/149/149071.png"
@@ -33,7 +33,7 @@ const MyProfileDetails = ({ data }: Props) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between my-5">
+      <div className="flex items-center justify-between my-5 mx-10">
         <button
           onClick={() =>
             navigate(RoutesPath.connections, {

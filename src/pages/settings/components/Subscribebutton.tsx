@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoutesPath from '../../../constants/Routes';
+import Assets from '../../../assets';
 
 const SubscribeButton = () => {
   const navigate = useNavigate();
@@ -23,8 +24,8 @@ const SubscribeButton = () => {
 
   return (
     <div style={buttonStyle} onClick={() => navigate(RoutesPath.subscriptionpage)}>
-      <span>Subscribe to Premium</span>
-      <div style={arrowStyle}>&#10148;</div>
+      <span className='mr-2'>Subscribe to Premium</span>
+      <Assets.Nexticon color='primary'/>
     </div>
   );
 };
