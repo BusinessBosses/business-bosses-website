@@ -7,6 +7,7 @@ import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import { User } from "../../../../common/interfaces/user";
+import SubscribeButton from "../../../settings/components/Subscribebutton";
 interface Props {
   data: User;
 }
@@ -28,6 +29,7 @@ const MyProfileDetails = ({ data }: Props) => {
           <p className="text-lg font-medium">{data.category}</p>
           <p className="font-medium">{data.companyName}</p>
           <p className="text-sm font-light text-[#A9A9A9]">{data.location}</p>
+          <div className="mt-2"><SubscribeButton /></div>
         </div>
       </div>
 
