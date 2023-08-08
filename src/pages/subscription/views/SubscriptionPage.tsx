@@ -24,8 +24,8 @@ const SubscriptionPage = () => {
 
         <SegmentedControl
           segments={[
-            { label: "One", ref: useRef<HTMLDivElement>(null), value: "One" },
-            { label: "Two", ref: useRef<HTMLDivElement>(null), value: "Two" },
+            { label: "Monthly", ref: useRef<HTMLDivElement>(null), value: "1" },
+            { label: "Annually", ref: useRef<HTMLDivElement>(null), value: "2" },
           ]}
           controlRef={controlRef}
           name=""

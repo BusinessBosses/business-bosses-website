@@ -100,7 +100,7 @@ const HomePage = ({ socket }: Props) => {
   };
   return (
     <div>
-      <div className="mobile-only">
+      <div className="mobile-only bg-[#fff]">
         <MobileHeader
           coins={profile?.profile!.coinscount}
           unseenNotification={profile?.profile!.unReadCount! > 0}
@@ -190,7 +190,7 @@ const HomePage = ({ socket }: Props) => {
         <MobileBottomNav currentIndex={0} />
       </div>
 
-      <div className="computer-only">
+      <div className="computer-only bg-[#fff]">
         <ComputerHeader />
 
         <div className="computer-content">
