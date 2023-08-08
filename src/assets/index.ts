@@ -35,6 +35,9 @@ import { ReactComponent as Backbutton } from "./icons/backbutton.svg"
 import { ReactComponent as Appstorelogo } from "./icons/app-store.svg"
 import { ReactComponent as Playstorelogo } from "./icons/google-play.svg"
 import Authback from "./icons/authback.png"
+import { ReactComponent as Checkmark } from "./icons/goldcheckmark.svg"
+import { ReactComponent as Moreconnections } from "./icons/moreconnections.svg"
+import { ReactComponent as Rankingicon } from "./icons/rankingicon.svg"
 
 
 
@@ -77,5 +80,9 @@ const Assets = {
     Appstorelogo,
     Playstorelogo,
     Authback,
+    Checkmark,
+    Moreconnections,
+    Rankingicon,
+
 };
 export default Assets;
