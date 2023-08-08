@@ -25,7 +25,10 @@ const MyProfileDetails = ({ data }: Props) => {
           }
         />
         <div className="">
-          <p className="text-xl font-semibold">{data.username}</p>
+        <p className=" font-semibold flex items-center text-base md:text-lg lg:text-lg capitalize">
+                {data.username}
+                {data.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
+              </p>
           <p className="text-lg font-medium">{data.category}</p>
           <p className="font-medium">{data.companyName}</p>
           <p className="text-sm font-light text-[#A9A9A9]">{data.location}</p>

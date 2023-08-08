@@ -31,9 +31,10 @@ const People = ({ recommendedConnections, loading, isSearching }: Props) => {
     }
   };
   return (
-    <div className="">
-      <h3 className="text-[#333333] text-xl font-semibold mt-5 pl-4">
-        {isSearching ? "Searched Result" : "Recommended"}
+    <div className="bg-white">
+        <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
+      <h3 className="text-[#333333] bg-[#f1f1f1] text-sm pb-3 pl-4">
+        {isSearching ? "Searched Result" : "Recommended Connections"}
       </h3>
       {loading ? (
         <FetchStatus

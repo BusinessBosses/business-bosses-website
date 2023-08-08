@@ -133,7 +133,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
             />
             <div className="flex-grow">
 
-            <p className="text-gray-700 font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
+            <p className="font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
                 {data.user?.username}
                 {data.user?.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
               </p>

@@ -11,7 +11,7 @@ const HomeSearchTabs = ({ currentIndex, onChangeRoute }: Props) => {
           onClick={() => onChangeRoute(0)}
           className={`${
             currentIndex === 0
-              ? "text-[#333333] w-full flex-grow border-b-2 pb-2 border-b-primary"
+              ? "text-[#333333] w-full font-bold flex-grow border-b-2 pb-2 border-b-primary"
               : "text-[#A9A9A9] pb-2"
           }`}
         >
@@ -21,7 +21,7 @@ const HomeSearchTabs = ({ currentIndex, onChangeRoute }: Props) => {
           onClick={() => onChangeRoute(1)}
           className={`${
             currentIndex === 1
-              ? "text-[#333333] w-full flex-grow border-b-2 pb-2 border-b-primary"
+              ? "text-[#333333] w-full font-bold flex-grow border-b-2 pb-2 border-b-primary"
               : "text-[#A9A9A9] pb-2"
           }`}
         >
