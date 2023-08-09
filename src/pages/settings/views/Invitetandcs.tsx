@@ -1,17 +1,25 @@
 import React from 'react';
+import CommonPageHeader from '../../../common/components/headers/CommonPageHeader';
 
 const Invitetandcs = () => {
   return (
     <div>
-      <h1>Community Rules</h1>
-      <p>These are the rules that govern our community:</p>
-      <ul>
-        <li>Be respectful to others.</li>
-        <li>No spamming or self-promotion.</li>
-        <li>Stay on-topic in discussions.</li>
-      </ul>
+        <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
+
+            <CommonPageHeader title="Invite a Friend Terms and Conditions" />
+        </div>
+
+
+        <div className=" p-5 mx-5 bg-white rounded-xl" style={{ height: "100vh" }}>
+            <div>Text comes here</div>
+
+           
+
+        </div>
+
+
     </div>
-  );
+);
 };
 
 export default Invitetandcs;

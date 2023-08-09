@@ -11,6 +11,7 @@ import RoutesPath from "../../../constants/Routes";
 import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import Analyserows from "./components/analyserows";
+import SubscribeButton from "../../settings/components/Subscribebutton";
 
 const AnalysePage = () => {
     const navigate = useNavigate();
@@ -25,14 +26,18 @@ const AnalysePage = () => {
 
             <div className=" pt-10 bg-white" style={{ height: "100vh" }}>
 
-                <div>Hi</div>
-                <div>{"name"}</div>
-                <div>how may I help you?</div>
+                <div className="flex justify-between items-center mx-5">
+                    <div className="text-lg font-bold">Hi</div>
+                    <SubscribeButton />
+                </div>
 
-                <Analyserows leadingSvg={<Assets.Analyse />} middleText={"Analyse my Profile"} endingSvg={<Assets.Nexticon />} onClick={() => { navigate(RoutesPath.editProfile) }} />
-                <Analyserows leadingSvg={<Assets.Connectrelevant />} middleText={"Connect me to relevant people"} endingSvg={<Assets.Nexticon onClick={()=>{navigate(RoutesPath.editProfile)}}/>} />
-                <Analyserows leadingSvg={<Assets.Ranking />} middleText={"Show my ranking"} endingSvg={<Assets.Nexticon />} onClick={()=>{navigate(RoutesPath.editProfile)}}/>
-                <Analyserows leadingSvg={<Assets.Explore />} middleText={"Explore Business Bosses"} endingSvg={<Assets.Nexticon />}onClick={()=>{navigate(RoutesPath.editProfile)}} />
+                <div className="ml-5 font-bold text-primary text-lg">@{profile.profile?.username}</div>
+                <div className="ml-5 mb-10">how may I help you?</div>
+
+                <Analyserows leadingSvg={<Assets.Analyse />} middleText={"Analyse my Profile"} endingSvg={<Assets.Nexticon />} onClick={() => { navigate(RoutesPath.analyseprofilepage) }} />
+                <Analyserows leadingSvg={<Assets.Connectrelevant />} middleText={"Connect me to relevant people"} endingSvg={<Assets.Nexticon />} onClick={() => { navigate(RoutesPath.connectrelevant) }} />
+                <Analyserows leadingSvg={<Assets.Ranking />} middleText={"Show my ranking"} endingSvg={<Assets.Nexticon />} onClick={() => { navigate(RoutesPath.rankingpage) }} />
+                <Analyserows leadingSvg={<Assets.Explore />} middleText={"Explore Business Bosses"} endingSvg={<Assets.Nexticon />} onClick={() => { navigate(RoutesPath.explorebusinessbosses) }} />
 
                 <Analyserows leadingSvg={undefined} middleText={""} endingSvg={undefined} />
 

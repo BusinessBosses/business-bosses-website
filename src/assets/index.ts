@@ -23,6 +23,11 @@ import { ReactComponent as Activemessage } from "./icons/activemessage.svg";
 import LikeFilled from "./icons/likefilled.svg";
 import Block from "./icons/block.svg";
 import Gallery from "./icons/gallery.svg";
+import One from "./icons/one.png";
+import Two from "./icons/two.png";
+import Three from "./icons/three.png";
+import Four from "./icons/four.png";
+import Five from "./icons/five.png";
 import Rocket from "./icons/rocket.svg";
 import BoostBnner from "./icons/boost_banner.png";
 import Instagram from "./icons/instagram_o.svg";
@@ -93,6 +98,11 @@ const Assets = {
     Connectrelevant,
     Ranking,
     Explore,
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
 
 
 };

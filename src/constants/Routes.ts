@@ -27,6 +27,10 @@ const subscriptionpage = "/subscriptionpage";
 const communityrules = "/communityrules";
 const invitetandcs = "/invitetandcs";
 const analysepage = "/analysepage";
+const analyseprofilepage = "/analyseprofilepage";
+const connectrelevant = "/connectrelevant";
+const rankingpage = "/rankingpage";
+const explorebusinessbosses = "/explorebusinessbosses";
 
 
 const RoutesPath = {
@@ -59,6 +63,12 @@ const RoutesPath = {
     communityrules,
     invitetandcs,
     analysepage,
+    analyseprofilepage,
+    connectrelevant,
+    rankingpage,
+    explorebusinessbosses,
+
+
 }
 
 export default RoutesPath

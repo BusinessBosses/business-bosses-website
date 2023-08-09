@@ -6,6 +6,7 @@ import serviceApi from "../../../services/serviceApi";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import { useDispatch } from "react-redux";
 import { storeRelevantUsers } from "../../../redux/slices/UserSlice";
+import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 
 const ConnectRelevant = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -40,11 +41,11 @@ const ConnectRelevant = () => {
         className="mobile-only"
         style={{
           backgroundColor: "#F4F4F4",
-          paddingTop: 140,
-          paddingLeft: 20,
-          paddingRight: 20,
         }}
       >
+        <CommonPageHeader title={"Connect"}/>
+     
+        
         {loading ? (
           <FetchStatus
             error={false}
@@ -61,7 +62,7 @@ const ConnectRelevant = () => {
             onReload={fetchRecommendedConnections}
           />
         ) : null}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 p-3">
           {relevantUsers.map((connect: User, index: number) => {
             return <ConnectRelevantCard connect={connect} key={index} />;
           })}
