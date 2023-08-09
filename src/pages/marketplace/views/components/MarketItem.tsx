@@ -182,7 +182,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                     }}
                     className="menu-item"
                   >
-                    Block User
+                    Block @{data.user?.username}
                   </button>
                   <button
                     onClick={() => {
@@ -193,9 +193,17 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                       //   reason: "",
                       // });
                     }}
+                    className="menu-item text-primary"
+                  >
+                    Report this Post
+                  </button>
+                  <button
+                    onClick={() => {
+                     
+                    }}
                     className="menu-item"
                   >
-                    Report Post
+                    Visit Store
                   </button>
                 </div>
               )) as unknown) as ReactNode
