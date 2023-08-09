@@ -181,7 +181,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
 
           <GoogleButton
             onClick={googleLogin}
-            text="Sign up with Google"
+            text="Sign in with Google"
             className="w-full p-3 mb-10"
           />
         </form>
@@ -451,7 +451,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
 
               <GoogleButton
                 onClick={googleLogin}
-                text="Sign up with Google"
+                text="Sign in with Google"
                 className="w-full p-3"
               />
             </form>

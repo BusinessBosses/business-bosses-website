@@ -182,7 +182,7 @@ const RegisterPage = ({ onSuccess }: Props) => {
               if (loading) return;
               googleAuth();
             }}
-            text="Sign in with Google"
+            text="Sign up with Google"
             className="w-full p-3 mb-10"
           />
           
@@ -360,7 +360,7 @@ const RegisterPage = ({ onSuccess }: Props) => {
                 <FilledButton
                   onClick={register}
                   text={loading ? "Authenticating" : "Sign Up"}
-                  className="w-full p-3"
+                  className="w-full p-3 "
                 />
               </div>
               <div className="flex items-center gap-2 my-5">
@@ -373,7 +373,7 @@ const RegisterPage = ({ onSuccess }: Props) => {
                   if (loading) return;
                   googleAuth();
                 }}
-                text="Sign in with Google"
+                text="Sign up with Google"
                 className="w-full p-3"
               />
             </form>

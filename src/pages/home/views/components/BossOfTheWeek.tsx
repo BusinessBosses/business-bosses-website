@@ -9,6 +9,8 @@ import { saveUserData } from "../../../../redux/slices/UserSlice";
 import ConnectionsController from "../../../connections/controller/ConnectionsController";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
+import { useEffect, useState } from "react";
+import Bossoftheweekpopup from "../../../popups/Bossoftheweekpopup";
 interface Props {
   bossOfTheWeek: User;
 }
@@ -16,6 +18,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const connection = async () => {
     if (profile?.connecteds?.includes(bossOfTheWeek.uid!)) {
       const newUserData: User = {
@@ -37,6 +40,23 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
       await ConnectionsController.connect(bossOfTheWeek.uid!);
     }
   };
+  useEffect(() => {
+    if (isPopupOpen) {
+      document.body.classList.add("popup-open");
+    } else {
+      document.body.classList.remove("popup-open");
+    }
+  }, [isPopupOpen]);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+
   return (
     <div className="bg-[#EAEAEA] px-4 py-3" style={{}}>
       <div className="flex items-start justify-between">
@@ -50,12 +70,11 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           </p>
 
         </div>
-        <IoIosMore size={23} />
+        <IoIosMore size={23} onClick={openPopup} />
       </div>
       <div className="flex items-center gap-3 mt-2">
         <UserAvatar
           imageSize="h-24 w-24"
-          isRanked
           imageURL={
             bossOfTheWeek.photoUrl ??
             "https://cdn-icons-png.flaticon.com/128/149/149071.png"
@@ -92,6 +111,14 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         </div>
       </div>
 
+      {isPopupOpen && (
+        <div className="overlay">
+          <div className="popup" style={{ overflowY: "scroll" }}>
+            <Bossoftheweekpopup/>
+          </div>
+        </div>
+      )}
+
       <div className="mobile-only">
         <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
           <div className="flex items-center">
@@ -112,6 +139,8 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         </div>
       </div>
     </div>
+
+    
   );
 };
 

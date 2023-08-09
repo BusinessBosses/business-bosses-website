@@ -27,7 +27,7 @@ const SubscriptionPage = () => {
           style={{
             position: "sticky",
             top: 0,
-            zIndex: 999,
+            zIndex: 100,
             borderBottom: "10px solid rgba(0, 0, 0, 0.1)",
             boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
           }}
@@ -45,6 +45,7 @@ const SubscriptionPage = () => {
             name=""
             defaultIndex={selectedIndex}
             callback={handleSegmentChange}
+            
           /></div>
 
           <div className="px-8 py-10" style={{

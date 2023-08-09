@@ -102,7 +102,7 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
         style={{
           position: "sticky",
           top: 0,
-          zIndex: 999,
+          zIndex: 100,
           borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.02)",
         }}

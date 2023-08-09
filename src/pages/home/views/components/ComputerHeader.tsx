@@ -35,7 +35,7 @@ const ComputerHeader = () => {
   return (
     <div
       className="bg-white top-0 w-full z-50"
-      style={{ position: "sticky", top: 0, zIndex: 999 }}
+      style={{ position: "sticky", top: 0, zIndex: 100 }}
     >
       <div className="flex items-end justify-between mr-5 ml-5 lg:ml-20 lg:mr-20">
         <div className="flex items-center flex-grow">

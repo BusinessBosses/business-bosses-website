@@ -7,7 +7,7 @@ const MyProfileHeader = () => {
   const profile = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   return (
-    <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 999,}}>
+    <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 100,}}>
       <div className="flex items-center p-5 justify-between bg-white px-3 py-2">
         <p className="text-lg font-semibold text-[#333333]">@{profile.profile?.username}</p>
         <button onClick={() => navigate(RoutesPath.settings)}>

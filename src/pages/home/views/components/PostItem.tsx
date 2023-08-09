@@ -212,11 +212,21 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                     <button
                       onClick={() => {
                         close();
+                        
+                        
+                      }}
+                      className="menu-item"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      onClick={() => {
+                        close();
                         navigate(RoutesPath.promotePost, { state: data.postId });
                       }}
                       className="menu-item"
                     >
-                      Promote
+                      Boost
                     </button>
                   </div>
                 ) : (
@@ -227,9 +237,9 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                         toast.success("User Blocked");
                         GeneralPostsController.blockUser({ postId: data.postId });
                       }}
-                      className="menu-item"
+                      className="menu-item "
                     >
-                      Block User
+                      Block @{data.user.username}
                     </button>
                     <button
                       onClick={() => {
@@ -240,7 +250,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                           reason: "",
                         });
                       }}
-                      className="menu-item"
+                      className="menu-item text-primary"
                     >
                       Report Post
                     </button>

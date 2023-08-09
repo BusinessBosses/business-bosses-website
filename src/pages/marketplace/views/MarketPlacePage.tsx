@@ -123,7 +123,7 @@ const MarketPlacePage = ({ socket }: Props) => {
           style={{
             position: "sticky",
             top: 0,
-            zIndex: 999,
+            zIndex: 100,
             borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
             boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
           }}

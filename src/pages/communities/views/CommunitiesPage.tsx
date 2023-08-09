@@ -201,18 +201,18 @@ const CommunitiesPage = ({ socket }: Props) => {
           style={{
             position: "sticky",
             top: 0,
-            zIndex: 999,
+            zIndex: 100,
             borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
             boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
           }}
         >
           <div
             className=" bg-white"
-            style={{ position: "sticky", top: 0, zIndex: 999 }}
+            style={{ position: "sticky", top: 0, zIndex: 100 }}
           >
             <div
               className="flex items-center px-4 justify-between bg-white"
-              style={{ position: "sticky", top: 0, zIndex: 999 }}
+              style={{ position: "sticky", top: 0, zIndex: 100 }}
             >
               <p className="text-lg font-semibold text-[#333333]">Boss Up</p>
               <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />

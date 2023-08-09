@@ -22,7 +22,7 @@ const AnalyseProfilePage = () => {
     const profile = useAppSelector((state) => state.user);
     return (
         <div>
-            <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
+            <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
 
                 <CommonPageHeader title="Analyse Profile" />
             </div>
