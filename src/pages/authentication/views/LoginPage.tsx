@@ -280,7 +280,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                 controls
                 width="100%"
                 height="100%"
-                playing
+                
               />
             </div>
 

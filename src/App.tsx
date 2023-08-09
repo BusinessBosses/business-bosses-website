@@ -36,6 +36,11 @@ import { StorageEnum } from "./common/emums/StorageEmuns";
 import RequestOtpForForgotPassword from "./pages/authentication/RequestOtpForForgotPassword";
 import ReferPage from "./pages/refer/views/ReferPage";
 import SubscriptionPage from "./pages/subscription/views/SubscriptionPage";
+import AnalysePage from "./pages/analyse/views/AnalysePage";
+import CommunityRules from "./pages/settings/views/CommunityRules";
+import Invitetandcs from "./pages/settings/views/Invitetandcs";
+
+
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -249,6 +254,18 @@ const App = () => {
       <Route
         path={RoutesPath.PublicUserProfile}
         element={<PublicUserProfile />}
+      />
+      <Route
+        path={RoutesPath.analysepage}
+        element={<AnalysePage />}
+      />
+      <Route
+        path={RoutesPath.communityrules}
+        element={<CommunityRules />}
+      />
+      <Route
+        path={RoutesPath.invitetandcs}
+        element={<Invitetandcs />}
       />
     </Routes>
   );

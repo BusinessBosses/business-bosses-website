@@ -23,8 +23,8 @@ const SettingsPage = () => {
 
 
       <div className="px-5">
-        <Tab onClick={() => { }} text="Community Rules" />
-        <Tab onClick={() => { }} text="Invite a friends terms & conditions" />
+        <Tab onClick={() => {  navigate(RoutesPath.communityrules);}} text="Community Rules" />
+        <Tab onClick={() => { navigate(RoutesPath.invitetandcs);}} text="Invite a friends terms & conditions" />
         <Tab onClick={() => { }} text="Contact Us" />
         <Tab onClick={() => { }} text="Change Password" />
         <Tab onClick={() => { }} text="Delete Account" />

@@ -99,7 +99,7 @@ const MyProfileDetails = ({ data }: Props) => {
           className="w-full border-[1px] py-1"
         />
         <OutlinedButton
-          onClick={() => {}}
+          onClick={() => {navigate(RoutesPath.analysepage);}}
           text="Analyse"
           icon={<BsGraphUp />}
           className="w-full border-[1px] py-1"

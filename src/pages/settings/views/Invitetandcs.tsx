@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CommunityRules: React.FC = () => {
+const Invitetandcs = () => {
   return (
     <div>
       <h1>Community Rules</h1>
@@ -14,4 +14,4 @@ const CommunityRules: React.FC = () => {
   );
 };
 
-export default CommunityRules;
+export default Invitetandcs;

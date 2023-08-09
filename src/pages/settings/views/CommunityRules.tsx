@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CommunityRules: React.FC = () => {
+const CommunityRules = () => {
   return (
     <div>
       <h1>Community Rules</h1>

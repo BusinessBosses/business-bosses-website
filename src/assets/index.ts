@@ -39,6 +39,10 @@ import { ReactComponent as Checkmark } from "./icons/premiumbadge.svg"
 import { ReactComponent as Moreconnections } from "./icons/moreconnections.svg"
 import { ReactComponent as Rankingicon } from "./icons/rankingicon.svg"
 import { ReactComponent as Nexticon } from "./icons/nexticon.svg"
+import { ReactComponent as Analyse } from "./icons/analyze.svg"
+import { ReactComponent as Connectrelevant } from "./icons/connectrelevant.svg"
+import { ReactComponent as Ranking } from "./icons/ranking.svg"
+import { ReactComponent as Explore } from "./icons/explore.svg"
 
 
 
@@ -85,6 +89,11 @@ const Assets = {
     Moreconnections,
     Rankingicon,
     Nexticon,
+    Analyse,
+    Connectrelevant,
+    Ranking,
+    Explore,
+
 
 };
 export default Assets;
