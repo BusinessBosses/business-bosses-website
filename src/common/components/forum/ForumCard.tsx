@@ -13,6 +13,7 @@ interface Props {
   onJoin: VoidFunction;
   createLabel: string;
   onCreate: VoidFunction;
+  aboutontap: VoidFunction;
 }
 const ForumCard = ({
   banner,
@@ -23,12 +24,13 @@ const ForumCard = ({
   topics,
   createLabel,
   onCreate,
+  aboutontap,
 }: Props) => {
   return (
     <div>
       <div className="bg-[#EAEAEA] px-4 py-3 mobile-only">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
+          <div onClick={aboutontap} className="flex items-center gap-1">
             <p>About</p>
             <BsInfoCircle />
           </div>

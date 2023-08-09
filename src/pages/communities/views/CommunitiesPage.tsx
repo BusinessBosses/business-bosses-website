@@ -1,6 +1,6 @@
 import { CiSearch } from "react-icons/ci";
 import MobileBottomNav from "../../home/views/components/MobileBottomNav";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Challenge from "./Challenge";
 import Tabs from "./components/Tabs";
@@ -25,6 +25,7 @@ import { Industry } from "../../../common/interfaces/industry";
 import serviceApi from "../../../services/serviceApi";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 import ChooseTile from "./choosetile";
+import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 
 interface Props {
   socket: Socket;
@@ -44,6 +45,8 @@ const CommunitiesPage = ({ socket }: Props) => {
 
   const [industry, setIndustry] = useState<Industry | null>(null);
   const profile = useAppSelector((state) => state.user.profile);
+  const popupRef = useRef<HTMLDivElement | null>(null); 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const changeRoute = (index: number) => {
     setCurrentIndex(index);
@@ -61,6 +64,38 @@ const CommunitiesPage = ({ socket }: Props) => {
     } else {
       setCurrentIndex(0);
     }
+  };
+
+  useEffect(() => {
+    const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        closePopup();
+      }
+    };
+
+    if (isPopupOpen) {
+      document.addEventListener('mousedown', handleOutsideInteraction);
+      document.addEventListener('touchstart', handleOutsideInteraction);
+    } else {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    };
+  }, [isPopupOpen]);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
   };
 
   useEffect(() => {
@@ -131,25 +166,24 @@ const CommunitiesPage = ({ socket }: Props) => {
                 Boss Up Challenge
               </p>
             </div>
-            <div className="flex items-center ml-auto gap-1">
+            <div onClick={openPopup} className="flex items-center ml-auto gap-1">
               <p>About</p>
               <BsInfoCircle />
             </div>
           </div>
-          <ForumCard
+            <ForumCard
             onCreate={() => {
               navigate(RoutesPath.CreateBossup, {
                 state: { industryId: industry?.industryId },
               });
-            }}
+            } }
             createLabel="Enter Challenge"
             banner={industry?.photo!}
             didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
             label={industry?.description ?? "Industry Description"}
             members={industry?.joinedUsers?.length ?? 0}
             onJoin={joinIndustry}
-            topics={20}
-          />
+            topics={20} aboutontap={openPopup}          />
         </div>
       );
     }
