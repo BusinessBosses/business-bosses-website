@@ -110,15 +110,18 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           </div>
         </div>
       </div>
-
+      <div className="mobile-only">
       {isPopupOpen && (
         <div className="overlay">
-          <div className="popup" style={{ overflowY: "scroll" }}>
+          <div className="mobilepopup" style={{ overflowY: "scroll" }}>
             <Bossoftheweekpopup/>
           </div>
         </div>
       )}
 
+      </div>
+
+    
       <div className="mobile-only">
         <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
           <div className="flex items-center">
