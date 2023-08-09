@@ -45,6 +45,7 @@ import RankingPage from "./pages/analyse/views/RankingPage";
 import ExploreBusinessBosses from "./pages/analyse/views/ExploreBusinessBosses";
 import SellerReview from "./pages/sellerreviews/SellerReview";
 import ExpandedImages from "./pages/expandedimages/expandedimages";
+import Bossuppartnerpage from "./pages/bossuppartnerpage/bossuppartnerpage";
 
 
 const App = () => {
@@ -296,6 +297,10 @@ const App = () => {
       <Route
         path={RoutesPath.expandedimages}
         element={<ExpandedImages />}
+      />
+      <Route
+        path={RoutesPath.bossuppartners}
+        element={<Bossuppartnerpage />}
       />
     </Routes>
   );

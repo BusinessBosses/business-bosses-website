@@ -7,6 +7,7 @@ import RoutesPath from "../../../../constants/Routes";
 import Assets from "../../../../assets";
 import { useEffect, useRef, useState } from "react";
 import Marketplacepopup from "../../../popups/Marketplacepopup";
+import BossupPartnerstile from "../../../home/views/components/BopssupPartnerstile";
 
 const MarketIntro = () => {
   const navigate = useNavigate();
@@ -112,13 +113,7 @@ const MarketIntro = () => {
           </div>
         </div>
 
-        <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
-          <small className="text-xs text-[#545151]">Boss Up by</small>
-          <p className="text-[#545151] text-sm">
-            Business Bosses Company Limited
-          </p>
-          <Assets.Nexticon className="text-[#726F6F]" />
-        </div>
+        <BossupPartnerstile bossupby={""} bossupad={""}/>
       </div>
 
 
