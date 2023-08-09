@@ -232,7 +232,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
 
 
           </div>
-          <div className="flex gap-2">{data.user?.averageRating ? (
+          <div onClick={()=>navigate(RoutesPath.sellerreview)} className="flex gap-2">{data.user?.averageRating ? (
             <div className="flex  gap-1">
               <AiTwotoneStar className="text-[#FFCA28]" />
               <p className="text-sm font-bold text-[#383838]">
