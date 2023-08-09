@@ -491,7 +491,9 @@ const Forum = ({ socket }: Props) => {
             label={industry?.description ?? "Industry description"}
             members={industry?.joinedUsers?.length ?? 0}
             onJoin={joinIndustry}
-            topics={count} aboutontap={openPopup} aboutontaptext={"Info"} />
+            topics={count} aboutontap={openPopup} aboutontaptext={"Info"} topicsicon={<Assets.Topicsicon/>} topicstext={industry.categoryId === AppConstants.LEARNINGID
+              ? "Topics"
+              : "opport."} />
         ) : null}
         {loading ? (
           <FetchStatus
@@ -655,7 +657,7 @@ const Forum = ({ socket }: Props) => {
               <ForumCard
                 onCreate={() => {
                   setOpenModal(true);
-                }}
+                } }
                 createLabel={industry.categoryId === AppConstants.LEARNINGID
                   ? "Start a topic"
                   : "Share Opportunities"}
@@ -664,9 +666,11 @@ const Forum = ({ socket }: Props) => {
                 label={industry?.description ?? "Industry description"}
                 members={industry?.joinedUsers?.length ?? 0}
                 onJoin={joinIndustry}
-                topics={count} 
-                aboutontap={openPopup} 
-                aboutontaptext="Info"/>
+                topics={count}
+                aboutontap={openPopup}
+                aboutontaptext="Info" topicsicon={<Assets.Topicsicon/>} topicstext={industry.categoryId === AppConstants.LEARNINGID
+                  ? "Topics"
+                  : "Opport."}/>
             ) : null}
           </div>
         </div>

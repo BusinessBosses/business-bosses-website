@@ -15,6 +15,8 @@ interface Props {
   onCreate: VoidFunction;
   aboutontap: VoidFunction;
   aboutontaptext: string;
+  topicsicon: React.ReactNode;
+  topicstext: string;
 }
 const ForumCard = ({
   banner,
@@ -27,6 +29,8 @@ const ForumCard = ({
   onCreate,
   aboutontap,
   aboutontaptext,
+  topicsicon,
+  topicstext,
 }: Props) => {
   return (
     <div>
@@ -45,9 +49,9 @@ const ForumCard = ({
         </div>
 
         <div className="bg-[#ffffff] p-3 mt-2 rounded-xl">
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <img src={banner} alt="" className="w-32 h-20 rounded-lg" />
-            <p className="text-[#383838] text-sm">{label}</p>
+            <p className="text-[#383838] text-sm font-bold mr-10">{label}</p>
           </div>
           <div className="flex items-center  justify-between mt-2">
           <div className="flex items-center gap-2">
@@ -55,9 +59,10 @@ const ForumCard = ({
                 <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
 
               </div>
-            <div className="bg-[#FFFFFF1A] whitespace-nowrap px-3 py-1 rounded-full">
+            <div className="bg-[#FFFFFF1A]  flex whitespace-nowrap px-3 py-1 rounded-full">
+              {topicsicon}
               <p className="text-sm text-[#232324] font-bold">
-                # Entries ({topics.toString()})
+              {`${topicstext} (${topics.toString()})`}
               </p>
             </div>
             <button
