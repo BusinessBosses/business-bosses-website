@@ -31,7 +31,7 @@ const MobileHeader = ({ unseenChat, unseenNotification, coins }: Props) => {
             Search people & posts
           </p>
         </button>
-        <div className="flex items-center px-2 mr-3 justify-center py-1 bg-[#F4F4F4] rounded-full">
+        <div onClick={()=>{navigate(RoutesPath.invite)}} className="flex items-center px-2 mr-3 justify-center py-1 bg-[#F4F4F4] rounded-full">
           <div className="mr-1"><img src={Assets.Coin} alt="" /></div>
           <p className="font-medium">
             <span style={{ color: '#333333' }}>{coins}</span>

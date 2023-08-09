@@ -9,7 +9,7 @@ import { saveUserData } from "../../../../redux/slices/UserSlice";
 import ConnectionsController from "../../../connections/controller/ConnectionsController";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Bossoftheweekpopup from "../../../popups/Bossoftheweekpopup";
 interface Props {
   bossOfTheWeek: User;
@@ -18,6 +18,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const popupRef = useRef<HTMLDivElement | null>(null); 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const connection = async () => {
     if (profile?.connecteds?.includes(bossOfTheWeek.uid!)) {
@@ -41,11 +42,27 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
     }
   };
   useEffect(() => {
+    const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        closePopup();
+      }
+    };
+
     if (isPopupOpen) {
-      document.body.classList.add("popup-open");
+      document.addEventListener('mousedown', handleOutsideInteraction);
+      document.addEventListener('touchstart', handleOutsideInteraction);
     } else {
-      document.body.classList.remove("popup-open");
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
     }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    };
   }, [isPopupOpen]);
 
   const openPopup = () => {
@@ -113,7 +130,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
       <div className="mobile-only">
       {isPopupOpen && (
         <div className="overlay">
-          <div className="mobilepopup" style={{ overflowY: "scroll" }}>
+          <div ref={popupRef} className="mobilepopup" style={{ overflowY: "scroll" }}>
             <Bossoftheweekpopup/>
           </div>
         </div>

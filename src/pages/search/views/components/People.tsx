@@ -32,7 +32,6 @@ const People = ({ recommendedConnections, loading, isSearching }: Props) => {
   };
   return (
     <div className="bg-white">
-        <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
       <h3 className="text-[#333333] bg-[#f1f1f1] text-sm pb-3 pl-4">
         {isSearching ? "Searched Result" : "Recommended Connections"}
       </h3>
@@ -46,6 +45,7 @@ const People = ({ recommendedConnections, loading, isSearching }: Props) => {
       ) : null}
       {recommendedConnections.map((connect: User, index: number) => {
         return (
+          
           <div key={index} className="px-4">
             <ConnectTile
               connected={!!profile?.connecteds?.includes(connect.uid!)}
