@@ -117,7 +117,7 @@ const MarketPlacePage = ({ socket }: Props) => {
 
   return (
     <div>
-      <div className="mobile-only" style={{}}>
+      <div className="mobile-only bg-white" style={{}}>
         <div
           className="bg-white top-0 w-full z-50"
           style={{
