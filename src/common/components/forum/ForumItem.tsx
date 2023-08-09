@@ -18,6 +18,7 @@ import Comment from "../comment/Comment";
 import { v4 } from "uuid";
 import { toast } from "react-toastify";
 import SharePopUp from "../share/SharePopUp";
+import GreyButton from "../buttons/Greybutton";
 
 interface Props {
   data: Forum;
@@ -144,6 +145,9 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
               </p>
             </div>
           </div>
+          <div className="flex items-center gap-5">
+          {data.user?.isSubscribed && <GreyButton onClick={()=>{}} text={"Connect"} />}
+          
           <Popup
             trigger={
               <div>
@@ -210,6 +214,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                 )) as unknown) as ReactNode
             }
           </Popup>
+          </div>
         </div>
         <div className="mt-2">
           <p className=" font-[500] text-black break-words">{data.title}</p>

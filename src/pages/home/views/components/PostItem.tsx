@@ -179,7 +179,11 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               </p>
             </div>
           </div>
-          <GreyButton onClick={()=>{}} text={"Connect"} />
+
+          <div className="flex items-center gap-5">
+          {data.user?.isSubscribed && <GreyButton onClick={()=>{}} text={"Connect"} />}
+          
+          
 
           <Popup
             trigger={
@@ -244,6 +248,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 )) as unknown) as ReactNode
             }
           </Popup>
+          </div>
         </div>
         <div className="mt-2">
           {data.promote ? (
