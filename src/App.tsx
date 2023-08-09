@@ -3,7 +3,7 @@ import RoutesPath from "./constants/Routes";
 import HomePage from "./pages/home/views/HomePage";
 import MarketPlacePage from "./pages/marketplace/views/MarketPlacePage";
 import Forum from "./pages/forum/views/Forum";
-import CreatePost from "./pages/CreatePost.tsx/views/CreatePost";
+import CreatePost from "./pages/CreatePost/views/CreatePost";
 import PromotePage from "./pages/promote/views/PromotePage";
 import MyProfile from "./pages/profile/views/MyProfile";
 import SettingsPage from "./pages/settings/views/SettingsPage";
@@ -43,6 +43,8 @@ import AnalyseProfilePage from "./pages/analyse/views/AnalyseProfilePage";
 import ConnectRelevant from "./pages/settings/views/ConnectRelevant";
 import RankingPage from "./pages/analyse/views/RankingPage";
 import ExploreBusinessBosses from "./pages/analyse/views/ExploreBusinessBosses";
+import SellerReview from "./pages/sellerreviews/SellerReview";
+import ExpandedImages from "./pages/expandedimages/expandedimages";
 
 
 const App = () => {
@@ -286,6 +288,14 @@ const App = () => {
       <Route
         path={RoutesPath.explorebusinessbosses}
         element={<ExploreBusinessBosses />}
+      />
+      <Route
+        path={RoutesPath.sellerreview}
+        element={<SellerReview />}
+      />
+      <Route
+        path={RoutesPath.expandedimages}
+        element={<ExpandedImages />}
       />
     </Routes>
   );
