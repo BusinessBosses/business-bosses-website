@@ -36,6 +36,15 @@ import { StorageEnum } from "./common/emums/StorageEmuns";
 import RequestOtpForForgotPassword from "./pages/authentication/RequestOtpForForgotPassword";
 import ReferPage from "./pages/refer/views/ReferPage";
 import SubscriptionPage from "./pages/subscription/views/SubscriptionPage";
+import AnalysePage from "./pages/analyse/views/AnalysePage";
+import CommunityRules from "./pages/settings/views/CommunityRules";
+import Invitetandcs from "./pages/settings/views/Invitetandcs";
+import AnalyseProfilePage from "./pages/analyse/views/AnalyseProfilePage";
+import ConnectRelevant from "./pages/settings/views/ConnectRelevant";
+import RankingPage from "./pages/analyse/views/RankingPage";
+import ExploreBusinessBosses from "./pages/analyse/views/ExploreBusinessBosses";
+
+
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -249,6 +258,34 @@ const App = () => {
       <Route
         path={RoutesPath.PublicUserProfile}
         element={<PublicUserProfile />}
+      />
+      <Route
+        path={RoutesPath.analysepage}
+        element={<AnalysePage />}
+      />
+      <Route
+        path={RoutesPath.communityrules}
+        element={<CommunityRules />}
+      />
+      <Route
+        path={RoutesPath.invitetandcs}
+        element={<Invitetandcs />}
+      />
+      <Route
+        path={RoutesPath.analyseprofilepage}
+        element={<AnalyseProfilePage />}
+      />
+      <Route
+        path={RoutesPath.connectrelevant}
+        element={<ConnectRelevant />}
+      />
+      <Route
+        path={RoutesPath.rankingpage}
+        element={<RankingPage />}
+      />
+      <Route
+        path={RoutesPath.explorebusinessbosses}
+        element={<ExploreBusinessBosses />}
       />
     </Routes>
   );

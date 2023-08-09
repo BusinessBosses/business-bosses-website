@@ -24,6 +24,14 @@ const CreateListing = "/create-listing";
 const CreateBossup = "/create-bossup";
 const refer = "/refer";
 const subscriptionpage = "/subscriptionpage";
+const communityrules = "/communityrules";
+const invitetandcs = "/invitetandcs";
+const analysepage = "/analysepage";
+const analyseprofilepage = "/analyseprofilepage";
+const connectrelevant = "/connectrelevant";
+const rankingpage = "/rankingpage";
+const explorebusinessbosses = "/explorebusinessbosses";
+
 
 const RoutesPath = {
     home,
@@ -52,6 +60,15 @@ const RoutesPath = {
     forgotPassword,
     refer,
     subscriptionpage,
+    communityrules,
+    invitetandcs,
+    analysepage,
+    analyseprofilepage,
+    connectrelevant,
+    rankingpage,
+    explorebusinessbosses,
+
+
 }
 
 export default RoutesPath

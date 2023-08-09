@@ -3,7 +3,7 @@ import { BsInfoCircle } from "react-icons/bs";
 import FilledButton from "../buttons/FilledButton";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiUsers } from "react-icons/fi";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import Assets from "../../../assets";
 interface Props {
   banner: string;
   label: string;
@@ -13,6 +13,7 @@ interface Props {
   onJoin: VoidFunction;
   createLabel: string;
   onCreate: VoidFunction;
+  aboutontap: VoidFunction;
 }
 const ForumCard = ({
   banner,
@@ -23,13 +24,14 @@ const ForumCard = ({
   topics,
   createLabel,
   onCreate,
+  aboutontap,
 }: Props) => {
   return (
     <div>
       <div className="bg-[#EAEAEA] px-4 py-3 mobile-only">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <p>About</p>
+          <div onClick={aboutontap} className="flex items-center gap-1">
+            <p className="font-bold">About</p>
             <BsInfoCircle />
           </div>
           <FilledButton
@@ -48,11 +50,11 @@ const ForumCard = ({
           <div className="flex items-center  justify-between mt-2">
           <div className="flex items-center gap-2">
                 <FiUsers className="text-primary" />
-                <p className="text-primary underline text-sm">Members ({members.toString()})</p>
+                <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
 
               </div>
             <div className="bg-[#FFFFFF1A] whitespace-nowrap px-3 py-1 rounded-full">
-              <p className="text-sm text-[#232324]">
+              <p className="text-sm text-[#232324] font-bold">
                 # Entries ({topics.toString()})
               </p>
             </div>
@@ -70,9 +72,9 @@ const ForumCard = ({
             <small className="text-xs text-[#545151] pr-2" style={{ paddingRight: 10, borderRight: '1.2px solid rgba(0, 0, 0, 0.5)' }}>
               Boss Up by
             </small>
-            <p className="text-[#545151] text-sm pl-2" >Business Bosses Company Limited </p>
+            <p className="text-[#545151] text-sm pl-2 py-1" >Business Bosses Company Limited </p>
           </div>
-          <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+          <Assets.Nexticon className="text-[#726F6F]" />
         </div>
         </div>
       </div>
@@ -113,7 +115,7 @@ const ForumCard = ({
               </small>
               <p className="text-[#545151] text-sm pl-2" >Business Bosses Company Limited </p>
             </div>
-            <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+            <Assets.Nexticon className="text-[#726F6F]" />
           </div>
           </div>
         </div>

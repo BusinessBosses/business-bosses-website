@@ -126,7 +126,10 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             }
           />
           <div className="">
-            <p className="text-[#333333] text-lg">{data.user?.username}</p>
+          <p className="font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
+                {data.user?.username}
+                {data.user?.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
+              </p>
             <p className="text-sm text-[#777777]">
               {trimText(data.user?.bio ?? "", 20)}
             </p>

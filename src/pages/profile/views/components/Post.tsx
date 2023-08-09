@@ -6,7 +6,7 @@ interface Props {
 }
 const Post = ({ imgUrl, title }: Props) => {
   return (
-    <div className="relative">
+    <div className="relative ">
       {imgUrl ? (
         <img
           src={imgUrl}
@@ -14,12 +14,12 @@ const Post = ({ imgUrl, title }: Props) => {
           alt=""
         />
       ) : (
-        <div className="bg-[rgba(0,0,0,0.1)] h-36 p-3 rounded-lg text-sm ">
+        <div className="bg-white h-36 p-3 rounded-lg text-sm ">
           <p className="line-clamp-6">{title}</p>
         </div>
       )}
       <button className="absolute top-2 right-2 bg-white rounded-full p-1">
-        <AiOutlineMore size={20} />
+       { <AiOutlineMore size={20} />}
       </button>
     </div>
   );

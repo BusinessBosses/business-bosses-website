@@ -51,7 +51,7 @@ const PublicUserProfile = () => {
   }, []);
   return (
     <div>
-      <div className="mobile-only">
+      <div className="mobile-only bg-white" style={{height:"100vh"}}>
         <PublicProfileHeader name={publicUser?.username ?? ""} />
 
         {loading ? (

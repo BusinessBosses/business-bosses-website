@@ -31,7 +31,7 @@ const ChatPage = () => {
             borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
           }}
         >
-          <CommonPageHeader title="Chat" />
+          <CommonPageHeader title="Chats" />
         </div>
         <div className="px-4">
           {uniqueChats.map((chat, index) => {

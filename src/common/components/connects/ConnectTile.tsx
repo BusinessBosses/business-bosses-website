@@ -9,7 +9,9 @@ interface Props {
 }
 const ConnectTile = ({ profile, connected, onConnect }: Props) => {
   return (
-    <div className="flex items-center justify-between my-10">
+    <div>
+       
+    <div className="flex items-center justify-between my-5">
       <div className="flex items-start gap-3">
         <div className="flex-grow">
           <UserAvatar
@@ -42,6 +44,8 @@ const ConnectTile = ({ profile, connected, onConnect }: Props) => {
           text="Connect"
         />
       )}
+    </div>
+    <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
     </div>
   );
 };

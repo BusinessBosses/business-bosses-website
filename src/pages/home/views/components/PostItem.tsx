@@ -17,6 +17,8 @@ import GeneralPostsController from "../../../../common/controllers/GeneralPostsC
 import { v4 } from "uuid";
 import { toast } from "react-toastify";
 import SharePopUp from "../../../../common/components/share/SharePopUp";
+import FilledButton from "../../../../common/components/buttons/FilledButton";
+import GreyButton from "../../../../common/components/buttons/Greybutton";
 interface Props {
   data: Post;
   onLike: Function;
@@ -72,7 +74,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
   return (
     <div>
-      <div className="mt-5 px-4">
+      <div className="pt-5 px-4 bg-white">
         <SharePopUp
           url={`${window.location.href}post?id=${data.postId}`}
           onClose={() => setShowShareDialog(false)}
@@ -152,7 +154,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
             </div>
           </div>
         </BottomSheet></div>
-        
+
         <div className="flex items-start justify-between">
           <div
             onClick={() =>
@@ -166,15 +168,23 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 "https://cdn-icons-png.flaticon.com/128/149/149071.png"
               }
             />
-            <div className="">
-              <p className="text-[#333333] text-lg capitalize">
-                {data.user.username}
+            <div className="flex-grow">
+              <p className=" font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
+                {data.user?.username}
+                {data.user?.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
               </p>
+
               <p className="text-sm text-[#777777]">
                 {trimText(data.user.bio ?? "", 20)}
               </p>
             </div>
           </div>
+
+          <div className="flex items-center gap-5">
+          {data.user?.isSubscribed && <GreyButton onClick={()=>{}} text={"Connect"} />}
+          
+          
+
           <Popup
             trigger={
               <div>
@@ -202,11 +212,21 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                     <button
                       onClick={() => {
                         close();
+                        
+                        
+                      }}
+                      className="menu-item"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      onClick={() => {
+                        close();
                         navigate(RoutesPath.promotePost, { state: data.postId });
                       }}
                       className="menu-item"
                     >
-                      Promote
+                      Boost
                     </button>
                   </div>
                 ) : (
@@ -217,9 +237,9 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                         toast.success("User Blocked");
                         GeneralPostsController.blockUser({ postId: data.postId });
                       }}
-                      className="menu-item"
+                      className="menu-item "
                     >
-                      Block User
+                      Block @{data.user.username}
                     </button>
                     <button
                       onClick={() => {
@@ -230,7 +250,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                           reason: "",
                         });
                       }}
-                      className="menu-item"
+                      className="menu-item text-primary"
                     >
                       Report Post
                     </button>
@@ -238,6 +258,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 )) as unknown) as ReactNode
             }
           </Popup>
+          </div>
         </div>
         <div className="mt-2">
           {data.promote ? (

@@ -23,6 +23,11 @@ import { ReactComponent as Activemessage } from "./icons/activemessage.svg";
 import LikeFilled from "./icons/likefilled.svg";
 import Block from "./icons/block.svg";
 import Gallery from "./icons/gallery.svg";
+import One from "./icons/one.png";
+import Two from "./icons/two.png";
+import Three from "./icons/three.png";
+import Four from "./icons/four.png";
+import Five from "./icons/five.png";
 import Rocket from "./icons/rocket.svg";
 import BoostBnner from "./icons/boost_banner.png";
 import Instagram from "./icons/instagram_o.svg";
@@ -35,6 +40,14 @@ import { ReactComponent as Backbutton } from "./icons/backbutton.svg"
 import { ReactComponent as Appstorelogo } from "./icons/app-store.svg"
 import { ReactComponent as Playstorelogo } from "./icons/google-play.svg"
 import Authback from "./icons/authback.png"
+import { ReactComponent as Checkmark } from "./icons/premiumbadge.svg"
+import { ReactComponent as Moreconnections } from "./icons/moreconnections.svg"
+import { ReactComponent as Rankingicon } from "./icons/rankingicon.svg"
+import { ReactComponent as Nexticon } from "./icons/nexticon.svg"
+import { ReactComponent as Analyse } from "./icons/analyze.svg"
+import { ReactComponent as Connectrelevant } from "./icons/connectrelevant.svg"
+import { ReactComponent as Ranking } from "./icons/ranking.svg"
+import { ReactComponent as Explore } from "./icons/explore.svg"
 
 
 
@@ -77,5 +90,20 @@ const Assets = {
     Appstorelogo,
     Playstorelogo,
     Authback,
+    Checkmark,
+    Moreconnections,
+    Rankingicon,
+    Nexticon,
+    Analyse,
+    Connectrelevant,
+    Ranking,
+    Explore,
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+
+
 };
 export default Assets;

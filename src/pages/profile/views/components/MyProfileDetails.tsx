@@ -7,6 +7,7 @@ import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import { User } from "../../../../common/interfaces/user";
+import SubscribeButton from "../../../settings/components/Subscribebutton";
 interface Props {
   data: User;
 }
@@ -17,21 +18,25 @@ const MyProfileDetails = ({ data }: Props) => {
     <div className="mt-5 px-4">
       <div className=" flex items-center gap-3">
         <UserAvatar
-          imageSize="h-24 w-24"
+          imageSize="h-30 w-30"
           imageURL={
             data.photoUrl ??
             "https://cdn-icons-png.flaticon.com/128/149/149071.png"
           }
         />
         <div className="">
-          <p className="text-xl font-semibold">{data.username}</p>
+        <p className=" font-semibold flex items-center text-base md:text-lg lg:text-lg capitalize">
+                {data.username}
+                {data.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
+              </p>
           <p className="text-lg font-medium">{data.category}</p>
           <p className="font-medium">{data.companyName}</p>
           <p className="text-sm font-light text-[#A9A9A9]">{data.location}</p>
+          <div className="mt-2"><SubscribeButton /></div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between my-5">
+      <div className="flex items-center justify-between my-5 mx-10">
         <button
           onClick={() =>
             navigate(RoutesPath.connections, {
@@ -94,7 +99,7 @@ const MyProfileDetails = ({ data }: Props) => {
           className="w-full border-[1px] py-1"
         />
         <OutlinedButton
-          onClick={() => {}}
+          onClick={() => {navigate(RoutesPath.analysepage);}}
           text="Analyse"
           icon={<BsGraphUp />}
           className="w-full border-[1px] py-1"

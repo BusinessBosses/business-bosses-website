@@ -1,10 +1,10 @@
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiUsers } from "react-icons/fi";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import { BsInfoCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
+import Assets from "../../../../assets";
 
 const MarketIntro = () => {
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const MarketIntro = () => {
           <p className="text-[#545151] text-sm">
             Business Bosses Company Limited
           </p>
-          <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+          <Assets.Nexticon className="text-[#726F6F]" />
         </div>
       </div>
 
