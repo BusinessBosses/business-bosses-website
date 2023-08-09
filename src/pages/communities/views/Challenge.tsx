@@ -170,7 +170,7 @@ const Challenge = ({ forums, socket }: Props) => {
           label={industry?.description ?? "Industry Description"}
           members={industry?.joinedUsers?.length ?? 0}
           onJoin={joinIndustry}
-          topics={20} aboutontap={openPopup}      />
+          topics={20} aboutontap={openPopup} aboutontaptext={"About"}      />
       </div>
       <div className="bg-white">
         {forums.map((forum: Forum, index: number) => (

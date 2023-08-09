@@ -48,6 +48,7 @@ import { ReactComponent as Analyse } from "./icons/analyze.svg"
 import { ReactComponent as Connectrelevant } from "./icons/connectrelevant.svg"
 import { ReactComponent as Ranking } from "./icons/ranking.svg"
 import { ReactComponent as Explore } from "./icons/explore.svg"
+import { ReactComponent as Reporticon } from "./icons/report.svg"
 
 
 
@@ -103,6 +104,7 @@ const Assets = {
     Three,
     Four,
     Five,
+    Reporticon,
 
 
 };

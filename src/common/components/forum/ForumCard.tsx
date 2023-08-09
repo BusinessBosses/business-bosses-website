@@ -14,6 +14,7 @@ interface Props {
   createLabel: string;
   onCreate: VoidFunction;
   aboutontap: VoidFunction;
+  aboutontaptext: string;
 }
 const ForumCard = ({
   banner,
@@ -25,13 +26,14 @@ const ForumCard = ({
   createLabel,
   onCreate,
   aboutontap,
+  aboutontaptext,
 }: Props) => {
   return (
     <div>
       <div className="bg-[#EAEAEA] px-4 py-3 mobile-only">
         <div className="flex items-center justify-between">
           <div onClick={aboutontap} className="flex items-center gap-1">
-            <p className="font-bold">About</p>
+            <p className="font-bold">{aboutontaptext}</p>
             <BsInfoCircle />
           </div>
           <FilledButton
