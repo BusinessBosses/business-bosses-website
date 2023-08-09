@@ -31,7 +31,7 @@ const ForumCard = ({
       <div className="bg-[#EAEAEA] px-4 py-3 mobile-only">
         <div className="flex items-center justify-between">
           <div onClick={aboutontap} className="flex items-center gap-1">
-            <p>About</p>
+            <p className="font-bold">About</p>
             <BsInfoCircle />
           </div>
           <FilledButton
@@ -50,11 +50,11 @@ const ForumCard = ({
           <div className="flex items-center  justify-between mt-2">
           <div className="flex items-center gap-2">
                 <FiUsers className="text-primary" />
-                <p className="text-primary underline text-sm">Members ({members.toString()})</p>
+                <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
 
               </div>
             <div className="bg-[#FFFFFF1A] whitespace-nowrap px-3 py-1 rounded-full">
-              <p className="text-sm text-[#232324]">
+              <p className="text-sm text-[#232324] font-bold">
                 # Entries ({topics.toString()})
               </p>
             </div>

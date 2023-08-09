@@ -43,6 +43,8 @@ const Forum = ({ socket }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const [industry, setIndustry] = useState<Industry | null>(null);
+  const popupRef = useRef<HTMLDivElement | null>(null); 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const updateForum = (action: { index: number; forum: ForumProp }) => {
     const forumsDP = forums.map((mp: ForumProp, index: number) => {
       if (index === action.index) {
@@ -54,6 +56,40 @@ const Forum = ({ socket }: Props) => {
 
     setForums(forumsDP);
   };
+
+  useEffect(() => {
+    const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        closePopup();
+      }
+    };
+
+    if (isPopupOpen) {
+      document.addEventListener('mousedown', handleOutsideInteraction);
+      document.addEventListener('touchstart', handleOutsideInteraction);
+    } else {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    };
+  }, [isPopupOpen]);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  
   const fetchForums = async (industryId: string) => {
     setLoading(true);
     setErr(false);
@@ -429,19 +465,16 @@ const Forum = ({ socket }: Props) => {
           <ForumCard
             onCreate={() => {
               setOpenModal(true);
-            }}
-            createLabel={
-              industry.categoryId === AppConstants.LEARNINGID
-                ? "Start a topic"
-                : "Share Opportunities"
-            }
+            } }
+            createLabel={industry.categoryId === AppConstants.LEARNINGID
+              ? "Start a topic"
+              : "Share Opportunities"}
             banner={industry?.photo!}
             didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
             label={industry?.description ?? "Industry description"}
             members={industry?.joinedUsers?.length ?? 0}
             onJoin={joinIndustry}
-            topics={count}
-          />
+            topics={count} aboutontap={openPopup}          />
         ) : null}
         {loading ? (
           <FetchStatus
@@ -605,19 +638,16 @@ const Forum = ({ socket }: Props) => {
               <ForumCard
                 onCreate={() => {
                   setOpenModal(true);
-                }}
-                createLabel={
-                  industry.categoryId === AppConstants.LEARNINGID
-                    ? "Start a topic"
-                    : "Share Opportunities"
-                }
+                } }
+                createLabel={industry.categoryId === AppConstants.LEARNINGID
+                  ? "Start a topic"
+                  : "Share Opportunities"}
                 banner={industry?.photo!}
                 didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
                 label={industry?.description ?? "Industry description"}
                 members={industry?.joinedUsers?.length ?? 0}
                 onJoin={joinIndustry}
-                topics={count}
-              />
+                topics={count} aboutontap={openPopup}              />
             ) : null}
           </div>
         </div>
