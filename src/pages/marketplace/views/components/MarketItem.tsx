@@ -19,6 +19,7 @@ import SharePopUp from "../../../../common/components/share/SharePopUp";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
 import Comment from "../../../../common/components/comment/Comment";
+import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
 interface Props {
   data: Market;
   onLike: Function;
@@ -293,6 +294,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
           <small className="text-[#B4B4B4]">
             {formatDate(data.timestamp!)}
           </small>
+          <OutlinedButton onClick={()=>{}} text={"Message Seller"}/>
         </div>
       </div>
 
