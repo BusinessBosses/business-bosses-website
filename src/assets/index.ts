@@ -1,4 +1,4 @@
-import  MessageIcon from "./icons/message.svg";
+import MessageIcon from "./icons/message.svg";
 import { ReactComponent as ProfileIcon } from "./icons/person.svg";
 import { ReactComponent as Messagenoback } from "./icons/message.svg";
 import { ReactComponent as Notifnoback } from "./icons/notifications.svg";
@@ -35,11 +35,12 @@ import Twitter from "./icons/twitter_o.svg";
 import Trophy from "./icons/trophy.svg";
 import Product from "./icons/product.svg";
 import Invite from "./icons/invitepicture.png";
-import {ReactComponent as ActiveNotification} from "./icons/active_notification.svg";
+import { ReactComponent as ActiveNotification } from "./icons/active_notification.svg";
 import { ReactComponent as Backbutton } from "./icons/backbutton.svg"
 import { ReactComponent as Appstorelogo } from "./icons/app-store.svg"
 import { ReactComponent as Playstorelogo } from "./icons/google-play.svg"
 import Authback from "./icons/authback.png"
+import NoProfile from "./icons/noprofile.png"
 import { ReactComponent as Checkmark } from "./icons/premiumbadge.svg"
 import { ReactComponent as Moreconnections } from "./icons/moreconnections.svg"
 import { ReactComponent as Rankingicon } from "./icons/rankingicon.svg"
@@ -110,6 +111,7 @@ const Assets = {
     Entries,
     Topicsicon,
 
+    NoProfile
 
 };
 export default Assets;

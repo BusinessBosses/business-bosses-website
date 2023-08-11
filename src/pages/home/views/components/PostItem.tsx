@@ -80,80 +80,84 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           onClose={() => setShowShareDialog(false)}
           open={showShareDialog}
         />
-        <div className="mobile-only"><BottomSheet
-          scrollLocking={true}
-          onDismiss={() => setOpen(false)}
-          maxHeight={1000}
-          open={open}
-          footer={
-            <div className="flex items-center gap-2">
-              <input
-                ref={commentInputRef}
-                type="text"
-                className="outline-none border-none w-full "
-                placeholder="Comment..."
-                name=""
-                id=""
-              />
-              <button onClick={makeComment}>
-                <Assets.Send />
-              </button>
+        <div className="mobile-only">
+          <BottomSheet
+            scrollLocking={true}
+            onDismiss={() => setOpen(false)}
+            maxHeight={1000}
+            open={open}
+            footer={
+              <div className="flex items-center gap-2">
+                <input
+                  ref={commentInputRef}
+                  type="text"
+                  className="outline-none border-none w-full "
+                  placeholder="Comment..."
+                  name=""
+                  id=""
+                />
+                <button onClick={makeComment}>
+                  <Assets.Send />
+                </button>
+              </div>
+            }
+          >
+            <div className="h-[50vh] overflow-y-auto">
+              {(loading || err) && (
+                <FetchStatus
+                  error={err}
+                  errorMessage="Something went wrong!!"
+                  loading={loading}
+                  onReload={() => {}}
+                />
+              )}
+              <div className="px-4">
+                {comments.map((comment: CommentStruct, index: number) => {
+                  return <Comment comment={comment} key={index} />;
+                })}
+              </div>
             </div>
-          }
-        >
-          <div className="h-[50vh] overflow-y-auto">
-            {(loading || err) && (
-              <FetchStatus
-                error={err}
-                errorMessage="Something went wrong!!"
-                loading={loading}
-                onReload={() => { }}
-              />
-            )}
-            <div className="px-4">
-              {comments.map((comment: CommentStruct, index: number) => {
-                return <Comment comment={comment} key={index} />;
-              })}
+          </BottomSheet>
+        </div>
+        <div className="computer-only">
+          <BottomSheet
+            scrollLocking={true}
+            onDismiss={() => setOpen(false)}
+            maxHeight={1000}
+            open={open}
+            footer={
+              <div className="flex items-center gap-2">
+                <input
+                  ref={commentInputRef}
+                  type="text"
+                  className="outline-none border-none w-full "
+                  placeholder="Comment..."
+                  name=""
+                  id=""
+                />
+                <button onClick={makeComment}>
+                  <Assets.Send />
+                </button>
+              </div>
+            }
+          >
+            <div className="h-[50vh] overflow-y-auto">
+              {(loading || err) && (
+                <FetchStatus
+                  error={err}
+                  errorMessage="Something went wrong!!"
+                  loading={loading}
+                  onReload={() => {}}
+                />
+              )}
+              <div className="px-4">
+                {comments.map((comment: CommentStruct, index: number) => {
+                  return <Comment comment={comment} key={index} />;
+                })}
+              </div>
             </div>
-          </div>
-        </BottomSheet></div>
-        <div className="computer-only"><BottomSheet
-          scrollLocking={true}
-          onDismiss={() => setOpen(false)}
-          maxHeight={1000}
-          open={open}
-          footer={
-            <div className="flex items-center gap-2">
-              <input
-                ref={commentInputRef}
-                type="text"
-                className="outline-none border-none w-full "
-                placeholder="Comment..."
-                name=""
-                id=""
-              />
-              <button onClick={makeComment}>
-                <Assets.Send />
-              </button>
-            </div>
-          }
-        >
-          <div className="h-[50vh] overflow-y-auto">
-            {(loading || err) && (
-              <FetchStatus
-                error={err}
-                errorMessage="Something went wrong!!"
-                loading={loading}
-                onReload={() => { }}
-              />
-            )}
-            <div className="px-4">
-              {comments.map((comment: CommentStruct, index: number) => {
-                return <Comment comment={comment} key={index} />;
-              })}
-            </div>
-          </div>
-        </BottomSheet></div>
+          </BottomSheet>
+        </div>
 
         <div className="flex items-start justify-between">
           <div
@@ -162,16 +166,15 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
             }
             className="flex items-center gap-3"
           >
-            <UserAvatar
-              imageURL={
-                data.user.photoUrl ??
-                "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-              }
-            />
+            <UserAvatar imageURL={data.user.photoUrl} />
             <div className="flex-grow">
               <p className=" font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
                 {data.user?.username}
-                {data.user?.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
+                {data.user?.isSubscribed && (
+                  <div className="ml-1">
+                    <Assets.Checkmark width={9} />
+                  </div>
+                )}
               </p>
 
               <p className="text-sm text-[#777777]">
@@ -181,83 +184,85 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           </div>
 
           <div className="flex items-center gap-5">
-          {data.user?.isSubscribed && <GreyButton onClick={()=>{}} text={"Connect"} />}
-          
-          
+            {data.user?.isSubscribed && (
+              <GreyButton onClick={() => {}} text={"Connect"} />
+            )}
 
-          <Popup
-            trigger={
-              <div>
-                <IoIosMore size={20} />
-              </div>
-            }
-            position="left top"
-            on="click"
-            closeOnDocumentClick
-            contentStyle={{ padding: "0px", border: "none" }}
-          >
-            {
-              (((close: any) =>
-                data.user.uid === profile?.uid ? (
-                  <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                    <button
-                      onClick={() => {
-                        close();
-                        navigate(RoutesPath.createPost, { state: data });
-                      }}
-                      className="menu-item"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => {
-                        close();
-                        
-                        
-                      }}
-                      className="menu-item"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => {
-                        close();
-                        navigate(RoutesPath.promotePost, { state: data.postId });
-                      }}
-                      className="menu-item"
-                    >
-                      Boost
-                    </button>
-                  </div>
-                ) : (
-                  <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                    <button
-                      onClick={() => {
-                        close();
-                        toast.success("User Blocked");
-                        GeneralPostsController.blockUser({ postId: data.postId });
-                      }}
-                      className="menu-item "
-                    >
-                      Block @{data.user.username}
-                    </button>
-                    <button
-                      onClick={() => {
-                        close();
-                        toast.success("Post reported");
-                        GeneralPostsController.reportPost({
-                          postId: data.postId,
-                          reason: "",
-                        });
-                      }}
-                      className="menu-item text-primary"
-                    >
-                      Report Post
-                    </button>
-                  </div>
-                )) as unknown) as ReactNode
-            }
-          </Popup>
+            <Popup
+              trigger={
+                <div>
+                  <IoIosMore size={20} />
+                </div>
+              }
+              position="left top"
+              on="click"
+              closeOnDocumentClick
+              contentStyle={{ padding: "0px", border: "none" }}
+            >
+              {
+                (((close: any) =>
+                  data.user.uid === profile?.uid ? (
+                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                      <button
+                        onClick={() => {
+                          close();
+                          navigate(RoutesPath.createPost, { state: data });
+                        }}
+                        className="menu-item"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => {
+                          close();
+                        }}
+                        className="menu-item"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => {
+                          close();
+                          navigate(RoutesPath.promotePost, {
+                            state: data.postId,
+                          });
+                        }}
+                        className="menu-item"
+                      >
+                        Boost
+                      </button>
+                    </div>
+                  ) : (
+                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                      <button
+                        onClick={() => {
+                          close();
+                          toast.success("User Blocked");
+                          GeneralPostsController.blockUser({
+                            postId: data.postId,
+                          });
+                        }}
+                        className="menu-item "
+                      >
+                        Block @{data.user.username}
+                      </button>
+                      <button
+                        onClick={() => {
+                          close();
+                          toast.success("Post reported");
+                          GeneralPostsController.reportPost({
+                            postId: data.postId,
+                            reason: "",
+                          });
+                        }}
+                        className="menu-item text-primary"
+                      >
+                        Report Post
+                      </button>
+                    </div>
+                  )) as unknown) as ReactNode
+              }
+            </Popup>
           </div>
         </div>
         <div className="mt-2">
@@ -325,15 +330,24 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 }}
               />
             </div>
-            <small className="text-[#B4B4B4]">{formatDate(data.timestamp)}</small>
+            <small className="text-[#B4B4B4]">
+              {formatDate(data.timestamp)}
+            </small>
           </div>
         </div>
-
-
-
       </div>
-      <div className="mobile-only " style={{ height: "7px", width: "100%", background: "#f4f4f4" }}></div>
-      <div className="computer-only" style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>
+      <div
+        className="mobile-only "
+        style={{ height: "7px", width: "100%", background: "#f4f4f4" }}
+      ></div>
+      <div
+        className="computer-only"
+        style={{
+          height: "1.2px",
+          width: "100%",
+          background: "rgba(0, 0, 0, 0.1)",
+        }}
+      ></div>
     </div>
   );
 };

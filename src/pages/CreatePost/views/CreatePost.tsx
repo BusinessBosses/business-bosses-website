@@ -28,12 +28,13 @@ const CreatePost = () => {
     setImages(newImageSet);
   };
 
-  const [characterCount, setCharacterCount] = useState(stateProps?.title?.length || 0);
+  const [characterCount, setCharacterCount] = useState(
+    stateProps?.title?.length || 0
+  );
 
   const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = event.target.value;
     setCharacterCount(inputValue.length);
-
   };
 
   const createPost = async () => {
@@ -161,29 +162,31 @@ const CreatePost = () => {
   return (
     <div>
       <div className="bg-white" style={{ height: "100vh" }}>
-        <div className="bg-white top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
+        <div
+          className="bg-white top-0 w-full z-50 "
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 100,
+            borderBottom: "15px solid rgba(244, 244, 244, 1)",
+          }}
+        >
           <div className="mobile-only bg-white">
-            <CommonPageHeader title="Create Post" /></div>
-
+            <CommonPageHeader title="Create Post" />
+          </div>
         </div>
 
-        <div className=" bg-white pt-5 h-100vh" >
+        <div className=" bg-white pt-5 h-100vh">
           <div className="flex items-center px-4 gap-3">
-            <UserAvatar
-              imageURL={
-                profile?.photoUrl ??
-                "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-              }
-            />
+            <UserAvatar imageURL={profile?.photoUrl} />
             <p className="text-[#333333] text-md font-semibold">
               {profile?.username}
             </p>
           </div>
 
-
           <div className=" mt-5">
             <div className="px-4">
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: "relative" }}>
                 <textarea
                   ref={postTitleRef}
                   name=""
@@ -197,11 +200,11 @@ const CreatePost = () => {
                 ></textarea>
                 <p
                   style={{
-                    position: 'absolute',
-                    bottom: '20px',
-                    right: '50px',
-                    fontSize: '12px',
-                    color: '#A9A9A9',
+                    position: "absolute",
+                    bottom: "20px",
+                    right: "50px",
+                    fontSize: "12px",
+                    color: "#A9A9A9",
                   }}
                 >
                   {characterCount}/300
@@ -209,11 +212,13 @@ const CreatePost = () => {
               </div>
             </div>
 
-
             {stateProps ? null : (
               <div className="flex mt-4 px-4 items-center gap-3">
                 <p className="text-[#333333] text-sm font-bold">Add Image</p>
-                <label htmlFor="file" className="bg-[#F4F4F4] p-2.5 rounded-full cursor-pointer">
+                <label
+                  htmlFor="file"
+                  className="bg-[#F4F4F4] p-2.5 rounded-full cursor-pointer"
+                >
                   <img src={Assets.Gallery} alt="" />
                 </label>
                 <input
@@ -229,10 +234,10 @@ const CreatePost = () => {
                   id="file"
                 />
                 <div className="text-primary text-xs flex-grow text-right">
-                  Max file size for images is <span className="text-red-500">10mb</span>
+                  Max file size for images is{" "}
+                  <span className="text-red-500">10mb</span>
                 </div>
               </div>
-
             )}
 
             {stateProps ? (
@@ -272,8 +277,12 @@ const CreatePost = () => {
               <div className="flex items-center gap-3">
                 <img src={Assets.Rocket} alt="" />
                 <div className="flex flex-col">
-                  <p className="text-[#373737] font-semibold">Boost this Post</p>
-                  <p className="text-[#555555] text-xs mt-1">Reach wider audience and get more views.</p>
+                  <p className="text-[#373737] font-semibold">
+                    Boost this Post
+                  </p>
+                  <p className="text-[#555555] text-xs mt-1">
+                    Reach wider audience and get more views.
+                  </p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -287,7 +296,9 @@ const CreatePost = () => {
               </label>
               {/* <Assets.Nexticon size={24} className="text-primary" /> */}
             </div>
-            <div style={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
+            <div
+              style={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}
+            ></div>
 
             <div className="mt-5 px-4">
               <FilledButton
@@ -299,10 +310,6 @@ const CreatePost = () => {
           </div>
         </div>
       </div>
-
-
-
-
     </div>
   );
 };

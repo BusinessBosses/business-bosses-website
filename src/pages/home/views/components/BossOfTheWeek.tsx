@@ -19,7 +19,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const popupRef = useRef<HTMLDivElement | null>(null); 
+  const popupRef = useRef<HTMLDivElement | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const connection = async () => {
     if (profile?.connecteds?.includes(bossOfTheWeek.uid!)) {
@@ -53,16 +53,16 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
     };
 
     if (isPopupOpen) {
-      document.addEventListener('mousedown', handleOutsideInteraction);
-      document.addEventListener('touchstart', handleOutsideInteraction);
+      document.addEventListener("mousedown", handleOutsideInteraction);
+      document.addEventListener("touchstart", handleOutsideInteraction);
     } else {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     };
   }, [isPopupOpen]);
 
@@ -73,7 +73,6 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
-
 
   return (
     <div className="bg-[#EAEAEA] px-4 py-3" style={{}}>
@@ -86,18 +85,11 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           >
             Boss of the week
           </p>
-
         </div>
         <IoIosMore size={23} onClick={openPopup} />
       </div>
       <div className="flex items-center gap-3 mt-2">
-        <UserAvatar
-          imageSize="h-24 w-24"
-          imageURL={
-            bossOfTheWeek.photoUrl ??
-            "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-          }
-        />
+        <UserAvatar imageSize="h-24 w-24" imageURL={bossOfTheWeek.photoUrl} />
         <div className="w-3/4 ml-3">
           <p className="text-md text-[#333333] font-semibold">
             {bossOfTheWeek.name}
@@ -129,23 +121,23 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         </div>
       </div>
       <div className="mobile-only">
-      {isPopupOpen && (
-        <div className="overlay">
-          <div ref={popupRef} className="mobilepopup" style={{ overflowY: "scroll" }}>
-            <Bossoftheweekpopup/>
+        {isPopupOpen && (
+          <div className="overlay">
+            <div
+              ref={popupRef}
+              className="mobilepopup"
+              style={{ overflowY: "scroll" }}
+            >
+              <Bossoftheweekpopup />
+            </div>
           </div>
-        </div>
-      )}
-
+        )}
       </div>
 
-    
       <div className="mobile-only">
         <BossupPartnerstile bossupby={""} bossupad={""}/>
       </div>
     </div>
-
-    
   );
 };
 
