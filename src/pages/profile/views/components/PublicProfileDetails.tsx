@@ -8,6 +8,7 @@ import { saveUserData } from "../../../../redux/slices/UserSlice";
 import ConnectionsController from "../../../connections/controller/ConnectionsController";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import Assets from "../../../../assets";
+import UserAvatarbig from "../../../../common/components/avatars/UserAvatarbig";
 interface Props {
   data: User;
 }
@@ -37,7 +38,7 @@ const PublicProfileDetails = ({ data }: Props) => {
     <div>
       <div className="px-4">
         <div className=" flex items-center gap-3">
-          <UserAvatar imageSize="h-20 w-20" imageURL={data.photoUrl} />
+          <UserAvatarbig imageSize="h-20 w-20" imageURL={data.photoUrl} />
           <div className="">
             <p className="font-semibold flex items-center text-lg md:text-lg lg:text-lg capitalize">
               {truncatedName}

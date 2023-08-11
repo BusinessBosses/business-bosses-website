@@ -7,6 +7,7 @@ import OutlinedButton from "../../../common/components/buttons/OutlinedButton";
 import Assets from "../../../assets";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
+import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsmall";
 
 interface Props {
   connect: User;
@@ -65,7 +66,7 @@ const ConnectRelevantCard = ({ connect }: Props) => {
         </div>
         <div className="pt-2 pb-4">
           {!profile?.connecteds?.includes(connect.uid!) ? (
-            <FilledButton
+            <FilledButtonsmall
               onClick={() => {
                 connection(connect.uid);
               }}

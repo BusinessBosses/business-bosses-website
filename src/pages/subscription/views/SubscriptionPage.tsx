@@ -28,16 +28,16 @@ const SubscriptionPage = () => {
   const getMoneyText = () => {
     if (selectedIndex === 0) {
       return (
-        <span>
+        <span className="text-md">
           Upgrade to a premium boss experience at only
-          <span style={{ color: "red" }}>$9.99/month</span>
+          <span style={{ color: "red" }}> $9.99/month</span>
         </span>
       );
     } else {
       return (
         <span>
           Upgrade to a premium boss experience at only{" "}
-          <span style={{ color: "red" }}>$49.99/year</span>
+          <span style={{ color: "red" }}> $49.99/year</span>
         </span>
       );
     }
@@ -114,30 +114,30 @@ const SubscriptionPage = () => {
               alignItems: "start",
             }}
           >
-            <div className="font-bold">What's included:</div>
-            <div className="mt-5" style={{ display: "flex" }}>
+            <div className="font-bold text-sm">What's included:</div>
+            <div className="mt-5 items-center" style={{ display: "flex" }}>
               <Assets.Checkmark height={22} />
-              <span style={{ marginLeft: "8px" }}>Premium Badge</span>
+              <span className="text-sm"style={{ marginLeft: "8px" }}>Premium Badge</span>
             </div>
-            <div style={{ display: "flex" }}>
+            <div className="items-center mt-4" style={{ display: "flex" }}>
               <img src={Assets.Coin} alt="" />
-              <span style={{ marginLeft: "8px" }}>Get 500 coins per month</span>
+              <span className="text-sm" style={{ marginLeft: "8px" }}>Get 500 coins per month</span>
             </div>
-            <div style={{ display: "flex" }}>
+            <div className="items-center mt-3" style={{ display: "flex" }}>
               <img src={Assets.Rocket} alt="" />
-              <span style={{ marginLeft: "8px" }}>
+              <span className="text-sm" style={{ marginLeft: "8px" }}>
                 Boost post FREE with coins
               </span>
             </div>
-            <div style={{ display: "flex" }}>
-              <Assets.Moreconnections />
+            <div className="text-sm items-center mt-3" style={{ display: "flex" }}>
+              <Assets.Moreconnections height={20}/>
               <span style={{ marginLeft: "8px" }}>
                 More connections & referrals
               </span>
             </div>
-            <div style={{ display: "flex" }}>
-              <Assets.Rankingicon />
-              <span style={{ marginLeft: "8px" }}>
+            <div className="text-sm items-center mt-4"style={{ display: "flex" }}>
+              <Assets.Rankingicon height={20}/>
+              <span className="text-sm" style={{ marginLeft: "8px" }}>
                 Rank higher on posts & listing
               </span>
             </div>

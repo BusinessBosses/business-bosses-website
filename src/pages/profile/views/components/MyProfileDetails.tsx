@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import { User } from "../../../../common/interfaces/user";
 import SubscribeButton from "../../../settings/components/Subscribebutton";
+import UserAvatarbig from "../../../../common/components/avatars/UserAvatarbig";
 interface Props {
   data: User;
 }
@@ -20,7 +21,7 @@ const MyProfileDetails = ({ data }: Props) => {
     <div>
       <div className="mt-5 px-4">
         <div className=" flex items-center gap-3">
-          <UserAvatar imageSize="h-20 w-20" imageURL={data.photoUrl}  />
+          <UserAvatarbig imageSize="h-20 w-20" imageURL={data.photoUrl}  />
           <div className="">
             <p className=" font-semibold flex items-center text-base md:text-lg lg:text-lg capitalize">
               {truncatedName}
