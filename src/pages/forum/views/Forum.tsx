@@ -28,6 +28,10 @@ import FilledTextarea from "../../../common/components/inputs/FilledTextarea";
 import serviceApi from "../../../services/serviceApi";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
+import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
+import Learningpopup from "../../popups/Learningpopup";
+import Opportunities from "../../communities/views/Opportunities";
+import Opportunitiespopup from "../../popups/Opportunitiespopup";
 interface Props {
   socket: Socket;
 }
@@ -43,7 +47,7 @@ const Forum = ({ socket }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const [industry, setIndustry] = useState<Industry | null>(null);
-  const popupRef = useRef<HTMLDivElement | null>(null); 
+  const popupRef = useRef<HTMLDivElement | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const updateForum = (action: { index: number; forum: ForumProp }) => {
     const forumsDP = forums.map((mp: ForumProp, index: number) => {
@@ -89,7 +93,7 @@ const Forum = ({ socket }: Props) => {
     setIsPopupOpen(false);
   };
 
-  
+
   const fetchForums = async (industryId: string) => {
     setLoading(true);
     setErr(false);
@@ -335,6 +339,19 @@ const Forum = ({ socket }: Props) => {
           }}
         >
           <CommonPageHeader title={industry?.industry ?? ""} />
+          <div className="mobile-only">
+            {isPopupOpen && (
+              <div className="overlay">
+                <div ref={popupRef} className="mobilepopup" style={{ overflowY: "scroll" }}>
+                {industry?.categoryId === AppConstants.LEARNINGID
+                  ?<Learningpopup /> : 
+                  <Opportunitiespopup /> 
+                  }
+                </div>
+              </div>
+            )}
+
+          </div>
         </div>
         <Popup lockScroll modal open={openModal}>
           <div className=" min-h-screen h-full bg-white overflow-auto mb-20 min-w-full w-screen">
@@ -368,14 +385,14 @@ const Forum = ({ socket }: Props) => {
                 <FilledInput
                   defaultValue={stateProps?.title}
                   inputRef={titleRef}
-                  onchange={() => {}}
+                  onchange={() => { }}
                   placeholder="Enter Business name"
                   className="text-sm"
                 />
                 <FilledTextarea
                   defaultValue={stateProps?.description}
                   inputRef={descriptionRef}
-                  onchange={() => {}}
+                  onchange={() => { }}
                   placeholder="Describe your business"
                   className="text-sm"
                 />
@@ -474,14 +491,16 @@ const Forum = ({ socket }: Props) => {
             label={industry?.description ?? "Industry description"}
             members={industry?.joinedUsers?.length ?? 0}
             onJoin={joinIndustry}
-            topics={count} aboutontap={openPopup}          />
+            topics={count} aboutontap={openPopup} aboutontaptext={"Info"} topicsicon={<Assets.Topicsicon/>} topicstext={industry.categoryId === AppConstants.LEARNINGID
+              ? "Topics"
+              : "opport."} />
         ) : null}
         {loading ? (
           <FetchStatus
             error={false}
             errorMessage="Something went wrong!!"
             loading={true}
-            onReload={() => {}}
+            onReload={() => { }}
           />
         ) : null}
         {err ? (
@@ -494,7 +513,7 @@ const Forum = ({ socket }: Props) => {
             }}
           />
         ) : null}
-        <div className="">
+        <div className="bg-white">
           {forums.map((forum: ForumProp, index: number) => (
             <ForumItem
               onEdit={() => {
@@ -563,7 +582,7 @@ const Forum = ({ socket }: Props) => {
                 error={false}
                 errorMessage="Something went wrong!!"
                 loading={true}
-                onReload={() => {}}
+                onReload={() => { }}
               />
             ) : null}
             {err ? (
@@ -629,11 +648,11 @@ const Forum = ({ socket }: Props) => {
             }}
           >
             <div className="flex items-center gap-2 pb-5">
-            <button onClick={() => navigate(-1)}>
-              <Assets.Backbutton/>
-            </button>
-            <p className="text-xl font-medium">{industry?.industry}</p>
-          </div>
+              <button onClick={() => navigate(-1)}>
+                <Assets.Backbutton />
+              </button>
+              <p className="text-xl font-medium">{industry?.industry}</p>
+            </div>
             {industry ? (
               <ForumCard
                 onCreate={() => {
@@ -647,7 +666,11 @@ const Forum = ({ socket }: Props) => {
                 label={industry?.description ?? "Industry description"}
                 members={industry?.joinedUsers?.length ?? 0}
                 onJoin={joinIndustry}
-                topics={count} aboutontap={openPopup}              />
+                topics={count}
+                aboutontap={openPopup}
+                aboutontaptext="Info" topicsicon={<Assets.Topicsicon/>} topicstext={industry.categoryId === AppConstants.LEARNINGID
+                  ? "Topics"
+                  : "Opport."}/>
             ) : null}
           </div>
         </div>

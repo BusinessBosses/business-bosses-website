@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import serviceApi from "../../../services/serviceApi";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
+import Assets from "../../../assets";
 interface Props {
   forums: Forum[];
   socket: Socket;
@@ -170,7 +171,7 @@ const Challenge = ({ forums, socket }: Props) => {
           label={industry?.description ?? "Industry Description"}
           members={industry?.joinedUsers?.length ?? 0}
           onJoin={joinIndustry}
-          topics={20} aboutontap={openPopup}      />
+          topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries/>} topicstext={"Entries"}      />
       </div>
       <div className="bg-white">
         {forums.map((forum: Forum, index: number) => (

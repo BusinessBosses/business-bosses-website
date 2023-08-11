@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import { useEffect, useRef, useState } from "react";
 import Bossoftheweekpopup from "../../../popups/Bossoftheweekpopup";
+import BossupPartnerstile from "./BopssupPartnerstile";
 interface Props {
   bossOfTheWeek: User;
 }
@@ -134,23 +135,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
       </div>
 
       <div className="mobile-only">
-        <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
-          <div className="flex items-center">
-            <small
-              className="text-xs text-[#545151] pr-2"
-              style={{
-                paddingRight: 10,
-                borderRight: "1.2px solid rgba(0, 0, 0, 0.5)",
-              }}
-            >
-              Boss Up by
-            </small>
-            <p className="text-[#545151] font-semibold text-sm pl-2 py-1">
-              Business Bosses Company Limited{" "}
-            </p>
-          </div>
-          <Assets.Nexticon className="text-[#232324]" width={20} />
-        </div>
+        <BossupPartnerstile bossupby={""} bossupad={""}/>
       </div>
     </div>
   );

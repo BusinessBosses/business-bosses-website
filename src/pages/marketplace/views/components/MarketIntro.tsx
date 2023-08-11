@@ -5,9 +5,47 @@ import { BsInfoCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import Assets from "../../../../assets";
+import { useEffect, useRef, useState } from "react";
+import Marketplacepopup from "../../../popups/Marketplacepopup";
+import BossupPartnerstile from "../../../home/views/components/BopssupPartnerstile";
 
 const MarketIntro = () => {
   const navigate = useNavigate();
+  const popupRef = useRef<HTMLDivElement | null>(null); 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        closePopup();
+      }
+    };
+
+    if (isPopupOpen) {
+      document.addEventListener('mousedown', handleOutsideInteraction);
+      document.addEventListener('touchstart', handleOutsideInteraction);
+    } else {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    };
+  }, [isPopupOpen]);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+  
   return (
     <div>
       <div
@@ -17,8 +55,8 @@ const MarketIntro = () => {
         }}
       >
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <p>Guidelines</p>
+          <div onClick={openPopup} className="flex items-center gap-1">
+            <p className="font-bold">Guidelines</p>
             <BsInfoCircle />
           </div>
           <FilledButton
@@ -30,6 +68,17 @@ const MarketIntro = () => {
             className="px-7"
           />
         </div>
+
+        <div className="mobile-only">
+      {isPopupOpen && (
+        <div className="overlay">
+          <div ref={popupRef} className="mobilepopup" style={{ overflowY: "scroll" }}>
+            <Marketplacepopup/>
+          </div>
+        </div>
+      )}
+
+      </div>
 
         <div
           className="p-3 mt-2 rounded-2xl"
@@ -48,9 +97,13 @@ const MarketIntro = () => {
           <div className="flex items-center justify-between mt-2">
             <div className="flex items-center gap-2">
               <FiUsers className="text-primary" />
-              <p className="text-primary underline text-sm">Members: (3)</p>
+              <p className="text-primary underline text-sm font-bold">Members: (3)</p>
             </div>
-            <p className="text-sm text-[#232324]"># Listing (48)</p>
+            <div className="flex gap-2 items-center">
+              <Assets.MarketPlace fill="#232324" width={15}/>
+            <p className="text-sm text-[#232324] font-bold">Listing (48)</p>
+            </div>
+            
             <button
               className="bg-white px-6 py-1.5 text-primary rounded-xl "
               style={{ border: "2px solid", borderColor: "primary" }} // Add the border style here
@@ -60,13 +113,7 @@ const MarketIntro = () => {
           </div>
         </div>
 
-        <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
-          <small className="text-xs text-[#545151]">Boss Up by</small>
-          <p className="text-[#545151] text-sm">
-            Business Bosses Company Limited
-          </p>
-          <Assets.Nexticon className="text-[#726F6F]" />
-        </div>
+        <BossupPartnerstile bossupby={""} bossupad={""}/>
       </div>
 
 

@@ -26,6 +26,7 @@ import serviceApi from "../../../services/serviceApi";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 import ChooseTile from "./choosetile";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
+import Assets from "../../../assets";
 
 interface Props {
   socket: Socket;
@@ -167,7 +168,7 @@ const CommunitiesPage = ({ socket }: Props) => {
               </p>
             </div>
             <div onClick={openPopup} className="flex items-center ml-auto gap-1">
-              <p>About</p>
+              <p className="font-bold">About</p>
               <BsInfoCircle />
             </div>
           </div>
@@ -183,7 +184,7 @@ const CommunitiesPage = ({ socket }: Props) => {
             label={industry?.description ?? "Industry Description"}
             members={industry?.joinedUsers?.length ?? 0}
             onJoin={joinIndustry}
-            topics={20} aboutontap={openPopup}          />
+            topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries/>} topicstext={"Entries"}          />
         </div>
       );
     }

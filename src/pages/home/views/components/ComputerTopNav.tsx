@@ -4,7 +4,7 @@ import Assets from "../../../../assets";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BiX } from "react-icons/bi";
-import CreatePost from "../../../CreatePost.tsx/views/CreatePost";
+import CreatePost from "../../../CreatePost/views/CreatePost";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
