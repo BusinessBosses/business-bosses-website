@@ -110,7 +110,6 @@ const Assets = {
     Reporticon,
     Entries,
     Topicsicon,
-
     NoProfile
 
 };
