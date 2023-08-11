@@ -13,7 +13,7 @@ import { BiArrowBack } from "react-icons/bi";
 import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
 import { useNavigate } from "react-router-dom";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
-import { MdContentCopy } from "react-icons/md";
+import { MdContentCopy, MdShare } from "react-icons/md";
 import SubscribeButton from "../../settings/components/Subscribebutton";
 
 
@@ -35,10 +35,10 @@ const InvitePage = ({ coins }: Props) => {
           </button>
           <div className=" items-center">
           <div className="flex items-center ml-auto px-2 py-2 bg-[#F4F4F4] rounded-full">
-                <div className="mr-1 text-sm font-medium">My Coin Balance </div>
+                <div className="mr-1 text-xs font-bold">My Coin Balance </div>
                 <div className="mr-1"><img src={Assets.Coin} alt="" /></div>
                 <p className="font-medium">
-                  <span style={{ color: '#333333' }}>{coins}</span>
+                  <span className="font-bold text-xs" style={{ color: '#333333' }}>{profile.profile?.coinscount}</span>
                 </p>
               </div>
           </div>
@@ -54,8 +54,8 @@ const InvitePage = ({ coins }: Props) => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center px-20">
-          <div className="text-center text-sm font-bold mb-10"> Give Coins to your favorite Bosses and receive them from other Bosses who love your work!</div>
+        <div className="flex flex-col items-center px-10">
+        <div className="text-center text-xs font-bold mb-5"> Give Coins to your favorite Bosses and receive them from other Bosses who love your work!</div>
           <img
             src={Assets.Invite}
             className="w-40 h-40 object-contain"
@@ -65,10 +65,14 @@ const InvitePage = ({ coins }: Props) => {
           <p className="text-xl text-primary font-semibold">
             Invite Friends
           </p>
-          <small className="text-[#333333]">
+          <div className="flex items-center">
+          <small className="text-[#333333] text-xs font-bold">
             to join Business Bosses and get 20
           </small>
-          <small className="text-[#707070]">
+          <img src={Assets.Coin}></img>
+         
+          </div>
+          <small className="text-[#333333] text-xs font-bold">
             for each friend.
           </small>
 
@@ -80,23 +84,28 @@ const InvitePage = ({ coins }: Props) => {
         <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
 
         <div className="">
-          <div className="flex justify-between p-5">
+          <div className="flex justify-between px-5 py-2 items-center">
             <div className="">
-              <small className="text-[#707070]">Invite ID:</small>
-              <p className="text-[#333333]">{profile.profile!.inviteId}</p>
+              <small className="text-[#707070] text-xs">Invite ID:</small>
+              <p className="text-[#333333] text-sm">{profile.profile!.inviteId}</p>
             </div>
+            <div className=""  onClick={async () => {
+                await navigator.clipboard.writeText(profile.profile!.inviteId ?? "");
+                toast.success("Copied");
+              }}><MdContentCopy size={23} /></div>
+            
             <FilledButton
               onClick={async () => {
                 await navigator.clipboard.writeText(profile.profile!.inviteId ?? "");
                 toast.success("Copied");
               }}
-              text="Copy InviteID"
-              icon={<MdContentCopy />}
+              text="Invite"
+              icon={<Assets.Inviteicon />}
             />
           </div>
 
           <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div className="flex items-center justify-between p-5">
+          <div className="flex items-center justify-between px-5 py-4">
             <small className="text-[#777777]">Accepted Invitation</small>
             <small className="text-[#333333]">{profile.profile!.invitations}</small>
           </div>

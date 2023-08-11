@@ -20,16 +20,16 @@ const MyProfileDetails = ({ data }: Props) => {
           <UserAvatar imageSize="h-20 w-20" imageURL={data.photoUrl} />
           <div className="">
             <p className=" font-semibold flex items-center text-base md:text-lg lg:text-lg capitalize">
-              {data.username}
+              {data.name}
               {data.isSubscribed && (
                 <div className="ml-1">
                   <Assets.Checkmark width={9} />
                 </div>
               )}
             </p>
-            <p className="text-lg font-medium">{data.category}</p>
-            <p className="font-medium">{data.companyName}</p>
-            <p className="text-sm font-light text-[#A9A9A9]">{data.location}</p>
+            <p className="text-sm font-semibold text-[#333333]">{data.category}</p>
+            <p className="font-medium text-xs">{data.companyName}</p>
+            <p className="text-xs font-light text-[#A9A9A9]">{data.location}</p>
             <div className="mt-2">
               <SubscribeButton />
             </div>

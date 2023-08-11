@@ -31,13 +31,13 @@ const AnalysePage = () => {
                     <SubscribeButton />
                 </div>
 
-                <div className="ml-5 font-bold text-primary text-lg">@{profile.profile?.username}</div>
-                <div className="ml-5 mb-10">how may I help you?</div>
+                <div className="ml-5 font-bold text-primary text-md">@{profile.profile?.username}</div>
+                <div className="ml-5 mb-10 text-xs">how may I help you?</div>
 
-                <Analyserows leadingSvg={<Assets.Analyse />} middleText={"Analyse my Profile"} endingSvg={<Assets.Nexticon />} onClick={() => { navigate(RoutesPath.analyseprofilepage) }} />
-                <Analyserows leadingSvg={<Assets.Connectrelevant />} middleText={"Connect me to relevant people"} endingSvg={<Assets.Nexticon />} onClick={() => { navigate(RoutesPath.connectrelevant) }} />
-                <Analyserows leadingSvg={<Assets.Ranking />} middleText={"Show my ranking"} endingSvg={<Assets.Nexticon />} onClick={() => { navigate(RoutesPath.rankingpage) }} />
-                <Analyserows leadingSvg={<Assets.Explore />} middleText={"Explore Business Bosses"} endingSvg={<Assets.Nexticon />} onClick={() => { navigate(RoutesPath.explorebusinessbosses) }} />
+                <Analyserows leadingSvg={<Assets.Analyse />} middleText={"Analyse my Profile"} endingSvg={<Assets.Nexticon stroke="#F21C29"/>} onClick={() => { navigate(RoutesPath.analyseprofilepage) }} />
+                <Analyserows leadingSvg={<Assets.Connectrelevant />} middleText={"Connect me to relevant people"} endingSvg={<Assets.Nexticon stroke="#F21C29" />} onClick={() => { navigate(RoutesPath.connectrelevant) }} />
+                <Analyserows leadingSvg={<Assets.Ranking />} middleText={"Show my ranking"} endingSvg={<Assets.Nexticon stroke="#F21C29"/>} onClick={() => { navigate(RoutesPath.rankingpage) }} />
+                <Analyserows leadingSvg={<Assets.Explore />} middleText={"Explore Business Bosses"} endingSvg={<Assets.Nexticon stroke="#F21C29" />} onClick={() => { navigate(RoutesPath.explorebusinessbosses) }} />
 
                 <Analyserows leadingSvg={undefined} middleText={""} endingSvg={undefined} />
 

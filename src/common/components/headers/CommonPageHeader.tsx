@@ -17,7 +17,7 @@ const CommonPageHeader = ({ title }: Props) => {
             <Assets.Backbutton />
           </button>
           <div className="flex-grow text-center">
-            <p className="text-xl font-bold">{title}</p>
+            <p className="text-md font-semibold">{title}</p>
           </div>
           <div></div> {/* This empty div helps in spacing */}
         </div>

@@ -21,7 +21,7 @@ const Analyserows = ({ leadingSvg, middleText, endingSvg, onClick }: AnalyseRows
                     {leadingSvg}
 
                     <div className="flex-grow text-start ml-10">
-                        <p className="text-base font-semibold py-2">{middleText}</p>
+                        <p className="text-sm font-semibold py-2">{middleText}</p>
                     </div>
                     <div></div> {/* This empty div helps in spacing */}
                     {endingSvg}
