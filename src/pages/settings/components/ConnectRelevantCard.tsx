@@ -5,12 +5,20 @@ import { saveUserData } from "../../../redux/slices/UserSlice";
 import ConnectionsController from "../../connections/controller/ConnectionsController";
 import OutlinedButton from "../../../common/components/buttons/OutlinedButton";
 import Assets from "../../../assets";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../constants/Routes";
+
 interface Props {
   connect: User;
+  
 }
+
 const ConnectRelevantCard = ({ connect }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const truncatedName = connect.username && connect.username.length > 15 ? `${connect.username.slice(0, 15)}...` : connect.username;
+
   const connection = async (userId: string) => {
     if (profile?.connecteds?.includes(userId)) {
       const newUserData: User = {
@@ -30,8 +38,12 @@ const ConnectRelevantCard = ({ connect }: Props) => {
       await ConnectionsController.connect(userId);
     }
   };
+
   return (
-    <div className="bg-white shadow pt-4 rounded-xl">
+    <div
+      className="bg-white pt-4 rounded-xl"
+      onClick={() => navigate(RoutesPath.PublicUserProfile, { state: connect })}
+    >
       <div className="flex flex-col items-center">
         <img
           src={connect.photoUrl ?? Assets.NoProfile}
@@ -39,15 +51,17 @@ const ConnectRelevantCard = ({ connect }: Props) => {
           className="w-12 h-12 rounded-full mb-3"
         />
         <div className="text-center">
-          <p className="text-lg font-semibold line-clamp-1 capitalize">
-            {connect.username}
+          <p
+            className="text-sm font-semibold line-clamp-2 capitalize"
+            style={{ maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis" }}
+          >
+            {truncatedName}
           </p>
-          {!!!connect.category ? (
+          {!connect.category ? (
             <p className="text-gray-500 line-clamp-1 invisible">Category</p>
-          ) : null}
-          {connect.category ? (
+          ) : (
             <p className="text-gray-500 line-clamp-1">{connect.category}</p>
-          ) : null}
+          )}
         </div>
         <div className="pt-2 pb-4">
           {!profile?.connecteds?.includes(connect.uid!) ? (

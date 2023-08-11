@@ -13,14 +13,17 @@ interface Props {
 }
 const MyProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
+  const truncatedName = data.name && data.name.length > 15 ? `${data.name.slice(0, 15)}...` : data.name;
+
   return (
+    
     <div>
       <div className="mt-5 px-4">
         <div className=" flex items-center gap-3">
-          <UserAvatar imageSize="h-20 w-20" imageURL={data.photoUrl} />
+          <UserAvatar imageSize="h-20 w-20" imageURL={data.photoUrl}  />
           <div className="">
             <p className=" font-semibold flex items-center text-base md:text-lg lg:text-lg capitalize">
-              {data.name}
+              {truncatedName}
               {data.isSubscribed && (
                 <div className="ml-1">
                   <Assets.Checkmark width={9} />

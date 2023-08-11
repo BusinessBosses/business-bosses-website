@@ -18,13 +18,13 @@ const AnalysePage = () => {
     const profile = useAppSelector((state) => state.user);
     return (
         <div>
-            <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
+            <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100,  }}>
 
                 <CommonPageHeader title="Analyse" />
             </div>
 
 
-            <div className=" pt-10 bg-white" style={{ height: "100vh" }}>
+            <div className=" pt-10 bg-white" style={{ height: "100vh", borderTop: '15px solid rgba(244, 244, 244, 1)' }}>
 
                 <div className="flex justify-between items-center mx-5">
                     <div className="text-lg font-bold">Hi</div>

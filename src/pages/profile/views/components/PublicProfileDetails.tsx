@@ -15,6 +15,7 @@ const PublicProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
+  const truncatedName = data.name && data.name.length > 15 ? `${data.name.slice(0, 15)}...` : data.name;
   const connection = async () => {
     if (profile?.connecteds?.includes(data.uid)) {
       const newUserData: User = {
@@ -39,7 +40,7 @@ const PublicProfileDetails = ({ data }: Props) => {
           <UserAvatar imageSize="h-20 w-20" imageURL={data.photoUrl} />
           <div className="">
             <p className="font-semibold flex items-center text-lg md:text-lg lg:text-lg capitalize">
-              {data.username}
+              {truncatedName}
               {data.isSubscribed && (
                 <div className="ml-1">
                   <Assets.Checkmark width={9} />

@@ -17,28 +17,57 @@ const RankingPage = () => {
     const profile = useAppSelector((state) => state.user);
     return (
         <div>
-            <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
+            <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, }}>
 
                 <CommonPageHeader title="Ranking" />
             </div>
 
 
-            <div className=" pt-10 bg-white" style={{  }}>
-                <div className="flex">
+            <div className=" bg-white" style={{ borderTop: '15px solid rgba(244, 244, 244, 1)' }}>
+                <div className="flex p-5 gap-4">
+                    <div className="flex-grow rounded-xl bg-[#f1f1f1] p-5">
+                    <div className="text-center text-sm">Monthly Ranking</div>
+                        <div className="flex items-center gap-3 pt-5 justify-center">
+                            <div className="text-sm font-bold">Top</div>
+                            <div className="w-20 h-20 rounded-full text-center border border-[#ffffff]" style={{ borderWidth: "10px", display: "flex", justifyContent: "center", alignItems: "center" , fontWeight:"bold"}}>
+                                50%
+                            </div>
 
+
+
+                        </div>
+                    </div>
+                    <div className="flex-grow rounded-xl bg-white border border-[#f1f1f1] p-5">
+                        <div className="text-center text-sm">Monthly Ranking</div>
+                        <div className="flex items-center gap-3 pt-5 justify-center">
+                            <div className="text-sm font-bold">Top</div>
+                            <div className="w-20 h-20 rounded-full text-center border border-[#f1f1f1]" style={{ borderWidth: "10px", display: "flex", justifyContent: "center", alignItems: "center" , fontWeight:"bold"}}>
+                                50%
+                            </div>
+
+
+
+                        </div>
+                    </div>
                 </div>
-                <div className="ml-5 font-bold">Your ranking is based on:</div>
-                <div className="ml-5 mt-10">Inviting friends to join Business Bosses</div>
+
+
+                <div className="ml-5 font-bold text-sm">Your ranking is based on:</div>
+                <div className="ml-5 mt-2 text-sm">Inviting friends to join Business Bosses</div>
                 <img src={Assets.One} />
-                <div className="ml-5">Networking and making new connections</div>
+                <div className="ml-5 text-sm" >Networking and making new connections</div>
                 <img src={Assets.Two} />
-                <div className="ml-5">Commenting and liking users post/content</div>
+                <div className="ml-5 text-sm">Commenting and liking users post/content</div>
                 <img src={Assets.Three} />
-                <div className="ml-5">Creating post/content in your profile and community</div>
+                <div className="ml-5 text-sm">Creating post/content in your profile and community</div>
                 <img src={Assets.Four} />
-                <div className="ml-5">Refer users to your connection</div>
+                <div className="ml-5 text-sm">Refer users to your connection</div>
                 <img src={Assets.Five} />
-                <div className="ml-5 mt-10 pb-10">Tips: The higher your ranking, the easier to be discovered by the other users</div>
+                <div className="ml-5 text-sm mt-10 pb-10">
+                    <span style={{ fontWeight: "bold" }}>Tips:</span> The higher your ranking, the easier to be discovered by the other users
+                </div>
+
+
 
 
 
