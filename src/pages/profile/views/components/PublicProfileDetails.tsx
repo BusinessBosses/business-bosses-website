@@ -36,18 +36,16 @@ const PublicProfileDetails = ({ data }: Props) => {
     <div>
       <div className="px-4">
         <div className=" flex items-center gap-3">
-          <UserAvatar
-            imageSize="h-30 w-30"
-            imageURL={
-              data.photoUrl ??
-              "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-            }
-          />
+          <UserAvatar imageSize="h-30 w-30" imageURL={data.photoUrl} />
           <div className="">
-          <p className="font-semibold flex items-center text-lg md:text-lg lg:text-lg capitalize">
-                {data.username}
-                {data.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
-              </p>
+            <p className="font-semibold flex items-center text-lg md:text-lg lg:text-lg capitalize">
+              {data.username}
+              {data.isSubscribed && (
+                <div className="ml-1">
+                  <Assets.Checkmark width={9} />
+                </div>
+              )}
+            </p>
             <p className="text-lg font-medium">{data.category}</p>
             <p className="font-medium">{data.companyName}</p>
             <p className="text-sm font-light text-[#A9A9A9]">{data.location}</p>

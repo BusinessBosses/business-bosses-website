@@ -4,6 +4,7 @@ import { User } from "../../../common/interfaces/user";
 import { saveUserData } from "../../../redux/slices/UserSlice";
 import ConnectionsController from "../../connections/controller/ConnectionsController";
 import OutlinedButton from "../../../common/components/buttons/OutlinedButton";
+import Assets from "../../../assets";
 interface Props {
   connect: User;
 }
@@ -33,7 +34,7 @@ const ConnectRelevantCard = ({ connect }: Props) => {
     <div className="bg-white shadow pt-4 rounded-xl">
       <div className="flex flex-col items-center">
         <img
-          src="https://cdn-icons-png.flaticon.com/128/149/149071.png"
+          src={connect.photoUrl ?? Assets.NoProfile}
           alt="Profile"
           className="w-12 h-12 rounded-full mb-3"
         />
