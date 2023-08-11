@@ -108,7 +108,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   error={err}
                   errorMessage="Something went wrong!!"
                   loading={loading}
-                  onReload={() => {}}
+                  onReload={() => { }}
                 />
               )}
               <div className="px-4">
@@ -147,7 +147,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   error={err}
                   errorMessage="Something went wrong!!"
                   loading={loading}
-                  onReload={() => {}}
+                  onReload={() => { }}
                 />
               )}
               <div className="px-4">
@@ -185,7 +185,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
           <div className="flex items-center gap-5">
             {data.user?.isSubscribed && (
-              <GreyButton onClick={() => {}} text={"Connect"} />
+              <GreyButton onClick={() => { }} text={"Connect"} />
             )}
 
             <Popup
@@ -198,6 +198,11 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               on="click"
               closeOnDocumentClick
               contentStyle={{ padding: "0px", border: "none" }}
+              modal 
+              overlayStyle={{
+                background: 'rgba(0, 0, 0, 0.5)', 
+                zIndex: 1000, 
+              }}
             >
               {
                 (((close: any) =>

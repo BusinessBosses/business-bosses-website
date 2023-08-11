@@ -60,13 +60,13 @@ const MarketIntro = () => {
             <p className="font-bold">Guidelines</p>
             <BsInfoCircle />
           </div>
-          <FilledButton
+          <FilledButtonsmall
             icon={<AiOutlinePlus color="white" size={20} />}
             onClick={() => {
               navigate(RoutesPath.CreateListing);
             }}
             text="Sell"
-            className="px-7"
+            className="px-7 py-3"
           />
         </div>
 

@@ -5,6 +5,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { FiUsers } from "react-icons/fi";
 import Assets from "../../../assets";
 import BossupPartnerstile from "../../../pages/home/views/components/BopssupPartnerstile";
+import FilledButtonsmall from "../buttons/FilledButtonsmall";
 interface Props {
   banner: string;
   label: string;
@@ -37,15 +38,15 @@ const ForumCard = ({
     <div>
       <div className="bg-[#EAEAEA] px-4 py-3 mobile-only">
         <div className="flex items-center justify-between">
-          <div onClick={aboutontap} className="flex items-center gap-1">
+          <div onClick={aboutontap} className="flex items-center text-xs gap-1">
             <p className="font-bold">{aboutontaptext}</p>
-            <BsInfoCircle />
+            <BsInfoCircle size={18} />
           </div>
-          <FilledButton
+          <FilledButtonsmall
             icon={<AiOutlinePlus color="white" size={20} />}
             onClick={onCreate}
             text={createLabel}
-            className="px-3"
+            className="px-3 py-3"
           />
         </div>
 
@@ -68,15 +69,19 @@ const ForumCard = ({
             </div>
             <button
               onClick={onJoin}
-              className="bg-white px-6 py-1.5 text-primary rounded-xl "
-              style={{ border: "2px solid", borderColor: "primary" }} // Add the border style here
+              className="bg-white px-6 py-1.5 rounded-xl"
+              style={{
+                border: `2px solid ${didJoin ? "#a9a9a9" : "#F21C29"}`,
+                color: didJoin ? "#a9a9a9" : "#F21C29"
+              }}
             >
               {didJoin ? "Leave" : "Join"}
             </button>
+
           </div>
         </div>
         <div className="mobile-only">
-          <BossupPartnerstile bossupby={""} bossupad={""}/>
+          <BossupPartnerstile bossupby={""} bossupad={""} />
         </div>
       </div>
 

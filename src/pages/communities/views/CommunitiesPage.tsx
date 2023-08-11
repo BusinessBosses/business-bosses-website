@@ -168,7 +168,7 @@ const CommunitiesPage = ({ socket }: Props) => {
               </p>
             </div>
             <div onClick={openPopup} className="flex items-center ml-auto gap-1">
-              <p className="font-bold">About</p>
+              <p className="font-bold text-xs">About</p>
               <BsInfoCircle />
             </div>
           </div>

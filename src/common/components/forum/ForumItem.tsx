@@ -157,7 +157,11 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
               on="click"
               closeOnDocumentClick
               contentStyle={{ padding: "0px", border: "none" }}
-              // arrow={false}
+              modal 
+              overlayStyle={{
+                background: 'rgba(0, 0, 0, 0.5)', 
+                zIndex: 1000, 
+              }}
             >
               {
                 (((close: any) =>
