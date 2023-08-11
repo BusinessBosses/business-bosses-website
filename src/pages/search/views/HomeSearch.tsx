@@ -102,7 +102,7 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
         style={{
           position: "sticky",
           top: 0,
-          zIndex: 999,
+          zIndex: 100,
           borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.02)",
         }}
@@ -151,7 +151,7 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
         </div>
       </div>
 
-      <div className="px-0">
+      <div className="mt-4">
         {currentIndex === 0 ? (
           <People
             loading={loading}
@@ -172,25 +172,29 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
           ) : isSearch ? (
             searchedPosts.map((post: Post, index: number) => {
               return (
-                <PostItem
-                  key={index}
-                  data={post}
-                  onCoin={() => {}}
-                  onComment={() => {}}
-                  onLike={() => {}}
-                />
+                <div className="mx-5 my-2 bg-white"> <PostItem
+                key={index}
+                data={post}
+                onCoin={() => {}}
+                onComment={() => {}}
+                onLike={() => {}}
+              /></div>
+               
               );
             })
           ) : (
             recommendedPosts.map((post: Post, index: number) => {
               return (
-                <PostItem
+                <div className="mt-0 mx-5 my-2 bg-white">
+                   <PostItem
                   key={index}
                   data={post}
                   onCoin={() => {}}
                   onComment={() => {}}
                   onLike={() => {}}
                 />
+                </div>
+               
               );
             })
           )

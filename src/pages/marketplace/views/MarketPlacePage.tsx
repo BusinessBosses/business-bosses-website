@@ -117,13 +117,13 @@ const MarketPlacePage = ({ socket }: Props) => {
 
   return (
     <div>
-      <div className="mobile-only" style={{}}>
+      <div className="mobile-only bg-white" style={{}}>
         <div
           className="bg-white top-0 w-full z-50"
           style={{
             position: "sticky",
             top: 0,
-            zIndex: 999,
+            zIndex: 100,
             borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
             boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
           }}

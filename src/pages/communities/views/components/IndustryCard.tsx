@@ -1,7 +1,7 @@
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import RoutesPath from "../../../../constants/Routes";
 import { useNavigate } from "react-router-dom";
 import { Industry } from "../../../../common/interfaces/industry";
+import Assets from "../../../../assets";
 interface Props {
   industry: Industry;
 }
@@ -15,7 +15,7 @@ const IndustryCard = ({ industry }: Props) => {
     >
       <div className="flex items-center justify-between mb-3">
         <p className="text-[#333333] text-sm ">{industry.industry}</p>
-        <MdOutlineKeyboardArrowRight className="text-primary" />
+        <Assets.Nexticon className="text-primary" />
       </div>
       <img
         src={industry.photo}
@@ -30,7 +30,7 @@ const IndustryCard = ({ industry }: Props) => {
     >
       <div className="flex items-center justify-between mb-3">
         <p className="text-[#333333] text-sm ">{industry.industry}</p>
-        <MdOutlineKeyboardArrowRight className="text-primary" />
+        <Assets.Nexticon className="text-primary" />
       </div>
       <img
         src={industry.photo}

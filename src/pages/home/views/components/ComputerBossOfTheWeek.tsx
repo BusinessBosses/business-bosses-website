@@ -1,7 +1,6 @@
 import React from "react";
 import Assets from "../../../../assets";
 import { IoIosMore } from "react-icons/io";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
@@ -57,10 +56,7 @@ const ComputerBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         <UserAvatar
           imageSize="h-24 w-24"
           isRanked
-          imageURL={
-            bossOfTheWeek.photoUrl ??
-            "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-          }
+          imageURL={bossOfTheWeek.photoUrl}
         />
         <div className="w-3/4">
           <p className="text-md text-[#333333] font-semibold">

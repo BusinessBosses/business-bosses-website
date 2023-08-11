@@ -20,17 +20,16 @@ body {
     --highlight-x-pos: 0;
 
     display: flex;
-    margin: 100px 0 25px;
+    margin: 20px 0 30px;
 }
 
 .controls {
     display: inline-flex;
     justify-content: space-between;
-    background: white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background: #EAEAEA;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    max-width: 500px;
-    padding: 12px;
+    padding: 10px;
     margin: auto;
     overflow: hidden;
     position: relative;
@@ -50,7 +49,7 @@ body {
 }
 
 .segment {
-    /* width: 100%; uncomment for each segment to have matching width */
+    width: 100%; 
     min-width: 120px;
     position: relative;
     text-align: center;
@@ -61,23 +60,23 @@ body {
     cursor: pointer;
     display: block;
     font-weight: 700;
-    padding: 10px;
+    padding: 3px;
     transition: color 0.5s ease;
 }
 
 .segment.active label {
-    color: #fff;
+    color: #000;
 }
 
 .controls::before {
     content: "";
-    background: #F21C29;
+    background: #fff;
     border-radius: 8px;
     width: var(--highlight-width);
     transform: translateX(var(--highlight-x-pos));
     position: absolute;
-    top: 8px;
-    bottom: 8px;
+    top: 5px;
+    bottom: 5px;
     left: 0;
     z-index: 0;
 }

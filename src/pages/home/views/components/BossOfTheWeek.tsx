@@ -1,6 +1,5 @@
 import Assets from "../../../../assets";
 import { IoIosMore } from "react-icons/io";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
@@ -10,6 +9,8 @@ import { saveUserData } from "../../../../redux/slices/UserSlice";
 import ConnectionsController from "../../../connections/controller/ConnectionsController";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
+import { useEffect, useRef, useState } from "react";
+import Bossoftheweekpopup from "../../../popups/Bossoftheweekpopup";
 interface Props {
   bossOfTheWeek: User;
 }
@@ -17,6 +18,8 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const popupRef = useRef<HTMLDivElement | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const connection = async () => {
     if (profile?.connecteds?.includes(bossOfTheWeek.uid!)) {
       const newUserData: User = {
@@ -38,32 +41,57 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
       await ConnectionsController.connect(bossOfTheWeek.uid!);
     }
   };
+  useEffect(() => {
+    const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        closePopup();
+      }
+    };
+
+    if (isPopupOpen) {
+      document.addEventListener("mousedown", handleOutsideInteraction);
+      document.addEventListener("touchstart", handleOutsideInteraction);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
+    };
+  }, [isPopupOpen]);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   return (
     <div className="bg-[#EAEAEA] px-4 py-3" style={{}}>
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <img src={Assets.Logo} className="w-10 h-10" alt="" />
           <p
-            className="text-[#333333] text-2xl font-extrabold"
-            style={{ fontWeight: "900", fontSize: 20 }}
+            className="text-[#333333] nuniblack text-2xl "
+            style={{ fontSize: 20 }}
           >
             Boss of the week
           </p>
         </div>
-        <IoIosMore size={23} />
+        <IoIosMore size={23} onClick={openPopup} />
       </div>
       <div className="flex items-center gap-3 mt-2">
-        <UserAvatar
-          imageSize="h-24 w-24"
-          isRanked
-          imageURL={
-            bossOfTheWeek.photoUrl ??
-            "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-          }
-        />
-        <div className="w-3/4">
+        <UserAvatar imageSize="h-24 w-24" imageURL={bossOfTheWeek.photoUrl} />
+        <div className="w-3/4 ml-3">
           <p className="text-md text-[#333333] font-semibold">
-            {bossOfTheWeek.username}
+            {bossOfTheWeek.name}
           </p>
           <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
           <p className="text-xs text-[#777777]">{bossOfTheWeek.bio}</p>
@@ -75,7 +103,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
                 className="px-2 py-1.5"
               />
             ) : (
-              <OutlinedButton
+              <FilledButton
                 onClick={connection}
                 text="Connected"
                 className="px-2 py-1.5"
@@ -91,6 +119,19 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           </div>
         </div>
       </div>
+      <div className="mobile-only">
+        {isPopupOpen && (
+          <div className="overlay">
+            <div
+              ref={popupRef}
+              className="mobilepopup"
+              style={{ overflowY: "scroll" }}
+            >
+              <Bossoftheweekpopup />
+            </div>
+          </div>
+        )}
+      </div>
 
       <div className="mobile-only">
         <div className="bg-[#ffffff] flex items-center justify-between p-2 rounded-lg mt-2">
@@ -104,11 +145,11 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
             >
               Boss Up by
             </small>
-            <p className="text-[#545151] text-sm pl-2">
+            <p className="text-[#545151] font-semibold text-sm pl-2 py-1">
               Business Bosses Company Limited{" "}
             </p>
           </div>
-          <MdOutlineKeyboardArrowRight className="text-[#726F6F]" />
+          <Assets.Nexticon className="text-[#232324]" width={20} />
         </div>
       </div>
     </div>
