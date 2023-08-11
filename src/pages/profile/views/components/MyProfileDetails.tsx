@@ -99,7 +99,7 @@ const MyProfileDetails = ({ data }: Props) => {
               navigate(RoutesPath.invite);
             }}
             text="Earn"
-            icon={<img alt="" src={Assets.Coin} />}
+            icon={<img alt="" src={Assets.Coin} width={18} />}
             className="w-full border-[1px] py-1"
           />
           <OutlinedButton
