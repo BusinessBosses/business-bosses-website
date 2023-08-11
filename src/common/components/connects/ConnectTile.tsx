@@ -14,7 +14,7 @@ const ConnectTile = ({ profile, connected, onConnect }: Props) => {
   const navigate = useNavigate();
   return (
     <div>
-      <div className="flex items-center justify-between my-5 " onClick={() =>
+      <div className="flex items-center justify-between my-3 " onClick={() =>
               navigate(RoutesPath.PublicUserProfile, { state: profile })
             }>
         <div className="flex items-start gap-3">

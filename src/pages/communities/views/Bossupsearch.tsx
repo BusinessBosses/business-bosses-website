@@ -2,16 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
-import HomeSearchTabs from "./components/HomeSearchTabs";
-import People from "./components/People";
+import HomeSearchTabs from "../../search/views/components/HomeSearchTabs";
+import People from "../../search/views/components/People";
 import serviceApi from "../../../services/serviceApi";
 import { User } from "../../../common/interfaces/user";
 import { Post } from "../../../common/interfaces/post";
 import PostItem from "../../home/views/components/PostItem";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import Assets from "../../../assets";
+import BossupSearchTabs from "./components/BossupSearchTabs";
 
-const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
+const Bossupsearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const navigate = useNavigate();
   const searchRef = useRef<HTMLInputElement>(null);
@@ -53,32 +54,6 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
     setLoading(false);
   };
 
-  // const onSearch = async () => {
-  //   if (!searchRef.current?.value.trim()) return;
-  //   if (loading) return;
-  //   setLoading(true);
-  //   if (currentIndex === 0) {
-  //     setIsSearch(true);
-  //     const response = await serviceApi.fetch(
-  //       `/users/name/${searchRef.current.value.trim()}`
-  //     );
-  //     if (response.success) {
-  //       setSearchedUsers(response.data);
-  //     }
-  //   } else {
-  //     let searchQuery = "";
-  //     if (searchRef.current.value.trim().includes("#")) {
-  //       searchQuery = `%23${searchRef.current.value.trim().split("#")[1]}`;
-  //     } else {
-  //       searchQuery = searchRef.current.value.trim();
-  //     }
-  //     const response = await serviceApi.fetch(`/post/search/${searchQuery}`);
-  //     if (response.success) {
-  //       setSearchedPosts(response.data.rows);
-  //     }
-  //   }
-  //   setLoading(false);
-  // };
 
   useEffect(() => {
     fetchRecommendedConnections();
@@ -115,7 +90,7 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
                   <Assets.Backbutton />
                 </button>
               </div>
-              <div className="mobile-only items-center">
+              <div className="mobile-only">
                 <button onClick={() => navigate(-1)}>
                   <Assets.Backbutton />
                 </button>
@@ -144,7 +119,7 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
               </form>
             </div>
           </div>
-          <HomeSearchTabs
+          <BossupSearchTabs
             currentIndex={currentIndex}
             onChangeRoute={(index: number) => setCurrentIndex(index)}
           />
@@ -167,34 +142,30 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
               loading
               error={false}
               errorMessage=""
-              onReload={() => {}}
+              onReload={() => { }}
             />
           ) : isSearch ? (
             searchedPosts.map((post: Post, index: number) => {
               return (
                 <div className="mx-5 my-2 bg-white"> <PostItem
-                key={index}
-                data={post}
-                onCoin={() => {}}
-                onComment={() => {}}
-                onLike={() => {}}
-              /></div>
-               
+                  key={index}
+                  data={post}
+                  onCoin={() => { }}
+                  onComment={() => { }}
+                  onLike={() => { }}
+                /></div>
+
               );
             })
           ) : (
             recommendedPosts.map((post: Post, index: number) => {
               return (
-                <div className="mt-0 mx-5 my-2 bg-white">
-                   <PostItem
-                  key={index}
-                  data={post}
-                  onCoin={() => {}}
-                  onComment={() => {}}
-                  onLike={() => {}}
-                />
+                <div className="mt-0 mx-5 my-2 ">
+                  <CiSearch />
+                  <div>Search for industries</div>
+                  <div>Search for specific industry!</div>
                 </div>
-               
+
               );
             })
           )
@@ -204,4 +175,4 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
   );
 };
 
-export default HomeSearch;
+export default Bossupsearch;

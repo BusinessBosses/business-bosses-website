@@ -49,15 +49,14 @@ const NotificationPage = () => {
   }, []);
   return (
     <div>
-      <div className="mobile-only bg-white">
+      <div className="mobile-only bg-white" style={{height:"100vh"}}>
         <div
           className="bg-white top-0 w-full z-50"
           style={{
             position: "sticky",
             top: 0,
             zIndex: 100,
-            borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
-            boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
+          
           }}
         >
           <CommonPageHeader title="Notifications" />
@@ -81,7 +80,7 @@ const NotificationPage = () => {
           <div>
             <DailyQuotes quote={notification.quote} />
 
-            <div className="p-5">
+            <div className="px-5 pt-5" >
               <h4 className="text-xl font-bold">Activity</h4>
               {notification.notifications.map((data, index, notifications) => {
                 const currentdate = moment(data.timestamp).format("DD MMM YY");

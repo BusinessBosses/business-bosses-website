@@ -12,7 +12,7 @@ const UserAvatar = ({ imageURL, isRanked, imageSize, badgeSize }: Props) => {
         <img
           src={imageURL ?? Assets.NoProfile}
           loading="lazy"
-          className={`${imageSize ?? "h-20 w-20"} rounded-full object-cover `}
+          className={`${imageSize ?? "h-11 w-11"} rounded-full object-cover `}
           alt=""
         />
         {isRanked ? (

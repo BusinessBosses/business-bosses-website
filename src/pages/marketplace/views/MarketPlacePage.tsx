@@ -3,7 +3,7 @@ import MarketItem from "./components/MarketItem";
 import MobileBottomNav from "../../home/views/components/MobileBottomNav";
 import MobileMarketIntro from "./components/MarketIntro";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MarketController from "../controller/MarketController";
 import {
   addMarketsToState,
@@ -22,6 +22,8 @@ import { Socket } from "socket.io-client";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
+import Marketplacepopup from "../../popups/Marketplacepopup";
+import Marketplacesearchpopup from "../../popups/Marketplacesearchpopup";
 interface Props {
   socket: Socket;
 }
@@ -31,6 +33,17 @@ const MarketPlacePage = ({ socket }: Props) => {
   const profile = useAppSelector((state) => state.user);
   const [err, setErr] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const popupRef = useRef<HTMLDivElement | null>(null);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   const fetchCall = async () => {
     setLoading(true);
     setErr(false);
@@ -115,6 +128,32 @@ const MarketPlacePage = ({ socket }: Props) => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        closePopup();
+      }
+    };
+
+    if (isPopupOpen) {
+      document.addEventListener('mousedown', handleOutsideInteraction);
+      document.addEventListener('touchstart', handleOutsideInteraction);
+    } else {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    };
+  }, [isPopupOpen]);
+
+
+
   return (
     <div>
       <div className="mobile-only bg-white" style={{}}>
@@ -130,7 +169,7 @@ const MarketPlacePage = ({ socket }: Props) => {
         >
           <div className="flex items-center justify-between bg-white px-3 py-2">
             <p className="text-lg font-semibold text-[#333333]">Marketplace</p>
-            <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
+            <CiSearch onClick={openPopup}  size={40} style={{ padding: 7 }} strokeWidth={0.5}  />
           </div>
         </div>
 
@@ -191,6 +230,14 @@ const MarketPlacePage = ({ socket }: Props) => {
         <div className="my-20"></div>
         <MobileBottomNav currentIndex={2} />
       </div>
+
+      {isPopupOpen && (
+        <div className="overlay">
+          <div className="mobilepopup" style={{ overflowY: "scroll" }}>
+            <Marketplacesearchpopup />
+          </div>
+        </div>
+      )}
 
       <div className="computer-only">
         <ComputerHeader />
