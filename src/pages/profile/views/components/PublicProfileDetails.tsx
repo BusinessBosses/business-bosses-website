@@ -36,7 +36,7 @@ const PublicProfileDetails = ({ data }: Props) => {
     <div>
       <div className="px-4">
         <div className=" flex items-center gap-3">
-          <UserAvatar imageSize="h-30 w-30" imageURL={data.photoUrl} />
+          <UserAvatar imageSize="h-20 w-20" imageURL={data.photoUrl} />
           <div className="">
             <p className="font-semibold flex items-center text-lg md:text-lg lg:text-lg capitalize">
               {data.username}

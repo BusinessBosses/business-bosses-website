@@ -27,7 +27,7 @@ const MobileHeader = ({ unseenChat, unseenNotification, coins }: Props) => {
           className="flex items-center flex-grow bg-[#F4F4F4] py-2 px-2 mx-3 rounded-lg" style={{ height: 40 }}
         >
           <CiSearch className="text-[#A9A9A9]" size={20} />
-          <p className="text-[#A9A9A9] text-sm pl-2line-clamp-1">
+          <p className="text-[#A9A9A9] text-xs pl-2line-clamp-1">
             Search people & posts
           </p>
         </button>

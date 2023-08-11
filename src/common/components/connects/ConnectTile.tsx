@@ -2,15 +2,20 @@ import UserAvatar from "../avatars/UserAvatar";
 import FilledButton from "../buttons/FilledButton";
 import { User } from "../../interfaces/user";
 import OutlinedButton from "../buttons/OutlinedButton";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../constants/Routes";
 interface Props {
   profile: User;
   connected: boolean;
   onConnect: Function;
 }
 const ConnectTile = ({ profile, connected, onConnect }: Props) => {
+  const navigate = useNavigate();
   return (
     <div>
-      <div className="flex items-center justify-between my-5">
+      <div className="flex items-center justify-between my-5 " onClick={() =>
+              navigate(RoutesPath.PublicUserProfile, { state: profile })
+            }>
         <div className="flex items-start gap-3">
           <div className="flex-grow">
             <UserAvatar imageSize="w-12 h-12" imageURL={profile.photoUrl} />

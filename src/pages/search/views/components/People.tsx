@@ -5,12 +5,15 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import { saveUserData } from "../../../../redux/slices/UserSlice";
 import ConnectionsController from "../../../connections/controller/ConnectionsController";
 import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../../constants/Routes";
 interface Props {
   recommendedConnections: User[];
   loading: boolean;
   isSearching: boolean;
 }
 const People = ({ recommendedConnections, loading, isSearching }: Props) => {
+  const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const connection = async (userId: string) => {
@@ -46,7 +49,7 @@ const People = ({ recommendedConnections, loading, isSearching }: Props) => {
       {recommendedConnections.map((connect: User, index: number) => {
         return (
           
-          <div key={index} className="px-4">
+          <div key={index} className="px-4" >
             <ConnectTile
               connected={!!profile?.connecteds?.includes(connect.uid!)}
               onConnect={connection}
