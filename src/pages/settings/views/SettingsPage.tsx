@@ -36,8 +36,8 @@ const SettingsPage = () => {
           }}
           text="Sign Out"
         />
-        <div className="my-20 flex items-center justify-center">
-          <img src={Assets.Logo} className="h-20 w-20" alt="" />
+        <div className="my-10 flex items-center justify-center">
+          <img src={Assets.Logo} className="h-16 w-16" alt="" />
         </div>
 
       </div>

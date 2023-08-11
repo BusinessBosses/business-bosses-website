@@ -8,6 +8,7 @@ import Assets from "../../../../assets";
 import { useEffect, useRef, useState } from "react";
 import Marketplacepopup from "../../../popups/Marketplacepopup";
 import BossupPartnerstile from "../../../home/views/components/BopssupPartnerstile";
+import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
 
 const MarketIntro = () => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const MarketIntro = () => {
             <p className="font-bold">Guidelines</p>
             <BsInfoCircle />
           </div>
-          <FilledButton
+          <FilledButtonsmall
             icon={<AiOutlinePlus color="white" size={20} />}
             onClick={() => {
               navigate(RoutesPath.CreateListing);

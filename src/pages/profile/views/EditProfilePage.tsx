@@ -155,11 +155,12 @@ const EditProfilePage = () => {
   }, [profile]);
 
   return (
-    <div className=" min-h-screen h-full">
-      <div className=" fixed top-0 w-full z-50">
+    <div className=" min-h-screen h-full bg-white">
+      <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, }}>
+
         <CommonPageHeader title="Edit Profile" />
       </div>
-      <div className="w-full h-3 mt-16 bg-[#f4f4f4]"></div>
+      <div className="w-full h-3 bg-[#f4f4f4]"></div>
       <Popup lockScroll modal open={modalState.category || modalState.industry}>
         <div className=" min-h-screen bg-white  mb-20 min-w-full w-screen p-5">
           <div className="overflow-y-scroll">
@@ -180,44 +181,44 @@ const EditProfilePage = () => {
                 error={false}
                 errorMessage=""
                 loading
-                onReload={() => {}}
+                onReload={() => { }}
               />
             ) : null}
             <ul className="mt-10 flex flex-col">
               {modalState.category
                 ? categories.map((cat: string, index: number) => {
-                    return (
-                      <li
-                        className="outline-none border-none my-5"
-                        key={index}
-                        onClick={() => {
-                          setCategory(cat);
-                          setModalState({ category: false, industry: false });
-                        }}
-                      >
-                        {cat}
-                      </li>
-                    );
-                  })
+                  return (
+                    <li
+                      className="outline-none border-none my-5"
+                      key={index}
+                      onClick={() => {
+                        setCategory(cat);
+                        setModalState({ category: false, industry: false });
+                      }}
+                    >
+                      {cat}
+                    </li>
+                  );
+                })
                 : industries.map((cat: string, index: number) => {
-                    return (
-                      <li
-                        className="outline-none border-none my-5"
-                        key={index}
-                        onClick={() => {
-                          setIndustry(cat);
-                          setModalState({ category: false, industry: false });
-                        }}
-                      >
-                        {cat}
-                      </li>
-                    );
-                  })}
+                  return (
+                    <li
+                      className="outline-none border-none my-5"
+                      key={index}
+                      onClick={() => {
+                        setIndustry(cat);
+                        setModalState({ category: false, industry: false });
+                      }}
+                    >
+                      {cat}
+                    </li>
+                  );
+                })}
             </ul>
           </div>
         </div>
       </Popup>
-      <div className="py-5">
+      <div className="py-5 ">
         <div className="flex items-center justify-center ">
           {profile?.photoUrl || image ? (
             <div className="relative">
@@ -234,8 +235,14 @@ const EditProfilePage = () => {
               </label>
             </div>
           ) : (
-            <div className="bg-[#F4F4F4] p-8 rounded-full relative">
-              <Assets.User className="w-10 h-10" />
+            <div className="bg-[#F4F4F4] rounded-full relative">
+              <img
+                src={Assets.NoProfile}
+                loading="lazy"
+                className={` "h-20 w-20"} rounded-full object-cover `}
+                alt=""
+                style={{ width: "120px", height: "120px" }}
+              />
 
               <label
                 htmlFor="avatar"
@@ -267,27 +274,27 @@ const EditProfilePage = () => {
             <FilledInput
               defaultValue={profile?.username}
               inputRef={usernameRef}
-              onchange={() => {}}
+              onchange={() => { }}
               label="Username"
             />
             <FilledInput
               defaultValue={profile?.email}
               inputRef={emailRef}
-              onchange={() => {}}
+              onchange={() => { }}
               label="Email"
             />
             <FilledSelect
               defaultValue={profile?.ageRange}
               inputRef={ageRef}
               data={["10 - 15", "18 - 30", "24 - 56"]}
-              onchange={() => {}}
+              onchange={() => { }}
               label="Age Range"
             />
             <FilledSelect
               defaultValue={profile?.gender}
               inputRef={genderRef}
               data={["Male", "Female"]}
-              onchange={() => {}}
+              onchange={() => { }}
               label="Gender"
             />
             <div className="my-5">
@@ -305,7 +312,7 @@ const EditProfilePage = () => {
             <FilledTextarea
               defaultValue={profile?.bio}
               inputRef={bioRef}
-              onchange={() => {}}
+              onchange={() => { }}
               label="Bio"
             />
             <div className="my-5">
@@ -339,14 +346,13 @@ const EditProfilePage = () => {
             )}
           </div>
           <div
-            className={`${
-              expansionState.additionalInfo ? "block" : "hidden"
-            } px-4`}
+            className={`${expansionState.additionalInfo ? "block" : "hidden"
+              } px-4`}
           >
             <FilledInput
               defaultValue={profile?.companyName}
               inputRef={companyRef}
-              onchange={() => {}}
+              onchange={() => { }}
               label="Company Name"
             />
             <div className="my-5">
@@ -367,19 +373,19 @@ const EditProfilePage = () => {
             <FilledInput
               defaultValue={profile?.website}
               inputRef={websiteRef}
-              onchange={() => {}}
+              onchange={() => { }}
               label="Website"
             />
             <FilledInput
               defaultValue={profile?.instagram}
               inputRef={instagramRef}
-              onchange={() => {}}
+              onchange={() => { }}
               label="Instagram"
             />
             <FilledInput
               defaultValue={profile?.twitter}
               inputRef={twitterRef}
-              onchange={() => {}}
+              onchange={() => { }}
               label="Twitter"
             />
           </div>
@@ -402,14 +408,13 @@ const EditProfilePage = () => {
               )}
             </div>
             <div
-              className={`${
-                expansionState.achievments ? "block" : "hidden"
-              } px-4`}
+              className={`${expansionState.achievments ? "block" : "hidden"
+                } px-4`}
             >
               <div className="flex items-center justify-between">
                 <FilledInput
                   placeholder="Add achievement"
-                  onchange={() => {}}
+                  onchange={() => { }}
                   inputRef={accomplishmentRef}
                 />
                 <button
@@ -471,7 +476,7 @@ const EditProfilePage = () => {
               <div className="flex items-center justify-between">
                 <FilledInput
                   placeholder="Add Product"
-                  onchange={() => {}}
+                  onchange={() => { }}
                   inputRef={productRef}
                 />
                 <button

@@ -34,11 +34,11 @@ const About = ({ data }: Props) => {
       </div>
       {data.achievements && data.achievements.length > 0 && (
         <div className="my-4">
-          <h3 className="text-xl font-medium">Achievements</h3>
+          <h3 className="text-lg font-bold">Achievements</h3>
           {data.achievements.map((achievement: string, index: number) => (
             <div
               key={index}
-              className="flex items-center gap-3 my-5 bg-[rgba(0,0,0,.1)] p-2 rounded-lg"
+              className="flex items-center gap-3 my-5 bg-[#f1f1f1] p-2 rounded-lg"
             >
               <img src={Assets.Trophy} alt="" />
               <p>{achievement}</p>
