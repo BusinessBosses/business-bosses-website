@@ -27,13 +27,12 @@ const MobileHeader = ({ unseenChat, unseenNotification, coins }: Props) => {
           className="flex items-center flex-grow bg-[#F4F4F4] py-2 px-2 mx-3 rounded-lg" style={{ height: 40 }}
         >
           <CiSearch className="text-[#A9A9A9]" size={20} />
-          <p className="text-[#A9A9A9] text-xs pl-2line-clamp-1">
-            Search people & posts
-          </p>
+
+          <p className="text-[#A9A9A9] text-sm pl-2 line-clamp-1">Search people & posts</p>
         </button>
-        <div onClick={()=>{navigate(RoutesPath.invite)}} className="flex items-center px-2 mr-3 justify-center py-1 bg-[#F4F4F4] rounded-full">
+        <div onClick={() => { navigate(RoutesPath.invite) }} className="flex items-center px-2 mr-3 justify-center py-1 bg-[#F4F4F4] rounded-full">
           <div className="mr-1"><img src={Assets.Coin} alt="" /></div>
-          <p className="font-medium">
+          <p className="font-semibold text-sm">
             <span style={{ color: '#333333' }}>{coins}</span>
           </p>
 

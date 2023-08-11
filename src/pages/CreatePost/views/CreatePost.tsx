@@ -161,14 +161,14 @@ const CreatePost = () => {
   }, []);
   return (
     <div>
-      <div className="bg-white" style={{ height: "100vh" }}>
+      <div className="bg-white" style={{ height: "100vh"}}>
         <div
           className="bg-white top-0 w-full z-50 "
           style={{
             position: "sticky",
             top: 0,
             zIndex: 100,
-            borderBottom: "15px solid rgba(244, 244, 244, 1)",
+            
           }}
         >
           <div className="mobile-only bg-white">
@@ -176,7 +176,7 @@ const CreatePost = () => {
           </div>
         </div>
 
-        <div className=" bg-white pt-5 h-100vh">
+        <div className=" bg-white pt-5" style={{borderTop: "15px solid rgba(244, 244, 244, 1)"}}>
           <div className="flex items-center px-4 gap-3">
             <UserAvatar imageURL={profile?.photoUrl} />
             <p className="text-[#333333] text-md font-semibold">
