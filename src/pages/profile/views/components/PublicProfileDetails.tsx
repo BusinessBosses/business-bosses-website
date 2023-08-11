@@ -15,7 +15,7 @@ const PublicProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
-  const truncatedName = data.name && data.name.length > 15 ? `${data.name.slice(0, 15)}...` : data.name;
+  const truncatedName = data.name && data.name.length > 20 ? `${data.name.slice(0, 20)}...` : data.name;
   const connection = async () => {
     if (profile?.connecteds?.includes(data.uid)) {
       const newUserData: User = {

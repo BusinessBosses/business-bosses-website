@@ -13,7 +13,7 @@ interface Props {
 }
 const MyProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
-  const truncatedName = data.name && data.name.length > 15 ? `${data.name.slice(0, 15)}...` : data.name;
+  const truncatedName = data.name && data.name.length > 20 ? `${data.name.slice(0, 20)}...` : data.name;
 
   return (
     

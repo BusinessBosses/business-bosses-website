@@ -28,11 +28,11 @@ const AnalyseProfilePage = () => {
             </div>
 
 
-            <div className=" pt-10 bg-white px-5" style={{ height: "100vh" }}>
+            <div className=" pt-5 bg-white px-5" style={{ height: "100vh" }}>
 
                 <div className="text-center font-bold text-lg">Network</div>
 
-                <div className="font-bold pt-5">Weekly</div>
+                <div className="font-bold pt-5 text-sm">Weekly</div>
 
                 <div className="flex items-center justify-between my-5 mx-10">
                     <button
@@ -66,7 +66,7 @@ const AnalyseProfilePage = () => {
 
 
 
-                <div className="font-bold pt-5">Monthly</div>
+                <div className="font-bold pt-5 text-sm">Monthly</div>
 
                 <div className="flex items-center justify-between my-5 mx-10">
                     <button
@@ -98,7 +98,7 @@ const AnalyseProfilePage = () => {
                     </button>
                 </div>
 
-                <div className="text-center pt-5 text-xl">Monthly Profile Analysis</div>
+                <div className="text-center pt-5 text-lg">Monthly Profile Analysis</div>
 
 
 
