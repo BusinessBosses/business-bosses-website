@@ -46,7 +46,7 @@ const CommunitiesPage = ({ socket }: Props) => {
 
   const [industry, setIndustry] = useState<Industry | null>(null);
   const profile = useAppSelector((state) => state.user.profile);
-  const popupRef = useRef<HTMLDivElement | null>(null); 
+  const popupRef = useRef<HTMLDivElement | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const changeRoute = (index: number) => {
@@ -126,9 +126,9 @@ const CommunitiesPage = ({ socket }: Props) => {
         <div>
           <div className="flex items-center mt-5 pb-2">
             <div className="flex items-center">
-              <p className="text-lg font-semibold text-[#333333]">Learning</p>
+              <p className="text-base font-semibold text-[#333333]">Learning</p>
             </div>
-            <div className="flex items-center ml-auto gap-1">
+            <div className="flex items-center ml-auto gap-1" onClick={openPopup}>
               <p>Info</p>
               <BsInfoCircle />
             </div>
@@ -143,7 +143,7 @@ const CommunitiesPage = ({ socket }: Props) => {
         <div>
           <div className="flex items-center mt-5 pb-2">
             <div className="flex items-center">
-              <p className="text-lg font-semibold text-[#333333]">
+              <p className="text-base font-semibold text-[#333333]">
                 Opportunities
               </p>
             </div>
@@ -163,28 +163,32 @@ const CommunitiesPage = ({ socket }: Props) => {
         <div className=" ">
           <div className="flex items-center mt-5 pb-2">
             <div className="flex items-center">
-              <p className="text-lg font-semibold text-[#333333]">
+              <p className="text-base font-semibold text-[#333333]">
                 Boss Up Challenge
               </p>
             </div>
             <div onClick={openPopup} className="flex items-center ml-auto gap-1">
-              <p className="font-bold text-xs">About</p>
+              <p className=" text-base">About</p>
               <BsInfoCircle />
             </div>
           </div>
+          <div className="rounded-3xl bg-[#f4f4f4] p-3">
             <ForumCard
-            onCreate={() => {
-              navigate(RoutesPath.CreateBossup, {
-                state: { industryId: industry?.industryId },
-              });
-            } }
-            createLabel="Enter Challenge"
-            banner={industry?.photo!}
-            didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
-            label={industry?.description ?? "Industry Description"}
-            members={industry?.joinedUsers?.length ?? 0}
-            onJoin={joinIndustry}
-            topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries/>} topicstext={"Entries"}          />
+              onCreate={() => {
+                navigate(RoutesPath.CreateBossup, {
+                  state: { industryId: industry?.industryId },
+                });
+              }}
+              createLabel="Enter Challenge"
+              banner={industry?.photo!}
+              didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
+              label={industry?.description ?? "Industry Description"}
+              members={industry?.joinedUsers?.length ?? 0}
+              onJoin={joinIndustry}
+              topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries />} topicstext={"Entries"} />
+          </div>
+
+
         </div>
       );
     }
@@ -334,13 +338,6 @@ const CommunitiesPage = ({ socket }: Props) => {
                 currentIndex={currentIndex}
               />
             </div>
-            {currentIndex === 0 ? (
-              <Challenge socket={socket} forums={forums} />
-            ) : currentIndex === 1 ? (
-              <ChooseTile />
-            ) : (
-              <ChooseTile />
-            )}
 
             {currentIndex === 0 ? (
               <div className="">

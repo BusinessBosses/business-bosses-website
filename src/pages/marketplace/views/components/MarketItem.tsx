@@ -127,11 +127,11 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
               }
             />
             <div className="">
-              <p className="font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
+              <p className="font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                 {data.user?.username}
                 {data.user?.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
               </p>
-              <p className="text-sm text-[#777777]">
+              <p className="text-sm text-[#777777] lg:text-base">
                 {trimText(data.user?.bio ?? "", 20)}
               </p>
             </div>
@@ -215,7 +215,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
           ) : null}
           <p className="text-[#232324] font-bold my-1">${data.price}</p>
-          <p className="text-sm text-[#303133] break-words">{data.description}</p>
+          <p className="text-sm text-[#303133] lg:text-base break-words">{data.description}</p>
           <div className="my-1 flex items-center gap-3">
             {data.location ? (
               <div className="flex text-[#878787] gap-1">
@@ -240,7 +240,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
               </p>
             </div>
           ) : null}
-            <small className="underline text-[#4E4B4B] ">Seller reviews</small></div>
+            <small className="underline text-[#878787] font-[700] lg:text-sm">Seller reviews</small></div>
 
           {data.images ? (
             <div className="mt-2">

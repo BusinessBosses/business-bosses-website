@@ -35,7 +35,7 @@ const People = ({ recommendedConnections, loading, isSearching }: Props) => {
   };
   return (
     <div className="bg-white">
-      <h3 className="text-[#333333] bg-[#f1f1f1] text-sm pb-3 pl-4">
+      <h3 className="text-[#333333] bg-[#f1f1f1] text-sm pt-3 pb-3 pl-4">
         {isSearching ? "Searched Result" : "Recommended Connections"}
       </h3>
       {loading ? (

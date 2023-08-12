@@ -137,7 +137,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                 )}
               </p>
 
-              <p className="text-sm text-[#777777]">
+              <p className="text-sm lg:text-base text-[#777777]">
                 {trimText(data.user?.bio ?? "", 20)}
               </p>
             </div>
@@ -159,7 +159,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
               contentStyle={{ padding: "0px", border: "none" }}
               modal 
               overlayStyle={{
-                background: 'rgba(0, 0, 0, 0.5)', 
+                background: 'rgba(0, 0, 0, 0.8)', 
                 zIndex: 1000, 
               }}
             >
@@ -220,8 +220,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
           </div>
         </div>
         <div className="mt-2">
-          <p className=" font-[500] text-black break-words">{data.title}</p>
-          <p className="text-sm text-[#303133] break-words">
+          <p className=" text-sm lg:text-base font-[700] text-black break-words">{data.title}</p> 
+          <p className="= text-sm lg:text-base text-[#303133] break-words">
             {data.description}
           </p>
           {data.industry ? (

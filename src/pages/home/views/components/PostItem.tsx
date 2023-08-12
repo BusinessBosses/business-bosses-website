@@ -168,7 +168,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           >
             <UserAvatar imageURL={data.user.photoUrl} />
             <div className="flex-grow">
-              <p className=" font-semibold flex items-center text-xs md:text-sm lg:text-base capitalize">
+              <p className=" font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                 {data.user?.username}
                 {data.user?.isSubscribed && (
                   <div className="ml-1">
@@ -177,7 +177,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 )}
               </p>
 
-              <p className="text-xs text-[#777777]">
+              <p className="text-sm lg:text-base text-[#777777]">
                 {trimText(data.user.bio ?? "", 20)}
               </p>
             </div>
@@ -200,7 +200,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               contentStyle={{ padding: "0px", border: "none" }}
               modal 
               overlayStyle={{
-                background: 'rgba(0, 0, 0, 0.5)', 
+                background: 'rgba(0, 0, 0, 0.8)', 
                 zIndex: 1000, 
               }}
             >
@@ -274,7 +274,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           {data.promote ? (
             <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
           ) : null}
-          <p className="text-sm text-[#303133] break-words">{data.title}</p>
+          <p className="text-sm text-[#303133] lg:text-base break-words">{data.title}</p>
           {data.images ? (
             <div className="mt-2">
               <img

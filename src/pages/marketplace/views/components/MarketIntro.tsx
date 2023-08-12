@@ -12,7 +12,7 @@ import FilledButtonsmall from "../../../../common/components/buttons/FilledButto
 
 const MarketIntro = () => {
   const navigate = useNavigate();
-  const popupRef = useRef<HTMLDivElement | null>(null); 
+  const popupRef = useRef<HTMLDivElement | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
@@ -46,13 +46,13 @@ const MarketIntro = () => {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
-  
+
   return (
     <div>
       <div
         className="bg-[#EAEAEA] mobile-only px-4 py-3"
         style={{
-          
+
         }}
       >
         <div className="flex items-center justify-between">
@@ -71,15 +71,17 @@ const MarketIntro = () => {
         </div>
 
         <div className="mobile-only">
-      {isPopupOpen && (
-        <div className="overlay">
-          <div ref={popupRef} className="mobilepopup" style={{ overflowY: "scroll" }}>
-            <Marketplacepopup/>
-          </div>
-        </div>
-      )}
+          {isPopupOpen && (
+            <div className="overlay">
+              <div ref={popupRef} className="mobilepopup" style={{ overflowY: "scroll" }}>
+                <Marketplacepopup />
+              </div>
+            </div>
 
-      </div>
+          )}
+
+        </div>
+
 
         <div
           className="p-3 mt-2 rounded-2xl"
@@ -101,10 +103,10 @@ const MarketIntro = () => {
               <p className="text-primary underline text-sm font-bold">Members: (3)</p>
             </div>
             <div className="flex gap-2 items-center">
-              <Assets.MarketPlace fill="#232324" width={15}/>
-            <p className="text-sm text-[#232324] font-bold">Listing (48)</p>
+              <Assets.MarketPlace fill="#232324" width={15} />
+              <p className="text-sm text-[#232324] font-bold">Listing (48)</p>
             </div>
-            
+
             <button
               className="bg-white px-6 py-1.5 text-primary rounded-xl "
               style={{ border: "2px solid", borderColor: "primary" }} // Add the border style here
@@ -114,18 +116,26 @@ const MarketIntro = () => {
           </div>
         </div>
 
-        <BossupPartnerstile bossupby={""} bossupad={""}/>
+        <BossupPartnerstile bossupby={""} bossupad={""} />
       </div>
 
 
 
       <div className="computer-only">
+        <div className="computer-only">
+          {isPopupOpen && (
+            <div className="overlay ">
+              <div ref={popupRef} className="popup" style={{ overflowY: "scroll" }}>
+                <Marketplacepopup />
+              </div>
+            </div>)}
+        </div>
         <div className="flex items-center pb-2">
           <div className="flex items-center">
             <p className="text-lg font-semibold text-[#333333]">Marketplace</p>
           </div>
-          <div className="flex items-center ml-auto gap-1">
-            <p>Guidelines</p>
+          <div className="flex items-center ml-auto gap-1 " onClick={openPopup}>
+            <p >Guidelines</p>
             <BsInfoCircle />
           </div>
         </div>
@@ -153,11 +163,15 @@ const MarketIntro = () => {
               </p>
             </div>
             <div className="flex items-center justify-between mt-2">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <FiUsers className="text-primary" />
-                <p className="text-primary underline text-sm">Members: (3)</p>
+                <p className="text-primary underline text-sm font-bold">Members: (3)</p>
               </div>
-              <p className="text-sm text-[#232324]"># Listing (48)</p>
+              <div className="flex items-center gap-1">
+                <Assets.MarketPlace fill="black" width={15}/>
+              <p className="text-sm text-[#232324] font-bold">Listing (48)</p>
+              </div>
+              
               <button
                 className="bg-white px-6 py-1.5 text-primary rounded-xl "
                 style={{ border: "2px solid", borderColor: "primary" }} // Add the border style here
@@ -167,7 +181,7 @@ const MarketIntro = () => {
             </div>
           </div>
 
-        
+
         </div>
 
 

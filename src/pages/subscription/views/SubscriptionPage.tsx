@@ -6,6 +6,7 @@ import Assets from "../../../assets";
 import SubscriptionController, {
   PaymentIntentStruct,
 } from "../controller/SubscriptionController";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
 
 const SubscriptionPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -59,7 +60,8 @@ const SubscriptionPage = () => {
   };
 
   return (
-    <div
+    <div>
+    <div className="mobile-only"
       style={{
         textAlign: "center",
         height: "100vh",
@@ -158,6 +160,22 @@ const SubscriptionPage = () => {
           </div>
         </div>
       </div>
+    </div>
+
+
+
+    <div className="computer-only">
+      <ComputerHeader/>
+
+    </div>
+
+
+
+
+
+
+
+
     </div>
   );
 };

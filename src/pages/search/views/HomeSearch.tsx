@@ -151,7 +151,7 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="">
         {currentIndex === 0 ? (
           <People
             loading={loading}
@@ -172,7 +172,7 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
           ) : isSearch ? (
             searchedPosts.map((post: Post, index: number) => {
               return (
-                <div className="mx-5 my-2 bg-white"> <PostItem
+                <div className="mx-5 bg-white"> <PostItem
                 key={index}
                 data={post}
                 onCoin={() => {}}
@@ -185,7 +185,7 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
           ) : (
             recommendedPosts.map((post: Post, index: number) => {
               return (
-                <div className="mt-0 mx-5 my-2 bg-white">
+                <div className="mt-0 mx-5 bg-white">
                    <PostItem
                   key={index}
                   data={post}

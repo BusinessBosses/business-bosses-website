@@ -30,7 +30,7 @@ const ComputerTopNav = ({
   unseenNotification,
 }: Props) => {
   const primaryColor = "#F21C29";
-  const strokeColor = "#A9A9A9";
+  const strokeColor = "#232324";
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -169,7 +169,7 @@ const ComputerTopNav = ({
             className={
               currentIndex === 0
                 ? "text-primary font-semibold"
-                : "text-gray-500"
+                : "text-[#232324]"
             }
           >
             Home
@@ -190,7 +190,7 @@ const ComputerTopNav = ({
             className={
               currentIndex === 1
                 ? "text-primary font-semibold"
-                : "text-gray-500"
+                :  "text-[#232324]"
             }
           >
             Boss Up
@@ -210,7 +210,7 @@ const ComputerTopNav = ({
             className={
               currentIndex === 2
                 ? "text-primary font-semibold"
-                : "text-gray-500"
+                :  "text-[#232324]"
             }
           >
             Marketplace
@@ -238,7 +238,7 @@ const ComputerTopNav = ({
             className={
               currentIndex === 3
                 ? "text-primary font-semibold"
-                : "text-gray-500"
+                :  "text-[#232324]"
             }
           >
             Messages
@@ -266,7 +266,7 @@ const ComputerTopNav = ({
             className={
               currentIndex === 4
                 ? "text-primary font-semibold"
-                : "text-gray-500"
+                : "text-[#232324]"
             }
           >
             Notifications

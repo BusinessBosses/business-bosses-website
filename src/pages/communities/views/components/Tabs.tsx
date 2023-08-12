@@ -10,8 +10,8 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
           onClick={() => onChangeRoute(0)}
           className={`${
             currentIndex === 0
-              ? "text-[#333333] font-semibold border-b-2 border-b-primary pb-2 pt-2 text-sm"
-              : "text-[#A9A9A9] pb-2 pt-2 text-sm"
+              ? "text-[#333333] font-semibold border-b-2 border-b-primary pb-2 pt-2 md:text-sm lg:text-base"
+              : "text-[#A9A9A9] pb-2 pt-2 md:text-sm lg:text-base"
           }`}
         >
           Challenge
@@ -20,8 +20,8 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
           onClick={() => onChangeRoute(1)}
           className={`${
             currentIndex === 1
-              ? "text-[#333333] font-semibold border-b-2 border-b-primary pb-2 pt-2 text-sm"
-              : "text-[#A9A9A9] pb-2 pt-2 text-sm"
+              ? "text-[#333333] font-semibold border-b-2 border-b-primary pb-2 pt-2 md:text-sm lg:text-base"
+              : "text-[#A9A9A9] pb-2 pt-2 md:text-sm lg:text-base"
           }`}
         >
           Learning
@@ -30,8 +30,8 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
           onClick={() => onChangeRoute(2)}
           className={`${
             currentIndex === 2
-              ? "text-[#333333] font-semibold border-b-2 border-b-primary pb-2 pt-2 text-sm"
-              : "text-[#A9A9A9] pb-2 pt-2 text-sm"
+              ? "text-[#333333] font-semibold border-b-2 border-b-primary pb-2 pt-2 md:text-sm lg:text-base"
+              : "text-[#A9A9A9] pb-2 pt-2 md:text-sm lg:text-base"
           }`}
         >
           Opportunities

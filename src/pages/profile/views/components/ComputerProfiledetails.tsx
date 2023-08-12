@@ -6,6 +6,8 @@ import { User } from "../../../../common/interfaces/user";
 import { useAppSelector } from "../../../../redux/store/store";
 import SubscribeButton from "../../../settings/components/Subscribebutton";
 import ConnectRelevant from "../../../settings/views/ConnectRelevant";
+import Popup from "reactjs-popup";
+import { IoIosMore } from "react-icons/io";
 
 interface Props {
   data: User;
@@ -22,14 +24,14 @@ const ComputerProfileDetails = ({ data }: Props) => {
   };
 
   return (
-    <div style={{ cursor: "pointer", height: "100vh", width: "100vh" }}>
-      {/* Make the entire component clickable */}
+    <div className=" " style={{ cursor: "pointer", height: "100vh", width: "100vh" }}>
+     
       <div className="mt-5 ">
-        <div className="flex items-center gap-3">
-          <div className="flex" onClick={handleProfileClick}>
+        <div className="flex items-top jusity-between gap-3">
+          <div className="flex flex-grow" onClick={handleProfileClick}>
             <UserAvatar imageSize="h-24 w-24" imageURL={data.photoUrl} />
             <div className="ml-5">
-              <p className="text-xl font-semibold">{data.username}</p>
+              <p className="text-xl font-semibold">{data.name}</p>
               <p className="text-lg font-medium">{data.category}</p>
               <p className="font-medium">{data.companyName}</p>
               <p className="text-sm font-light text-[#A9A9A9]">
@@ -43,6 +45,26 @@ const ComputerProfileDetails = ({ data }: Props) => {
               </div>
             </div>
           </div>
+
+          <Popup
+              trigger={
+                <div>
+                  <IoIosMore size={25} />
+                </div>
+              }
+              position="left top"
+              on="click"
+              closeOnDocumentClick
+              contentStyle={{ padding: "0px", border: "none" }}
+              modal 
+              overlayStyle={{
+                background: 'rgba(0, 0, 0, 0.8)', 
+                zIndex: 1000, 
+              }}
+            >
+             
+            </Popup>
+            
         </div>
         <div className="mt-2">
           <SubscribeButton />
@@ -50,7 +72,7 @@ const ComputerProfileDetails = ({ data }: Props) => {
 
         <div>
           <div className="flex items-center mt-5 pb-2">
-            <div>Connect Relevant People</div>
+            <div className="font-bold">Connect Relevant People</div>
           </div>
           <div className="pb-2"></div>
           <ConnectRelevant />
