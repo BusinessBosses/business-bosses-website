@@ -24,7 +24,7 @@ const CommonPageHeader = ({ title }: Props) => {
       </div>
 
 
-      <div className="computer-only bg-white pb-5 mt-5 px-4">
+      <div className="computer-only bg-white pb-5 pt-5 px-4">
         <div className="flex items-center ">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="flex items-center mr-5">

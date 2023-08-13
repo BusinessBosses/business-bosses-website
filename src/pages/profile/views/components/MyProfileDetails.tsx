@@ -23,7 +23,7 @@ const MyProfileDetails = ({ data }: Props) => {
         <div className=" flex items-center gap-3">
           <UserAvatarbig imageSize="h-20 w-20" imageURL={data.photoUrl}  />
           <div className="">
-            <p className=" font-semibold flex items-center text-base md:text-lg lg:text-lg capitalize">
+            <p className=" font-semibold flex items-center text-base md:text-lg lg:text-xl capitalize">
               {truncatedName}
               {data.isSubscribed && (
                 <div className="ml-1">
@@ -31,9 +31,9 @@ const MyProfileDetails = ({ data }: Props) => {
                 </div>
               )}
             </p>
-            <p className="text-sm font-semibold text-[#333333]">{data.category}</p>
-            <p className="font-medium text-xs">{data.companyName}</p>
-            <p className="text-xs font-light text-[#A9A9A9]">{data.location}</p>
+            <p className="text-sm font-semibold text-[#333333] lg:text-lg">{data.category}</p>
+            <p className="font-medium text-xs lg:text-base">{data.companyName}</p>
+            <p className="text-xs font-light text-[#A9A9A9] lg:text-sm">{data.location}</p>
             <div className="mt-2">
               <SubscribeButton />
             </div>

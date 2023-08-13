@@ -10,8 +10,8 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
         <button
           onClick={() => onChangeRoute(0)}
           className={`${currentIndex === 0
-              ? "text-[#333333] w-full flex-grow border-b-2 border-b-primary pb-3 pt-3 text-xs font-bold"
-              : "text-[#A9A9A9] pb-3 pt-3 text-xs"
+              ? "text-[#333333] w-full flex-grow border-b-2 border-b-primary pb-3 pt-3 text-xs font-bold lg:text-base"
+              : "text-[#A9A9A9] pb-3 pt-3 text-xs lg:text-base"
             }`}
         >
           About
@@ -20,8 +20,8 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
         <button
           onClick={() => onChangeRoute(1)}
           className={`${currentIndex === 1
-            ? "text-[#333333] w-full flex-grow border-b-2 border-b-primary pb-3 pt-3 text-xs font-bold"
-            : "text-[#A9A9A9] pb-3 pt-3 text-xs"
+            ? "text-[#333333] w-full flex-grow border-b-2 border-b-primary pb-3 pt-3 text-xs font-bold lg:text-base"
+            : "text-[#A9A9A9] pb-3 pt-3 text-xs lg:text-base"
             }`}
         >
           Posts
@@ -29,8 +29,8 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
         <button
           onClick={() => onChangeRoute(2)}
           className={`${currentIndex === 2
-            ? "text-[#333333] w-full flex-grow border-b-2 border-b-primary pb-3 pt-3 text-xs font-bold"
-            : "text-[#A9A9A9] pb-3 pt-3 text-xs"
+            ? "text-[#333333] w-full flex-grow border-b-2 border-b-primary pb-3 pt-3 text-xs font-bold lg:text-base"
+            : "text-[#A9A9A9] pb-3 pt-3 text-xs lg:text-base"
             }`}
         >
           Store
