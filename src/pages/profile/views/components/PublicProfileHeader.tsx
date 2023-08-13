@@ -32,7 +32,7 @@ const PublicProfileHeader = ({ name }: Props) => {
             <button onClick={() => navigate(-1)}>
               <Assets.Backbutton />
             </button>
-            <p className="text-2xl font-semibold text-[#333333]">@{name}</p>
+            <p className="text-xl font-semibold text-[#333333]">@{name}</p>
           </div>
           <button onClick={() => navigate(RoutesPath.settings)}>
             <AiOutlineMore color="#232324" size={20} />

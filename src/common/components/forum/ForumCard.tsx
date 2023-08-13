@@ -57,7 +57,7 @@ const ForumCard = ({
           </div>
           <div className="flex items-center  justify-between mt-2">
             <div className="flex items-center gap-1">
-              <Assets.Membersicon className="text-primary" stroke="white"/>
+              <Assets.Membersicon className="text-primary" stroke="white" />
               <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
 
             </div>
@@ -100,11 +100,17 @@ const ForumCard = ({
               <p className="text-[#383838] text-sm">{label}</p>
             </div>
             <div className="flex items-center  justify-between mt-2">
-              <div className="flex items-center gap-2">
-                <FiUsers className="text-primary" />
-                <p className="text-primary underline text-sm">Members: (3)</p>
+            <div className="flex items-center gap-1">
+              <Assets.Membersicon className="text-primary" stroke="white" />
+              <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
+
+            </div>
+              <div className="bg-[#FFFFFF1A]  flex whitespace-nowrap px-3 py-1 rounded-full items-center gap-1">
+                {topicsicon}
+                <p className="text-sm text-[#232324] font-bold">
+                  {`${topicstext} (${topics.toString()})`}
+                </p>
               </div>
-              <p className="text-sm text-[#232324]"># Entries (48)</p>
               <button
                 onClick={onJoin}
                 className="bg-white px-6 py-1.5 text-primary rounded-xl "

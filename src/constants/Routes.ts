@@ -33,7 +33,8 @@ const rankingpage = "/rankingpage";
 const explorebusinessbosses = "/explorebusinessbosses";
 const sellerreview = "/sellerreview";
 const expandedimages = "/expandedimages";
-const bossuppartners = "/bossuppartners"
+const bossuppartners = "/bossuppartners";
+const connectrelevantpage = "/connectrelevantpage";
 
 
 const RoutesPath = {
@@ -73,6 +74,8 @@ const RoutesPath = {
     sellerreview,
     expandedimages,
     bossuppartners,
+    connectrelevantpage,
+
 
 
 }

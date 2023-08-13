@@ -92,7 +92,7 @@ const AnalysePage = () => {
                             <div className="ml-5 mb-10 text-base">how may I help you?</div>
 
                             <Analyserows leadingSvg={<Assets.Analyse />} middleText={"Analyse my Profile"} endingSvg={<Assets.Nexticon stroke="#F21C29" />} onClick={() => { navigate(RoutesPath.analyseprofilepage) }} />
-                            <Analyserows leadingSvg={<Assets.Connectrelevant />} middleText={"Connect me to relevant people"} endingSvg={<Assets.Nexticon stroke="#F21C29" />} onClick={() => { navigate(RoutesPath.connectrelevant) }} />
+                            <Analyserows leadingSvg={<Assets.Connectrelevant />} middleText={"Connect me to relevant people"} endingSvg={<Assets.Nexticon stroke="#F21C29" />} onClick={() => { navigate(RoutesPath.connectrelevantpage) }} />
                             <Analyserows leadingSvg={<Assets.Ranking />} middleText={"Show my ranking"} endingSvg={<Assets.Nexticon stroke="#F21C29" />} onClick={() => { navigate(RoutesPath.rankingpage) }} />
                             <Analyserows leadingSvg={<Assets.Explore />} middleText={"Explore Business Bosses"} endingSvg={<Assets.Nexticon stroke="#F21C29" />} onClick={() => { navigate(RoutesPath.explorebusinessbosses) }} />
 

@@ -46,6 +46,7 @@ import ExploreBusinessBosses from "./pages/analyse/views/ExploreBusinessBosses";
 import SellerReview from "./pages/sellerreviews/SellerReview";
 import ExpandedImages from "./pages/expandedimages/expandedimages";
 import Bossuppartnerpage from "./pages/bossuppartnerpage/bossuppartnerpage";
+import ConnectRelevantPage from "./pages/settings/views/ConnectRelevantPage";
 
 
 const App = () => {
@@ -301,6 +302,10 @@ const App = () => {
       <Route
         path={RoutesPath.bossuppartners}
         element={<Bossuppartnerpage />}
+      />
+      <Route
+        path={RoutesPath.connectrelevantpage}
+        element={<ConnectRelevantPage />}
       />
     </Routes>
   );

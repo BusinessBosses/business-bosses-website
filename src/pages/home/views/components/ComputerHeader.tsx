@@ -54,19 +54,19 @@ const ComputerHeader = () => {
             <div className="hidden lg:block">
               <button
                 onClick={openPopup}
-                className="flex items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg ml-5"
-                style={{ width: "300px" }}
+                className="flex flex-grow items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg ml-5"
+             
               >
                 <CiSearch className="text-[#A9A9A9]" size={20} />
                 {currentRoute === "/communities" ? (
-                  <p className="text-[#A9A9A9] text-sm">Search groups & topics</p>
+                  <p className="text-[#A9A9A9] text-base">Search groups & topics</p>
                 ) : currentRoute === "/market" ? (
-                  <p className="text-[#A9A9A9] text-sm">Search products</p>
+                  <p className="text-[#A9A9A9] text-base">Search products</p>
                 ): currentRoute === "/chats" ? (
-                  <p className="text-[#A9A9A9] text-sm">Search chats</p>
+                  <p className="text-[#A9A9A9] text-base">Search chats</p>
                 )
                  : (
-                  <p className="text-[#A9A9A9] text-sm">Search people & posts</p>
+                  <p className="text-[#A9A9A9] text-base">Search people & posts</p>
                 )}
 
               </button>

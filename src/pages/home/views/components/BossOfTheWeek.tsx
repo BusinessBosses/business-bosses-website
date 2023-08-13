@@ -12,6 +12,7 @@ import RoutesPath from "../../../../constants/Routes";
 import { useEffect, useRef, useState } from "react";
 import Bossoftheweekpopup from "../../../popups/Bossoftheweekpopup";
 import BossupPartnerstile from "./BopssupPartnerstile";
+import Bossuppartnerpage from "../../../bossuppartnerpage/bossuppartnerpage";
 interface Props {
   bossOfTheWeek: User;
 }
@@ -136,6 +137,10 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
 
       <div className="mobile-only">
         <BossupPartnerstile bossupby={""} bossupad={""}/>
+      </div>
+
+      <div className="computer-only">
+        <Bossuppartnerpage/>
       </div>
     </div>
   );

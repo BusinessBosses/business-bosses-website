@@ -49,9 +49,9 @@ const PublicProfileDetails = ({ data }: Props) => {
                 </div>
               )}
             </p>
-            <p className="text-lg font-semibold text-sm">{data.category}</p>
-            <p className="font-medium text-xs">{data.companyName}</p>
-            <p className="text-xs font-light text-[#A9A9A9]">{data.location}</p>
+            <p className="text-lg font-semibold text-[#333333] text-sm lg:text-lg">{data.category}</p>
+            <p className="font-medium text-xs lg:text-base">{data.companyName}</p>
+            <p className="text-xs font-light text-[#A9A9A9] lg:text-sm">{data.location}</p>
           </div>
         </div>
 

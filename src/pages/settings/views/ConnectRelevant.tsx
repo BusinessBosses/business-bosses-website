@@ -7,6 +7,7 @@ import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import { useDispatch } from "react-redux";
 import { storeRelevantUsers } from "../../../redux/slices/UserSlice";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
 
 const ConnectRelevant = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -43,15 +44,15 @@ const ConnectRelevant = () => {
           backgroundColor: "#F4F4F4",
         }}
       >
-        <CommonPageHeader title={"Connect"}/>
-     
-        
+        <CommonPageHeader title={"Connect"} />
+
+
         {loading ? (
           <FetchStatus
             error={false}
             errorMessage="Something went wrong!!"
             loading={true}
-            onReload={() => {}}
+            onReload={() => { }}
           />
         ) : null}
         {err ? (
@@ -68,6 +69,9 @@ const ConnectRelevant = () => {
           })}
         </div>
       </div>
+
+      
+
       <div
         className="computer-only rounded-2xl"
         style={{
@@ -83,7 +87,7 @@ const ConnectRelevant = () => {
             error={false}
             errorMessage="Something went wrong!!"
             loading={true}
-            onReload={() => {}}
+            onReload={() => { }}
           />
         ) : null}
         {err ? (
@@ -100,6 +104,8 @@ const ConnectRelevant = () => {
           })}
         </div>
       </div>
+
+
     </div>
   );
 };

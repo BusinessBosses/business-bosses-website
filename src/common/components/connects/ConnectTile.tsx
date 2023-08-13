@@ -5,6 +5,7 @@ import OutlinedButton from "../buttons/OutlinedButton";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import FilledButtonsmall from "../buttons/FilledButtonsmall";
+import OutlinedButtonsmall from "../buttons/OutlinedButtonsmall";
 interface Props {
   profile: User;
   connected: boolean;
@@ -30,7 +31,7 @@ const ConnectTile = ({ profile, connected, onConnect }: Props) => {
           </div>
         </div>
         {connected ? (
-          <OutlinedButton
+          <OutlinedButtonsmall
             onClick={() => {
               onConnect(profile.uid);
             }}
