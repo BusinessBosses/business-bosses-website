@@ -9,7 +9,7 @@ const MyProfileHeader = () => {
   return (
     <div className="bg-white top-0 w-full z-50" style={{ position: 'sticky', top: 0, zIndex: 100,}}>
       <div className="flex items-center p-5 justify-between bg-white px-3 py-2">
-        <p className="text-lg font-semibold text-[#333333]">@{profile.profile?.username}</p>
+        <p className="text-lg font-semibold lg:text-xl text-[#333333]">@{profile.profile?.username}</p>
         <button onClick={() => navigate(RoutesPath.settings)}>
           <LuSettings size={35} style={{padding:5}} strokeWidth={1.8} color="#232324"  />
         </button>

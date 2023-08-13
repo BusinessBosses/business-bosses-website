@@ -52,6 +52,9 @@ import { ReactComponent as Explore } from "./icons/explore.svg"
 import { ReactComponent as Reporticon } from "./icons/report.svg"
 import { ReactComponent as Entries } from "./icons/entries.svg"
 import { ReactComponent as Topicsicon } from "./icons/topics.svg"
+import { ReactComponent as Inviteicon } from "./icons/invite.svg"
+import { ReactComponent as Membersicon } from "./icons/members.svg"
+import { ReactComponent as Linkicon } from "./icons/link.svg"
 
 
 
@@ -110,7 +113,10 @@ const Assets = {
     Reporticon,
     Entries,
     Topicsicon,
-    NoProfile
+    NoProfile,
+    Inviteicon,
+    Membersicon,
+    Linkicon
 
 };
 export default Assets;

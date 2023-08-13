@@ -14,14 +14,14 @@ const Analyserows = ({ leadingSvg, middleText, endingSvg, onClick }: AnalyseRows
     return (
         <div onClick={onClick}> {/* Attach the onClick handler here */}
 
-            <div className="mobile-only">
+            <div className="">
                 <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
-                <div className="bg-white px-4 pl-4 py-3 flex items-center justify-between">
+                <div className="bg-white px-4 pl-4 py-2 flex items-center justify-between">
 
                     {leadingSvg}
 
                     <div className="flex-grow text-start ml-10">
-                        <p className="text-base font-semibold py-2">{middleText}</p>
+                        <p className="text-sm font-semibold py-2 lg:text-base">{middleText}</p>
                     </div>
                     <div></div> {/* This empty div helps in spacing */}
                     {endingSvg}

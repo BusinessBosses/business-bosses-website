@@ -171,7 +171,7 @@ const Challenge = ({ forums, socket }: Props) => {
           label={industry?.description ?? "Industry Description"}
           members={industry?.joinedUsers?.length ?? 0}
           onJoin={joinIndustry}
-          topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries/>} topicstext={"Entries"}      />
+          topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries width={12}/>} topicstext={"Entries"}      />
       </div>
       <div className="bg-white">
         {forums.map((forum: Forum, index: number) => (

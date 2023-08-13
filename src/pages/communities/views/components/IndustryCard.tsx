@@ -14,8 +14,8 @@ const IndustryCard = ({ industry }: Props) => {
       onClick={() => navigate(RoutesPath.forum, { state: industry })}
     >
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[#333333] text-sm ">{industry.industry}</p>
-        <Assets.Nexticon className="text-primary" />
+        <p className="text-[#333333] text-sm font-[700]">{industry.industry}</p>
+        <Assets.Nexticon className="text-primary" stroke="#F21C29"/>
       </div>
       <img
         src={industry.photo}
@@ -29,8 +29,8 @@ const IndustryCard = ({ industry }: Props) => {
       onClick={() => navigate(RoutesPath.forum, { state: industry })}
     >
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[#333333] text-sm ">{industry.industry}</p>
-        <Assets.Nexticon className="text-primary" />
+        <p className="text-[#333333] text-base font-[700] ">{industry.industry}</p>
+        <Assets.Nexticon  stroke="#F21C29" className="text-primary" />
       </div>
       <img
         src={industry.photo}

@@ -11,6 +11,8 @@ import RoutesPath from "../../../constants/Routes";
 import CommunitiesController from "../controller/CommunitiesController";
 import { Forum } from "../../../common/interfaces/forum";
 import { addNewForum, updateForum } from "../../../redux/slices/ForumSlice";
+import FilledInputcommunities from "../../../common/components/inputs/FilledInputcommunities";
+import FilledTextareacommunities from "../../../common/components/inputs/FilledTextareacommunities";
 
 const CreateBossup = () => {
   const navigate = useNavigate();
@@ -158,19 +160,19 @@ const CreateBossup = () => {
 
   return (
     <div className="">
-      <div className="mobile-only fixed top-0 w-full z-50">
-        <div className="bg-white flex items-center px-4 mt-5 justify-between">
-          <h1 className="text-xl font-[500]">Introduce Your Business</h1>
+      <div className="mobile-only top-0 w-full z-50 bg-white" style={{ position: 'sticky', top: 0, zIndex: 100, }}>
+        <div className="bg-white flex items-center px-4 pt-5 justify-between">
+          <h1 className="text-lg font-[900] pb-3">Introduce Your Business</h1>
           <button
             onClick={() => {
               navigate(-1);
             }}
           >
-            <AiOutlineClose />
+            <AiOutlineClose size={20} />
           </button>
         </div>
       </div>
-      <div className="mt-32 px-4">
+      <div className=" px-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -180,15 +182,15 @@ const CreateBossup = () => {
               createPost();
             }
           }}
-        >
-          <FilledInput
+        > 
+          <FilledInputcommunities
             defaultValue={stateProps?.title}
             inputRef={titleRef}
             onchange={() => {}}
             placeholder="Enter Business name"
-            className="text-sm"
+            className="text-sm "
           />
-          <FilledTextarea
+          <FilledTextareacommunities
             defaultValue={stateProps?.description}
             inputRef={descriptionRef}
             onchange={() => {}}
@@ -196,14 +198,17 @@ const CreateBossup = () => {
             className="text-sm"
           />
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between bg-white p-3 rounded-lg">
             <div className="flex items-center gap-3">
               <Assets.File />
               <small className="text-[#BABABA]">Add attachment</small>
             </div>
-            <label htmlFor="file">
-              <Assets.Upload />
-            </label>
+            <label
+                  htmlFor="file"
+                  className="bg-[#F4F4F4] p-2.5 rounded-full cursor-pointer"
+                >
+                  <img src={Assets.Gallery} alt="" />
+                </label>
           </div>
           <input
             type="file"
@@ -271,6 +276,11 @@ const CreateBossup = () => {
             className="w-full p-3"
           />
           <div className="my-10"></div>
+          <div className=""> Only post articles, insights, and resources others can learn from.</div>
+          <div className="flex mt-5 items-center gap-1 lg:text-base md:text-sm justify-center">
+                <Assets.Reporticon width={30}/>
+                <div>To sell your products and services, list on "Marketplace".</div>
+            </div>
         </form>
       </div>
     </div>

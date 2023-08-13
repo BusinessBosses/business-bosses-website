@@ -48,7 +48,7 @@ const SegmentedControl: React.FC<Props> = ({
     <div className="controls-container" ref={controlRef}>
       <div className={`controls ${componentReady.current ? "ready" : "idle"}`}>
         {segments.map((item, i) => (
-          <div
+          <div 
             key={item.value}
             className={`segment ${i === activeIndex ? "active" : "inactive"}`}
             ref={item.ref}

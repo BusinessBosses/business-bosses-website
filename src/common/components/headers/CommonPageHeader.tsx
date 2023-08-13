@@ -17,25 +17,25 @@ const CommonPageHeader = ({ title }: Props) => {
             <Assets.Backbutton />
           </button>
           <div className="flex-grow text-center">
-            <p className="text-xl font-bold">{title}</p>
+            <p className="text-md font-semibold">{title}</p>
           </div>
           <div></div> {/* This empty div helps in spacing */}
         </div>
       </div>
 
 
-      <div className="computer-only bg-white pb-5 mt-5 px-4">
-  <div className="flex items-center justify-center">
-    <div className="flex items-center">
-      <button onClick={() => navigate(-1)} className="flex items-center mr-5">
-        <Assets.Backbutton />
-      </button>
-      <div className="text-center"> {/* Centered title */}
-        <p className="text-2xl font-bold">{title}</p>
+      <div className="computer-only bg-white pb-5 pt-5 px-4">
+        <div className="flex items-center ">
+          <div className="flex items-center">
+            <button onClick={() => navigate(-1)} className="flex items-center mr-5">
+              <Assets.Backbutton />
+            </button>
+            <div className="text-center"> {/* Centered title */}
+              <p className="text-xl font-bold">{title}</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
     </div>
   );
