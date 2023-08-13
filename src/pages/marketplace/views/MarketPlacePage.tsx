@@ -332,7 +332,7 @@ const MarketPlacePage = ({ socket }: Props) => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               <MobileMarketIntro />
-              <Bossuppartnerpage/>
+              
             </div>
           </div>
         </div>
