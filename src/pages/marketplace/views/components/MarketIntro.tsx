@@ -125,7 +125,7 @@ const MarketIntro = () => {
         <div className="computer-only">
           {isPopupOpen && (
             <div className="overlay ">
-              <div ref={popupRef} className="popup" style={{ overflowY: "scroll" }}>
+              <div ref={popupRef} className="computerpopup" style={{ overflowY: "scroll" }}>
                 <Marketplacepopup />
               </div>
             </div>)}
@@ -158,14 +158,15 @@ const MarketIntro = () => {
                 alt=""
                 className="w-32 h-20 rounded-lg"
               />
-              <p className="text-[#383838] text-sm">
+             
+            </div>
+            <p className="text-[#383838] mt-5  font-bold text-sm">
                 Ideas on how to create things easily
               </p>
-            </div>
             <div className="flex items-center justify-between mt-2">
               <div className="flex items-center gap-1">
-                <FiUsers className="text-primary" />
-                <p className="text-primary underline text-sm font-bold">Members: (3)</p>
+              <Assets.Membersicon className="text-primary" stroke="#F21C29" fill="#F21C29" strokeWidth={0.5} />
+                <p className="text-primary underline text-sm lg:text-base font-bold">Members: (3)</p>
               </div>
               <div className="flex items-center gap-1">
                 <Assets.MarketPlace fill="black" width={15}/>

@@ -505,9 +505,9 @@ const Forum = ({ socket }: Props) => {
             label={industry?.description ?? "Industry description"}
             members={industry?.joinedUsers?.length ?? 0}
             onJoin={joinIndustry}
-            topics={count} aboutontap={openPopup} aboutontaptext={"Info"} topicsicon={<Assets.Topicsicon />} topicstext={industry.categoryId === AppConstants.LEARNINGID
+            topics={count} aboutontap={openPopup} aboutontaptext={"Info"} topicsicon={<Assets.Topicsicon/>} topicstext={industry.categoryId === AppConstants.LEARNINGID
               ? "Topics"
-              : "opport."} />
+              : "Opport."} />
         ) : null}
         {loading ? (
           <FetchStatus

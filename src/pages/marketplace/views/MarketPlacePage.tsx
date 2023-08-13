@@ -24,6 +24,8 @@ import ComputerProfileDetails from "../../profile/views/components/ComputerProfi
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import Marketplacepopup from "../../popups/Marketplacepopup";
 import Marketplacesearchpopup from "../../popups/Marketplacesearchpopup";
+import BossupPartnerstile from "../../home/views/components/BopssupPartnerstile";
+import Bossuppartnerpage from "../../bossuppartnerpage/bossuppartnerpage";
 interface Props {
   socket: Socket;
 }
@@ -330,6 +332,7 @@ const MarketPlacePage = ({ socket }: Props) => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               <MobileMarketIntro />
+              <Bossuppartnerpage/>
             </div>
           </div>
         </div>

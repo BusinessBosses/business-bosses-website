@@ -57,8 +57,8 @@ const ForumCard = ({
           </div>
           <div className="flex items-center  justify-between mt-2">
             <div className="flex items-center gap-1">
-              <Assets.Membersicon className="text-primary" stroke="white" />
-              <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
+              <Assets.Membersicon className="text-primary" stroke="black" />
+              <p className="text-primary underline text-sm  lg:text-base font-bold">Members ({members.toString()})</p>
 
             </div>
             <div className="bg-[#FFFFFF1A]  flex whitespace-nowrap px-3 py-1 rounded-full items-center gap-1">
@@ -95,13 +95,15 @@ const ForumCard = ({
 
 
           <div className="bg-[#ffffff] p-3 rounded-lg">
-            <div className="flex gap-3">
+            <div className="flex gap-3 items-center">
               <img src={banner} alt="" className="w-32 h-20 rounded-lg" />
-              <p className="text-[#383838] text-sm">{label}</p>
+              <p className="text-[#383838] font-bold text-sm">{label}</p>
+              
             </div>
+            <p className="text-[#383838] pt-5 font-bold text-sm">{label}</p>
             <div className="flex items-center  justify-between mt-2">
             <div className="flex items-center gap-1">
-              <Assets.Membersicon className="text-primary" stroke="white" />
+              <Assets.Membersicon className="text-primary" stroke="black" />
               <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
 
             </div>
