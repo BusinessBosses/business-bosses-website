@@ -27,6 +27,8 @@ import ComputerProfileDetails from "../../profile/views/components/ComputerProfi
 import ChooseTile from "./choosetile";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 import Assets from "../../../assets";
+import Learningpopup from "../../popups/Learningpopup";
+import Opportunitiespopup from "../../popups/Opportunitiespopup";
 
 interface Props {
   socket: Socket;
@@ -43,6 +45,7 @@ const CommunitiesPage = ({ socket }: Props) => {
   const industries = useAppSelector((state) => state.forum.forums);
   const forums = useAppSelector((state) => state.forum.forums);
   const dispatch = useAppDispatch();
+  const currentRoute = location.pathname;
 
   const [industry, setIndustry] = useState<Industry | null>(null);
   const profile = useAppSelector((state) => state.user.profile);
@@ -147,7 +150,7 @@ const CommunitiesPage = ({ socket }: Props) => {
                 Opportunities
               </p>
             </div>
-            <div className="flex items-center ml-auto gap-1">
+            <div className="flex items-center ml-auto gap-1" onClick={openPopup}>
               <p>Info</p>
               <BsInfoCircle />
             </div>
@@ -185,7 +188,7 @@ const CommunitiesPage = ({ socket }: Props) => {
               label={industry?.description ?? "Industry Description"}
               members={industry?.joinedUsers?.length ?? 0}
               onJoin={joinIndustry}
-              topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries />} topicstext={"Entries"} />
+              topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries width={15} />} topicstext={"Entries"} />
           </div>
 
 
@@ -300,6 +303,17 @@ const CommunitiesPage = ({ socket }: Props) => {
       </div>
 
       <div className="computer-only">
+      <div className="computer-only">
+      {isPopupOpen && (
+        <div className="overlay">
+          <div ref={popupRef} className="computerpopup" style={{ overflowY: "scroll" }}>
+            {currentRoute==="/communities"?
+            <Bossoftheweekpopup/>: currentRoute==="/communities/learning" ? <Learningpopup/> : <Opportunitiespopup/>}
+          </div>
+        </div>
+      )}
+
+      </div>
         <ComputerHeader />
         <div className="computer-content">
           <div

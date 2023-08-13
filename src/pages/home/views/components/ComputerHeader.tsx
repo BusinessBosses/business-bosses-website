@@ -54,7 +54,7 @@ const ComputerHeader = () => {
             <div className="hidden lg:block">
               <button
                 onClick={openPopup}
-                className="flex flex-grow items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg ml-5"
+                className="flex items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg ml-5"
              
               >
                 <CiSearch className="text-[#A9A9A9]" size={20} />
@@ -86,7 +86,11 @@ const ComputerHeader = () => {
               />
             </div>
           </div>
-          <ComputerTopNav
+          
+          
+        </div>
+
+        <ComputerTopNav
             currentRoute={currentRoute}
             unseenNotification={profile?.profile!.unReadCount! > 0}
             unseenChat={
@@ -95,7 +99,8 @@ const ComputerHeader = () => {
               )
             }
           />
-        </div>
+
+        
       </div>
       <div
         style={{

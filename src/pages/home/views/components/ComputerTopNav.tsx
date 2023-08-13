@@ -155,7 +155,7 @@ const ComputerTopNav = ({
   };
 
   return (
-    <div className="flex justify-between" style={{ gap: "20px" }}>
+    <div className="flex justify-between" style={{ gap: "15px" }}>
       <div
         className={`tab ${currentIndex === 0 ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(0)}
@@ -168,8 +168,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 0
-                ? "text-primary font-semibold"
-                : "text-[#232324]"
+                ? "text-primary font-semibold text-base"
+                : "text-[#232324] text-base"
             }
           >
             Home
@@ -189,8 +189,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 1
-                ? "text-primary font-semibold"
-                :  "text-[#232324]"
+                ? "text-primary font-semibold text-base"
+                :  "text-[#232324] text-base"
             }
           >
             Boss Up
@@ -209,8 +209,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 2
-                ? "text-primary font-semibold"
-                :  "text-[#232324]"
+                ? "text-primary font-semibold text-base"
+                :  "text-[#232324] text-base"
             }
           >
             Marketplace
@@ -237,8 +237,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 3
-                ? "text-primary font-semibold"
-                :  "text-[#232324]"
+                ? "text-primary font-semibold text-base"
+                :  "text-[#232324] text-base"
             }
           >
             Messages
@@ -265,8 +265,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 4
-                ? "text-primary font-semibold"
-                : "text-[#232324]"
+                ? "text-primary font-semibold text-base"
+                : "text-[#232324] text-base"
             }
           >
             Notifications
