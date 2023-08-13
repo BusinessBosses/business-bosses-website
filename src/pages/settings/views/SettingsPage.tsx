@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 
 const SettingsPage = () => {
   const navigate = useNavigate();
@@ -56,6 +57,11 @@ const SettingsPage = () => {
               zIndex: 1,
             }}
           >
+            <div className="">
+              <div className=" flex items-center gap-3">
+                <ComputerProfileDetails data={profile.profile!} />
+              </div>
+            </div>
 
 
 
@@ -68,10 +74,7 @@ const SettingsPage = () => {
             style={{ width: "40%", flexGrow: 0 }}
           >
 
-            <div className=" top-0 w-full z-50  " style={{ position: 'sticky', top: 0, zIndex: 100, }}>
-
-              <CommonPageHeader title="Settings" />
-            </div>
+            <CommonPageHeader title="Settings" />
 
 
             <div className="px-5">
@@ -112,7 +115,7 @@ const SettingsPage = () => {
               {profile?.bossup ? (
                 <ComputerBossOfTheWeek bossOfTheWeek={profile.bossup} />
               ) : null}
-             
+
             </div>
           </div>
         </div>
@@ -145,7 +148,7 @@ const Tab = ({ onClick, text }: Props) => {
           onClick={onClick}
           className="bg-[#f4f4f4] flex p-4 rounded-lg my-3 items-center justify-between w-full "
         >
-          <p className="text-sm">{text}</p>
+          <p className="text-base">{text}</p>
           <Assets.Nexticon className="text-[#726F6F]" />
         </button>
       </div>

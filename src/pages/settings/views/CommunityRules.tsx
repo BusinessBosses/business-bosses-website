@@ -52,7 +52,7 @@ const CommunityRules = () => {
                         className="computer-main-content"
                         style={{ width: "40%", flexGrow: 0 }}
                     >
-                        <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
+                        <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 0, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
 
                             <CommonPageHeader title="Community Rules" />
                         </div>

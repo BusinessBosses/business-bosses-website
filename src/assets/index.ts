@@ -54,6 +54,7 @@ import { ReactComponent as Entries } from "./icons/entries.svg"
 import { ReactComponent as Topicsicon } from "./icons/topics.svg"
 import { ReactComponent as Inviteicon } from "./icons/invite.svg"
 import { ReactComponent as Membersicon } from "./icons/members.svg"
+import { ReactComponent as Linkicon } from "./icons/link.svg"
 
 
 
@@ -114,7 +115,8 @@ const Assets = {
     Topicsicon,
     NoProfile,
     Inviteicon,
-    Membersicon
+    Membersicon,
+    Linkicon
 
 };
 export default Assets;
