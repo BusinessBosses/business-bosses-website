@@ -48,7 +48,6 @@ import ExpandedImages from "./pages/expandedimages/expandedimages";
 import Bossuppartnerpage from "./pages/bossuppartnerpage/bossuppartnerpage";
 import ConnectRelevantPage from "./pages/settings/views/ConnectRelevantPage";
 
-
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -71,13 +70,17 @@ const App = () => {
   const fetchBossOfTheWeek = async () => {
     const response = await serviceApi.fetch("/users/bossup");
     if (response.success) {
-      dispatch(
-        saveBossupData({
-          ...response.data,
-          connecteds: response.data.connecteds.map((mp: any) => mp.userId),
-          connections: response.data.connections.map((mp: any) => mp.connect),
-        })
-      );
+      if (response.data.username) {
+        dispatch(
+          saveBossupData({
+            ...response.data,
+            connecteds:
+              response?.data.connecteds?.map((mp: any) => mp.userId) ?? [],
+            connections:
+              response?.data.connections?.map((mp: any) => mp.connect) ?? [],
+          })
+        );
+      }
     }
   };
 
@@ -102,6 +105,7 @@ const App = () => {
       dispatch(saveChatsToState(response.data.chats));
       dispatch(addPostToState(processedPosts));
     } else {
+      setIsPopupOpen(true);
       setErrorMessage(response.message);
       setErr(true);
     }
@@ -176,7 +180,7 @@ const App = () => {
           background: "rgba(0,0,0,.5)",
         }}
         modal
-        open={true}
+        open={isPopupOpen}
       >
         <div className="flex justify-center px-3">
           <div className=" bg-white p-5 rounded-lg xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full xs:w-full ">
@@ -191,6 +195,7 @@ const App = () => {
                 <button
                   onClick={() => {
                     localStorage.clear();
+                    setIsPopupOpen(false);
                     navigate(RoutesPath.login);
                   }}
                   className="text-primary outline-none border-none font-semibold"
@@ -229,7 +234,10 @@ const App = () => {
       <Route path={RoutesPath.settings} element={<SettingsPage />} />
       <Route path={RoutesPath.invite} element={<InvitePage />} />
       <Route path={RoutesPath.notifications} element={<NotificationPage />} />
-      <Route path={RoutesPath.subscriptionpage} element={<SubscriptionPage />} />
+      <Route
+        path={RoutesPath.subscriptionpage}
+        element={<SubscriptionPage />}
+      />
       <Route path={RoutesPath.refer} element={<ReferPage />} />
       <Route
         path={RoutesPath.homeSearch}
@@ -263,46 +271,22 @@ const App = () => {
         path={RoutesPath.PublicUserProfile}
         element={<PublicUserProfile />}
       />
-      <Route
-        path={RoutesPath.analysepage}
-        element={<AnalysePage />}
-      />
-      <Route
-        path={RoutesPath.communityrules}
-        element={<CommunityRules />}
-      />
-      <Route
-        path={RoutesPath.invitetandcs}
-        element={<Invitetandcs />}
-      />
+      <Route path={RoutesPath.analysepage} element={<AnalysePage />} />
+      <Route path={RoutesPath.communityrules} element={<CommunityRules />} />
+      <Route path={RoutesPath.invitetandcs} element={<Invitetandcs />} />
       <Route
         path={RoutesPath.analyseprofilepage}
         element={<AnalyseProfilePage />}
       />
-      <Route
-        path={RoutesPath.connectrelevant}
-        element={<ConnectRelevant />}
-      />
-      <Route
-        path={RoutesPath.rankingpage}
-        element={<RankingPage />}
-      />
+      <Route path={RoutesPath.connectrelevant} element={<ConnectRelevant />} />
+      <Route path={RoutesPath.rankingpage} element={<RankingPage />} />
       <Route
         path={RoutesPath.explorebusinessbosses}
         element={<ExploreBusinessBosses />}
       />
-      <Route
-        path={RoutesPath.sellerreview}
-        element={<SellerReview />}
-      />
-      <Route
-        path={RoutesPath.expandedimages}
-        element={<ExpandedImages />}
-      />
-      <Route
-        path={RoutesPath.bossuppartners}
-        element={<Bossuppartnerpage />}
-      />
+      <Route path={RoutesPath.sellerreview} element={<SellerReview />} />
+      <Route path={RoutesPath.expandedimages} element={<ExpandedImages />} />
+      <Route path={RoutesPath.bossuppartners} element={<Bossuppartnerpage />} />
       <Route
         path={RoutesPath.connectrelevantpage}
         element={<ConnectRelevantPage />}
