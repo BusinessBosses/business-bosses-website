@@ -96,7 +96,6 @@ const OtpVerificationPage = ({ onSuccess }: Props) => {
     <div>
       <CommonPageHeader title={"Code Verification"} />
       <div className="p-5 bg-white" style={{ height: "100vh" }}>
-
         <Popup
           closeOnDocumentClick={false}
           closeOnEscape={false}
@@ -108,7 +107,7 @@ const OtpVerificationPage = ({ onSuccess }: Props) => {
           open={openResetPasswordDialog}
         >
           <div className="flex justify-center px-3">
-            <div className=" bg-white p-5 rounded-lg xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full xs:w-full ">
+            <div className=" bg-white p-5 rounded-lg w-full ">
               <div className="">
                 <h1 className="text-2xl mb-5">Reset Password</h1>
                 <small className="text-sm text-black-80">
@@ -120,7 +119,7 @@ const OtpVerificationPage = ({ onSuccess }: Props) => {
                     inputRef={newPasswordRef}
                     label="Set New Password"
                     placeholder="input password"
-                    onchange={() => { }}
+                    onchange={() => {}}
                   />
                   <FilledButton
                     onClick={resetPassword}
@@ -134,7 +133,7 @@ const OtpVerificationPage = ({ onSuccess }: Props) => {
         </Popup>
         <div className="">
           <h1 className="text-primary text-3xl my-10 font-[800] text-center">
-            Business <br/> Bosses
+            Business <br /> Bosses
           </h1>
           <p className="text-[#6D6D73] text-center">
             Enter the 6 digits code that you received on your email so you can
@@ -160,7 +159,7 @@ const OtpVerificationPage = ({ onSuccess }: Props) => {
               borderRadius: "10px",
             }}
             inputFocusStyle={{ border: "1px solid #F21C29" }}
-            onComplete={(value, index) => { }}
+            onComplete={(value, index) => {}}
             autoSelect={true}
             regexCriteria={/^[ A-Za-z0-9_@./#&+-]*$/}
           />
