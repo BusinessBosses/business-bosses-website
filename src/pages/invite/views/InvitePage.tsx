@@ -13,8 +13,9 @@ import { BiArrowBack } from "react-icons/bi";
 import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
 import { useNavigate } from "react-router-dom";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
-import { MdContentCopy } from "react-icons/md";
+import { MdContentCopy, MdShare } from "react-icons/md";
 import SubscribeButton from "../../settings/components/Subscribebutton";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 
 
 interface Props {
@@ -27,25 +28,25 @@ const InvitePage = ({ coins }: Props) => {
 
   return (
     <div>
-      <div className="mobile-only bg-white" style={{ height: "100vh" }}>
+      <div className="mobile-only bg-white h-full " >
         <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', }}>
-        <div className="bg-white px-4 py-3 flex items-center justify-between">
-          <button onClick={() => navigate(-1)}>
-            <Assets.Backbutton />
-          </button>
-          <div className=" items-center">
-          <div className="flex items-center ml-auto px-2 py-2 bg-[#F4F4F4] rounded-full">
-                <div className="mr-1 text-sm font-medium">My Coin Balance </div>
+          <div className="bg-white px-4 py-3 flex items-center justify-between">
+            <button onClick={() => navigate(-1)}>
+              <Assets.Backbutton />
+            </button>
+            <div className=" items-center">
+              <div className="flex items-center ml-auto px-2 py-2 bg-[#F4F4F4] rounded-full">
+                <div className="mr-1 text-xs font-bold">My Coin Balance </div>
                 <div className="mr-1"><img src={Assets.Coin} alt="" /></div>
                 <p className="font-medium">
-                  <span style={{ color: '#333333' }}>{coins}</span>
+                  <span className="font-bold text-xs" style={{ color: '#333333' }}>{profile.profile?.coinscount}</span>
                 </p>
               </div>
+            </div>
+            <div></div> {/* This empty div helps in spacing */}
           </div>
-          <div></div> {/* This empty div helps in spacing */}
-        </div>
           <div className="bg-white px-4 py-3 flex items-center justify-between">
-            
+
 
             <div className="flex-grow text-center">
               <p className="text-xl font-bold">{ }</p>
@@ -54,8 +55,8 @@ const InvitePage = ({ coins }: Props) => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center px-20">
-          <div className="text-center text-sm font-bold mb-10"> Give Coins to your favorite Bosses and receive them from other Bosses who love your work!</div>
+        <div className="flex flex-col items-center px-10">
+          <div className="text-center text-xs font-bold mb-5"> Give Coins to your favorite Bosses and receive them from other Bosses who love your work!</div>
           <img
             src={Assets.Invite}
             className="w-40 h-40 object-contain"
@@ -65,38 +66,47 @@ const InvitePage = ({ coins }: Props) => {
           <p className="text-xl text-primary font-semibold">
             Invite Friends
           </p>
-          <small className="text-[#333333]">
-            to join Business Bosses and get 20
-          </small>
-          <small className="text-[#707070]">
+          <div className="flex items-center">
+            <small className="text-[#333333] text-xs font-bold">
+              to join Business Bosses and get 20
+            </small>
+            <img src={Assets.Coin}></img>
+
+          </div>
+          <small className="text-[#333333] text-xs font-bold">
             for each friend.
           </small>
 
           <div className="mb-10 mt-5"> <SubscribeButton /></div>
 
-         
+
         </div>
 
         <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
 
         <div className="">
-          <div className="flex justify-between p-5">
+          <div className="flex justify-between px-5 py-2 items-center">
             <div className="">
-              <small className="text-[#707070]">Invite ID:</small>
-              <p className="text-[#333333]">{profile.profile!.inviteId}</p>
+              <small className="text-[#707070] text-xs">Invite ID:</small>
+              <p className="text-[#333333] text-sm">{profile.profile!.inviteId}</p>
             </div>
+            <div className="" onClick={async () => {
+              await navigator.clipboard.writeText(profile.profile!.inviteId ?? "");
+              toast.success("Copied");
+            }}><MdContentCopy size={23} /></div>
+
             <FilledButton
               onClick={async () => {
                 await navigator.clipboard.writeText(profile.profile!.inviteId ?? "");
                 toast.success("Copied");
               }}
-              text="Copy InviteID"
-              icon={<MdContentCopy />}
+              text="Invite"
+              icon={<Assets.Inviteicon />}
             />
           </div>
 
           <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div className="flex items-center justify-between p-5">
+          <div className="flex items-center justify-between px-5 py-4">
             <small className="text-[#777777]">Accepted Invitation</small>
             <small className="text-[#333333]">{profile.profile!.invitations}</small>
           </div>
@@ -123,6 +133,11 @@ const InvitePage = ({ coins }: Props) => {
               height: "100%",
             }}
           >
+           <div className="">
+              <div className=" flex items-center gap-3">
+                <ComputerProfileDetails data={profile.profile!} />
+              </div>
+            </div>
 
           </div>
           <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
@@ -130,78 +145,120 @@ const InvitePage = ({ coins }: Props) => {
             className="computer-main-content"
             style={{ width: "40%", flexGrow: 0 }}
           >
-            <CommonPageHeader title="Invite" />
-            <div className="flex flex-col items-center p-5">
-              <img
-                src={Assets.Invite}
-                className="w-32 h-32 object-contain"
-                alt=""
-              />
-              <p className="text-xl text-primary font-semibold mt-2">
-                Invite 3 Friends
-              </p>
-              <small className="text-[#333333]">
-                to join Business Bosses and get a Free Promotion
-              </small>
-              <small className="text-[#707070]">
-                Copy link to share your InviteID with them
-              </small>
-            </div>
-
-            <div className="">
-              <div className="flex justify-between p-5">
-                <div className="">
-                  <small className="text-[#707070]">Invite ID:</small>
-                  <p className="text-[#333333]">{profile.profile!.inviteId}</p>
+            <div className=" bg-white h-full " >
+              <div style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', }}>
+                <div className="bg-white px-4 py-3 flex items-center justify-between">
+                  <button onClick={() => navigate(-1)}>
+                    <Assets.Backbutton />
+                  </button>
+                  <div className=" items-center">
+                    <div className="flex items-center ml-auto px-2 py-2 bg-[#F4F4F4] rounded-full">
+                      <div className="mr-1 text-base font-bold">My Coin Balance </div>
+                      <div className="mr-1"><img src={Assets.Coin} alt="" /></div>
+                      <p className="font-medium">
+                        <span className="font-bold text-base" style={{ color: '#333333' }}>{profile.profile?.coinscount}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div></div> {/* This empty div helps in spacing */}
                 </div>
-                <FilledButton
-                  onClick={async () => {
+                <div className="bg-white px-4 py-3 flex items-center justify-between">
+
+
+                  <div className="flex-grow text-center">
+                    <p className="text-xl font-bold">{ }</p>
+                  </div>
+                  <div></div> {/* This empty div helps in spacing */}
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center px-10">
+                <div className="text-center text-base font-bold mb-5"> Give Coins to your favorite Bosses and receive them from other Bosses who love your work!</div>
+                <img
+                  src={Assets.Invite}
+                  className="w-40 h-40 object-contain"
+                  alt=""
+                />
+                <div className="font-bold">Earn Coins!</div>
+                <p className="text-xl text-primary font-semibold">
+                  Invite Friends
+                </p>
+                <div className="flex items-center">
+                  <small className="text-[#333333] text-base font-bold">
+                    to join Business Bosses and get 20
+                  </small>
+                  <img src={Assets.Coin}></img>
+
+                </div>
+                <small className="text-[#333333] text-base font-bold">
+                  for each friend.
+                </small>
+
+                <div className="mb-10 mt-5"> <SubscribeButton /></div>
+
+
+              </div>
+
+              <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
+
+              <div className="">
+                <div className="flex justify-between px-5 py-2 items-center">
+                  <div className="">
+                    <small className="text-[#707070] text-xs">Invite ID:</small>
+                    <p className="text-[#333333] text-base">{profile.profile!.inviteId}</p>
+                  </div>
+                  <div className="" onClick={async () => {
                     await navigator.clipboard.writeText(profile.profile!.inviteId ?? "");
                     toast.success("Copied");
-                  }}
-                  text="Copy InviteID"
-                  icon={<MdContentCopy />}
-                />
+                  }}><MdContentCopy size={23} /></div>
+
+                  <FilledButton
+                    onClick={async () => {
+                      await navigator.clipboard.writeText(profile.profile!.inviteId ?? "");
+                      toast.success("Copied");
+                    }}
+                    text="Invite"
+                    icon={<Assets.Inviteicon />}
+                  />
+                </div>
+
+                <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
+                <div className="flex items-center justify-between px-5 py-4">
+                  <small className="text-[#777777]">Accepted Invitation</small>
+                  <small className="text-[#333333] text-base">{profile.profile!.invitations}</small>
+                </div>
+                <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
+
+
+              </div>
+              <div className="my-10"></div>
+            </div>
+            </div>
+            <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+            <div
+              className="lastsection ml-5 mr-5 mt-5 mb-0 lg:mr-20"
+              style={{
+                width: "30%",
+                flexGrow: 0,
+                overflow: "none",
+                position: "sticky",
+                top: 0,
+                zIndex: 1,
+              }}
+            >
+
+              <div className="rounded-xl overflow-hidden" style={{}}>
+                {profile.bossup ? (
+                  <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                ) : null}
               </div>
 
-              <div className="border-t-2 border-[#F6F6F6]" />
-              <div className="flex items-center justify-between p-5">
-                <small className="text-[#777777]">Accepted Invitation</small>
-                <small className="text-[#333333]">{profile.profile!.invitations}</small>
-              </div>
-              <div className="border-t-2 border-[#F6F6F6]" />
-
-              <p className="font-semibold text-center underline text-primary text-sm mt-10">
-                Terms and Conditions
-              </p>
             </div>
-            <div className="my-10"></div>
-
-          </div>
-          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div
-            className="lastsection ml-5 mr-5 mt-5 mb-0 lg:mr-20"
-            style={{
-              width: "30%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-
-            <div className="rounded-xl overflow-hidden" style={{}}>
-              {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
-              ) : null}
-            </div>
-
           </div>
         </div>
+
       </div>
-    </div>
-  );
+      );
 };
 
-export default InvitePage;
+      export default InvitePage;

@@ -9,6 +9,8 @@ import { Chat } from "../../../common/interfaces/chat";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 import ChooseTile from "../../communities/views/choosetile";
+import Assets from "../../../assets";
+import { CiSearch } from "react-icons/ci";
 
 const ChatPage = () => {
   const navigate = useNavigate();
@@ -31,7 +33,17 @@ const ChatPage = () => {
             borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
           }}
         >
-          <CommonPageHeader title="Chats" />
+           <div className="mobile-only">
+        <div className="bg-white px-4 py-3 flex items-center justify-between">
+          <button onClick={() => navigate(-1)}>
+            <Assets.Backbutton />
+          </button>
+          <div className="flex-grow text-center">
+            <p className="text-md font-semibold">Chats</p>
+          </div>
+          <div><CiSearch size={25} strokeWidth={0.5} onClick={()=>{}}/></div> 
+        </div>
+      </div>
         </div>
         <div className="px-4">
           {uniqueChats.map((chat, index) => {

@@ -28,6 +28,12 @@ import FilledTextarea from "../../../common/components/inputs/FilledTextarea";
 import serviceApi from "../../../services/serviceApi";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
+import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
+import Learningpopup from "../../popups/Learningpopup";
+import Opportunities from "../../communities/views/Opportunities";
+import Opportunitiespopup from "../../popups/Opportunitiespopup";
+import FilledInputcommunities from "../../../common/components/inputs/FilledInputcommunities";
+import FilledTextareacommunities from "../../../common/components/inputs/FilledTextareacommunities";
 interface Props {
   socket: Socket;
 }
@@ -43,7 +49,7 @@ const Forum = ({ socket }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const [industry, setIndustry] = useState<Industry | null>(null);
-  const popupRef = useRef<HTMLDivElement | null>(null); 
+  const popupRef = useRef<HTMLDivElement | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const updateForum = (action: { index: number; forum: ForumProp }) => {
     const forumsDP = forums.map((mp: ForumProp, index: number) => {
@@ -89,7 +95,7 @@ const Forum = ({ socket }: Props) => {
     setIsPopupOpen(false);
   };
 
-  
+
   const fetchForums = async (industryId: string) => {
     setLoading(true);
     setErr(false);
@@ -335,12 +341,25 @@ const Forum = ({ socket }: Props) => {
           }}
         >
           <CommonPageHeader title={industry?.industry ?? ""} />
+          <div className="mobile-only">
+            {isPopupOpen && (
+              <div className="overlay">
+                <div ref={popupRef} className="mobilepopup" style={{ overflowY: "scroll" }}>
+                  {industry?.categoryId === AppConstants.LEARNINGID
+                    ? <Learningpopup /> :
+                    <Opportunitiespopup />
+                  }
+                </div>
+              </div>
+            )}
+
+          </div>
         </div>
         <Popup lockScroll modal open={openModal}>
-          <div className=" min-h-screen h-full bg-white overflow-auto mb-20 min-w-full w-screen">
+          <div className=" min-h-screen h-full bg-[#f4f4f4] overflow-auto mb-20 min-w-full w-screen">
             <div className=" top-0 w-full z-50">
               <div className="bg-white flex items-center p-5 justify-between">
-                <h1 className="text-xl font-[500]">
+                <h1 className="text-lg font-[900]">
                   {industry?.categoryId === AppConstants.LEARNINGID
                     ? "Start a Topic"
                     : "Share Opportunities"}
@@ -350,11 +369,11 @@ const Forum = ({ socket }: Props) => {
                     setOpenModal(false);
                   }}
                 >
-                  <AiOutlineClose />
+                  <AiOutlineClose size={20} />
                 </button>
               </div>
             </div>
-            <div className="mt-20 px-4">
+            <div className=" px-4">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -365,28 +384,33 @@ const Forum = ({ socket }: Props) => {
                   }
                 }}
               >
-                <FilledInput
+                <FilledInputcommunities
                   defaultValue={stateProps?.title}
                   inputRef={titleRef}
-                  onchange={() => {}}
-                  placeholder="Enter Business name"
+                  onchange={() => { }}
+                  placeholder={industry?.categoryId === AppConstants.LEARNINGID
+                    ? "Enter Topic Title" : "Enter Opportunity Title"}
                   className="text-sm"
                 />
-                <FilledTextarea
+                <FilledTextareacommunities
                   defaultValue={stateProps?.description}
                   inputRef={descriptionRef}
-                  onchange={() => {}}
-                  placeholder="Describe your business"
+                  onchange={() => { }}
+                  placeholder={industry?.categoryId === AppConstants.LEARNINGID
+                    ? "Enter your Description" : "Describe the Opportunity"}
                   className="text-sm"
                 />
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between bg-white p-3 rounded-lg">
                   <div className="flex items-center gap-3">
                     <Assets.File />
                     <small className="text-[#BABABA]">Add attachment</small>
                   </div>
-                  <label htmlFor="file">
-                    <Assets.Upload />
+                  <label
+                    htmlFor="file"
+                    className="bg-[#F4F4F4] p-2.5 rounded-full cursor-pointer"
+                  >
+                    <img src={Assets.Gallery} alt="" />
                   </label>
                 </div>
                 <input
@@ -457,6 +481,13 @@ const Forum = ({ socket }: Props) => {
                   className="w-full p-3"
                 />
                 <div className="my-10"></div>
+
+                <div className=" text-center text-sm">{industry?.categoryId === AppConstants.LEARNINGID
+                    ? "Only post articles, insights, and resources others can learn from." : "Only post opportunities that will help you and others grow their businesses."} </div>
+                <div className="flex items-center gap-1 lg:text-base md:text-sm justify-center text-sm">
+                  <Assets.Reporticon width={20} />
+                  <div>To sell your products and services, list on "Marketplace".</div>
+                </div>
               </form>
             </div>
           </div>
@@ -465,7 +496,7 @@ const Forum = ({ socket }: Props) => {
           <ForumCard
             onCreate={() => {
               setOpenModal(true);
-            } }
+            }}
             createLabel={industry.categoryId === AppConstants.LEARNINGID
               ? "Start a topic"
               : "Share Opportunities"}
@@ -474,14 +505,16 @@ const Forum = ({ socket }: Props) => {
             label={industry?.description ?? "Industry description"}
             members={industry?.joinedUsers?.length ?? 0}
             onJoin={joinIndustry}
-            topics={count} aboutontap={openPopup}          />
+            topics={count} aboutontap={openPopup} aboutontaptext={"Info"} topicsicon={<Assets.Topicsicon/>} topicstext={industry.categoryId === AppConstants.LEARNINGID
+              ? "Topics"
+              : "Opport."} />
         ) : null}
         {loading ? (
           <FetchStatus
             error={false}
             errorMessage="Something went wrong!!"
             loading={true}
-            onReload={() => {}}
+            onReload={() => { }}
           />
         ) : null}
         {err ? (
@@ -494,7 +527,7 @@ const Forum = ({ socket }: Props) => {
             }}
           />
         ) : null}
-        <div className="">
+        <div className="bg-white">
           {forums.map((forum: ForumProp, index: number) => (
             <ForumItem
               onEdit={() => {
@@ -563,7 +596,7 @@ const Forum = ({ socket }: Props) => {
                 error={false}
                 errorMessage="Something went wrong!!"
                 loading={true}
-                onReload={() => {}}
+                onReload={() => { }}
               />
             ) : null}
             {err ? (
@@ -629,25 +662,32 @@ const Forum = ({ socket }: Props) => {
             }}
           >
             <div className="flex items-center gap-2 pb-5">
-            <button onClick={() => navigate(-1)}>
-              <Assets.Backbutton/>
-            </button>
-            <p className="text-xl font-medium">{industry?.industry}</p>
-          </div>
+              <button onClick={() => navigate(-1)}>
+                <Assets.Backbutton />
+              </button>
+              <p className="text-base font-[700]">{industry?.industry}</p>
+            </div>
             {industry ? (
-              <ForumCard
-                onCreate={() => {
-                  setOpenModal(true);
-                } }
-                createLabel={industry.categoryId === AppConstants.LEARNINGID
-                  ? "Start a topic"
-                  : "Share Opportunities"}
-                banner={industry?.photo!}
-                didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
-                label={industry?.description ?? "Industry description"}
-                members={industry?.joinedUsers?.length ?? 0}
-                onJoin={joinIndustry}
-                topics={count} aboutontap={openPopup}              />
+              <div className="bg-[#F4F4F4] p-3 rounded-3xl">
+                <ForumCard
+                  onCreate={() => {
+                    setOpenModal(true);
+                  }}
+                  createLabel={industry.categoryId === AppConstants.LEARNINGID
+                    ? "Start a topic"
+                    : "Share Opportunities"}
+                  banner={industry?.photo!}
+                  didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
+                  label={industry?.description ?? "Industry description"}
+                  members={industry?.joinedUsers?.length ?? 0}
+                  onJoin={joinIndustry}
+                  topics={count}
+                  aboutontap={openPopup}
+                  aboutontaptext="Info" topicsicon={<Assets.Topicsicon />} topicstext={industry.categoryId === AppConstants.LEARNINGID
+                    ? "Topics"
+                    : "Opport."} />
+              </div>
+
             ) : null}
           </div>
         </div>

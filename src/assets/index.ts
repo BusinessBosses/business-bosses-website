@@ -49,6 +49,12 @@ import { ReactComponent as Analyse } from "./icons/analyze.svg"
 import { ReactComponent as Connectrelevant } from "./icons/connectrelevant.svg"
 import { ReactComponent as Ranking } from "./icons/ranking.svg"
 import { ReactComponent as Explore } from "./icons/explore.svg"
+import { ReactComponent as Reporticon } from "./icons/report.svg"
+import { ReactComponent as Entries } from "./icons/entries.svg"
+import { ReactComponent as Topicsicon } from "./icons/topics.svg"
+import { ReactComponent as Inviteicon } from "./icons/invite.svg"
+import { ReactComponent as Membersicon } from "./icons/members.svg"
+import { ReactComponent as Linkicon } from "./icons/link.svg"
 
 
 
@@ -104,7 +110,13 @@ const Assets = {
     Three,
     Four,
     Five,
-    NoProfile
+    Reporticon,
+    Entries,
+    Topicsicon,
+    NoProfile,
+    Inviteicon,
+    Membersicon,
+    Linkicon
 
 };
 export default Assets;

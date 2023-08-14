@@ -8,7 +8,7 @@ const Notification = ({ data }: Props) => {
     <div className="my-5">
       <div className="flex items-center gap-3 mt-2">
         <div className="circle-container" style={{
-          width: '45px',
+          width: '55px',
           height: '45px',
           borderRadius: '50%',
           display: 'flex',
@@ -24,7 +24,7 @@ const Notification = ({ data }: Props) => {
           <small className="line-clamp-1">{data.message}</small>
         </div>
       </div>
-      <div className="mt-5" style={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
+      <div className="mt-3" style={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
     </div>
   );
 };

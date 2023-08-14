@@ -42,7 +42,7 @@ const FilledSelect = ({
           ref={inputRef}
           defaultValue={defaultValue}
           id={label}
-          className="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-3 mobile-only"
+          className="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-5 mobile-only"
         >
           {data.map((item, index) => {
             return (

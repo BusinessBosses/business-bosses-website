@@ -31,6 +31,10 @@ const analyseprofilepage = "/analyseprofilepage";
 const connectrelevant = "/connectrelevant";
 const rankingpage = "/rankingpage";
 const explorebusinessbosses = "/explorebusinessbosses";
+const sellerreview = "/sellerreview";
+const expandedimages = "/expandedimages";
+const bossuppartners = "/bossuppartners";
+const connectrelevantpage = "/connectrelevantpage";
 
 
 const RoutesPath = {
@@ -67,6 +71,11 @@ const RoutesPath = {
     connectrelevant,
     rankingpage,
     explorebusinessbosses,
+    sellerreview,
+    expandedimages,
+    bossuppartners,
+    connectrelevantpage,
+
 
 
 }

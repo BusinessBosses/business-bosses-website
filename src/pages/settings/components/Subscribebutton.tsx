@@ -13,7 +13,7 @@ const SubscribeButton = () => {
     color: '#333333', // Change the text color to #333333
     borderRadius: '50px', // Adjust the radius to make the rectangle more or less round
     padding: '7px 15px',
-    fontSize: '14px', // Change the font size to 14px
+    fontSize: '13px', // Change the font size to 14px
     fontWeight: 'bold',
     cursor: 'pointer',
   };
@@ -24,8 +24,8 @@ const SubscribeButton = () => {
 
   return (
     <div style={buttonStyle} onClick={() => navigate(RoutesPath.subscriptionpage)}>
-      <span className='mr-2'>Subscribe to Premium</span>
-      <Assets.Nexticon color='primary'/>
+      <span className='mr-2' >Subscribe to Premium</span>
+      <Assets.Nexticon stroke="#F21C29"/>
     </div>
   );
 };

@@ -8,28 +8,32 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import { User } from "../../../../common/interfaces/user";
 import SubscribeButton from "../../../settings/components/Subscribebutton";
+import UserAvatarbig from "../../../../common/components/avatars/UserAvatarbig";
 interface Props {
   data: User;
 }
 const MyProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
+  const truncatedName = data.name && data.name.length > 20 ? `${data.name.slice(0, 20)}...` : data.name;
+
   return (
+    
     <div>
       <div className="mt-5 px-4">
         <div className=" flex items-center gap-3">
-          <UserAvatar imageSize="h-30 w-30" imageURL={data.photoUrl} />
+          <UserAvatarbig imageSize="h-20 w-20" imageURL={data.photoUrl}  />
           <div className="">
-            <p className=" font-semibold flex items-center text-base md:text-lg lg:text-lg capitalize">
-              {data.username}
+            <p className=" font-semibold flex items-center text-base md:text-lg lg:text-xl capitalize">
+              {truncatedName}
               {data.isSubscribed && (
                 <div className="ml-1">
                   <Assets.Checkmark width={9} />
                 </div>
               )}
             </p>
-            <p className="text-lg font-medium">{data.category}</p>
-            <p className="font-medium">{data.companyName}</p>
-            <p className="text-sm font-light text-[#A9A9A9]">{data.location}</p>
+            <p className="text-sm font-semibold text-[#333333] lg:text-lg">{data.category}</p>
+            <p className="font-medium text-xs lg:text-base">{data.companyName}</p>
+            <p className="text-xs font-light text-[#A9A9A9] lg:text-sm">{data.location}</p>
             <div className="mt-2">
               <SubscribeButton />
             </div>
@@ -95,7 +99,7 @@ const MyProfileDetails = ({ data }: Props) => {
               navigate(RoutesPath.invite);
             }}
             text="Earn"
-            icon={<img alt="" src={Assets.Coin} />}
+            icon={<img alt="" src={Assets.Coin} width={18} />}
             className="w-full border-[1px] py-1"
           />
           <OutlinedButton

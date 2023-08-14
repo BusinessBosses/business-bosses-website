@@ -108,7 +108,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   error={err}
                   errorMessage="Something went wrong!!"
                   loading={loading}
-                  onReload={() => {}}
+                  onReload={() => { }}
                 />
               )}
               <div className="px-4">
@@ -147,7 +147,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   error={err}
                   errorMessage="Something went wrong!!"
                   loading={loading}
-                  onReload={() => {}}
+                  onReload={() => { }}
                 />
               )}
               <div className="px-4">
@@ -168,7 +168,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           >
             <UserAvatar imageURL={data.user.photoUrl} />
             <div className="flex-grow">
-              <p className=" font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
+              <p className=" font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                 {data.user?.username}
                 {data.user?.isSubscribed && (
                   <div className="ml-1">
@@ -177,7 +177,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 )}
               </p>
 
-              <p className="text-sm text-[#777777]">
+              <p className="text-sm lg:text-base text-[#777777]">
                 {trimText(data.user.bio ?? "", 20)}
               </p>
             </div>
@@ -185,7 +185,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
           <div className="flex items-center gap-5">
             {data.user?.isSubscribed && (
-              <GreyButton onClick={() => {}} text={"Connect"} />
+              <GreyButton onClick={() => { }} text={"Connect"} />
             )}
 
             <Popup
@@ -198,6 +198,11 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               on="click"
               closeOnDocumentClick
               contentStyle={{ padding: "0px", border: "none" }}
+              modal 
+              overlayStyle={{
+                background: 'rgba(0, 0, 0, 0.8)', 
+                zIndex: 1000, 
+              }}
             >
               {
                 (((close: any) =>
@@ -269,7 +274,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           {data.promote ? (
             <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
           ) : null}
-          <p className="text-sm text-[#303133] break-words">{data.title}</p>
+          <p className="text-sm text-[#303133] lg:text-base break-words">{data.title}</p>
           {data.images ? (
             <div className="mt-2">
               <img

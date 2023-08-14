@@ -8,6 +8,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import { saveUserData } from "../../../redux/slices/UserSlice";
+import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
 
 const ConnectionsPage = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -16,9 +19,12 @@ const ConnectionsPage = () => {
     connecteds: User[];
     suggestedUsers: User[];
   }>({ connecteds: [], connections: [], suggestedUsers: [] });
+
+
   const navigate = useNavigate();
   const location = useLocation();
   const profile = useAppSelector((state) => state.user.profile);
+  const profilee = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [err, setErr] = useState<boolean>(false);
@@ -68,27 +74,12 @@ const ConnectionsPage = () => {
   }, []);
   return (
     <div>
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1,
-          backgroundColor: "#fff",
-        }}
-      >
-        <CommonPageHeader title="Connections" />
-        <Tabs
-          currentIndex={currentIndex}
-          onChangeRoute={(index: number) => setCurrentIndex(index)}
-        />
-      </div>
-
       {loading ? (
         <FetchStatus
           error={false}
           errorMessage="Something went wrong!!"
           loading={true}
-          onReload={() => {}}
+          onReload={() => { }}
         />
       ) : null}
       {err ? (
@@ -101,9 +92,26 @@ const ConnectionsPage = () => {
           }}
         />
       ) : null}
-      <div className="px-4 -mt-5">
-        {currentIndex === 0
-          ? data.connections.map((connect: User, index: number) => {
+      <div className="mobile-only">
+        <div className=""
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            backgroundColor: "#fff",
+          }}
+        >
+          <CommonPageHeader title="Connections" />
+          <Tabs
+            currentIndex={currentIndex}
+            onChangeRoute={(index: number) => setCurrentIndex(index)}
+          />
+        </div>
+
+
+        <div className="px-4 -mt-5">
+          {currentIndex === 0
+            ? data.connections.map((connect: User, index: number) => {
               return (
                 <ConnectTile
                   connected={!!profile?.connecteds?.includes(connect.uid!)}
@@ -113,9 +121,9 @@ const ConnectionsPage = () => {
                 />
               );
             })
-          : null}
-        {currentIndex === 1
-          ? data.connecteds.map((connect: User, index: number) => {
+            : null}
+          {currentIndex === 1
+            ? data.connecteds.map((connect: User, index: number) => {
               return (
                 <ConnectTile
                   connected={!!profile?.connecteds?.includes(connect.uid!)}
@@ -125,9 +133,9 @@ const ConnectionsPage = () => {
                 />
               );
             })
-          : null}
-        {currentIndex === 2
-          ? data.suggestedUsers.map((connect: User, index: number) => {
+            : null}
+          {currentIndex === 2
+            ? data.suggestedUsers.map((connect: User, index: number) => {
               return (
                 <ConnectTile
                   connected={!!profile?.connecteds?.includes(connect.uid!)}
@@ -137,8 +145,117 @@ const ConnectionsPage = () => {
                 />
               );
             })
-          : null}
+            : null}
+        </div>
       </div>
+
+
+      <div className="computer-only bg-[#fff]">
+        <ComputerHeader />
+
+        <div className="computer-content">
+          <div
+            className="firstsection ml-5 lg:ml-20 pr-5"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
+              <div className=" flex items-center gap-3">
+                <ComputerProfileDetails data={profile!} />
+              </div>
+            </div>
+          </div>
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="computer-main-content"
+            style={{ width: "40%", flexGrow: 0 }}
+          >
+            <div className="computer-only">
+        <div className=""
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            backgroundColor: "#fff",
+          }}
+        >
+          <CommonPageHeader title="Connections" />
+          <Tabs
+            currentIndex={currentIndex}
+            onChangeRoute={(index: number) => setCurrentIndex(index)}
+          />
+        </div>
+
+
+        <div className="px-4 mt-4">
+          {currentIndex === 0
+            ? data.connections.map((connect: User, index: number) => {
+              return (
+                <ConnectTile
+                  connected={!!profile?.connecteds?.includes(connect.uid!)}
+                  onConnect={connection}
+                  profile={connect}
+                  key={index}
+                />
+              );
+            })
+            : null}
+          {currentIndex === 1
+            ? data.connecteds.map((connect: User, index: number) => {
+              return (
+                <ConnectTile
+                  connected={!!profile?.connecteds?.includes(connect.uid!)}
+                  onConnect={connection}
+                  profile={connect}
+                  key={index}
+                />
+              );
+            })
+            : null}
+          {currentIndex === 2
+            ? data.suggestedUsers.map((connect: User, index: number) => {
+              return (
+                <ConnectTile
+                  connected={!!profile?.connecteds?.includes(connect.uid!)}
+                  onConnect={connection}
+                  profile={connect}
+                  key={index}
+                />
+              );
+            })
+            : null}
+        </div>
+      </div>
+
+          </div>
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              {profilee.bossup ? (
+                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} />
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
   );
 };

@@ -7,6 +7,8 @@ import Assets from "../../../../assets";
 import { CiSearch } from "react-icons/ci";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import { onChangeRoute } from "../../../../redux/slices/RouteSlice";
+import Bossupsearch from "../../../communities/views/Bossupsearch";
+import Marketplacesearchpopup from "../../../popups/Marketplacesearchpopup";
 
 const ComputerHeader = () => {
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ const ComputerHeader = () => {
   return (
     <div
       className="bg-white top-0 w-full z-50"
-      style={{ position: "sticky", top: 0, zIndex: 100 }}
+      style={{ position: "sticky", top: 0, zIndex: 10 }}
     >
       <div className="flex items-end justify-between mr-5 ml-5 lg:ml-20 lg:mr-20">
         <div className="flex items-center flex-grow">
@@ -53,10 +55,20 @@ const ComputerHeader = () => {
               <button
                 onClick={openPopup}
                 className="flex items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg ml-5"
-                style={{ width: "300px" }}
+             
               >
                 <CiSearch className="text-[#A9A9A9]" size={20} />
-                <p className="text-[#A9A9A9] text-sm">Search people & posts</p>
+                {currentRoute === "/communities" ? (
+                  <p className="text-[#A9A9A9] text-base">Search groups & topics</p>
+                ) : currentRoute === "/market" ? (
+                  <p className="text-[#A9A9A9] text-base">Search products</p>
+                ): currentRoute === "/chats" ? (
+                  <p className="text-[#A9A9A9] text-base">Search chats</p>
+                )
+                 : (
+                  <p className="text-[#A9A9A9] text-base">Search people & posts</p>
+                )}
+
               </button>
             </div>
           </div>
@@ -74,7 +86,11 @@ const ComputerHeader = () => {
               />
             </div>
           </div>
-          <ComputerTopNav
+          
+          
+        </div>
+
+        <ComputerTopNav
             currentRoute={currentRoute}
             unseenNotification={profile?.profile!.unReadCount! > 0}
             unseenChat={
@@ -83,7 +99,8 @@ const ComputerHeader = () => {
               )
             }
           />
-        </div>
+
+        
       </div>
       <div
         style={{
@@ -92,10 +109,19 @@ const ComputerHeader = () => {
           background: "rgba(0, 0, 0, 0.1)",
         }}
       ></div>
-      {isPopupOpen && (
+      {isPopupOpen && (currentRoute === "/communities" ?
         <div className="overlay">
           <div className="popup" style={{ overflowY: "scroll" }}>
-            <HomeSearch onClosePopup={closePopup} />
+            <Bossupsearch onClosePopup={closePopup} />
+          </div>
+        </div> : currentRoute === "/market" ?
+        <div className="overlay">
+          <div className="popup" style={{ overflowY: "scroll" }}>
+            <Marketplacesearchpopup />
+          </div>
+        </div> : <div className="overlay">
+          <div className="popup" style={{ overflowY: "scroll" }}>
+            <HomeSearch onClosePopup={closePopup}/>
           </div>
         </div>
       )}

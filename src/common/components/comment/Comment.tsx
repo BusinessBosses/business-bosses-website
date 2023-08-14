@@ -23,16 +23,16 @@ const Comment = ({ comment }: Props) => {
           }
         />
         <div className="">
-          <p className="text-[#333333] text-lg capitalize">
+          <p className="text-[#333333] font-bold text-xs capitalize">
             {comment.user?.username}
           </p>
-          <p className="text-sm text-[#777777]">
+          <p className="text-xs text-[#777777]">
             {trimText(comment.user?.bio ?? "", 20)}
           </p>
         </div>
       </div>
       <div className="mt-2">
-        <p className=" font-[500] text-black break-words">{comment.comment}</p>
+        <p className=" font-[500] text-black break-words text-sm">{comment.comment}</p>
       </div>
     </div>
   );

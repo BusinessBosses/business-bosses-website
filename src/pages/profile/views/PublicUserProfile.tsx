@@ -11,6 +11,8 @@ import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import About from "./components/About";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "./components/ComputerProfiledetails";
+import { useAppSelector } from "../../../redux/store/store";
+import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 const PublicUserProfile = () => {
   const [currentTabIndex, setCurrentTabIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,6 +21,7 @@ const PublicUserProfile = () => {
   const [publicUser, setPublicUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const profile = useAppSelector((state) => state.user);
   const fetchPosts = async (userId: string) => {
     setLoading(true);
     setErr(false);
@@ -104,7 +107,7 @@ const PublicUserProfile = () => {
           }}>
             <div className="" >
               <div className=" flex items-center gap-3">
-                {/* <ComputerProfileDetails data={profile.profile!} /> */}
+                <ComputerProfileDetails data={profile.profile!} />
               </div>
 
             </div>
@@ -162,9 +165,9 @@ const PublicUserProfile = () => {
           }}>
 
             <div className="rounded-xl overflow-hidden" style={{}}>
-              {/* {profile.bossup ? (
+              {profile.bossup ? (
                 <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
-              ) : null} */}
+              ) : null}
             </div>
 
 

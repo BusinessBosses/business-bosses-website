@@ -4,7 +4,7 @@ import Assets from "../../../../assets";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BiX } from "react-icons/bi";
-import CreatePost from "../../../CreatePost.tsx/views/CreatePost";
+import CreatePost from "../../../CreatePost/views/CreatePost";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
@@ -30,7 +30,7 @@ const ComputerTopNav = ({
   unseenNotification,
 }: Props) => {
   const primaryColor = "#F21C29";
-  const strokeColor = "#A9A9A9";
+  const strokeColor = "#232324";
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -155,7 +155,7 @@ const ComputerTopNav = ({
   };
 
   return (
-    <div className="flex justify-between" style={{ gap: "20px" }}>
+    <div className="flex justify-between" style={{ gap: "15px" }}>
       <div
         className={`tab ${currentIndex === 0 ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(0)}
@@ -168,8 +168,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 0
-                ? "text-primary font-semibold"
-                : "text-gray-500"
+                ? "text-primary font-semibold text-base"
+                : "text-[#232324] text-base"
             }
           >
             Home
@@ -189,8 +189,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 1
-                ? "text-primary font-semibold"
-                : "text-gray-500"
+                ? "text-primary font-semibold text-base"
+                :  "text-[#232324] text-base"
             }
           >
             Boss Up
@@ -209,8 +209,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 2
-                ? "text-primary font-semibold"
-                : "text-gray-500"
+                ? "text-primary font-semibold text-base"
+                :  "text-[#232324] text-base"
             }
           >
             Marketplace
@@ -237,8 +237,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 3
-                ? "text-primary font-semibold"
-                : "text-gray-500"
+                ? "text-primary font-semibold text-base"
+                :  "text-[#232324] text-base"
             }
           >
             Messages
@@ -265,8 +265,8 @@ const ComputerTopNav = ({
           <p
             className={
               currentIndex === 4
-                ? "text-primary font-semibold"
-                : "text-gray-500"
+                ? "text-primary font-semibold text-base"
+                : "text-[#232324] text-base"
             }
           >
             Notifications

@@ -8,6 +8,8 @@ import { saveUserData } from "../../../../redux/slices/UserSlice";
 import ConnectionsController from "../../../connections/controller/ConnectionsController";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import Assets from "../../../../assets";
+import UserAvatarbig from "../../../../common/components/avatars/UserAvatarbig";
+import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
 interface Props {
   data: User;
 }
@@ -15,6 +17,7 @@ const PublicProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
+  const truncatedName = data.name && data.name.length > 20 ? `${data.name.slice(0, 20)}...` : data.name;
   const connection = async () => {
     if (profile?.connecteds?.includes(data.uid)) {
       const newUserData: User = {
@@ -36,19 +39,19 @@ const PublicProfileDetails = ({ data }: Props) => {
     <div>
       <div className="px-4">
         <div className=" flex items-center gap-3">
-          <UserAvatar imageSize="h-30 w-30" imageURL={data.photoUrl} />
+          <UserAvatarbig imageSize="h-20 w-20" imageURL={data.photoUrl} />
           <div className="">
-            <p className="font-semibold flex items-center text-lg md:text-lg lg:text-lg capitalize">
-              {data.username}
+            <p className="font-semibold flex items-center text-base md:text-lg lg:text-lg capitalize">
+              {truncatedName}
               {data.isSubscribed && (
                 <div className="ml-1">
                   <Assets.Checkmark width={9} />
                 </div>
               )}
             </p>
-            <p className="text-lg font-medium">{data.category}</p>
-            <p className="font-medium">{data.companyName}</p>
-            <p className="text-sm font-light text-[#A9A9A9]">{data.location}</p>
+            <p className="text-lg font-semibold text-[#333333] text-sm lg:text-lg">{data.category}</p>
+            <p className="font-medium text-xs lg:text-base">{data.companyName}</p>
+            <p className="text-xs font-light text-[#A9A9A9] lg:text-sm">{data.location}</p>
           </div>
         </div>
 
@@ -106,11 +109,11 @@ const PublicProfileDetails = ({ data }: Props) => {
               className="w-full border-[1px] py-1"
             />
           ) : (
-            <FilledButton
+            <FilledButtonsmall
               onClick={connection}
               text="Connect"
               // icon={<BiEdit />}
-              className="w-full border-[1px] py-1"
+              className="w-full border-[1px] py-3"
             />
           )}
           <OutlinedButton

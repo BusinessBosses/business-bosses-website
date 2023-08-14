@@ -19,6 +19,7 @@ import SharePopUp from "../../../../common/components/share/SharePopUp";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
 import Comment from "../../../../common/components/comment/Comment";
+import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
 interface Props {
   data: Market;
   onLike: Function;
@@ -72,6 +73,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
     await GeneralPostsController.comment(structuredComment);
   };
   return (
+
     <div>
       <div className="mt-5 px-4">
         <SharePopUp
@@ -106,7 +108,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                 error={err}
                 errorMessage="Something went wrong!!"
                 loading={loading}
-                onReload={() => {}}
+                onReload={() => { }}
               />
             )}
             <div className="px-4">
@@ -118,17 +120,18 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
         </BottomSheet>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <UserAvatar imageURL={data.user?.photoUrl} />
+            <UserAvatar
+              imageURL={
+                data.user?.photoUrl ??
+                "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+              }
+            />
             <div className="">
-              <p className="font-semibold flex items-center text-base md:text-sm lg:text-base capitalize">
+              <p className="font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                 {data.user?.username}
-                {data.user?.isSubscribed && (
-                  <div className="ml-1">
-                    <Assets.Checkmark width={9} />
-                  </div>
-                )}
+                {data.user?.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
               </p>
-              <p className="text-sm text-[#777777]">
+              <p className="text-sm text-[#777777] lg:text-base">
                 {trimText(data.user?.bio ?? "", 20)}
               </p>
             </div>
@@ -179,7 +182,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                       }}
                       className="menu-item"
                     >
-                      Block User
+                      Block @{data.user?.username}
                     </button>
                     <button
                       onClick={() => {
@@ -190,9 +193,17 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                         //   reason: "",
                         // });
                       }}
+                      className="menu-item text-primary"
+                    >
+                      Report this Post
+                    </button>
+                    <button
+                      onClick={() => {
+
+                      }}
                       className="menu-item"
                     >
-                      Report Post
+                      Visit Store
                     </button>
                   </div>
                 )) as unknown) as ReactNode
@@ -203,11 +214,9 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
           {data.promote ? (
             <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
           ) : null}
-          <p className="text-[#232324] font-bold my-2">${data.price}</p>
-          <p className="text-sm text-[#303133] break-words">
-            {data.description}
-          </p>
-          <div className="my-2 flex items-center justify-between">
+          <p className="text-[#232324] font-bold my-1">${data.price}</p>
+          <p className="text-sm text-[#303133] lg:text-base break-words">{data.description}</p>
+          <div className="my-1 flex items-center gap-3">
             {data.location ? (
               <div className="flex text-[#878787] gap-1">
                 <MdLocationPin />
@@ -220,16 +229,19 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                 <small>{data.category}</small>
               </div>
             ) : null}
-            {data.user?.averageRating ? (
-              <div className="flex  gap-1">
-                <AiTwotoneStar className="text-[#FFCA28]" />
-                <p className="text-sm font-bold text-[#383838]">
-                  {data.user?.averageRating}
-                </p>
-              </div>
-            ) : null}
-            <small className="underline text-[#4E4B4B] ">Seller review</small>
+
+
           </div>
+          <div onClick={()=>navigate(RoutesPath.sellerreview)} className="flex gap-2">{data.user?.averageRating ? (
+            <div className="flex  gap-1">
+              <AiTwotoneStar className="text-[#FFCA28]" />
+              <p className="text-sm font-bold text-[#383838]">
+                {data.user?.averageRating}
+              </p>
+            </div>
+          ) : null}
+            <small className="underline text-[#878787] font-[700] lg:text-sm">Seller reviews</small></div>
+
           {data.images ? (
             <div className="mt-2">
               <img
@@ -290,24 +302,14 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                 }}
               />
             </div>
-            <small className="text-[#B4B4B4]">
-              {formatDate(data.timestamp!)}
-            </small>
+
+            <OutlinedButton onClick={() => { }} text={"Message Seller"} />
           </div>
         </div>
+
       </div>
-      <div
-        className="mobile-only "
-        style={{ height: "7px", width: "100%", background: "#f4f4f4" }}
-      ></div>
-      <div
-        className="computer-only"
-        style={{
-          height: "1.2px",
-          width: "100%",
-          background: "rgba(0, 0, 0, 0.1)",
-        }}
-      ></div>
+      <div className="mobile-only " style={{ height: "7px", width: "100%", background: "#f4f4f4" }}></div>
+      <div className="computer-only" style={{ height: "1.2px", width: "100%", background: "rgba(0, 0, 0, 0.1)" }}></div>
     </div>
   );
 };
