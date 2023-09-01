@@ -298,6 +298,7 @@ const ComputerTopNav = ({
                         <div className="flex items-center"> {/* Wrapping div */}
                           <button onClick={() => closePopup()} className="flex items-center mr-5">
                             <Assets.Backbutton />
+                            
                           </button>
                           <p className="text-2xl font-bold">Introduce your Business</p>
                         </div>
@@ -323,6 +324,7 @@ const ComputerTopNav = ({
                               <Assets.Backbutton />
                             </button>
                             <p className="text-2xl font-bold">Share Opportunities</p>
+                            
                           </div>
                           <div />
                         </div>

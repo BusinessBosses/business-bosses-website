@@ -303,17 +303,17 @@ const CommunitiesPage = ({ socket }: Props) => {
       </div>
 
       <div className="computer-only">
-      <div className="computer-only">
-      {isPopupOpen && (
-        <div className="overlay">
-          <div ref={popupRef} className="computerpopup" style={{ overflowY: "scroll" }}>
-            {currentRoute==="/communities"?
-            <Bossoftheweekpopup/>: currentRoute==="/communities/learning" ? <Learningpopup/> : <Opportunitiespopup/>}
-          </div>
-        </div>
-      )}
+        <div className="computer-only">
+          {isPopupOpen && (
+            <div className="overlay">
+              <div ref={popupRef} className="computerpopup" style={{ overflowY: "scroll" }}>
+                {currentRoute === "/communities" ?
+                  <Bossoftheweekpopup /> : currentRoute === "/communities/learning" ? <Learningpopup /> : <Opportunitiespopup />}
+              </div>
+            </div>
+          )}
 
-      </div>
+        </div>
         <ComputerHeader />
         <div className="computer-content">
           <div
