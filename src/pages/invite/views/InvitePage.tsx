@@ -133,7 +133,7 @@ const InvitePage = ({ coins }: Props) => {
               height: "100%",
             }}
           >
-           <div className="">
+            <div className="">
               <div className=" flex items-center gap-3">
                 <ComputerProfileDetails data={profile.profile!} />
               </div>
@@ -194,7 +194,26 @@ const InvitePage = ({ coins }: Props) => {
                   for each friend.
                 </small>
 
-                <div className="mb-10 mt-5"> <SubscribeButton /></div>
+
+
+
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#f4f4f4', // Customize the background color as needed
+                  color: '#333333', // Change the text color to #333333
+                  borderRadius: '50px', // Adjust the radius to make the rectangle more or less round
+                  padding: '7px 15px',
+                  fontSize: '13px', // Change the font size to 14px
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                }} onClick={() => navigate(RoutesPath.subscriptionpage)}>
+                  <span className='mr-2' style={{ color: '#333333' }} >Subscribe to Premium</span>
+                  <Assets.Nexticon stroke="#F21C29" />
+                </div>
+
+                
 
 
               </div>
@@ -233,32 +252,32 @@ const InvitePage = ({ coins }: Props) => {
               </div>
               <div className="my-10"></div>
             </div>
-            </div>
-            <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-            <div
-              className="lastsection ml-5 mr-5 mt-5 mb-0 lg:mr-20"
-              style={{
-                width: "30%",
-                flexGrow: 0,
-                overflow: "none",
-                position: "sticky",
-                top: 0,
-                zIndex: 1,
-              }}
-            >
+          </div>
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection ml-5 mr-5 mt-5 mb-0 lg:mr-20"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
 
-              <div className="rounded-xl overflow-hidden" style={{}}>
-                {profile.bossup ? (
-                  <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
-                ) : null}
-              </div>
-
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              {profile.bossup ? (
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+              ) : null}
             </div>
+
           </div>
         </div>
-
       </div>
-      );
+
+    </div>
+  );
 };
 
-      export default InvitePage;
+export default InvitePage;
