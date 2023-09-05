@@ -29,31 +29,28 @@ const Challenge = ({ forums, socket }: Props) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const forumsState = useAppSelector((state) => state.forum.forums);
+  const topicsLength = useAppSelector((state) => state.forum.count);
   const profile = useAppSelector((state) => state.user.profile);
-  const popupRef = useRef<HTMLDivElement | null>(null); 
+  const popupRef = useRef<HTMLDivElement | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
+    if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+      closePopup();
+    }
+  };
   useEffect(() => {
-    const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node)
-      ) {
-        closePopup();
-      }
-    };
-
     if (isPopupOpen) {
-      document.addEventListener('mousedown', handleOutsideInteraction);
-      document.addEventListener('touchstart', handleOutsideInteraction);
+      document.addEventListener("mousedown", handleOutsideInteraction);
+      document.addEventListener("touchstart", handleOutsideInteraction);
     } else {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     };
   }, [isPopupOpen]);
 
@@ -148,30 +145,38 @@ const Challenge = ({ forums, socket }: Props) => {
   };
   return (
     <div>
-       <div className="mobile-only">
-      {isPopupOpen && (
-        <div className="overlay">
-          <div ref={popupRef} className="mobilepopup" style={{ overflowY: "scroll" }}>
-            <Bossoftheweekpopup/>
+      <div className="mobile-only">
+        {isPopupOpen && (
+          <div className="overlay">
+            <div
+              ref={popupRef}
+              className="mobilepopup"
+              style={{ overflowY: "scroll" }}
+            >
+              <Bossoftheweekpopup />
+            </div>
           </div>
-        </div>
-      )}
-
+        )}
       </div>
       <div className="mobile-only bg-white">
-      <ForumCard
+        <ForumCard
           onCreate={() => {
             navigate(RoutesPath.CreateBossup, {
               state: { industryId: industry?.industryId },
             });
-          } }
+          }}
           createLabel="Enter Challenge"
           banner={industry?.photo!}
           didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
           label={industry?.description ?? "Industry Description"}
           members={industry?.joinedUsers?.length ?? 0}
           onJoin={joinIndustry}
-          topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries width={12}/>} topicstext={"Entries"}      />
+          topics={topicsLength}
+          aboutontap={openPopup}
+          aboutontaptext={"About"}
+          topicsicon={<Assets.Entries width={12} />}
+          topicstext={"Entries"}
+        />
       </div>
       <div className="bg-white">
         {forums.map((forum: Forum, index: number) => (

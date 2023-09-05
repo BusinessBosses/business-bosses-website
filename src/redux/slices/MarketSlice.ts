@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { Market } from '../../common/interfaces/Market';
+import { User } from '../../common/interfaces/user';
 
 // Define a type for the slice state
 
@@ -9,6 +10,7 @@ interface MarketState {
     page: number,
     count: number,
     markets: Market[],
+    marketMembers: User[]
     loading: boolean
 }
 
@@ -17,6 +19,7 @@ const initialState: MarketState = {
     page: 0,
     count: 0,
     markets: [],
+    marketMembers: [],
     loading: false
 }
 
@@ -36,6 +39,9 @@ export const marketSlice = createSlice({
         addMarketsToState: (state, action: PayloadAction<Market[]>) => {
             state.markets = [...state.markets, ...action.payload]
         },
+        addMembersToState: (state, action: PayloadAction<User[]>) => {
+            state.marketMembers = action.payload;
+        },
         addNewListing: (state, action: PayloadAction<Market>) => {
             state.markets.unshift(action.payload)
         },
@@ -46,6 +52,6 @@ export const marketSlice = createSlice({
     },
 })
 
-export const { incrementPage, addMarketsToState, saveCount, changeLoadingState, addNewListing, updateListing } = marketSlice.actions
+export const { incrementPage, addMarketsToState, saveCount, changeLoadingState, addNewListing, updateListing, addMembersToState } = marketSlice.actions
 
 export default marketSlice.reducer

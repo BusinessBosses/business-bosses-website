@@ -8,6 +8,7 @@ import IndustryCard from "./components/IndustryCard";
 const Learning = () => {
   const industries = useAppSelector((state) => state.industry.industries);
   const [learningIndustries, setLearningIndustries] = useState<Industry[]>([]);
+  
   useEffect(() => {
     const filteredIndustries = CommunitiesController.getIndustriesByCategory(
       industries,

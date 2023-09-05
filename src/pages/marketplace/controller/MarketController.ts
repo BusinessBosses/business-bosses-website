@@ -7,6 +7,11 @@ class MarketController {
         return response
     }
 
+    async fetchMarketUsers() {
+        const response = await serviceApi.fetch(`/members/marketplace`);
+        return response
+    }
+
 
     async createListing(args: MarketStruct) {
         const response = await serviceApi.post('/markets', args);

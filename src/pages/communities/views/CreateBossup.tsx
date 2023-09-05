@@ -276,11 +276,7 @@ const CreateBossup = () => {
             className="w-full p-3"
           />
           <div className="my-10"></div>
-          <div className=""> Only post articles, insights, and resources others can learn from.</div>
-          <div className="flex mt-5 items-center gap-1 lg:text-base md:text-sm justify-center">
-                <Assets.Reporticon width={30}/>
-                <div>To sell your products and services, list on "Marketplace".</div>
-            </div>
+          
         </form>
       </div>
     </div>
