@@ -91,7 +91,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 <input
                   ref={commentInputRef}
                   type="text"
-                  className="outline-none border-none w-full "
+                  className="border-none outline-none w-full "
                   placeholder="Comment..."
                   name=""
                   id=""
@@ -108,7 +108,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   error={err}
                   errorMessage="Something went wrong!!"
                   loading={loading}
-                  onReload={() => { }}
+                  onReload={() => {}}
                 />
               )}
               <div className="px-4">
@@ -130,7 +130,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 <input
                   ref={commentInputRef}
                   type="text"
-                  className="outline-none border-none w-full "
+                  className="outline-none border-none outline-none w-full "
                   placeholder="Comment..."
                   name=""
                   id=""
@@ -147,7 +147,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   error={err}
                   errorMessage="Something went wrong!!"
                   loading={loading}
-                  onReload={() => { }}
+                  onReload={() => {}}
                 />
               )}
               <div className="px-4">
@@ -185,7 +185,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
           <div className="flex items-center gap-5">
             {data.user?.isSubscribed && (
-              <GreyButton onClick={() => { }} text={"Connect"} />
+              <GreyButton onClick={() => {}} text={"Connect"} />
             )}
 
             <Popup
@@ -198,22 +198,21 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               on="click"
               closeOnDocumentClick
               contentStyle={{ padding: "0px", border: "none" }}
-              modal 
-              overlayStyle={{
-                background: 'rgba(0, 0, 0, 0.8)', 
-                zIndex: 1000, 
-              }}
+              // overlayStyle={{
+              //   background: "rgba(0, 0, 0, 0.8)",
+              //   zIndex: 1000,
+              // }}
             >
               {
                 (((close: any) =>
                   data.user.uid === profile?.uid ? (
-                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                    <div className=" bg-white shadow-xl rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
                       <button
                         onClick={() => {
                           close();
                           navigate(RoutesPath.createPost, { state: data });
                         }}
-                        className="menu-item"
+                        className="menu-item border-none outline-none"
                       >
                         Edit
                       </button>
@@ -221,7 +220,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                         onClick={() => {
                           close();
                         }}
-                        className="menu-item"
+                        className="menu-item border-none outline-none"
                       >
                         Delete
                       </button>
@@ -232,13 +231,13 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                             state: data.postId,
                           });
                         }}
-                        className="menu-item"
+                        className="menu-item border-none outline-none"
                       >
                         Boost
                       </button>
                     </div>
                   ) : (
-                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                    <div className=" bg-white shadow-xl rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
                       <button
                         onClick={() => {
                           close();
@@ -247,7 +246,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                             postId: data.postId,
                           });
                         }}
-                        className="menu-item "
+                        className=" border-none outline-none"
                       >
                         Block @{data.user.username}
                       </button>
@@ -260,7 +259,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                             reason: "",
                           });
                         }}
-                        className="menu-item text-primary"
+                        className="menu-item text-primary border-none outline-none"
                       >
                         Report Post
                       </button>
@@ -274,7 +273,9 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           {data.promote ? (
             <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
           ) : null}
-          <p className="text-sm text-[#303133] lg:text-base break-words">{data.title}</p>
+          <p className="text-sm text-[#303133] lg:text-base break-words">
+            {data.title}
+          </p>
           {data.images ? (
             <div className="mt-2">
               <img

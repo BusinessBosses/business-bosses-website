@@ -20,11 +20,13 @@ interface Props {
   currentRoute: string;
   unseenChat?: boolean;
   unseenNotification?: boolean;
+  onTapButton?: () => void;
 }
 
 const ComputerTopNav = ({
   // currentIndex,
   // onTabClick,
+  onTapButton,
   currentRoute,
   unseenChat,
   unseenNotification,
@@ -95,7 +97,11 @@ const ComputerTopNav = ({
       case 1:
         return (
           <button
-            onClick={openPopup}
+            onClick={() => {
+              if (onTapButton) {
+                onTapButton();
+              }
+            }}
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -104,8 +110,8 @@ const ComputerTopNav = ({
               {currentRoute === "/communities"
                 ? "Enter Challenge"
                 : currentRoute === "/communities/learning"
-                  ? "Start A Topic"
-                  : "Share opportunities"}
+                ? "Start A Topic"
+                : "Share opportunities"}
             </p>
 
             <BsPlusLg
@@ -190,7 +196,7 @@ const ComputerTopNav = ({
             className={
               currentIndex === 1
                 ? "text-primary font-semibold text-base"
-                :  "text-[#232324] text-base"
+                : "text-[#232324] text-base"
             }
           >
             Boss Up
@@ -210,7 +216,7 @@ const ComputerTopNav = ({
             className={
               currentIndex === 2
                 ? "text-primary font-semibold text-base"
-                :  "text-[#232324] text-base"
+                : "text-[#232324] text-base"
             }
           >
             Marketplace
@@ -223,14 +229,18 @@ const ComputerTopNav = ({
         onClick={() => handleTabClick(3)}
       >
         <div className="flex flex-col items-center relative">
-          {currentIndex ===3?<Assets.Activemessage
-            stroke={currentIndex === 3 ? primaryColor : strokeColor}
-            style={{ width: "24px", height: "24px" }}
-          />:<Assets.Messagenoback
-          stroke={currentIndex === 3 ? primaryColor : strokeColor}
-          style={{ width: "24px", height: "24px" }}
-        />}
-          
+          {currentIndex === 3 ? (
+            <Assets.Activemessage
+              stroke={currentIndex === 3 ? primaryColor : strokeColor}
+              style={{ width: "24px", height: "24px" }}
+            />
+          ) : (
+            <Assets.Messagenoback
+              stroke={currentIndex === 3 ? primaryColor : strokeColor}
+              style={{ width: "24px", height: "24px" }}
+            />
+          )}
+
           {unseenChat ? (
             <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
           ) : null}
@@ -238,7 +248,7 @@ const ComputerTopNav = ({
             className={
               currentIndex === 3
                 ? "text-primary font-semibold text-base"
-                :  "text-[#232324] text-base"
+                : "text-[#232324] text-base"
             }
           >
             Messages
@@ -251,14 +261,14 @@ const ComputerTopNav = ({
         onClick={() => handleTabClick(4)}
       >
         <div className="flex flex-col items-center relative">
-         
-          {currentIndex === 4?<Assets.ActiveNotification
-            style={{ width: "24px", height: "25px" }}
-          />:<Assets.Notifnoback
-          style={{ width: "24px", height: "25px" }}
-        />}
-         
-          
+          {currentIndex === 4 ? (
+            <Assets.ActiveNotification
+              style={{ width: "24px", height: "25px" }}
+            />
+          ) : (
+            <Assets.Notifnoback style={{ width: "24px", height: "25px" }} />
+          )}
+
           {unseenNotification ? (
             <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
           ) : null}
@@ -282,80 +292,117 @@ const ComputerTopNav = ({
                 {currentIndex === 0 ? (
                   <div>
                     <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                      <div className="flex items-center"> {/* Wrapping div */}
-                        <button onClick={() => closePopup()} className="flex items-center mr-5">
+                      <div className="flex items-center">
+                        {" "}
+                        {/* Wrapping div */}
+                        <button
+                          onClick={() => closePopup()}
+                          className="flex items-center mr-5"
+                        >
                           <Assets.Backbutton />
                         </button>
                         <p className="text-2xl font-bold">Create Post</p>
                       </div>
                       <div />
                     </div>
-                    <CreatePost /></div>
+                    <CreatePost />
+                  </div>
                 ) : currentIndex === 1 ? (
-                  currentRoute === "/communities"
-                    ? <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                  currentRoute === "/communities" ? (
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                       <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                        <div className="flex items-center"> {/* Wrapping div */}
-                          <button onClick={() => closePopup()} className="flex items-center mr-5">
+                        <div className="flex items-center">
+                          {" "}
+                          {/* Wrapping div */}
+                          <button
+                            onClick={() => closePopup()}
+                            className="flex items-center mr-5"
+                          >
                             <Assets.Backbutton />
                           </button>
-                          <p className="text-2xl font-bold">Introduce your Business</p>
+                          <p className="text-2xl font-bold">
+                            Introduce your Business
+                          </p>
                         </div>
                         <div />
                       </div>
-                      <CreateBossup /></div>
-                    : currentRoute === "/communities/learning"
-                      ? <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                        <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                          <div className="flex items-center"> {/* Wrapping div */}
-                            <button onClick={() => closePopup()} className="flex items-center mr-5">
-                              <Assets.Backbutton />
-                            </button>
-                            <p className="text-2xl font-bold">Start a Topic</p>
-                          </div>
-                          <div />
+                      <CreateBossup />
+                    </div>
+                  ) : currentRoute === "/communities/learning" ? (
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                      <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                        <div className="flex items-center">
+                          {" "}
+                          {/* Wrapping div */}
+                          <button
+                            onClick={() => closePopup()}
+                            className="flex items-center mr-5"
+                          >
+                            <Assets.Backbutton />
+                          </button>
+                          <p className="text-2xl font-bold">Start a Topic</p>
                         </div>
+                        <div />
                       </div>
-                      : <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                        <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                          <div className="flex items-center"> {/* Wrapping div */}
-                            <button onClick={() => closePopup()} className="flex items-center mr-5">
-                              <Assets.Backbutton />
-                            </button>
-                            <p className="text-2xl font-bold">Share Opportunities</p>
-                          </div>
-                          <div />
+                    </div>
+                  ) : (
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                      <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                        <div className="flex items-center">
+                          {" "}
+                          {/* Wrapping div */}
+                          <button
+                            onClick={() => closePopup()}
+                            className="flex items-center mr-5"
+                          >
+                            <Assets.Backbutton />
+                          </button>
+                          <p className="text-2xl font-bold">
+                            Share Opportunities
+                          </p>
                         </div>
+                        <div />
                       </div>
+                    </div>
+                  )
                 ) : currentIndex === 2 ? (
                   <div>
-                  <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                    <div className="flex items-center"> {/* Wrapping div */}
-                      <button onClick={() => closePopup()} className="flex items-center mr-5">
-                        <Assets.Backbutton />
-                      </button>
-                      <p className="text-2xl font-bold">Create Listing</p>
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                      <div className="flex items-center">
+                        {" "}
+                        {/* Wrapping div */}
+                        <button
+                          onClick={() => closePopup()}
+                          className="flex items-center mr-5"
+                        >
+                          <Assets.Backbutton />
+                        </button>
+                        <p className="text-2xl font-bold">Create Listing</p>
+                      </div>
+                      <div />
                     </div>
-                    <div />
+                    <CreateListing />
                   </div>
-                  <CreateListing /></div>
                 ) : (
-
                   <div>
                     <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                      <div className="flex items-center"> {/* Wrapping div */}
-                        <button onClick={() => closePopup()} className="flex items-center mr-5">
+                      <div className="flex items-center">
+                        {" "}
+                        {/* Wrapping div */}
+                        <button
+                          onClick={() => closePopup()}
+                          className="flex items-center mr-5"
+                        >
                           <Assets.Backbutton />
                         </button>
                         <p className="text-2xl font-bold">Create Post</p>
                       </div>
                       <div />
                     </div>
-                    <CreatePost /></div>
+                    <CreatePost />
+                  </div>
                 )}
-
               </div>
-
             </div>
           </div>
         )}

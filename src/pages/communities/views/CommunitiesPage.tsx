@@ -29,6 +29,7 @@ import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 import Assets from "../../../assets";
 import Learningpopup from "../../popups/Learningpopup";
 import Opportunitiespopup from "../../popups/Opportunitiespopup";
+import AppConstants from "../../../constants/consts";
 
 interface Props {
   socket: Socket;
@@ -43,7 +44,9 @@ const CommunitiesPage = ({ socket }: Props) => {
   const [forumLoading, setForumLoading] = useState<boolean>(false);
   const [industryLoading, setIndustryLoading] = useState<boolean>(false);
   const industries = useAppSelector((state) => state.forum.forums);
+  const appIndustries = useAppSelector((state) => state.industry.industries);
   const forums = useAppSelector((state) => state.forum.forums);
+  const topicsLength: number = useAppSelector((state) => state.forum.count);
   const dispatch = useAppDispatch();
   const currentRoute = location.pathname;
 
@@ -81,16 +84,16 @@ const CommunitiesPage = ({ socket }: Props) => {
     };
 
     if (isPopupOpen) {
-      document.addEventListener('mousedown', handleOutsideInteraction);
-      document.addEventListener('touchstart', handleOutsideInteraction);
+      document.addEventListener("mousedown", handleOutsideInteraction);
+      document.addEventListener("touchstart", handleOutsideInteraction);
     } else {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     };
   }, [isPopupOpen]);
 
@@ -104,7 +107,14 @@ const CommunitiesPage = ({ socket }: Props) => {
 
   useEffect(() => {
     initRoute();
-  }, []);
+    const filteredIndustries = CommunitiesController.getIndustriesByCategory(
+      appIndustries,
+      AppConstants.BOSS_UP_CHALLENGE_CATEGORY_ID
+    );
+    if (!!filteredIndustries.length) {
+      setIndustry(filteredIndustries[0]);
+    }
+  }, [location, appIndustries]);
 
   const joinIndustry = async () => {
     if (!!industry?.joinedUsers?.includes(profile!.uid)) {
@@ -131,7 +141,10 @@ const CommunitiesPage = ({ socket }: Props) => {
             <div className="flex items-center">
               <p className="text-base font-semibold text-[#333333]">Learning</p>
             </div>
-            <div className="flex items-center ml-auto gap-1" onClick={openPopup}>
+            <div
+              className="flex items-center ml-auto gap-1"
+              onClick={openPopup}
+            >
               <p>Info</p>
               <BsInfoCircle />
             </div>
@@ -150,7 +163,10 @@ const CommunitiesPage = ({ socket }: Props) => {
                 Opportunities
               </p>
             </div>
-            <div className="flex items-center ml-auto gap-1" onClick={openPopup}>
+            <div
+              className="flex items-center ml-auto gap-1"
+              onClick={openPopup}
+            >
               <p>Info</p>
               <BsInfoCircle />
             </div>
@@ -170,7 +186,10 @@ const CommunitiesPage = ({ socket }: Props) => {
                 Boss Up Challenge
               </p>
             </div>
-            <div onClick={openPopup} className="flex items-center ml-auto gap-1">
+            <div
+              onClick={openPopup}
+              className="flex items-center ml-auto gap-1"
+            >
               <p className=" text-base">About</p>
               <BsInfoCircle />
             </div>
@@ -188,10 +207,13 @@ const CommunitiesPage = ({ socket }: Props) => {
               label={industry?.description ?? "Industry Description"}
               members={industry?.joinedUsers?.length ?? 0}
               onJoin={joinIndustry}
-              topics={20} aboutontap={openPopup} aboutontaptext={"About"} topicsicon={<Assets.Entries width={15} />} topicstext={"Entries"} />
+              topics={topicsLength}
+              aboutontap={openPopup}
+              aboutontaptext={"About"}
+              topicsicon={<Assets.Entries width={15} />}
+              topicstext={"Entries"}
+            />
           </div>
-
-
         </div>
       );
     }
@@ -303,17 +325,25 @@ const CommunitiesPage = ({ socket }: Props) => {
       </div>
 
       <div className="computer-only">
-      <div className="computer-only">
-      {isPopupOpen && (
-        <div className="overlay">
-          <div ref={popupRef} className="computerpopup" style={{ overflowY: "scroll" }}>
-            {currentRoute==="/communities"?
-            <Bossoftheweekpopup/>: currentRoute==="/communities/learning" ? <Learningpopup/> : <Opportunitiespopup/>}
-          </div>
+        <div className="computer-only">
+          {isPopupOpen && (
+            <div className="overlay">
+              <div
+                ref={popupRef}
+                className="computerpopup"
+                style={{ overflowY: "scroll" }}
+              >
+                {currentRoute === "/communities" ? (
+                  <Bossoftheweekpopup />
+                ) : currentRoute === "/communities/learning" ? (
+                  <Learningpopup />
+                ) : (
+                  <Opportunitiespopup />
+                )}
+              </div>
+            </div>
+          )}
         </div>
-      )}
-
-      </div>
         <ComputerHeader />
         <div className="computer-content">
           <div

@@ -92,7 +92,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
               <input
                 ref={commentInputRef}
                 type="text"
-                className="outline-none border-none w-full "
+                className="outline-none border-none outline-none w-full "
                 placeholder="Comment..."
                 name=""
                 id=""
@@ -157,22 +157,21 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
               on="click"
               closeOnDocumentClick
               contentStyle={{ padding: "0px", border: "none" }}
-              modal 
-              overlayStyle={{
-                background: 'rgba(0, 0, 0, 0.8)', 
-                zIndex: 1000, 
-              }}
+              // overlayStyle={{
+              //   background: "rgba(0, 0, 0, 0.8)",
+              //   zIndex: 1000,
+              // }}
             >
               {
                 (((close: any) =>
                   data.user!.uid === profile?.uid ? (
-                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                    <div className=" bg-white shadow-xl rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
                       <button
                         onClick={() => {
                           close();
                           onEdit();
                         }}
-                        className="menu-item"
+                        className="menu-item border-none outline-none"
                       >
                         Edit
                       </button>
@@ -181,13 +180,13 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                           close();
                           // navigate(RoutesPath.promotePost, { state: data.forumId });
                         }}
-                        className="menu-item"
+                        className="menu-item border-none outline-none"
                       >
                         Delete
                       </button>
                     </div>
                   ) : (
-                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                    <div className=" bg-white shadow-xl rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
                       <button
                         onClick={() => {
                           close();
@@ -196,7 +195,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                             postId: data.forumId,
                           });
                         }}
-                        className="menu-item"
+                        className="menu-item border-none outline-none"
                       >
                         Block User
                       </button>
@@ -209,7 +208,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                             reason: "",
                           });
                         }}
-                        className="menu-item"
+                        className="menu-item border-none outline-none"
                       >
                         Report Post
                       </button>
@@ -220,7 +219,9 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
           </div>
         </div>
         <div className="mt-2">
-          <p className=" text-sm lg:text-base font-[700] text-black break-words">{data.title}</p> 
+          <p className=" text-sm lg:text-base font-[700] text-black break-words">
+            {data.title}
+          </p>
           <p className="= text-sm lg:text-base text-[#303133] break-words">
             {data.description}
           </p>

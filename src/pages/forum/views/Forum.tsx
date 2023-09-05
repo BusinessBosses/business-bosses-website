@@ -34,6 +34,7 @@ import Opportunities from "../../communities/views/Opportunities";
 import Opportunitiespopup from "../../popups/Opportunitiespopup";
 import FilledInputcommunities from "../../../common/components/inputs/FilledInputcommunities";
 import FilledTextareacommunities from "../../../common/components/inputs/FilledTextareacommunities";
+import FormModal from "./components/FormModal";
 interface Props {
   socket: Socket;
 }
@@ -74,16 +75,16 @@ const Forum = ({ socket }: Props) => {
     };
 
     if (isPopupOpen) {
-      document.addEventListener('mousedown', handleOutsideInteraction);
-      document.addEventListener('touchstart', handleOutsideInteraction);
+      document.addEventListener("mousedown", handleOutsideInteraction);
+      document.addEventListener("touchstart", handleOutsideInteraction);
     } else {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     };
   }, [isPopupOpen]);
 
@@ -94,7 +95,6 @@ const Forum = ({ socket }: Props) => {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
-
 
   const fetchForums = async (industryId: string) => {
     setLoading(true);
@@ -318,11 +318,33 @@ const Forum = ({ socket }: Props) => {
         (ft) => ft !== profile?.uid
       );
       setIndustry({ ...industry, joinedUsers: newJoinedUsers });
+      dispatch(
+        saveUserData({
+          ...profile!,
+          interests:
+            profile?.interests?.filter(
+              (ft) => ft.industryId !== industry.industryId
+            ) ?? [],
+        })
+      );
     } else {
+      // alert("here");
+      // setIndustry({
+      //   ...industry,
+      //   joinedUsers: [...industry?.joinedUsers!, profile!.uid],
+      // });
       setIndustry({
         ...industry,
-        joinedUsers: [...industry?.joinedUsers!, profile!.uid],
+        joinedUsers: industry?.joinedUsers
+          ? [...industry?.joinedUsers!, profile!.uid]
+          : [profile!.uid],
       });
+      dispatch(
+        saveUserData({
+          ...profile!,
+          interests: [...profile?.interests!, industry!],
+        })
+      );
     }
     await serviceApi.update(
       `/industry/join-leave-industry/${industry?.industryId}`
@@ -330,6 +352,20 @@ const Forum = ({ socket }: Props) => {
   };
   return (
     <div>
+      <FormModal
+        closeModal={() => setOpenModal(false)}
+        createPost={createPost}
+        descriptionRef={descriptionRef}
+        images={images}
+        industry={industry!}
+        openModal={openModal}
+        processing={processing}
+        removeImage={removeImage}
+        setImages={(imgs: File[]) => setImages(imgs)}
+        stateProps={stateProps ?? undefined}
+        titleRef={titleRef}
+        updatePostFn={updatePostFn}
+      />
       <div className="mobile-only">
         <div
           style={{
@@ -344,177 +380,54 @@ const Forum = ({ socket }: Props) => {
           <div className="mobile-only">
             {isPopupOpen && (
               <div className="overlay">
-                <div ref={popupRef} className="mobilepopup" style={{ overflowY: "scroll" }}>
-                  {industry?.categoryId === AppConstants.LEARNINGID
-                    ? <Learningpopup /> :
+                <div
+                  ref={popupRef}
+                  className="mobilepopup"
+                  style={{ overflowY: "scroll" }}
+                >
+                  {industry?.categoryId === AppConstants.LEARNINGID ? (
+                    <Learningpopup />
+                  ) : (
                     <Opportunitiespopup />
-                  }
+                  )}
                 </div>
               </div>
             )}
-
           </div>
         </div>
-        <Popup lockScroll modal open={openModal}>
-          <div className=" min-h-screen h-full bg-[#f4f4f4] overflow-auto mb-20 min-w-full w-screen">
-            <div className=" top-0 w-full z-50">
-              <div className="bg-white flex items-center p-5 justify-between">
-                <h1 className="text-lg font-[900]">
-                  {industry?.categoryId === AppConstants.LEARNINGID
-                    ? "Start a Topic"
-                    : "Share Opportunities"}
-                </h1>
-                <button
-                  onClick={() => {
-                    setOpenModal(false);
-                  }}
-                >
-                  <AiOutlineClose size={20} />
-                </button>
-              </div>
-            </div>
-            <div className=" px-4">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (stateProps) {
-                    updatePostFn();
-                  } else {
-                    createPost();
-                  }
-                }}
-              >
-                <FilledInputcommunities
-                  defaultValue={stateProps?.title}
-                  inputRef={titleRef}
-                  onchange={() => { }}
-                  placeholder={industry?.categoryId === AppConstants.LEARNINGID
-                    ? "Enter Topic Title" : "Enter Opportunity Title"}
-                  className="text-sm"
-                />
-                <FilledTextareacommunities
-                  defaultValue={stateProps?.description}
-                  inputRef={descriptionRef}
-                  onchange={() => { }}
-                  placeholder={industry?.categoryId === AppConstants.LEARNINGID
-                    ? "Enter your Description" : "Describe the Opportunity"}
-                  className="text-sm"
-                />
 
-                <div className="flex items-center justify-between bg-white p-3 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Assets.File />
-                    <small className="text-[#BABABA]">Add attachment</small>
-                  </div>
-                  <label
-                    htmlFor="file"
-                    className="bg-[#F4F4F4] p-2.5 rounded-full cursor-pointer"
-                  >
-                    <img src={Assets.Gallery} alt="" />
-                  </label>
-                </div>
-                <input
-                  type="file"
-                  className="w-0 h-0"
-                  accept="images/*"
-                  onChange={(e) => {
-                    if (!e.target.files?.length) return;
-                    if (images.length === 4) return;
-                    setImages([...images, e.target.files[0]]);
-                  }}
-                  name=""
-                  id="file"
-                />
-                {stateProps ? (
-                  <div className="grid grid-cols-4 gap-4 mb-10">
-                    {stateProps.images?.map((img: string, index: number) => {
-                      return (
-                        <div key={index} className="relative">
-                          <img
-                            alt=""
-                            className="h-16 rounded-lg object-cover w-full"
-                            src={img}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-4 gap-4 mb-10">
-                    {images.map((img: File, index: number) => {
-                      return (
-                        <div key={index} className="relative">
-                          <img
-                            alt=""
-                            className="h-16 rounded-lg object-cover w-full"
-                            src={URL.createObjectURL(img)}
-                          />
-                          <div className="absolute top-0 right-0">
-                            <button onClick={() => removeImage(img.name)}>
-                              <MdCancel color="red" />
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-                {/* <div className="flex items-center justify-between my-10">
-            <img src={Assets.Rocket} alt="" />
-            <p className="text-[#373737] font-semibold">Boost Post</p>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                ref={boostPostRef}
-                type="checkbox"
-                value=""
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-0 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-            </label>
-          </div> */}
-
-                <FilledButton
-                  onClick={stateProps ? updatePostFn : createPost}
-                  text={
-                    processing ? "Posting..." : stateProps ? "Update" : "Post"
-                  }
-                  className="w-full p-3"
-                />
-                <div className="my-10"></div>
-
-                <div className=" text-center text-sm">{industry?.categoryId === AppConstants.LEARNINGID
-                    ? "Only post articles, insights, and resources others can learn from." : "Only post opportunities that will help you and others grow their businesses."} </div>
-                <div className="flex items-center gap-1 lg:text-base md:text-sm justify-center text-sm">
-                  <Assets.Reporticon width={20} />
-                  <div>To sell your products and services, list on "Marketplace".</div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </Popup>
         {industry ? (
           <ForumCard
             onCreate={() => {
               setOpenModal(true);
             }}
-            createLabel={industry.categoryId === AppConstants.LEARNINGID
-              ? "Start a topic"
-              : "Share Opportunities"}
+            createLabel={
+              industry.categoryId === AppConstants.LEARNINGID
+                ? "Start a topic"
+                : "Share Opportunities"
+            }
             banner={industry?.photo!}
             didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
             label={industry?.description ?? "Industry description"}
             members={industry?.joinedUsers?.length ?? 0}
             onJoin={joinIndustry}
-            topics={count} aboutontap={openPopup} aboutontaptext={"Info"} topicsicon={<Assets.Topicsicon/>} topicstext={industry.categoryId === AppConstants.LEARNINGID
-              ? "Topics"
-              : "Opport."} />
+            topics={count}
+            aboutontap={openPopup}
+            aboutontaptext={"Info"}
+            topicsicon={<Assets.Topicsicon />}
+            topicstext={
+              industry.categoryId === AppConstants.LEARNINGID
+                ? "Topics"
+                : "Opport."
+            }
+          />
         ) : null}
         {loading ? (
           <FetchStatus
             error={false}
             errorMessage="Something went wrong!!"
             loading={true}
-            onReload={() => { }}
+            onReload={() => {}}
           />
         ) : null}
         {err ? (
@@ -567,7 +480,11 @@ const Forum = ({ socket }: Props) => {
         </div>
       </div>
       <div className="computer-only">
-        <ComputerHeader />
+        <ComputerHeader
+          onTapButton={() => {
+            setOpenModal(true);
+          }}
+        />
         <div className="computer-content">
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
@@ -596,7 +513,7 @@ const Forum = ({ socket }: Props) => {
                 error={false}
                 errorMessage="Something went wrong!!"
                 loading={true}
-                onReload={() => { }}
+                onReload={() => {}}
               />
             ) : null}
             {err ? (
@@ -673,9 +590,11 @@ const Forum = ({ socket }: Props) => {
                   onCreate={() => {
                     setOpenModal(true);
                   }}
-                  createLabel={industry.categoryId === AppConstants.LEARNINGID
-                    ? "Start a topic"
-                    : "Share Opportunities"}
+                  createLabel={
+                    industry.categoryId === AppConstants.LEARNINGID
+                      ? "Start a topic"
+                      : "Share Opportunities"
+                  }
                   banner={industry?.photo!}
                   didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
                   label={industry?.description ?? "Industry description"}
@@ -683,11 +602,15 @@ const Forum = ({ socket }: Props) => {
                   onJoin={joinIndustry}
                   topics={count}
                   aboutontap={openPopup}
-                  aboutontaptext="Info" topicsicon={<Assets.Topicsicon />} topicstext={industry.categoryId === AppConstants.LEARNINGID
-                    ? "Topics"
-                    : "Opport."} />
+                  aboutontaptext="Info"
+                  topicsicon={<Assets.Topicsicon />}
+                  topicstext={
+                    industry.categoryId === AppConstants.LEARNINGID
+                      ? "Topics"
+                      : "Opport."
+                  }
+                />
               </div>
-
             ) : null}
           </div>
         </div>
