@@ -9,8 +9,11 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import { onChangeRoute } from "../../../../redux/slices/RouteSlice";
 import Bossupsearch from "../../../communities/views/Bossupsearch";
 import Marketplacesearchpopup from "../../../popups/Marketplacesearchpopup";
+interface Props {
+  onTapButton?: () => void;
+}
 
-const ComputerHeader = () => {
+const ComputerHeader = ({ onTapButton }: Props) => {
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const location = useLocation();
@@ -55,20 +58,21 @@ const ComputerHeader = () => {
               <button
                 onClick={openPopup}
                 className="flex items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg ml-5"
-             
               >
                 <CiSearch className="text-[#A9A9A9]" size={20} />
                 {currentRoute === "/communities" ? (
-                  <p className="text-[#A9A9A9] text-base">Search groups & topics</p>
+                  <p className="text-[#A9A9A9] text-base">
+                    Search groups & topics
+                  </p>
                 ) : currentRoute === "/market" ? (
                   <p className="text-[#A9A9A9] text-base">Search products</p>
-                ): currentRoute === "/chats" ? (
+                ) : currentRoute === "/chats" ? (
                   <p className="text-[#A9A9A9] text-base">Search chats</p>
-                )
-                 : (
-                  <p className="text-[#A9A9A9] text-base">Search people & posts</p>
+                ) : (
+                  <p className="text-[#A9A9A9] text-base">
+                    Search people & posts
+                  </p>
                 )}
-
               </button>
             </div>
           </div>
@@ -86,21 +90,22 @@ const ComputerHeader = () => {
               />
             </div>
           </div>
-          
-          
         </div>
 
         <ComputerTopNav
-            currentRoute={currentRoute}
-            unseenNotification={profile?.profile!.unReadCount! > 0}
-            unseenChat={
-              !!chats.find(
-                (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
-              )
+          onTapButton={() => {
+            if (onTapButton) {
+              onTapButton();
             }
-          />
-
-        
+          }}
+          currentRoute={currentRoute}
+          unseenNotification={profile?.profile!.unReadCount! > 0}
+          unseenChat={
+            !!chats.find(
+              (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
+            )
+          }
+        />
       </div>
       <div
         style={{
@@ -109,22 +114,26 @@ const ComputerHeader = () => {
           background: "rgba(0, 0, 0, 0.1)",
         }}
       ></div>
-      {isPopupOpen && (currentRoute === "/communities" ?
-        <div className="overlay">
-          <div className="popup" style={{ overflowY: "scroll" }}>
-            <Bossupsearch onClosePopup={closePopup} />
+      {isPopupOpen &&
+        (currentRoute === "/communities" ? (
+          <div className="overlay">
+            <div className="popup" style={{ overflowY: "scroll" }}>
+              <Bossupsearch onClosePopup={closePopup} />
+            </div>
           </div>
-        </div> : currentRoute === "/market" ?
-        <div className="overlay">
-          <div className="popup" style={{ overflowY: "scroll" }}>
-            <Marketplacesearchpopup />
+        ) : currentRoute === "/market" ? (
+          <div className="overlay">
+            <div className="popup" style={{ overflowY: "scroll" }}>
+              <Marketplacesearchpopup />
+            </div>
           </div>
-        </div> : <div className="overlay">
-          <div className="popup" style={{ overflowY: "scroll" }}>
-            <HomeSearch onClosePopup={closePopup}/>
+        ) : (
+          <div className="overlay">
+            <div className="popup" style={{ overflowY: "scroll" }}>
+              <HomeSearch onClosePopup={closePopup} />
+            </div>
           </div>
-        </div>
-      )}
+        ))}
     </div>
   );
 };

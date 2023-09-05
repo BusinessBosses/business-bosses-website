@@ -20,6 +20,7 @@ import MyProfileDetails from "../../profile/views/components/MyProfileDetails";
 import { User } from "../../../common/interfaces/user";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import { useEffect, useState } from "react";
 
 interface Props {
   socket: Socket;
@@ -98,215 +99,238 @@ const HomePage = ({ socket }: Props) => {
     };
     dispatch(updatePost({ index: postIndex, post }));
   };
+
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+
+  const handleScreenWidthChange = () => {
+    setScreenWidth(window.innerWidth);
+    // Perform any actions or updates based on the screen width change
+  };
+
+  useEffect(() => {
+    // Event listener for screen resize
+    window.addEventListener("resize", handleScreenWidthChange);
+
+    return () => {
+      // Cleanup the event listener when the component unmounts
+      window.removeEventListener("resize", handleScreenWidthChange);
+    };
+  }, []); // Empty dependency array to run the effect only once on mount
+
   return (
     <div>
-      <div className="mobile-only bg-[#fff]">
-        <MobileHeader
-          coins={profile?.profile!.coinscount}
-          unseenNotification={profile?.profile!.unReadCount! > 0}
-          unseenChat={
-            !!chats.find(
-              (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
-            )
-          }
-        />
-        <div className="">
-          {profile.bossup ? (
-            <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
-          ) : null}
+      {screenWidth <= 576 ? (
+        <div className="mobile-only bg-[#fff]">
+          <MobileHeader
+            coins={profile?.profile!.coinscount}
+            unseenNotification={profile?.profile!.unReadCount! > 0}
+            unseenChat={
+              !!chats.find(
+                (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
+              )
+            }
+          />
+          <div className="">
+            {profile.bossup ? (
+              <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+            ) : null}
+          </div>
+
+          {posts.map((post: MixedPostState, index: number) => {
+            if (post.isForum) {
+              return (
+                <ForumItem
+                  onEdit={() => {}}
+                  onComment={(comment: Comment) => {
+                    onComment(comment, index);
+                  }}
+                  onLike={(postId: string) => {
+                    onLike(
+                      {
+                        postId,
+                        type: "forum",
+                        userId: profile.profile!.uid,
+                        receiverUid: post.data.user!.uid,
+                      },
+                      index
+                    );
+                  }}
+                  onCoin={(postId: string) => {
+                    onCoin(
+                      {
+                        postId,
+                        type: "forum",
+                        userId: profile.profile!.uid,
+                        receiverUid: post.data.user!.uid,
+                        timestamp: Date.now(),
+                      },
+                      index
+                    );
+                  }}
+                  data={post.data as Forum}
+                  key={index}
+                />
+              );
+            } else {
+              return (
+                <PostItem
+                  onComment={(comment: Comment) => {
+                    onComment(comment, index);
+                  }}
+                  onLike={(postId: string) => {
+                    onLike(
+                      {
+                        postId,
+                        type: "post",
+                        userId: profile.profile!.uid,
+                        receiverUid: post.data.user!.uid,
+                      },
+                      index
+                    );
+                  }}
+                  onCoin={(postId: string) => {
+                    onCoin(
+                      {
+                        postId,
+                        type: "post",
+                        userId: profile.profile!.uid,
+                        receiverUid: post.data.user!.uid,
+                        timestamp: Date.now(),
+                      },
+                      index
+                    );
+                  }}
+                  data={post.data as Post}
+                  key={index}
+                />
+              );
+            }
+          })}
+          <div className="mb-20"></div>
+          <MobileBottomNav currentIndex={0} />
         </div>
+      ) : null}
+      {screenWidth >= 576 ? (
+        <div className="computer-only bg-[#fff]">
+          <ComputerHeader />
 
-        {posts.map((post: MixedPostState, index: number) => {
-          if (post.isForum) {
-            return (
-              <ForumItem
-                onEdit={() => {}}
-                onComment={(comment: Comment) => {
-                  onComment(comment, index);
-                }}
-                onLike={(postId: string) => {
-                  onLike(
-                    {
-                      postId,
-                      type: "forum",
-                      userId: profile.profile!.uid,
-                      receiverUid: post.data.user!.uid,
-                    },
-                    index
+          <div className="computer-content">
+            <div
+              className="firstsection ml-5 lg:ml-20 pr-5"
+              style={{
+                width: "30%",
+                flexGrow: 0,
+                overflow: "none",
+                position: "sticky",
+                top: 0,
+                zIndex: 1,
+              }}
+            >
+              <div className="">
+                <div className=" flex items-center gap-3">
+                  <ComputerProfileDetails data={profile.profile!} />
+                </div>
+              </div>
+            </div>
+            <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+            <div
+              className="computer-main-content"
+              style={{ width: "40%", flexGrow: 0 }}
+            >
+              {posts.map((post: MixedPostState, index: number) => {
+                if (post.isForum) {
+                  return (
+                    <ForumItem
+                      onEdit={() => {}}
+                      onComment={(comment: Comment) => {
+                        onComment(comment, index);
+                      }}
+                      onLike={(postId: string) => {
+                        onLike(
+                          {
+                            postId,
+                            type: "forum",
+                            userId: profile.profile!.uid,
+                            receiverUid: post.data.user!.uid,
+                          },
+                          index
+                        );
+                      }}
+                      onCoin={(postId: string) => {
+                        onCoin(
+                          {
+                            postId,
+                            type: "forum",
+                            userId: profile.profile!.uid,
+                            receiverUid: post.data.user!.uid,
+                            timestamp: Date.now(),
+                          },
+                          index
+                        );
+                      }}
+                      data={post.data as Forum}
+                      key={index}
+                    />
                   );
-                }}
-                onCoin={(postId: string) => {
-                  onCoin(
-                    {
-                      postId,
-                      type: "forum",
-                      userId: profile.profile!.uid,
-                      receiverUid: post.data.user!.uid,
-                      timestamp: Date.now(),
-                    },
-                    index
+                } else {
+                  return (
+                    <PostItem
+                      onComment={(comment: Comment) => {
+                        onComment(comment, index);
+                      }}
+                      onLike={(postId: string) => {
+                        onLike(
+                          {
+                            postId,
+                            type: "post",
+                            userId: profile.profile!.uid,
+                            receiverUid: post.data.user!.uid,
+                          },
+                          index
+                        );
+                      }}
+                      onCoin={(postId: string) => {
+                        onCoin(
+                          {
+                            postId,
+                            type: "post",
+                            userId: profile.profile!.uid,
+                            receiverUid: post.data.user!.uid,
+                            timestamp: Date.now(),
+                          },
+                          index
+                        );
+                      }}
+                      data={post.data as Post}
+                      key={index}
+                    />
                   );
-                }}
-                data={post.data as Forum}
-                key={index}
-              />
-            );
-          } else {
-            return (
-              <PostItem
-                onComment={(comment: Comment) => {
-                  onComment(comment, index);
-                }}
-                onLike={(postId: string) => {
-                  onLike(
-                    {
-                      postId,
-                      type: "post",
-                      userId: profile.profile!.uid,
-                      receiverUid: post.data.user!.uid,
-                    },
-                    index
-                  );
-                }}
-                onCoin={(postId: string) => {
-                  onCoin(
-                    {
-                      postId,
-                      type: "post",
-                      userId: profile.profile!.uid,
-                      receiverUid: post.data.user!.uid,
-                      timestamp: Date.now(),
-                    },
-                    index
-                  );
-                }}
-                data={post.data as Post}
-                key={index}
-              />
-            );
-          }
-        })}
-        <div className="mb-20"></div>
-        <MobileBottomNav currentIndex={0} />
-      </div>
-
-      <div className="computer-only bg-[#fff]">
-        <ComputerHeader />
-
-        <div className="computer-content">
-          <div
-            className="firstsection ml-5 lg:ml-20 pr-5"
-            style={{
-              width: "30%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-            <div className="">
-              <div className=" flex items-center gap-3">
-                <ComputerProfileDetails data={profile.profile!} />
+                }
+              })}
+            </div>
+            <div
+              style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}
+            ></div>
+            <div
+              className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
+              style={{
+                width: "30%",
+                flexGrow: 0,
+                overflow: "none",
+                position: "sticky",
+                top: 0,
+                zIndex: 1,
+              }}
+            >
+              <div className="rounded-xl overflow-hidden" style={{}}>
+                {profile.bossup ? (
+                  <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                ) : null}
               </div>
             </div>
           </div>
-          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div
-            className="computer-main-content"
-            style={{ width: "40%", flexGrow: 0 }}
-          >
-            {posts.map((post: MixedPostState, index: number) => {
-              if (post.isForum) {
-                return (
-                  <ForumItem
-                    onEdit={() => {}}
-                    onComment={(comment: Comment) => {
-                      onComment(comment, index);
-                    }}
-                    onLike={(postId: string) => {
-                      onLike(
-                        {
-                          postId,
-                          type: "forum",
-                          userId: profile.profile!.uid,
-                          receiverUid: post.data.user!.uid,
-                        },
-                        index
-                      );
-                    }}
-                    onCoin={(postId: string) => {
-                      onCoin(
-                        {
-                          postId,
-                          type: "forum",
-                          userId: profile.profile!.uid,
-                          receiverUid: post.data.user!.uid,
-                          timestamp: Date.now(),
-                        },
-                        index
-                      );
-                    }}
-                    data={post.data as Forum}
-                    key={index}
-                  />
-                );
-              } else {
-                return (
-                  <PostItem
-                    onComment={(comment: Comment) => {
-                      onComment(comment, index);
-                    }}
-                    onLike={(postId: string) => {
-                      onLike(
-                        {
-                          postId,
-                          type: "post",
-                          userId: profile.profile!.uid,
-                          receiverUid: post.data.user!.uid,
-                        },
-                        index
-                      );
-                    }}
-                    onCoin={(postId: string) => {
-                      onCoin(
-                        {
-                          postId,
-                          type: "post",
-                          userId: profile.profile!.uid,
-                          receiverUid: post.data.user!.uid,
-                          timestamp: Date.now(),
-                        },
-                        index
-                      );
-                    }}
-                    data={post.data as Post}
-                    key={index}
-                  />
-                );
-              }
-            })}
-          </div>
-          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div
-            className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
-            style={{
-              width: "30%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-            <div className="rounded-xl overflow-hidden" style={{}}>
-              {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
-              ) : null}
-            </div>
-          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };
