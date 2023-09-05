@@ -42,6 +42,7 @@ import { ReactComponent as Playstorelogo } from "./icons/google-play.svg"
 import Authback from "./icons/authback.png"
 import NoProfile from "./icons/noprofile.png"
 import { ReactComponent as Checkmark } from "./icons/premiumbadge.svg"
+import { ReactComponent as NextIconPrimary } from "./icons/nexticon_primary.svg"
 import { ReactComponent as Moreconnections } from "./icons/moreconnections.svg"
 import { ReactComponent as Rankingicon } from "./icons/rankingicon.svg"
 import { ReactComponent as Nexticon } from "./icons/nexticon.svg"
@@ -116,7 +117,8 @@ const Assets = {
     NoProfile,
     Inviteicon,
     Membersicon,
-    Linkicon
+    Linkicon,
+    NextIconPrimary
 
 };
 export default Assets;

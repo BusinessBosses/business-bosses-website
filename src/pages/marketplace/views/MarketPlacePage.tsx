@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import MarketController from "../controller/MarketController";
 import {
   addMarketsToState,
+  addMembersToState,
   incrementPage,
   saveCount,
   updateListing,
@@ -26,6 +27,7 @@ import Marketplacepopup from "../../popups/Marketplacepopup";
 import Marketplacesearchpopup from "../../popups/Marketplacesearchpopup";
 import BossupPartnerstile from "../../home/views/components/BopssupPartnerstile";
 import Bossuppartnerpage from "../../bossuppartnerpage/bossuppartnerpage";
+import { User } from "../../../common/interfaces/user";
 interface Props {
   socket: Socket;
 }
@@ -44,6 +46,13 @@ const MarketPlacePage = ({ socket }: Props) => {
 
   const closePopup = () => {
     setIsPopupOpen(false);
+  };
+
+  const fetchMarketUsers = async () => {
+    const response = await MarketController.fetchMarketUsers();
+    if (response.success) {
+      dispatch(addMembersToState(response.data.rows.map((mp: any) => mp.user)));
+    }
   };
 
   const fetchCall = async () => {
@@ -127,6 +136,7 @@ const MarketPlacePage = ({ socket }: Props) => {
   useEffect(() => {
     if (!!!market.markets.length) {
       fetchCall();
+      fetchMarketUsers();
     }
   }, []);
 
@@ -141,20 +151,18 @@ const MarketPlacePage = ({ socket }: Props) => {
     };
 
     if (isPopupOpen) {
-      document.addEventListener('mousedown', handleOutsideInteraction);
-      document.addEventListener('touchstart', handleOutsideInteraction);
+      document.addEventListener("mousedown", handleOutsideInteraction);
+      document.addEventListener("touchstart", handleOutsideInteraction);
     } else {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideInteraction);
-      document.removeEventListener('touchstart', handleOutsideInteraction);
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
     };
   }, [isPopupOpen]);
-
-
 
   return (
     <div>
@@ -171,7 +179,12 @@ const MarketPlacePage = ({ socket }: Props) => {
         >
           <div className="flex items-center justify-between bg-white px-3 py-2">
             <p className="text-lg font-semibold text-[#333333]">Marketplace</p>
-            <CiSearch onClick={openPopup}  size={40} style={{ padding: 7 }} strokeWidth={0.5}  />
+            <CiSearch
+              onClick={openPopup}
+              size={40}
+              style={{ padding: 7 }}
+              strokeWidth={0.5}
+            />
           </div>
         </div>
 
@@ -332,7 +345,6 @@ const MarketPlacePage = ({ socket }: Props) => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               <MobileMarketIntro />
-              
             </div>
           </div>
         </div>
