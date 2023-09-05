@@ -13,7 +13,7 @@ import FilledButtonsmall from "../../../../common/components/buttons/FilledButto
 interface Props {
   data: User;
 }
-const PublicProfileDetails = ({ data }: Props) => {
+const PublicProfileDetailonly = ({ data }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
@@ -55,87 +55,11 @@ const PublicProfileDetails = ({ data }: Props) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between my-5 mx-10">
-          <button
-            onClick={() =>
-              navigate(RoutesPath.connections, {
-                state: {
-                  userId: data.uid,
-                  pageIndex: 0,
-                },
-              })
-            }
-            className="text-center"
-          >
-            <p>{data.connectionCount}</p>
-            <p className="text-xs font-semibold text-[#A9A9A9]">Connections</p>
-          </button>
-          <button
-            onClick={() =>
-              navigate(RoutesPath.connections, {
-                state: {
-                  userId: data.uid,
-                  pageIndex: 1,
-                },
-              })
-            }
-            className="text-center"
-          >
-            <p>{data.connectedCount}</p>
-            <p className="text-xs font-semibold text-[#A9A9A9]">Connected</p>
-          </button>
-          <button
-            onClick={() =>
-              navigate(RoutesPath.connections, {
-                state: {
-                  userId: data.uid,
-                  pageIndex: 2,
-                },
-              })
-            }
-            className="text-center"
-          >
-            <p>{data.referalCount}</p>
-            <p className="text-xs font-semibold text-[#A9A9A9]">Referals</p>
-          </button>
-        </div>
-
-        <div className=" flex items-center gap-3">
-          {profile?.connecteds?.includes(data.uid) ? (
-            <OutlinedButton
-              onClick={connection}
-              text="Connected"
-              // icon={<BiEdit />}
-              className="w-full border-[1px] py-1"
-            />
-          ) : (
-            <FilledButtonsmall
-              onClick={connection}
-              text="Connect"
-              // icon={<BiEdit />}
-              className="w-full border-[1px] py-3"
-            />
-          )}
-          <OutlinedButton
-            onClick={() => {
-              navigate(RoutesPath.ChatRoom, { state: { user: data } });
-            }}
-            text="Message"
-            // icon={<img alt="" src={Assets.Coin} />}
-            className="w-full border-[1px] py-1"
-          />
-          <OutlinedButton
-            onClick={() => {
-              navigate(RoutesPath.refer, { state: data.uid });
-            }}
-            text="Refer"
-            // icon={<BsGraphUp />}
-            className="w-full border-[1px] py-1"
-          />
-        </div>
+        
+       
       </div>
     </div>
   );
 };
 
-export default PublicProfileDetails;
+export default PublicProfileDetailonly;
