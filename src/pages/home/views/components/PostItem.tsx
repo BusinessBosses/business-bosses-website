@@ -130,7 +130,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 <input
                   ref={commentInputRef}
                   type="text"
-                  className="outline-none border-none outline-none w-full "
+                  className=" border-none outline-none w-full "
                   placeholder="Comment..."
                   name=""
                   id=""
