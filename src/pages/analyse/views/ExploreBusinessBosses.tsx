@@ -13,6 +13,7 @@ import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import Analyserows from "./components/analyserows";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 import axios from "axios";
+import Loader from "../../../common/components/loader/Loader";
 
 const ExploreBusinessBosses = () => {
   const navigate = useNavigate();
@@ -60,7 +61,9 @@ const ExploreBusinessBosses = () => {
     <div>
       <div>
         {isLoading ? (
-          <div>Loading...</div>
+          <div className="flex items-center justify-center">
+          <Loader size="w-10 h-10" />
+        </div>
         ) : (<div>
           <div className="mobile-only">
             <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
@@ -122,7 +125,9 @@ const ExploreBusinessBosses = () => {
               <div className=" p-5 mx-5 bg-white rounded-xl" style={{ height: "100vh" }}>
                 <div>
                   {isLoading ? (
-                    <div>Loading...</div>
+                    <div className="flex items-center justify-center">
+                    <Loader size="w-10 h-10" />
+                  </div>
                   ) : (<div>
                     <div className="mobile-only">
                       <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>

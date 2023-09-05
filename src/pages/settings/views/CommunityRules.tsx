@@ -5,6 +5,7 @@ import MobileBossOfTheWeek from '../../home/views/components/BossOfTheWeek';
 import ComputerProfileDetails from '../../profile/views/components/ComputerProfiledetails';
 import { useAppSelector } from '../../../redux/store/store';
 import axios from 'axios';
+import Loader from '../../../common/components/loader/Loader';
 
 const CommunityRules = () => {
     const profile = useAppSelector((state) => state.user);
@@ -52,7 +53,9 @@ const CommunityRules = () => {
         <div>
             <div>
                 {isLoading ? (
-                    <div>Loading...</div>
+                    <div className="flex items-center justify-center">
+                    <Loader size="w-10 h-10" />
+                  </div>
                 ) : (
                     <div>
                         <div className='mobile-only'>
@@ -102,7 +105,9 @@ const CommunityRules = () => {
                     >
                         <div>
                             {isLoading ? (
-                                <div>Loading...</div>
+                                <div className="flex items-center justify-center">
+                                <Loader size="w-10 h-10" />
+                              </div>
                             ) : (
                                 <div>
 

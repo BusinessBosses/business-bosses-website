@@ -5,6 +5,7 @@ import MobileBossOfTheWeek from '../../home/views/components/BossOfTheWeek';
 import ComputerProfileDetails from '../../profile/views/components/ComputerProfiledetails';
 import { useAppSelector } from '../../../redux/store/store';
 import axios from 'axios';
+import Loader from '../../../common/components/loader/Loader';
 
 const Invitetandcs = () => {
     const profile = useAppSelector((state) => state.user);
@@ -52,7 +53,9 @@ const Invitetandcs = () => {
         <div>
             <div>
                 {isLoading ? (
-                    <div>Loading...</div>
+                    <div className="flex items-center justify-center">
+                    <Loader size="w-10 h-10" />
+                  </div>
                 ) : (
                     <div className='mobile-only'>
                         <div className=" top-0 w-full z-50 " style={{
@@ -99,7 +102,9 @@ const Invitetandcs = () => {
                         style={{ width: "40%", flexGrow: 0 }}
                     >   <div>
                             {isLoading ? (
-                                <div>Loading...</div>
+                                <div className="flex items-center justify-center">
+                                <Loader size="w-10 h-10" />
+                              </div>
                             ) : (
                                 <div className='mobile-only'>
                                     <div className=" top-0 w-full z-50 " style={{
