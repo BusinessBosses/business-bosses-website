@@ -26,10 +26,13 @@ const BoostPost = () => {
         },
     ];
 
+    // Function to handle plan selection
     const handlePlanSelect = (amount: React.SetStateAction<string>) => {
-        setSelectedPlan(amount);
+        if (selectedPlan !== amount) {
+            setSelectedPlan(amount);
+        }
     };
-
+    
     return (
         <div>
             <div className="bg-white" style={{ height: '100vh' }}>
@@ -47,6 +50,7 @@ const BoostPost = () => {
                 </div>
 
                 <div>
+                    {/* Boost Banner */}
                     <div style={{ position: "relative" }}>
                         <img src={Assets.BoostBanner} alt="Boost Banner" />
                         <div style={{ position: "absolute", bottom: 20, left: 0, width: "100%", }}>
@@ -69,6 +73,7 @@ const BoostPost = () => {
                         </div>
                     </div>
 
+                    {/* Choose Your Plan */}
                     <div className='px-5 py-3 text-md font-bold'>Choose your Plan</div>
                     <div>
                         {plans.map((plan) => (
@@ -85,8 +90,9 @@ const BoostPost = () => {
                         ))}
                     </div>
 
+                    {/* Pay With Coin */}
                     <div>
-                        <div className='flex px-5 pb-3' style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <div className='flex px-5 py-3' style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <input
                                 type="checkbox"
                                 checked={isCoin}
@@ -97,9 +103,12 @@ const BoostPost = () => {
                         <div></div>
                     </div>
 
-                    <div className='px-5'><FilledButtonsmall className='w-full py-3.5' onClick={() =>
-                        navigate(RoutesPath.boostpostconfirmationpage)
-                    } text="Continue" /></div>
+                    {/* Continue Button */}
+                    <div className='px-5 py-3'>
+                        <FilledButtonsmall className='w-full py-3.5' onClick={() =>
+                            navigate(RoutesPath.boostpostconfirmationpage)
+                        } text="Continue" />
+                    </div>
                 </div>
             </div>
         </div>

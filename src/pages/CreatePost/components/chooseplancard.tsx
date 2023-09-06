@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface ChooseplancardProps {
     text: string;
     duration: string;
     reach: string;
-    isSelected: boolean; 
+    isSelected: boolean;
     onClick: () => void;
 }
 
-const Chooseplancard: React.FC<ChooseplancardProps> = ({ text, duration, reach }) => {
-    const [isSelected, setIsSelected] = useState(false);
-
+const Chooseplancard: React.FC<ChooseplancardProps> = ({
+    text,
+    duration,
+    reach,
+    isSelected,
+    onClick,
+}) => {
     const borderColor = isSelected ? '#f21c29' : '#f1f1f1';
-
-    const handleClick = () => {
-        setIsSelected(!isSelected);
-    };
 
     return (
         <div
             className={`flex-grow rounded-2xl mx-5 bg-white border p-3`}
             style={{ borderColor: borderColor, borderWidth: '4px' }}
-            onClick={handleClick}
+            onClick={onClick} 
         >
             <div className='flex justify-between'>
                 <div className='text-sm font-bold'>{text}</div>
