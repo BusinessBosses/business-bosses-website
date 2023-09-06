@@ -47,6 +47,9 @@ import SellerReview from "./pages/sellerreviews/SellerReview";
 import ExpandedImages from "./pages/expandedimages/expandedimages";
 import Bossuppartnerpage from "./pages/bossuppartnerpage/bossuppartnerpage";
 import ConnectRelevantPage from "./pages/settings/views/ConnectRelevantPage";
+import SubscriptionConfirmationPage from "./pages/subscription/views/SubscriptionConfirmationPage";
+import RenewSubscriptionConfirmationPage from "./pages/subscription/views/RenewSubscriptionConfirmationPage";
+import BoostPostConfirmationPage from "./pages/subscription/views/BoostpostConfirmationPage";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -171,7 +174,7 @@ const App = () => {
     />
   ) : err ? (
     errorMessage.toLowerCase() === "send a valid token" ||
-    errorMessage.toLowerCase() === "invalid token" ? (
+      errorMessage.toLowerCase() === "invalid token" ? (
       <Popup
         closeOnDocumentClick={false}
         closeOnEscape={false}
@@ -290,6 +293,18 @@ const App = () => {
       <Route
         path={RoutesPath.connectrelevantpage}
         element={<ConnectRelevantPage />}
+      />
+      <Route
+        path={RoutesPath.subscriptionconfirmationpage}
+        element={<SubscriptionConfirmationPage />}
+      />
+      <Route
+        path={RoutesPath.renewsubscriptionconfirmationpage}
+        element={<RenewSubscriptionConfirmationPage />}
+      />
+      <Route
+        path={RoutesPath.boostpostconfirmationpage}
+        element={<BoostPostConfirmationPage />}
       />
     </Routes>
   );

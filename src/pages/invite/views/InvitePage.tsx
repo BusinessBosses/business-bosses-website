@@ -105,11 +105,11 @@ const InvitePage = ({ coins }: Props) => {
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: '#f4f4f4', // Customize the background color as needed
-                    color: '#333333', // Change the text color to #333333
-                    borderRadius: '50px', // Adjust the radius to make the rectangle more or less round
+                    backgroundColor: '#f4f4f4', 
+                    color: '#333333', 
+                    borderRadius: '50px',
                     padding: '7px 15px',
-                    fontSize: '13px', // Change the font size to 14px
+                    fontSize: '13px', 
                     fontWeight: 'bold',
                     cursor: 'pointer',
                   }} onClick={() => navigate(RoutesPath.subscriptionpage)}>
