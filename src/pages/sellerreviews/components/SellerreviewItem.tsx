@@ -60,10 +60,11 @@ const SellerreviewItem = ({ data }: Props) => {
             {data.user?.isSubscribed && (
               <GreyButton onClick={() => { }} text={"Connect"} />
             )}
+            {data.user.uid === profile?.uid ? 
 
             <Popup
               trigger={
-                <div>
+                <div> 
                   <IoIosMore size={20} />
                 </div>
               }
@@ -83,7 +84,7 @@ const SellerreviewItem = ({ data }: Props) => {
                         }}
                         className="menu-item"
                       >
-                        Edit
+                        Edit Rating
                       </button>
                       <button
                         onClick={() => {
@@ -91,40 +92,14 @@ const SellerreviewItem = ({ data }: Props) => {
                         }}
                         className="menu-item"
                       >
-                        Delete
+                        Delete Rating
                       </button>
                     </div>
                   ) : (
-                    <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                      <button
-                        onClick={() => {
-                          close();
-                          toast.success("User Blocked");
-                          GeneralPostsController.blockUser({
-                            postId: data.postId,
-                          });
-                        }}
-                        className="menu-item "
-                      >
-                        Block @{data.user.username}
-                      </button>
-                      <button
-                        onClick={() => {
-                          close();
-                          toast.success("Post reported");
-                          GeneralPostsController.reportPost({
-                            postId: data.postId,
-                            reason: "",
-                          });
-                        }}
-                        className="menu-item text-primary"
-                      >
-                        Report Rating
-                      </button>
-                    </div>
+                    null
                   )) as unknown) as ReactNode
               }
-            </Popup>
+            </Popup>: null}
           </div>
         </div>
         <div className="mt-2">

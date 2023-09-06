@@ -17,6 +17,7 @@ import { MdContentCopy, MdShare } from "react-icons/md";
 import SubscribeButton from "../../settings/components/Subscribebutton";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 import SharePopUp from "../../../common/components/share/SharePopUp";
+import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsmall";
 
 interface Props {
   coins?: number;
@@ -70,14 +71,14 @@ const InvitePage = ({ coins }: Props) => {
           </div>
           <div className="bg-white px-4 py-3 flex items-center justify-between">
             <div className="flex-grow text-center">
-              <p className="text-xl font-bold">{}</p>
+              <p className="text-xl font-bold">{ }</p>
             </div>
             <div></div> {/* This empty div helps in spacing */}
           </div>
         </div>
 
         <div className="flex flex-col items-center px-10">
-          <div className="text-center text-xs font-bold mb-5">
+          <div className="text-center text-xs font-bold mb-5 text-[#333333]">
             {" "}
             Give Coins to your favorite Bosses and receive them from other
             Bosses who love your work!
@@ -100,9 +101,23 @@ const InvitePage = ({ coins }: Props) => {
           </small>
 
           <div className="mb-10 mt-5">
-            {" "}
-            <SubscribeButton />
-          </div>
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#f4f4f4', // Customize the background color as needed
+                    color: '#333333', // Change the text color to #333333
+                    borderRadius: '50px', // Adjust the radius to make the rectangle more or less round
+                    padding: '7px 15px',
+                    fontSize: '13px', // Change the font size to 14px
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                  }} onClick={() => navigate(RoutesPath.subscriptionpage)}>
+                    <span className='mr-2' style={{ color: '#333333' }} >Subscribe to Premium</span>
+                    <Assets.Nexticon stroke="#F21C29" />
+                  </div>
+                
+                </div>
         </div>
 
         <div style={{ borderTop: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>
@@ -127,7 +142,8 @@ const InvitePage = ({ coins }: Props) => {
               <MdContentCopy size={23} />
             </div>
 
-            <FilledButton
+            <FilledButtonsmall
+            className="py-3 px-5"
               onClick={async () => {
                 // await navigator.clipboard.writeText(
                 //   profile.profile!.inviteId ?? ""
@@ -214,7 +230,7 @@ const InvitePage = ({ coins }: Props) => {
                 </div>
                 <div className="bg-white px-4 py-3 flex items-center justify-between">
                   <div className="flex-grow text-center">
-                    <p className="text-xl font-bold">{}</p>
+                    <p className="text-xl font-bold">{ }</p>
                   </div>
                   <div></div> {/* This empty div helps in spacing */}
                 </div>
@@ -246,8 +262,22 @@ const InvitePage = ({ coins }: Props) => {
                 </small>
 
                 <div className="mb-10 mt-5">
-                  {" "}
-                  <SubscribeButton />
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#f4f4f4', // Customize the background color as needed
+                    color: '#333333', // Change the text color to #333333
+                    borderRadius: '50px', // Adjust the radius to make the rectangle more or less round
+                    padding: '7px 15px',
+                    fontSize: '13px', // Change the font size to 14px
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                  }} onClick={() => navigate(RoutesPath.subscriptionpage)}>
+                    <span className='mr-2' style={{ color: '#333333' }} >Subscribe to Premium</span>
+                    <Assets.Nexticon stroke="#F21C29" />
+                  </div>
+                
                 </div>
               </div>
 

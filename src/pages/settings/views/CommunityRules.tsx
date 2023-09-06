@@ -52,30 +52,31 @@ const CommunityRules = () => {
     return (
         <div>
             <div>
-                {isLoading ? (
-                    <div className="flex items-center justify-center">
-                    <Loader size="w-10 h-10" />
-                  </div>
-                ) : (
-                    <div>
-                        <div className='mobile-only'>
-                            <div className=" top-0 w-full z-50 " style={{
-                                position: 'sticky', top: 0,
-                                zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)'
-                            }}>
-                                <CommonPageHeader title="Community Rules" />
-                            </div>
-                            <div className="p-5 mx-5 bg-white rounded-xl" style={{ height: "100vh" }}>
-                                {description ? (
-                                    <div>{description}</div>
-                                ) : (
-                                    <div>No description available</div>
-                                )}
-                            </div>
-                        </div>
+
+                <div className='mobile-only'>
+                    <div className=" top-0 w-full z-50 " style={{
+                        position: 'sticky', top: 0,
+                        zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)'
+                    }}>
+                        <CommonPageHeader title="Community Rules" />
                     </div>
-                )}
+                    <div className="p-5 mx-5 bg-white rounded-xl" style={{ height: "" }}>
+                        {isLoading ? (
+                            <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 5rem)' }}>
+                                <Loader size="w-10 h-10" />
+                            </div>
+                        ) : (
+                            description ? (
+                                <div>{description}</div>
+                            ) : (
+                                <div>No description available</div>
+                            )
+                        )}
+                    </div>
+                </div>
             </div>
+
+
 
             <div className='computer-only'>
                 <ComputerHeader />
@@ -103,30 +104,26 @@ const CommunityRules = () => {
                         className="computer-main-content"
                         style={{ width: "40%", flexGrow: 0 }}
                     >
-                        <div>
-                            {isLoading ? (
-                                <div className="flex items-center justify-center">
-                                <Loader size="w-10 h-10" />
-                              </div>
-                            ) : (
-                                <div>
-
-                                    <div className=" top-0 w-full z-50 " style={{
-                                        position: 'sticky', top: 0,
-                                        zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)'
-                                    }}>
-                                        <CommonPageHeader title="Community Rules" />
+                        <div className='mobile-only'>
+                            <div className=" top-0 w-full z-50 " style={{
+                                position: 'sticky', top: 0,
+                                zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)'
+                            }}>
+                                <CommonPageHeader title="Community Rules" />
+                            </div>
+                            <div className="p-5 mx-5 bg-white rounded-xl" style={{ height: "100vh" }}>
+                                {isLoading ? (
+                                    <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 5rem)' }}>
+                                        <Loader size="w-10 h-10" />
                                     </div>
-                                    <div className="p-5 mx-5 bg-white rounded-xl">
-                                        {description ? (
-                                            <div>{description}</div>
-                                        ) : (
-                                            <div>No description available</div>
-                                        )}
-                                    </div>
-
-                                </div>
-                            )}
+                                ) : (
+                                    description ? (
+                                        <div>{description}</div>
+                                    ) : (
+                                        <div>No description available</div>
+                                    )
+                                )}
+                            </div>
                         </div>
                     </div>
                     <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
