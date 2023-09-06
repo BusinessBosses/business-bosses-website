@@ -112,7 +112,7 @@ const InvitePage = ({ coins }: Props) => {
                     fontSize: '13px', 
                     fontWeight: 'bold',
                     cursor: 'pointer',
-                  }} onClick={() => navigate(RoutesPath.subscriptionpage)}>
+                  }} onClick={() => navigate(RoutesPath.boostpost)}>
                     <span className='mr-2' style={{ color: '#333333' }} >Subscribe to Premium</span>
                     <Assets.Nexticon stroke="#F21C29" />
                   </div>
