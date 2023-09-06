@@ -35,6 +35,9 @@ const sellerreview = "/sellerreview";
 const expandedimages = "/expandedimages";
 const bossuppartners = "/bossuppartners";
 const connectrelevantpage = "/connectrelevantpage";
+const subscriptionconfirmationpage = "/subscriptionconfirmationpage";
+const renewsubscriptionconfirmationpage = "/renewsubscriptionconfirmationpage";
+const boostpostconfirmationpage = "/boostpostconfirmationpage";
 
 
 const RoutesPath = {
@@ -75,6 +78,9 @@ const RoutesPath = {
     expandedimages,
     bossuppartners,
     connectrelevantpage,
+    subscriptionconfirmationpage,
+    renewsubscriptionconfirmationpage,
+    boostpostconfirmationpage,
 
 
 
