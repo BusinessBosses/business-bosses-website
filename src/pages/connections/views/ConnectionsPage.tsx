@@ -150,7 +150,7 @@ const ConnectionsPage = () => {
       </div>
 
 
-      <div className="computer-only bg-[#fff]">
+      {loading ? null : <div className="computer-only bg-[#fff]">
         <ComputerHeader />
 
         <div className="computer-content">
@@ -253,7 +253,7 @@ const ConnectionsPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
 
 
     </div>
