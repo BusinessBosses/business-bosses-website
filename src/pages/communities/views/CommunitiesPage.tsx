@@ -23,7 +23,7 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import { BsInfoCircle } from "react-icons/bs";
 import { Industry } from "../../../common/interfaces/industry";
 import serviceApi from "../../../services/serviceApi";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ChooseTile from "./choosetile";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 import Assets from "../../../assets";

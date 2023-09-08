@@ -8,7 +8,7 @@ import SubscriptionController, {
 } from "../controller/SubscriptionController";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { useAppSelector } from "../../../redux/store/store";
 
 const SubscriptionPage = () => {

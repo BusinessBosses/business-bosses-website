@@ -12,7 +12,7 @@ import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import Analyserows from "./components/analyserows";
 import { User } from "../../../common/interfaces/user";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 
 interface Props {
     data: User;

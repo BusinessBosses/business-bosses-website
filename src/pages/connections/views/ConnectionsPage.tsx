@@ -9,7 +9,7 @@ import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import { saveUserData } from "../../../redux/slices/UserSlice";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 
 const ConnectionsPage = () => {

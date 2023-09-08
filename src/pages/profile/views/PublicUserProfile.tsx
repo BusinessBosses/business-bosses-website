@@ -10,7 +10,7 @@ import { User } from "../../../common/interfaces/user";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import About from "./components/About";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "./components/ComputerProfiledetails";
+import ComputerProfileDetails from "./components/ComputerProfiledetailswcr";
 import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 const PublicUserProfile = () => {

@@ -7,7 +7,7 @@ import SellerreviewItem from "./components/SellerreviewItem";
 import MobileBossOfTheWeek from "../home/views/components/BossOfTheWeek";
 import { useAppSelector } from "../../redux/store/store";
 import ComputerHeader from "../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetailswcr";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import FilledTextarea from "../../common/components/inputs/FilledTextarea";
 import FilledButtonsmall from "../../common/components/buttons/FilledButtonsmall";

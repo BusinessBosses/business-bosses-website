@@ -11,7 +11,7 @@ import { savePostsToState } from "../../../redux/slices/UserSlice";
 import { Post } from "../../../common/interfaces/post";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "./components/ComputerProfiledetails";
+import ComputerProfileDetails from "./components/ComputerProfiledetailswcr";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 const MyProfile = () => {
   const [currentTabIndex, setCurrentTabIndex] = useState<number>(0);

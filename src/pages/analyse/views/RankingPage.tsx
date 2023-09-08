@@ -11,7 +11,7 @@ import RoutesPath from "../../../constants/Routes";
 import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import Analyserows from "./components/analyserows";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 
 const RankingPage = () => {
     const navigate = useNavigate();
@@ -56,11 +56,11 @@ const RankingPage = () => {
                     <img src={Assets.One} />
                     <div className="ml-5 text-sm" >Networking and making new connections</div>
                     <img src={Assets.Two} />
-                    <div className="ml-5 text-sm">Commenting and liking users post/content</div>
-                    <img src={Assets.Three} />
                     <div className="ml-5 text-sm">Creating post/content in your profile and community</div>
                     <img src={Assets.Four} />
-                    <div className="ml-5 text-sm">Refer users to your connection</div>
+                    <div className="ml-5 text-sm">Commenting and liking users post/content</div>
+                    <img src={Assets.Three} />
+                    <div className="ml-5 text-sm">Refer users to your connection </div>
                     <img src={Assets.Five} />
                     <div className="ml-5 text-sm mt-10 pb-10">
                         <span style={{ fontWeight: "bold" }}>Tips:</span> The higher your ranking, the easier to be discovered by the other users
@@ -134,10 +134,10 @@ const RankingPage = () => {
                                 <img src={Assets.One} />
                                 <div className="ml-5 text-sm lg:text-base" >Networking and making new connections</div>
                                 <img src={Assets.Two} />
-                                <div className="ml-5 text-sm lg:text-base">Commenting and liking users post/content</div>
-                                <img src={Assets.Three} />
                                 <div className="ml-5 text-sm lg:text-base">Creating post/content in your profile and community</div>
                                 <img src={Assets.Four} />
+                                <div className="ml-5 text-sm lg:text-base">Commenting and liking users post/content</div>
+                                <img src={Assets.Three} />
                                 <div className="ml-5 text-sm lg:text-base">Refer users to your connection</div>
                                 <img src={Assets.Five} />
                                 <div className="ml-5 text-sm mt-10 pb-10">

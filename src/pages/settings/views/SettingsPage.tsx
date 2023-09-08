@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 
 const SettingsPage = () => {
   const navigate = useNavigate();
@@ -101,23 +101,22 @@ const SettingsPage = () => {
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
           <div
-            className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0"
-            style={{
-              width: "30%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-            <div className="">
-              {profile?.bossup ? (
-                <ComputerBossOfTheWeek bossOfTheWeek={profile.bossup} />
-              ) : null}
-
-            </div>
-          </div>
+                        className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
+                        style={{
+                            width: "30%",
+                            flexGrow: 0,
+                            overflow: "none",
+                            position: "sticky",
+                            top: 0,
+                            zIndex: 1,
+                        }}
+                    >
+                        <div className="rounded-xl overflow-hidden" style={{}}>
+                            {profile.bossup ? (
+                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                            ) : null}
+                        </div>
+                    </div>
         </div>
       </div>
     </div>

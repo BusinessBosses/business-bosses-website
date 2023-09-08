@@ -5,7 +5,7 @@ import OutlinedButton from "../../common/components/buttons/OutlinedButton";
 import MobileBossOfTheWeek from "../home/views/components/BossOfTheWeek";
 import { useAppSelector } from "../../redux/store/store";
 import ComputerHeader from "../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetailswcr";
 
 const Bossuppartnerpage = () => {
   const profile = useAppSelector((state) => state.user);

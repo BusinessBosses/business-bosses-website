@@ -21,7 +21,7 @@ import { saveUserData } from "../../../redux/slices/UserSlice";
 import { Comment as CommentStruct } from "../../../common/interfaces/comment";
 import { Socket } from "socket.io-client";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import Marketplacepopup from "../../popups/Marketplacepopup";
 import Marketplacesearchpopup from "../../popups/Marketplacesearchpopup";
