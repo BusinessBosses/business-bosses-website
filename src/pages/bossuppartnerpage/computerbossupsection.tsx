@@ -29,12 +29,21 @@ const ComputerBossuppartnersection = () => {
         <div
           className="flex items-center pt-2"
           style={{
-    
+
           }}
         >
           <div className="font-bold flex-grow">Want to be a Partner?</div>
           <div>
-            <OutlinedButton onClick={() => { }} text={"Message Us"} />
+            <button
+              onClick={() => { }}
+              className="bg-white px-6 py-1.5 rounded-xl"
+              style={{
+                border: '2px solid #F21C29', // Add a border style (e.g., 'solid') here
+                color: '#F21C29',
+              }}
+            >
+              {"Message Us"}
+            </button>
           </div>
         </div>
       </div>

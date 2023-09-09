@@ -30,6 +30,7 @@ import Assets from "../../../assets";
 import Learningpopup from "../../popups/Learningpopup";
 import Opportunitiespopup from "../../popups/Opportunitiespopup";
 import AppConstants from "../../../constants/consts";
+import ComputerBossuppartnersection from "../../bossuppartnerpage/computerbossupsection";
 
 interface Props {
   socket: Socket;
@@ -214,6 +215,7 @@ const CommunitiesPage = ({ socket }: Props) => {
               topicstext={"Entries"}
             />
           </div>
+          <div className="mt-5"><ComputerBossuppartnersection/></div>
         </div>
       );
     }
