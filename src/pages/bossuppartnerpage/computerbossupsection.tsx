@@ -27,7 +27,7 @@ const ComputerBossuppartnersection = () => {
         />
 
         <div
-          className="flex items-center px-0 pt-2"
+          className="flex items-center pt-2"
           style={{
     
           }}
