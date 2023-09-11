@@ -89,111 +89,83 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
               style={{
                 fontSize: 20, fontWeight: 900, fontFamily: 'NuniSans-Black, sans-serif',
                 color: '#333333'
-            }}
-          >
-            Boss of the week
-          </p>
-        </div>
-        <IoIosMore size={23} onClick={openPopup} />
-      </div>
-      <div className="flex items-center gap-3 mt-2">
-        <UserAvatar imageSize="h-24 w-24" imageURL={bossOfTheWeek.photoUrl} />
-        <div className="w-3/4 ml-3">
-          <p className="text-md text-[#333333] font-semibold">
-            {bossOfTheWeek.name}
-          </p>
-          <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
-          <p className="text-xs lg:text-base text-[#777777]">
-            {bossOfTheWeek.bio!.length > 80
-              ? bossOfTheWeek.bio!.slice(0, 80) + "..."
-              : bossOfTheWeek.bio}
-          </p>
-
-          <div className="flex items-center gap-3 mt-2 mb-1 lg:mb-4">
-            {!profile?.connecteds?.includes(bossOfTheWeek.uid!) ? (
-              <FilledButtonsmall
-                onClick={connection}
-                text="Connect"
-                className="px-2 py-1.5"
-              />
-            ) : (
-              <FilledButtonsmall
-                onClick={connection}
-                text="Connected"
-                className="px-2 py-1.5"
-              />
-            )}
-            <OutlinedButtonsmall
-                onClick={() => {
-                  navigate(RoutesPath.refer, { state: bossOfTheWeek.uid });
-                } } text={"Refer"}            />
-            <p>
+              }}
+            >
               Boss of the week
             </p>
           </div>
           <IoIosMore size={23} onClick={openPopup} />
         </div>
-        <div className="flex items-center gap-3 mt-2">
-          <div onClick={() =>
+        <div className="items-center gap-3 mt-2">
+          <div className="flex items-center gap-3 mt-2">
+            <div onClick={() =>
               navigate(RoutesPath.PublicUserProfile, { state: bossOfTheWeek })
             }>
-            <UserAvatar imageSize="h-24 w-24" imageURL={bossOfTheWeek.photoUrl} />
-          </div>
-          <div className="w-3/4 ml-3">
-            <p className="text-md text-[#333333] font-semibold">
-              {bossOfTheWeek.name}
-            </p>
-            <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
-            <p className="text-xs lg:text-base text-[#777777]">
-              {bossOfTheWeek.bio!.length > 80
-                ? bossOfTheWeek.bio!.slice(0, 80) + '...'
-                : bossOfTheWeek.bio}
-            </p>
-
-            <div className="flex items-center gap-3 mt-2 mb-1 lg:mb-4">
-              {!profile?.connecteds?.includes(bossOfTheWeek.uid!) ? (
-                <FilledButtonsmall
-                  onClick={connection}
-                  text="Connect"
-                  className="px-2 py-1.5"
-                />
-              ) : (
-                <FilledButtonsmall
-                  onClick={connection}
-                  text="Connected"
-                  className="px-2 py-1.5"
-                />
-              )}
-              <OutlinedButtonsmall
-                onClick={() => {
-                  navigate(RoutesPath.refer, { state: bossOfTheWeek.uid });
-                }}
-                text="Refer"
-                className="px-2 py-1.5"
-              />
+              <UserAvatar imageSize="h-24 w-24" imageURL={bossOfTheWeek.photoUrl} />
             </div>
-          </div>
-        </div>
-        <div className="mobile-only">
-          {isPopupOpen && (
-            <div className="overlay">
-              <div
-                ref={popupRef}
-                className="mobilepopup"
-                style={{ overflowY: "scroll" }}
-              >
-                <Bossoftheweekpopup />
+            <div className="w-3/4 ml-3">
+              <p className="text-md text-[#333333] font-semibold">
+                {bossOfTheWeek.name}
+              </p>
+              <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
+              <p className="text-xs lg:text-base text-[#777777]">
+                {bossOfTheWeek.bio!.length > 80
+                  ? bossOfTheWeek.bio!.slice(0, 80) + '...'
+                  : bossOfTheWeek.bio}
+              </p>
+
+              <div className="flex items-center gap-3 mt-2 mb-1 lg:mb-4">
+                {!profile?.connecteds?.includes(bossOfTheWeek.uid!) ? (
+                  <FilledButtonsmall
+                    onClick={connection}
+                    text="Connect"
+                    className="px-2 py-1.5"
+                  />
+                ) : (
+                  <FilledButtonsmall
+                    onClick={connection}
+                    text="Connected"
+                    className="px-2 py-1.5"
+                  />
+                )}
+                <OutlinedButtonsmall
+                  onClick={() => {
+                    navigate(RoutesPath.refer, { state: bossOfTheWeek.uid });
+                  }}
+                  text="Refer"
+                  className="px-2 py-1.5"
+                />
               </div>
             </div>
-          )}
+          </div>
+          <div className="mobile-only">
+            {isPopupOpen && (
+              <div className="overlay">
+                <div
+                  ref={popupRef}
+                  className="mobilepopup"
+                  style={{ overflowY: "scroll" }}
+                >
+                  <Bossoftheweekpopup />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="mobile-only">
+            <BossupPartnerstile bossupby={""} bossupad={""} />
+          </div>
+
+
         </div>
 
-        <div className="mobile-only">
-          <BossupPartnerstile bossupby={""} bossupad={""} />
-        </div>
+
+
+
 
 
       </div>
+
 
       <div className="flex computer-only items-center mt-8">
         <div className="font-bold">Our Partners</div>
@@ -202,12 +174,6 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
       <div className=" computer-only mt-3">
         <ComputerBossuppartnersection />
       </div>
-
-
-
-
-
-    </div>
     </div>
   );
 };
