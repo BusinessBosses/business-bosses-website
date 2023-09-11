@@ -38,6 +38,7 @@ const connectrelevantpage = "/connectrelevantpage";
 const subscriptionconfirmationpage = "/subscriptionconfirmationpage";
 const renewsubscriptionconfirmationpage = "/renewsubscriptionconfirmationpage";
 const boostpostconfirmationpage = "/boostpostconfirmationpage";
+const boostpost = "/boostpost";
 const communitiesSearch = "/communities-search";
 
 const RoutesPath = {
@@ -81,6 +82,7 @@ const RoutesPath = {
     subscriptionconfirmationpage,
     renewsubscriptionconfirmationpage,
     boostpostconfirmationpage,
+    boostpost,
     communitiesSearch
 
 

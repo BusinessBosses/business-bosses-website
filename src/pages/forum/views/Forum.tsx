@@ -26,7 +26,7 @@ import RoutesPath from "../../../constants/Routes";
 import FilledInput from "../../../common/components/inputs/FilledInput";
 import FilledTextarea from "../../../common/components/inputs/FilledTextarea";
 import serviceApi from "../../../services/serviceApi";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 import Learningpopup from "../../popups/Learningpopup";

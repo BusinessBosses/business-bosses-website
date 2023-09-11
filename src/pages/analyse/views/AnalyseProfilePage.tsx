@@ -5,14 +5,12 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import Popup from "reactjs-popup";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import { IoIosMore } from "react-icons/io";
-import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import Analyserows from "./components/analyserows";
 import { User } from "../../../common/interfaces/user";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -27,6 +25,7 @@ import {
 import serviceApi from "../../../services/serviceApi";
 import TimeFormat from "../controller/AnalyseController";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 
 ChartJS.register(
   CategoryScale,

@@ -9,7 +9,9 @@ import { useNavigate } from 'react-router-dom';
 const BoostPostConfirmationPage: React.FC = () => {
     const navigate = useNavigate();
 
-    return (
+    return (<div>
+
+ 
         <div className="mobile-only bg-white " style={{ height: "100vh" }} >
             <div
                 className="bg-white top-0 w-full z-50"
@@ -93,6 +95,8 @@ const BoostPostConfirmationPage: React.FC = () => {
             <div className='px-5 pt-20'>
                 <FilledButtonsmall className='py-4 w-full' onClick={() => navigate(RoutesPath.home)} text={'Ok'} />
             </div>
+
+        </div>
 
         </div>
     );

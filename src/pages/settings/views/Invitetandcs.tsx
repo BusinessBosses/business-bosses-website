@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CommonPageHeader from '../../../common/components/headers/CommonPageHeader';
 import ComputerHeader from '../../home/views/components/ComputerHeader';
 import MobileBossOfTheWeek from '../../home/views/components/BossOfTheWeek';
-import ComputerProfileDetails from '../../profile/views/components/ComputerProfiledetails';
+import ComputerProfileDetails from '../../profile/views/components/ComputerProfiledetailswcr';
 import { useAppSelector } from '../../../redux/store/store';
 import axios from 'axios';
 import Loader from '../../../common/components/loader/Loader';
@@ -102,14 +102,16 @@ const Invitetandcs = () => {
                         className="computer-main-content"
                         style={{ width: "40%", flexGrow: 0 }}
                     >  <div className=''>
-                    <div className=" top-0 w-full z-50 " style={{
+                    <div className=" top-0 w-full z-0 " style={{
                         position: 'sticky', top: 0,
-                        zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)'
+                        zIndex: 100,
                     }}>
-                        <CommonPageHeader title="Invite a Friend Terms and Conditions" />
+                       
                     </div>
+                    <CommonPageHeader title="Invite a Friend Terms and Conditions" />
+                    <div style={{borderBottom: '15px solid rgba(244, 244, 244, 1)'}}></div>
 
-                    <div className=" p-5 mx-5 bg-white rounded-xl" style={{ height: "100vh" }}>
+                    <div className=" p-5  bg-white rounded-xl" style={{ height: "100vh" }}>
                         {isLoading ? (
                             <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 5rem)' }}>
                                 <Loader size="w-10 h-10" />

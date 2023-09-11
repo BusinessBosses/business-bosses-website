@@ -23,13 +23,14 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import { BsInfoCircle } from "react-icons/bs";
 import { Industry } from "../../../common/interfaces/industry";
 import serviceApi from "../../../services/serviceApi";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ChooseTile from "./choosetile";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 import Assets from "../../../assets";
 import Learningpopup from "../../popups/Learningpopup";
 import Opportunitiespopup from "../../popups/Opportunitiespopup";
 import AppConstants from "../../../constants/consts";
+import ComputerBossuppartnersection from "../../bossuppartnerpage/computerbossupsection";
 
 interface Props {
   socket: Socket;
@@ -214,6 +215,7 @@ const CommunitiesPage = ({ socket }: Props) => {
               topicstext={"Entries"}
             />
           </div>
+          <div className="mt-5"><ComputerBossuppartnersection/></div>
         </div>
       );
     }

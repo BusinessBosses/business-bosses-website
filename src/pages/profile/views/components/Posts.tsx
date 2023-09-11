@@ -5,7 +5,7 @@ interface Props {
 }
 const Posts = ({ posts }: Props) => {
   return (
-    <div className="grid grid-cols-2 gap-3 px-4 pt-4 bg-[#f4f4f4]">
+    <div className="grid grid-cols-2 gap-3 px-4 pt-4 bg-[#f4f4f4]" style={{height:"100vh"}}>
       {posts.map((post) => {
         return (
           <Post

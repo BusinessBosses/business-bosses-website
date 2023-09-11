@@ -29,7 +29,7 @@ import Three from "./icons/three.png";
 import Four from "./icons/four.png";
 import Five from "./icons/five.png";
 import Rocket from "./icons/rocket.svg";
-import BoostBnner from "./icons/boost_banner.png";
+import BoostBanner from "./icons/boost_banner.png";
 import Instagram from "./icons/instagram_o.svg";
 import Twitter from "./icons/twitter_o.svg";
 import Trophy from "./icons/trophy.svg";
@@ -77,7 +77,7 @@ const Assets = {
     Block,
     Gallery,
     Rocket,
-    BoostBnner,
+    BoostBanner,
     Instagram,
     Twitter,
     Trophy,

@@ -302,7 +302,8 @@ const CreatePost = () => {
 
             <div className="mt-5 px-4">
               <FilledButton
-                onClick={stateProps ? updatePostFn : createPost}
+                onClick={stateProps ? updatePostFn : createPost
+                  }
                 text={loading ? "Posting..." : stateProps ? "Update" : "Post"}
                 className="w-full py-3"
               />
