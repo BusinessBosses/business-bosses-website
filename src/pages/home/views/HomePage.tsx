@@ -19,7 +19,7 @@ import MobileBossOfTheWeek from "./components/BossOfTheWeek";
 import MyProfileDetails from "../../profile/views/components/MyProfileDetails";
 import { User } from "../../../common/interfaces/user";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { useEffect, useState } from "react";
 
 interface Props {

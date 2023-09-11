@@ -35,7 +35,11 @@ const sellerreview = "/sellerreview";
 const expandedimages = "/expandedimages";
 const bossuppartners = "/bossuppartners";
 const connectrelevantpage = "/connectrelevantpage";
-
+const subscriptionconfirmationpage = "/subscriptionconfirmationpage";
+const renewsubscriptionconfirmationpage = "/renewsubscriptionconfirmationpage";
+const boostpostconfirmationpage = "/boostpostconfirmationpage";
+const boostpost = "/boostpost";
+const communitiesSearch = "/communities-search";
 
 const RoutesPath = {
     home,
@@ -75,6 +79,11 @@ const RoutesPath = {
     expandedimages,
     bossuppartners,
     connectrelevantpage,
+    subscriptionconfirmationpage,
+    renewsubscriptionconfirmationpage,
+    boostpostconfirmationpage,
+    boostpost,
+    communitiesSearch
 
 
 

@@ -7,16 +7,28 @@ import { useAppSelector } from "../../../redux/store/store";
 import ChatController from "../controller/ChatController";
 import { Chat } from "../../../common/interfaces/chat";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ChooseTile from "../../communities/views/choosetile";
 import Assets from "../../../assets";
 import { CiSearch } from "react-icons/ci";
+import ChatUser from "./ChatUser";
+import { AiOutlineClose } from "react-icons/ai";
 
 const ChatPage = () => {
   const navigate = useNavigate();
   const chats = useAppSelector((state) => state.chat.chats);
   const profile = useAppSelector((state) => state.user.profile);
   const [uniqueChats, setUniqueChats] = useState<Chat[]>([]);
+  const [isSearch, setIsSeach] = useState<boolean>(false);
+
+  const [searchResults, setSearchResults] = useState<Chat[]>([]);
+
+  const onSearch = (query: string) => {
+    const filteredChats = uniqueChats.filter((ft) =>
+      ft.user?.username.toLowerCase().includes(query.toLowerCase())
+    );
+    setSearchResults(filteredChats);
+  };
 
   useEffect(() => {
     setUniqueChats(ChatController.reduceDuplicateChats(chats, profile!));
@@ -33,51 +45,53 @@ const ChatPage = () => {
             borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
           }}
         >
-           <div className="mobile-only">
-        <div className="bg-white px-4 py-3 flex items-center justify-between">
-          <button onClick={() => navigate(-1)}>
-            <Assets.Backbutton />
-          </button>
-          <div className="flex-grow text-center">
-            <p className="text-md font-semibold">Chats</p>
+          <div className="mobile-only">
+            {isSearch ? (
+              <div className="bg-white px-4 py-3 flex gap-3 items-center justify-between">
+                <div>
+                  <CiSearch size={25} strokeWidth={0.5} onClick={() => {}} />
+                </div>
+                <div className="flex-grow ">
+                  <input
+                    onChange={(event) => {
+                      onSearch(event.target.value.trim());
+                    }}
+                    type="text"
+                    placeholder="search chats"
+                    className="w-full outline-none border-none"
+                  />
+                </div>
+                <button onClick={() => setIsSeach(false)}>
+                  <AiOutlineClose
+                    size={25}
+                    strokeWidth={0.5}
+                    onClick={() => {}}
+                  />
+                </button>
+              </div>
+            ) : (
+              <div className="bg-white px-4 py-3 flex items-center justify-between">
+                <button onClick={() => navigate(-1)}>
+                  <Assets.Backbutton />
+                </button>
+                <div className="flex-grow text-center">
+                  <p className="text-md font-semibold">Chats</p>
+                </div>
+                <button onClick={() => setIsSeach(true)}>
+                  <CiSearch size={25} strokeWidth={0.5} />
+                </button>
+              </div>
+            )}
           </div>
-          <div><CiSearch size={25} strokeWidth={0.5} onClick={()=>{}}/></div> 
-        </div>
-      </div>
         </div>
         <div className="px-4">
-          {uniqueChats.map((chat, index) => {
-            return (
-              <div
-                key={index}
-                onClick={() => {
-                  navigate(RoutesPath.ChatRoom, {
-                    state: {
-                      user: chat.user,
-                    },
-                  });
-                }}
-                className="flex items-center my-5 gap-3"
-              >
-                <UserAvatar
-                  imageURL={
-                    chat.user?.photoUrl ??
-                    "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-                  }
-                />
-                <div className="">
-                  <h4 className="text-[#383838] text-xl capitalize">
-                    {chat.user?.username}
-                  </h4>
-                  <p className="text-[#6B6969]">
-                    {!!chat.messageText && chat.messageText !== ""
-                      ? chat.messageText
-                      : "Image"}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+          {isSearch
+            ? searchResults.map((chat, index) => {
+                return <ChatUser key={index} chat={chat} />;
+              })
+            : uniqueChats.map((chat, index) => {
+                return <ChatUser key={index} chat={chat} />;
+              })}
         </div>
       </div>
 
@@ -108,7 +122,7 @@ const ChatPage = () => {
             className="computer-main-content p-5"
             style={{ width: "40%", flexGrow: 0 }}
           >
-             <ChooseTile />
+            <ChooseTile />
           </div>
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
@@ -124,8 +138,10 @@ const ChatPage = () => {
             }}
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
-              <div className="mt-5 text-lg font-semibold text-[#333333]">Chats</div>
-              
+              <div className="mt-5 text-lg font-semibold text-[#333333]">
+                Chats
+              </div>
+
               <div className="">
                 {uniqueChats.map((chat, index) => {
                   return (

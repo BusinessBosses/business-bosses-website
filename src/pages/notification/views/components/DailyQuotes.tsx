@@ -1,5 +1,6 @@
 import Assets from "../../../../assets";
 import { Quote } from "../../../../common/interfaces/quote";
+import ComputerBossuppartnersection from "../../../bossuppartnerpage/computerbossupsection";
 interface Props {
   quote: Quote;
 }
@@ -32,6 +33,8 @@ const DailyQuotes = ({ quote }: Props) => {
           </p>
           <h4 className="font-bold mt-5 text-start">{quote.by}</h4>
         </div>
+        <div className="mt-5"><ComputerBossuppartnersection/></div>
+        
       </div>
     </div>
   );

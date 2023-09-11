@@ -38,6 +38,24 @@ const About = ({ data }: Props) => {
           </button>
         )}
       </div>
+      {/* Products and Services section */}
+      {data.productsandservices &&
+        data.productsandservices.length > 0 &&
+        data.productsandservices[0] !== "" && (
+          <div className="mt-10">
+            <h3 className="text-lg font-bold">Products and Services</h3>
+            {data.productsandservices.map((product: string, index: number) => (
+              <div
+              key={index}
+              className="flex items-center gap-3 my-2 max-w-max bg-[#f4f4f4] px-4 py-1 rounded-full"
+            >
+              <div className="rounded-full w-4 h-4 bg-white my-2"></div>
+              <p>{product}</p>
+            </div>
+            
+            ))}
+          </div>
+        )}
       {data.interests && data.interests.length > 0 && (
         <div className="my-4">
           <h3 className="text-lg font-bold">Interests</h3>
@@ -74,23 +92,7 @@ const About = ({ data }: Props) => {
         </div>
       )}
 
-      {/* Products and Services section */}
-      {data.productsandservices &&
-        data.productsandservices.length > 0 &&
-        data.productsandservices[0] !== "" && (
-          <div className="mt-10">
-            <h3 className="text-xl font-medium">Products</h3>
-            {data.productsandservices.map((product: string, index: number) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 my-5 bg-[rgba(0,0,0,.1)] p-2 rounded-lg"
-              >
-                <img src={Assets.Product} alt="" />
-                <p>{product}</p>
-              </div>
-            ))}
-          </div>
-        )}
+
     </div>
   );
 };

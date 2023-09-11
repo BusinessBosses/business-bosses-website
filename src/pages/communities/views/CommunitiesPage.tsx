@@ -23,13 +23,14 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import { BsInfoCircle } from "react-icons/bs";
 import { Industry } from "../../../common/interfaces/industry";
 import serviceApi from "../../../services/serviceApi";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ChooseTile from "./choosetile";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 import Assets from "../../../assets";
 import Learningpopup from "../../popups/Learningpopup";
 import Opportunitiespopup from "../../popups/Opportunitiespopup";
 import AppConstants from "../../../constants/consts";
+import ComputerBossuppartnersection from "../../bossuppartnerpage/computerbossupsection";
 
 interface Props {
   socket: Socket;
@@ -214,6 +215,7 @@ const CommunitiesPage = ({ socket }: Props) => {
               topicstext={"Entries"}
             />
           </div>
+          <div className="mt-5"><ComputerBossuppartnersection/></div>
         </div>
       );
     }
@@ -279,7 +281,13 @@ const CommunitiesPage = ({ socket }: Props) => {
               style={{ position: "sticky", top: 0, zIndex: 100 }}
             >
               <p className="text-lg font-semibold text-[#333333]">Boss Up</p>
-              <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
+              <button
+                onClick={() => {
+                  navigate(RoutesPath.communitiesSearch);
+                }}
+              >
+                <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
+              </button>
             </div>
 
             <div className="">

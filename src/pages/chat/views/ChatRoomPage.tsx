@@ -13,7 +13,7 @@ import { v4 } from "uuid";
 import serviceApi from "../../../services/serviceApi";
 import { Socket } from "socket.io-client";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ChatController from "../controller/ChatController";
 import RoutesPath from "../../../constants/Routes";
 interface Props {
@@ -30,9 +30,11 @@ const ChatRoomPage = ({ socket }: Props) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [uniqueChats, setUniqueChats] = useState<Chat[]>([]);
   useEffect(() => {
-    setUniqueChats(ChatController.reduceDuplicateChats(chats, profile?.profile!));
+    setUniqueChats(
+      ChatController.reduceDuplicateChats(chats, profile?.profile!)
+    );
   }, [chats]);
-  
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     const state = location.state;
@@ -44,7 +46,8 @@ const ChatRoomPage = ({ socket }: Props) => {
         (ft) =>
           (ft.senderUid === profile?.profile!.uid &&
             ft.receiverUid === chatParty?.uid) ||
-          (ft.senderUid === chatParty?.uid && ft.receiverUid === profile?.profile!.uid)
+          (ft.senderUid === chatParty?.uid &&
+            ft.receiverUid === profile?.profile!.uid)
       );
       setMessages(filteredMessages);
     }
@@ -105,7 +108,16 @@ const ChatRoomPage = ({ socket }: Props) => {
   return (
     <div>
       <div className="mobile-only bg-[#f4f4f4] min-h-screen h-full">
-        <div className="px-4 py-3" style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#fff', borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}>
+        <div
+          className="px-4 py-3"
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            backgroundColor: "#fff",
+            borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button onClick={() => navigate(-1)}>
@@ -171,10 +183,18 @@ const ChatRoomPage = ({ socket }: Props) => {
                     className={
                       message.senderUid === profile?.profile!.uid
                         ? "bg-primary rounded-b-lg p-2 rounded-tl-lg"
-                        : "bg-primary rounded-b-lg p-2 rounded-tr-lg"
+                        : "bg-white shadow rounded-b-lg p-2 rounded-tr-lg"
                     }
                   >
-                    <p className="text-white">{message.messageText}</p>
+                    <p
+                      className={
+                        message.senderUid === profile?.profile!.uid
+                          ? "text-white"
+                          : "text-black"
+                      }
+                    >
+                      {message.messageText}
+                    </p>
                   </div>
                 </div>
               );
@@ -188,7 +208,8 @@ const ChatRoomPage = ({ socket }: Props) => {
           <div className="bg-white shadow mx-4 rounded-full p-3 gap-1 flex items-center justify-between">
             <label htmlFor="file" className="cursor-pointer">
               <div className="mr-3">
-                <img src={Assets.Gallery} alt="" /></div>
+                <img src={Assets.Gallery} alt="" />
+              </div>
             </label>
             <input
               ref={messageRef}
@@ -221,8 +242,6 @@ const ChatRoomPage = ({ socket }: Props) => {
         </div>
       </div>
 
-
-
       <div className="computer-only bg-[#ffffff] min-h-screen h-full">
         <ComputerHeader />
         <div className="computer-content">
@@ -249,15 +268,16 @@ const ChatRoomPage = ({ socket }: Props) => {
             className="computer-main-content"
             style={{ width: "40%", flexGrow: 0 }}
           >
-
-            <div className=" bg-white top-0 z-50 px-4 py-5 mt-5" style={{
-              width: '100%',
-              flexGrow: 0,
-              position: 'sticky',
-              top: 0,
-              zIndex: 1,
-
-            }}>
+            <div
+              className=" bg-white top-0 z-50 px-4 py-5 mt-5"
+              style={{
+                width: "100%",
+                flexGrow: 0,
+                position: "sticky",
+                top: 0,
+                zIndex: 1,
+              }}
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <button onClick={() => navigate(-1)}>
@@ -265,19 +285,24 @@ const ChatRoomPage = ({ socket }: Props) => {
                   </button>
                   <UserAvatar
                     imageSize="w-10 h-10"
-                    imageURL="https://cdn.pixabay.com/photo/2023/06/25/13/19/woman-8087286_640.jpg"
+                    imageURL={
+                      chatParty?.photoUrl ??
+                      "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+                    }
                   />
                   <div className="">
-                    <h4 className="text-[#383838] font-bold">Ernest Awuku Junior</h4>
-                    <p className="text-[#6B6969] text-sm">Bio</p>
+                    <h4 className="text-[#383838] font-bold">
+                      {chatParty?.username}
+                    </h4>
+                    <p className="text-[#6B6969] text-sm">{chatParty?.bio}</p>
                   </div>
                 </div>
                 <FiMoreVertical />
-
               </div>
-
             </div>
-            <div style={{ borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
+            <div
+              style={{ borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)" }}
+            ></div>
             <div className="mt-20 py-5 px-4">
               <div className="flex justify-end my-5">
                 <div className="bg-primary rounded-b-lg p-2 rounded-tl-lg">
@@ -293,7 +318,6 @@ const ChatRoomPage = ({ socket }: Props) => {
                   />
                 </div>
               </div>
-
             </div>
             <div className=" fixed bottom-5">
               <div className="bg-white shadow mx-5 rounded-full p-3 flex items-center justify-between">
@@ -309,8 +333,6 @@ const ChatRoomPage = ({ socket }: Props) => {
                 </button>
               </div>
             </div>
-
-
           </div>
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
@@ -326,8 +348,10 @@ const ChatRoomPage = ({ socket }: Props) => {
             }}
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
-              <div className="mt-5 text-lg font-semibold text-[#333333]">Chats</div>
-              
+              <div className="mt-5 text-lg font-semibold text-[#333333]">
+                Chats
+              </div>
+
               <div className="">
                 {uniqueChats.map((chat, index) => {
                   return (
@@ -364,19 +388,8 @@ const ChatRoomPage = ({ socket }: Props) => {
               </div>
             </div>
           </div>
-
-
         </div>
       </div>
-
-
-
-
-
-
-
-
-
     </div>
   );
 };

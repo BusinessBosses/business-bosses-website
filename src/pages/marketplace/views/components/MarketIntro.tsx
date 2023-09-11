@@ -15,6 +15,7 @@ import Popup from "reactjs-popup";
 import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import trimText from "../../../../common/functions/trimText";
 import MarketMembers from "./MarketMembers";
+import ComputerBossuppartnersection from "../../../bossuppartnerpage/computerbossupsection";
 
 const MarketIntro = () => {
   const navigate = useNavigate();
@@ -200,7 +201,7 @@ const MarketIntro = () => {
           </div>
         </div>
         <div
-          className="bg-[#EAEAEA] rounded-2xl"
+          className="bg-[#f4f4f4] rounded-2xl"
           style={{
             paddingLeft: 10,
             paddingRight: 10,
@@ -209,7 +210,7 @@ const MarketIntro = () => {
           }}
         >
           <div
-            className="p-3 rounded-2xl"
+            className="p-5 rounded-xl"
             style={{ backgroundColor: "#ffffff" }}
           >
             <div className="flex items-center gap-3">
@@ -258,6 +259,7 @@ const MarketIntro = () => {
           </div>
         </div>
       </div>
+      <div className="computer-only mt-5"><ComputerBossuppartnersection/></div>
     </div>
   );
 };
