@@ -85,8 +85,10 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           <p
             className="text-[#333333]  "
             style={{
-              fontSize: 20, fontWeight: 900, fontFamily: 'NuniSans-Black, sans-serif',
-              color: '#333333'
+              fontSize: 20,
+              fontWeight: 900,
+              fontFamily: "NuniSans-Black, sans-serif",
+              color: "#333333",
             }}
           >
             Boss of the week
@@ -103,7 +105,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
           <p className="text-xs lg:text-base text-[#777777]">
             {bossOfTheWeek.bio!.length > 80
-              ? bossOfTheWeek.bio!.slice(0, 80) + '...'
+              ? bossOfTheWeek.bio!.slice(0, 80) + "..."
               : bossOfTheWeek.bio}
           </p>
 
@@ -149,9 +151,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         <BossupPartnerstile bossupby={""} bossupad={""} />
       </div>
 
-      <div className="computer-only">
-        {/* <Bossuppartnerpage /> */}
-      </div>
+      <div className="computer-only">{/* <Bossuppartnerpage /> */}</div>
     </div>
   );
 };

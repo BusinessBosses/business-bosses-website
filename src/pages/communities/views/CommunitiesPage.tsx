@@ -279,7 +279,13 @@ const CommunitiesPage = ({ socket }: Props) => {
               style={{ position: "sticky", top: 0, zIndex: 100 }}
             >
               <p className="text-lg font-semibold text-[#333333]">Boss Up</p>
-              <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
+              <button
+                onClick={() => {
+                  navigate(RoutesPath.communitiesSearch);
+                }}
+              >
+                <CiSearch size={40} style={{ padding: 7 }} strokeWidth={0.5} />
+              </button>
             </div>
 
             <div className="">
