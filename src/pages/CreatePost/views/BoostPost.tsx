@@ -74,7 +74,7 @@ const BoostPost = () => {
                     </div>
 
                     {/* Choose Your Plan */}
-                    <div className='px-5 py-3 text-md font-bold'>Choose your Plan</div>
+                    <div className='py-3 text-md font-bold'>Choose your Plan</div>
                     <div>
                         {plans.map((plan) => (
                             <div key={plan.amount}>
