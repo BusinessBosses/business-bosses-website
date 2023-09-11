@@ -129,7 +129,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
             <UserAvatar imageURL={data.user?.photoUrl} />
             <div className="flex-grow">
               <p className="font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
-                {data.user?.username}
+                {data.user?.name}
                 {data.user?.isSubscribed && (
                   <div className="ml-1">
                     <Assets.Checkmark width={9} />

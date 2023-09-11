@@ -13,7 +13,7 @@ import { v4 } from "uuid";
 import serviceApi from "../../../services/serviceApi";
 import { Socket } from "socket.io-client";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ChatController from "../controller/ChatController";
 import RoutesPath from "../../../constants/Routes";
 interface Props {

@@ -11,7 +11,7 @@ import { savePostsToState } from "../../../redux/slices/UserSlice";
 import { Post } from "../../../common/interfaces/post";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "./components/ComputerProfiledetails";
+import ComputerProfileDetails from "./components/ComputerProfiledetailswcr";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 const MyProfile = () => {
   const [currentTabIndex, setCurrentTabIndex] = useState<number>(0);
@@ -76,7 +76,7 @@ const MyProfile = () => {
                 }}
               />
             ) : (
-              <div className="mt-4">
+              <div className="">
               <Posts posts={profile.posts} /></div>
             )
           ) : null}
@@ -86,37 +86,37 @@ const MyProfile = () => {
       </div>
 
 
-      <div className="computer-only">
-
-
+      <div className='computer-only'>
         <ComputerHeader />
-        <div className="computer-content">
-          <div className="firstsection ml-5 lg:ml-20 pr-5 pl-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
 
-          }}>
-            <div className="" >
+        <div className="computer-content">
+          <div
+            className="firstsection ml-5 lg:ml-20 pr-5"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
               <div className=" flex items-center gap-3">
                 <ComputerProfileDetails data={profile.profile!} />
               </div>
-
             </div>
           </div>
-          <div style={{ borderLeft: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-
-
-          <div className="computer-main-content" style={{ width: '40%', flexGrow: 0 }} >
-
-          <div className="sticky" ><MyProfileHeader /></div>
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="computer-main-content"
+            style={{ width: "40%", flexGrow: 0 }}
+          >
+             <div className="sticky" ><MyProfileHeader /></div>
 
             <MyProfileDetails data={profile.profile!} />
 
-            <div className="py-5">
+            <div>
             <Tabs 
               currentIndex={currentTabIndex}
               onChangeRoute={(index: number) => setCurrentTabIndex(index)}
@@ -148,37 +148,29 @@ const MyProfile = () => {
 
 
 
+          
+           
           </div>
-          <div style={{ borderRight: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
-
-          <div className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0" style={{
-            width: '30%',
-            flexGrow: 0,
-            overflow: 'none',
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-
-
-
-          }}>
-
-            <div className="rounded-xl overflow-hidden mt-5" style={{}}>
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
                 <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
               ) : null}
             </div>
-
-
           </div>
-
-
-
         </div>
-
-       
       </div>
-
 
     </div>
   );

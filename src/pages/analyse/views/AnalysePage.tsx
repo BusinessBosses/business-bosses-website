@@ -5,14 +5,13 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import Popup from "reactjs-popup";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import { IoIosMore } from "react-icons/io";
-import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import Analyserows from "./components/analyserows";
 import SubscribeButton from "../../settings/components/Subscribebutton";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 
 const AnalysePage = () => {
     const navigate = useNavigate();

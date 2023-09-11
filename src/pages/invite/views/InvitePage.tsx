@@ -10,12 +10,11 @@ import RoutesPath from "../../../constants/Routes";
 import Popup from "reactjs-popup";
 import { IoIosMore } from "react-icons/io";
 import { BiArrowBack } from "react-icons/bi";
-import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
 import { useNavigate } from "react-router-dom";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import { MdContentCopy, MdShare } from "react-icons/md";
 import SubscribeButton from "../../settings/components/Subscribebutton";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import SharePopUp from "../../../common/components/share/SharePopUp";
 import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsmall";
 

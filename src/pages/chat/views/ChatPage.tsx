@@ -7,7 +7,7 @@ import { useAppSelector } from "../../../redux/store/store";
 import ChatController from "../controller/ChatController";
 import { Chat } from "../../../common/interfaces/chat";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ChooseTile from "../../communities/views/choosetile";
 import Assets from "../../../assets";
 import { CiSearch } from "react-icons/ci";

@@ -14,7 +14,7 @@ import CommonPageHeader from "../../../common/components/headers/CommonPageHeade
 import DailyQuotes from "./components/DailyQuotes";
 import Notification from "./components/Notification";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetails";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 
 const NotificationPage = () => {
   const notification = useAppSelector((state) => state.notification);
