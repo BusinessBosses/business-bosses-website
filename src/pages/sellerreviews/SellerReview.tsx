@@ -1,11 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommonPageHeader from "../../common/components/headers/CommonPageHeader";
 import FilledButton from "../../common/components/buttons/FilledButton";
-import PublicProfileDetails from "../profile/views/components/PublicProfileDetails";
 import PublicProfileDetailsonly from "../profile/views/components/PublicProfileDetailsonly";
 import Rating from "@mui/material/Rating/Rating";
-import LinearProgress from "@mui/material/LinearProgress/LinearProgress";
-import PostItem from "../home/views/components/PostItem";
 import SellerreviewItem from "./components/SellerreviewItem";
 import MobileBossOfTheWeek from "../home/views/components/BossOfTheWeek";
 import { useAppSelector } from "../../redux/store/store";
@@ -13,178 +10,318 @@ import ComputerHeader from "../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetails";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import FilledTextarea from "../../common/components/inputs/FilledTextarea";
-
-
+import FilledButtonsmall from "../../common/components/buttons/FilledButtonsmall";
+import Ratingbar from "./components/Ratingbar";
+import { User } from "../../common/interfaces/user";
+import { useLocation, useNavigate } from "react-router-dom";
+import serviceApi from "../../services/serviceApi";
+import FetchStatus from "../../common/components/fetch_status/FetchStatus";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+interface Review {
+  id: number;
+  sellerId: string;
+  rating: number;
+  userId: string;
+  reviewText?: string;
+  rater: User;
+  createdAt: string;
+}
 
 const SellerReview = () => {
-    const profile = useAppSelector((state) => state.user);
-    const [open, setOpen] = useState<boolean>(false);
-    const reviewInputRef = useRef<HTMLTextAreaElement>(null);
-    return (
-        <div>
-            <div className="mobile-only" >
-                <div className=" top-0 w-full z-50 mobile-only " style={{ position: 'sticky', top: 0, zIndex: 100, }}>
+  const [seller, setSeller] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [rating, setRating] = useState<boolean>(false);
+  const [currentRate, setCurrentRate] = useState<number>(0);
+  const [reviews, setReviews] = useState<Review[] | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const profile = useAppSelector((state) => state.user);
+  const [open, setOpen] = useState<boolean>(false);
+  const reviewInputRef = useRef<HTMLTextAreaElement>(null);
 
-                    <CommonPageHeader title="Seller Reviews" />
-                </div>
-                <div className="bg-white" style={{ borderTop: "15px solid rgba(244, 244, 244, 1)", height: "100vh" }}>
-                    <div className="flex justify-center">
+  const getReviewBasedOfCount = (count: number): number => {
+    return reviews?.filter((ft) => ft.rating === count).length ?? 0;
+  };
 
-                        {/* <PublicProfileDetailsonly data={undefined} /> */}
+  const getUserReviews = async (userId: string) => {
+    setLoading(true);
+    const response = await serviceApi.fetch(`/reviews/user/${userId}`);
+    if (response.success) {
+      console.log(response);
+      const revs = response.data.rows;
+      if (!revs.length) {
+        setReviews(null);
+      } else {
+        setReviews(revs);
+      }
+    }
+    setLoading(false);
+  };
 
-                        <FilledButton className="justify-center" onClick={() => {setOpen(true) }} text={"Rate Seller"} />
+  const onRate = async () => {
+    if (rating) return;
+    setRating(true);
+    const response = await serviceApi.post("/reviews", {
+      sellerId: seller?.uid,
+      rating: currentRate,
+      reviewText: reviewInputRef.current?.value.trim() ?? "",
+    });
+    if (response.success) {
+      getUserReviews(seller!.uid);
+    }
+  };
 
-                        <BottomSheet
-                            scrollLocking={true}
-                            onDismiss={() => setOpen(false)}
-                            maxHeight={1000}
-                            open={open}
-                            footer={
-                                <div className="flex justify-center">
-                                    <FilledButton onClick={() => { }} text={"Rate"} />
-                                </div>
-                            }
-                        >
-                            <div className="h-[50vh] overflow-y-auto ">
-                                <div className="font-bold  p-5">Rate Seller</div>
-                                <div className="bg-[#f4f4f4] mx-5 p-5 rounded-xl flex justify-center"> <Rating name="half-rating-read" defaultValue={0.0} precision={0.5} readOnly size="large" /></div>
-                                <div  className="px-5">
-                                <FilledTextarea
-                                    placeholder={"Write your Review here"}
-                                    inputRef={reviewInputRef}
-                                    onchange={() => { }}
-                                    label=""
-                                />
-                                </div>
+  useEffect(() => {
+    const state = location.state;
+    if (!!!state) {
+      navigate(-1);
+      return;
+    } else {
+      setSeller(state);
 
-                            </div>
-                        </BottomSheet>
+      getUserReviews(state.uid);
+    }
+  }, []);
 
-
-                    </div>
-                    <div className="rounded-xl bg-[#f4f4f4] flex p-5 m-5 gap-8">
-                        <div>
-                            <div className="text-primary font-bold">Rating</div>
-                            <div className="text-sm font-bold"><span style={{ fontWeight: "bold", fontSize: "20px" }}>3.4</span> out of 5</div>
-                            <div className="text-sm">Based on <span>12</span> reviews</div>
-                            <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly size="large" />
-
-
-
-
-                        </div>
-
-                        <div className=" text-sm">
-                            <div className="flex">
-                                <div>5 stars</div>
-                                <LinearProgress
-                                    className="charProgress"
-                                    variant="determinate"
-                                    value={3}
-                                />
-
-                            </div>
-                            <div className="flex">
-                                <div>4 stars</div>
-                                <LinearProgress
-                                    className="charProgress"
-                                    variant="determinate"
-                                    value={3}
-                                />
-
-                            </div>
-                            <div className="flex">
-                                <div>3 stars</div>
-                                <LinearProgress
-                                    className="charProgress"
-                                    variant="determinate"
-                                    value={3}
-                                />
-
-                            </div>
-                            <div className="flex">
-                                <div>2 stars</div>
-                                <LinearProgress
-                                    className="charProgress"
-                                    variant="determinate"
-                                    value={3}
-                                />
-
-                            </div>
-                            <div className="flex">
-                                <div>1 star</div>
-                                <LinearProgress
-                                    className="charProgress"
-                                    variant="determinate"
-                                    value={3}
-                                />
-
-                            </div>
-                        </div>
-
-                    </div>
-                    {/* {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
-                    <SellerreviewItem data={undefined} />
-                ))} */}
-
-                </div>
-
-            </div>
-
-
-            <div className="computer-only bg-[#fff]">
-                <ComputerHeader />
-
-                <div className="computer-content">
-                    <div
-                        className="firstsection ml-5 lg:ml-20 pr-5"
-                        style={{
-                            width: "30%",
-                            flexGrow: 0,
-                            overflow: "none",
-                            position: "sticky",
-                            top: 0,
-                            zIndex: 1,
-                        }}
-                    >
-                        <div className="">
-                            <div className=" flex items-center gap-3">
-                                <ComputerProfileDetails data={profile.profile!} />
-                            </div>
-                        </div>
-                    </div>
-                    <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-                    <div
-                        className="computer-main-content"
-                        style={{ width: "40%", flexGrow: 0 }}
-                    >
-
-                    </div>
-                    <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-                    <div
-                        className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
-                        style={{
-                            width: "30%",
-                            flexGrow: 0,
-                            overflow: "none",
-                            position: "sticky",
-                            top: 0,
-                            zIndex: 1,
-                        }}
-                    >
-                        <div className="rounded-xl overflow-hidden" style={{}}>
-                            {profile.bossup ? (
-                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
-                            ) : null}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
+  return (
+    <div>
+      <div className="mobile-only">
+        <div
+          className=" top-0 w-full z-50 mobile-only "
+          style={{ position: "sticky", top: 0, zIndex: 100 }}
+        >
+          <CommonPageHeader title="Seller Reviews" />
         </div>
+        {loading ? (
+          <FetchStatus
+            error={false}
+            loading={true}
+            errorMessage=""
+            onReload={() => {}}
+          />
+        ) : (
+          <div
+            className="bg-white"
+            style={{
+              borderTop: "15px solid rgba(244, 244, 244, 1)",
+              height: "100vh",
+            }}
+          >
+            <div className="flex-row justify-center">
+              <div className="pt-5">
+                {seller ? <PublicProfileDetailsonly data={seller!} /> : null}
+              </div>
 
-    );
+              <div className="flex justify-center pt-5">
+                {(reviews === null ||
+                  !!!reviews.filter(
+                    (ft) => ft.rater.uid === profile.profile?.uid
+                  ).length) &&
+                  seller?.uid !== profile.profile?.uid && (
+                    <FilledButtonsmall
+                      className="py-3 px-8"
+                      onClick={() => {
+                        setOpen(true);
+                      }}
+                      text={"Rate Seller"}
+                    />
+                  )}
+              </div>
+
+              <BottomSheet
+                scrollLocking={true}
+                onDismiss={() => setOpen(false)}
+                maxHeight={1000}
+                open={open}
+                footer={
+                  <div className="flex justify-center">
+                    <FilledButton
+                      onClick={onRate}
+                      text={rating ? "Rating" : "Rate"}
+                    />
+                  </div>
+                }
+              >
+                <div className="h-[50vh] overflow-y-auto">
+                  <div className="font-bold  p-5">Rate Seller</div>
+                  <div className="bg-[#f4f4f4] mx-5 gap-1 p-5 rounded-xl flex justify-center">
+                    {[1, 2, 3, 4, 5].map((mp) => {
+                      if (currentRate >= mp) {
+                        return (
+                          <AiFillStar
+                            onClick={() => setCurrentRate(mp)}
+                            size={25}
+                            color="yellow"
+                          />
+                        );
+                      } else {
+                        return (
+                          <AiOutlineStar
+                            onClick={() => {
+                              setCurrentRate(mp);
+                            }}
+                            size={25}
+                          />
+                        );
+                      }
+                    })}
+                    {/* <Rating
+                      name="half-rating-read"
+                      defaultValue={0.0}
+                      precision={0.5}
+                      readOnly
+                      size="large"
+                      onChange={(e, newVal) => {
+                        console.log(newVal);
+                      }}
+                    /> */}
+                  </div>
+                  <div className="px-5">
+                    <FilledTextarea
+                      placeholder={"Write your Review here"}
+                      inputRef={reviewInputRef}
+                      onchange={() => {}}
+                      label=""
+                    />
+                  </div>
+                </div>
+              </BottomSheet>
+            </div>
+
+            <div className="rounded-xl bg-[#f4f4f4] flex p-5 m-5 gap-8">
+              <div>
+                <div className="text-primary font-bold">Rating</div>
+                <div className="text-sm font-bold">
+                  <span style={{ fontWeight: "bold", fontSize: "20px" }}>
+                    {seller?.averageRating?.toFixed(1) ?? 0.0}
+                  </span>{" "}
+                  out of 5
+                </div>
+                <div className="text-sm">
+                  Based on <span>{reviews?.length ?? 0}</span> reviews
+                </div>
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={seller?.averageRating ?? 0}
+                  precision={0.5}
+                  readOnly
+                  size="large"
+                />
+              </div>
+
+              <div className="text-sm">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div style={{ flexBasis: "50%" }}>
+                    <div>5 stars</div>
+                    <div>4 stars</div>
+                    <div>3 stars</div>
+                    <div>2 stars</div>
+                    <div>1 star</div>
+                  </div>
+                  <div
+                    className="space-y-1.5 pt-1.5"
+                    style={{ flexBasis: "50%" }}
+                  >
+                    <Ratingbar
+                      progress={
+                        reviews === null
+                          ? 0
+                          : (getReviewBasedOfCount(5) / reviews.length) * 100
+                      }
+                    />
+                    <Ratingbar
+                      progress={
+                        reviews === null
+                          ? 0
+                          : (getReviewBasedOfCount(4) / reviews.length) * 100
+                      }
+                    />
+                    <Ratingbar
+                      progress={
+                        reviews === null
+                          ? 0
+                          : (getReviewBasedOfCount(3) / reviews.length) * 100
+                      }
+                    />
+                    <Ratingbar
+                      progress={
+                        reviews === null
+                          ? 0
+                          : (getReviewBasedOfCount(2) / reviews.length) * 100
+                      }
+                    />
+                    <Ratingbar
+                      progress={
+                        reviews === null
+                          ? 0
+                          : (getReviewBasedOfCount(1) / reviews.length) * 100
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
+              <SellerreviewItem data={undefined} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="computer-only bg-[#fff]">
+        <ComputerHeader />
+
+        <div className="computer-content">
+          <div
+            className="firstsection ml-5 lg:ml-20 pr-5"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
+              <div className=" flex items-center gap-3">
+                {seller ? <ComputerProfileDetails data={seller!} /> : null}
+              </div>
+            </div>
+          </div>
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="computer-main-content"
+            style={{ width: "40%", flexGrow: 0 }}
+          ></div>
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              {profile.bossup ? (
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default SellerReview;

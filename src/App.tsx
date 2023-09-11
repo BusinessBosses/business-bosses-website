@@ -30,6 +30,7 @@ import { saveChatsToState } from "./redux/slices/ChatSlice";
 import CommunitiesPage from "./pages/communities/views/CommunitiesPage";
 import { useSocket } from "./hooks/useSockets";
 import { socketUrl } from "./config/config";
+import Bossupsearch from "./pages/communities/views/Bossupsearch";
 import CreateBossup from "./pages/communities/views/CreateBossup";
 import Popup from "reactjs-popup";
 import { StorageEnum } from "./common/emums/StorageEmuns";
@@ -47,6 +48,9 @@ import SellerReview from "./pages/sellerreviews/SellerReview";
 import ExpandedImages from "./pages/expandedimages/expandedimages";
 import Bossuppartnerpage from "./pages/bossuppartnerpage/bossuppartnerpage";
 import ConnectRelevantPage from "./pages/settings/views/ConnectRelevantPage";
+import SubscriptionConfirmationPage from "./pages/subscription/views/SubscriptionConfirmationPage";
+import RenewSubscriptionConfirmationPage from "./pages/subscription/views/RenewSubscriptionConfirmationPage";
+import BoostPostConfirmationPage from "./pages/subscription/views/BoostpostConfirmationPage";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -249,6 +253,10 @@ const App = () => {
         element={<RegisterPage onSuccess={fetchData} />}
       />
       <Route
+        path={RoutesPath.communitiesSearch}
+        element={<Bossupsearch onClosePopup={() => {}} />}
+      />
+      <Route
         path={RoutesPath.login}
         element={<LoginPage onLoginSuccess={fetchData} />}
       />
@@ -290,6 +298,18 @@ const App = () => {
       <Route
         path={RoutesPath.connectrelevantpage}
         element={<ConnectRelevantPage />}
+      />
+      <Route
+        path={RoutesPath.subscriptionconfirmationpage}
+        element={<SubscriptionConfirmationPage />}
+      />
+      <Route
+        path={RoutesPath.renewsubscriptionconfirmationpage}
+        element={<RenewSubscriptionConfirmationPage />}
+      />
+      <Route
+        path={RoutesPath.boostpostconfirmationpage}
+        element={<BoostPostConfirmationPage />}
       />
     </Routes>
   );

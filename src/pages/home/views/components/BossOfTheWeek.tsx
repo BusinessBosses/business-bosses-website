@@ -13,6 +13,8 @@ import { useEffect, useRef, useState } from "react";
 import Bossoftheweekpopup from "../../../popups/Bossoftheweekpopup";
 import BossupPartnerstile from "./BopssupPartnerstile";
 import Bossuppartnerpage from "../../../bossuppartnerpage/bossuppartnerpage";
+import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
+import OutlinedButtonsmall from "../../../../common/components/buttons/OutlinedButtonsmall";
 interface Props {
   bossOfTheWeek: User;
 }
@@ -81,8 +83,13 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         <div className="flex items-center gap-3">
           <img src={Assets.Logo} className="w-10 h-10" alt="" />
           <p
-            className="text-[#333333] nuniblack text-2xl "
-            style={{ fontSize: 20 }}
+            className="text-[#333333]  "
+            style={{
+              fontSize: 20,
+              fontWeight: 900,
+              fontFamily: "NuniSans-Black, sans-serif",
+              color: "#333333",
+            }}
           >
             Boss of the week
           </p>
@@ -96,22 +103,27 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
             {bossOfTheWeek.name}
           </p>
           <p className="text-sm text-[#333333]">{bossOfTheWeek.category}</p>
-          <p className="text-xs text-[#777777]">{bossOfTheWeek.bio}</p>
-          <div className="flex items-center gap-3 mt-2 mb-2 lg:mb-4">
+          <p className="text-xs lg:text-base text-[#777777]">
+            {bossOfTheWeek.bio!.length > 80
+              ? bossOfTheWeek.bio!.slice(0, 80) + "..."
+              : bossOfTheWeek.bio}
+          </p>
+
+          <div className="flex items-center gap-3 mt-2 mb-1 lg:mb-4">
             {!profile?.connecteds?.includes(bossOfTheWeek.uid!) ? (
-              <FilledButton
+              <FilledButtonsmall
                 onClick={connection}
                 text="Connect"
                 className="px-2 py-1.5"
               />
             ) : (
-              <FilledButton
+              <FilledButtonsmall
                 onClick={connection}
                 text="Connected"
                 className="px-2 py-1.5"
               />
             )}
-            <OutlinedButton
+            <OutlinedButtonsmall
               onClick={() => {
                 navigate(RoutesPath.refer, { state: bossOfTheWeek.uid });
               }}
@@ -139,9 +151,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
         <BossupPartnerstile bossupby={""} bossupad={""} />
       </div>
 
-      <div className="computer-only">
-        <Bossuppartnerpage />
-      </div>
+      <div className="computer-only">{/* <Bossuppartnerpage /> */}</div>
     </div>
   );
 };
