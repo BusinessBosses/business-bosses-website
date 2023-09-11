@@ -30,6 +30,7 @@ import { saveChatsToState } from "./redux/slices/ChatSlice";
 import CommunitiesPage from "./pages/communities/views/CommunitiesPage";
 import { useSocket } from "./hooks/useSockets";
 import { socketUrl } from "./config/config";
+import Bossupsearch from "./pages/communities/views/Bossupsearch";
 import CreateBossup from "./pages/communities/views/CreateBossup";
 import Popup from "reactjs-popup";
 import { StorageEnum } from "./common/emums/StorageEmuns";
@@ -175,7 +176,7 @@ const App = () => {
     />
   ) : err ? (
     errorMessage.toLowerCase() === "send a valid token" ||
-      errorMessage.toLowerCase() === "invalid token" ? (
+    errorMessage.toLowerCase() === "invalid token" ? (
       <Popup
         closeOnDocumentClick={false}
         closeOnEscape={false}
@@ -251,6 +252,10 @@ const App = () => {
       <Route
         path={RoutesPath.register}
         element={<RegisterPage onSuccess={fetchData} />}
+      />
+      <Route
+        path={RoutesPath.communitiesSearch}
+        element={<Bossupsearch onClosePopup={() => {}} />}
       />
       <Route
         path={RoutesPath.login}

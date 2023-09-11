@@ -11,53 +11,49 @@ import PostItem from "../../home/views/components/PostItem";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import Assets from "../../../assets";
 import BossupSearchTabs from "./components/BossupSearchTabs";
+import { Industry } from "../../../common/interfaces/industry";
+import { Forum } from "../../../common/interfaces/forum";
+import IndustryCard from "./components/IndustryCard";
+import ForumItem from "../../../common/components/forum/ForumItem";
+import { useAppSelector } from "../../../redux/store/store";
 
 const Bossupsearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const navigate = useNavigate();
   const searchRef = useRef<HTMLInputElement>(null);
-
-  const [isSearch, setIsSearch] = useState<boolean>(false);
+  const industries = useAppSelector((state) => state.industry).industries;
   const [loading, setLoading] = useState<boolean>(false);
-  const [recommendedConnections, setRecommendedConnections] = useState<User[]>(
-    []
-  );
-  const [recommendedPosts, setRecommendedPosts] = useState<Post[]>([]);
-  const [searchedUsers, setSearchedUsers] = useState<User[]>([]);
-  const [searchedPosts, setSearchedPosts] = useState<Post[]>([]);
-  const fetchRecommendedConnections = async () => {
-    setLoading(true);
-    const response = await serviceApi.fetch("/search/get-recommended-data");
-    if (response.success) {
-      setRecommendedConnections(response.data.recommendedUsers);
-      setRecommendedPosts(response.data.recommendedPosts);
-    }
-    setLoading(false);
+
+  const [searchedGroups, setSearchedGroups] = useState<Industry[]>([]);
+  const [searchedTopics, setSearchedTopics] = useState<Forum[]>([]);
+
+  const onSearchGroups = (query: string) => {
+    if (currentIndex !== 0) return;
+    const filteredIndustries = industries?.filter((ft) =>
+      ft.industry?.toLowerCase().includes(query.trim().toLowerCase())
+    );
+
+    setSearchedGroups(filteredIndustries);
   };
 
   const onSearch = async () => {
     if (!searchRef.current?.value.trim()) return;
     if (loading) return;
     setLoading(true);
-    setIsSearch(true);
     let searchQuery = "";
     if (searchRef.current.value.trim().includes("#")) {
       searchQuery = `%23${searchRef.current.value.trim().split("#")[1]}`;
     } else {
       searchQuery = searchRef.current.value.trim();
     }
-    const response = await serviceApi.fetch(`/search/${searchQuery}`);
+    const response = await serviceApi.fetch(`/forum/search/${searchQuery}`);
     if (response.success) {
-      setSearchedUsers(response.data.users);
-      setSearchedPosts(response.data.posts.rows);
+      setSearchedTopics(response.data.rows);
     }
     setLoading(false);
   };
 
-
   useEffect(() => {
-    fetchRecommendedConnections();
-
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClosePopup(); // Close the parent popup when Escape key is pressed
@@ -108,12 +104,10 @@ const Bossupsearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
                     ref={searchRef}
                     type="search"
                     placeholder="search"
-                    onChange={(e) => {
-                      if (e.target.value === "") {
-                        setIsSearch(false);
-                      }
-                    }}
                     className="placeholder:text-[#A9A9A9] bg-transparent outline-none border-none flex-grow" // Added flex-grow class here
+                    onChange={(event) => {
+                      onSearchGroups(event.target.value);
+                    }}
                   />
                 </div>
               </form>
@@ -128,13 +122,11 @@ const Bossupsearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
 
       <div className="mt-4">
         {currentIndex === 0 ? (
-          <People
-            loading={loading}
-            isSearching={isSearch}
-            recommendedConnections={
-              isSearch ? searchedUsers : recommendedConnections
-            }
-          />
+          <div className="grid px-4 grid-cols-2 gap-3">
+            {searchedGroups.map((group, index) => {
+              return <IndustryCard key={index} industry={group} />;
+            })}
+          </div>
         ) : null}
         {currentIndex === 1 ? (
           loading ? (
@@ -142,30 +134,21 @@ const Bossupsearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
               loading
               error={false}
               errorMessage=""
-              onReload={() => { }}
+              onReload={() => {}}
             />
-          ) : isSearch ? (
-            searchedPosts.map((post: Post, index: number) => {
-              return (
-                <div className="mx-5 my-2 bg-white"> <PostItem
-                  key={index}
-                  data={post}
-                  onCoin={() => { }}
-                  onComment={() => { }}
-                  onLike={() => { }}
-                /></div>
-
-              );
-            })
           ) : (
-            recommendedPosts.map((post: Post, index: number) => {
+            searchedTopics.map((post: Forum, index: number) => {
               return (
-                <div className="mt-0 mx-5 my-2 ">
-                  <CiSearch />
-                  <div>Search for industries</div>
-                  <div>Search for specific industry!</div>
+                <div className="my-2 bg-white">
+                  <ForumItem
+                    onEdit={() => {}}
+                    key={index}
+                    data={post}
+                    onCoin={() => {}}
+                    onComment={() => {}}
+                    onLike={() => {}}
+                  />
                 </div>
-
               );
             })
           )

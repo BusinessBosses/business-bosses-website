@@ -1,8 +1,6 @@
-import { useState } from "react";
 import CommonPageHeader from "../../common/components/headers/CommonPageHeader";
 import PartnerCard from "./components/partnercard";
 import OutlinedButton from "../../common/components/buttons/OutlinedButton";
-import MobileBossOfTheWeek from "../home/views/components/BossOfTheWeek";
 import { useAppSelector } from "../../redux/store/store";
 import ComputerHeader from "../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetailswcr";

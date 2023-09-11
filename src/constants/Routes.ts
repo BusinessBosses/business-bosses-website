@@ -39,7 +39,7 @@ const subscriptionconfirmationpage = "/subscriptionconfirmationpage";
 const renewsubscriptionconfirmationpage = "/renewsubscriptionconfirmationpage";
 const boostpostconfirmationpage = "/boostpostconfirmationpage";
 const boostpost = "/boostpost";
-
+const communitiesSearch = "/communities-search";
 
 const RoutesPath = {
     home,
@@ -83,6 +83,7 @@ const RoutesPath = {
     renewsubscriptionconfirmationpage,
     boostpostconfirmationpage,
     boostpost,
+    communitiesSearch
 
 
 
