@@ -47,7 +47,6 @@ const SellerReview = () => {
     setLoading(true);
     const response = await serviceApi.fetch(`/reviews/user/${userId}`);
     if (response.success) {
-      console.log(response);
       const revs = response.data.rows;
       if (!revs.length) {
         setReviews(null);
