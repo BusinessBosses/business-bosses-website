@@ -10,7 +10,6 @@ import RoutesPath from "../../../constants/Routes";
 import Popup from "reactjs-popup";
 import { IoIosMore } from "react-icons/io";
 import { BiArrowBack } from "react-icons/bi";
-import ComputerBossOfTheWeek from "../../home/views/components/ComputerBossOfTheWeek";
 import { useNavigate } from "react-router-dom";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import { MdContentCopy, MdShare } from "react-icons/md";

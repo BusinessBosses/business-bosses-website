@@ -76,7 +76,7 @@ const MyProfile = () => {
                 }}
               />
             ) : (
-              <div className="mt-4">
+              <div className="">
               <Posts posts={profile.posts} /></div>
             )
           ) : null}
@@ -116,7 +116,7 @@ const MyProfile = () => {
 
             <MyProfileDetails data={profile.profile!} />
 
-            <div className="py-5">
+            <div>
             <Tabs 
               currentIndex={currentTabIndex}
               onChangeRoute={(index: number) => setCurrentTabIndex(index)}

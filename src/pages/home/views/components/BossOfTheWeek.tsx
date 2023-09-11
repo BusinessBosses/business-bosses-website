@@ -97,7 +97,11 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           <IoIosMore size={23} onClick={openPopup} />
         </div>
         <div className="flex items-center gap-3 mt-2">
-          <UserAvatar imageSize="h-24 w-24" imageURL={bossOfTheWeek.photoUrl} />
+          <div onClick={() =>
+              navigate(RoutesPath.PublicUserProfile, { state: bossOfTheWeek })
+            }>
+            <UserAvatar imageSize="h-24 w-24" imageURL={bossOfTheWeek.photoUrl} />
+          </div>
           <div className="w-3/4 ml-3">
             <p className="text-md text-[#333333] font-semibold">
               {bossOfTheWeek.name}
@@ -155,17 +159,17 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
       </div>
 
       <div className="flex computer-only items-center mt-8">
-          <div className="font-bold">Our Partners</div>
-        </div>
+        <div className="font-bold">Our Partners</div>
+      </div>
 
       <div className=" computer-only mt-3">
         <ComputerBossuppartnersection />
       </div>
 
 
-     
 
-     
+
+
     </div>
   );
 };
