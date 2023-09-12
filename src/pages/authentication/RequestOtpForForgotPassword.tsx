@@ -30,7 +30,7 @@ const RequestOtpForForgotPassword = () => {
   return (
     <div className="w-full min-h-screen h-full bg-white">
       <CommonPageHeader title={"Forgot Password"} />
-      <div className="p-5 lg:px-40 w-full justify-center">
+      <div className="p-5 lg:px-80 w-full justify-center">
         <div className="pb-10"
           style={{
             textAlign: 'center',
