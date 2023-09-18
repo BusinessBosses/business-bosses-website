@@ -10,12 +10,15 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { useAppSelector } from "../../../redux/store/store";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../constants/Routes";
 
 const SubscriptionPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const controlRef = useRef<HTMLDivElement>(null);
   const [processing, setProcessing] = useState<boolean>(false);
   const profile = useAppSelector((state) => state.user);
+  const navigate = useNavigate();
   const prices: PaymentIntentStruct[] = [
     {
       plan: "monthly",
@@ -157,11 +160,12 @@ const SubscriptionPage = () => {
                 <FilledButton
                   onClick={createSubscriptionIntent}
                   text={
-                    processing
-                      ? "Processing..."
-                      : selectedIndex === 0
-                        ? "Subscribe at $4.99"
-                        : "Subscribe at $49.99"
+                    'Continue'
+                    // processing
+                    //   ? "Processing..."
+                    //   : selectedIndex === 0
+                    //     ? "Subscribe at $4.99"
+                    //     : "Subscribe at $49.99"
                   }
                   className="w-full p-3"
                 />
@@ -274,13 +278,13 @@ const SubscriptionPage = () => {
 
                   <div className="mt-5">
                     <FilledButton
-                      onClick={createSubscriptionIntent}
-                      text={
-                        processing
-                          ? "Processing..."
-                          : selectedIndex === 0
-                            ? "Subscribe at $4.99"
-                            : "Subscribe at $49.99"
+                      onClick={() => navigate(RoutesPath.reviewpaymentpage)}
+                      text={'Continue'
+                        // processing
+                        //   ? "Processing..."
+                        //   : selectedIndex === 0
+                        //     ? "Subscribe at $4.99"
+                        //     : "Subscribe at $49.99"
                       }
                       className="w-full p-3"
                     />

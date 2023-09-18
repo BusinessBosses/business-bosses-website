@@ -52,6 +52,7 @@ import SubscriptionConfirmationPage from "./pages/subscription/views/Subscriptio
 import RenewSubscriptionConfirmationPage from "./pages/subscription/views/RenewSubscriptionConfirmationPage";
 import BoostPostConfirmationPage from "./pages/subscription/views/BoostpostConfirmationPage";
 import BoostPost from "./pages/CreatePost/views/BoostPost";
+import ReviewPaymentPage from "./pages/subscription/views/ReviewPaymentPage";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -315,6 +316,10 @@ const App = () => {
        <Route
         path={RoutesPath.boostpost}
         element={<BoostPost />}
+      />
+       <Route
+        path={RoutesPath.reviewpaymentpage}
+        element={<ReviewPaymentPage />}
       />
     </Routes>
   );
