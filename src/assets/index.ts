@@ -24,6 +24,7 @@ import LikeFilled from "./icons/likefilled.svg";
 import Block from "./icons/block.svg";
 import Gallery from "./icons/gallery.svg";
 import One from "./icons/one.png";
+import Planpicture from "./icons/planpicture.png";
 import Two from "./icons/two.png";
 import Three from "./icons/three.png";
 import Four from "./icons/four.png";
@@ -118,7 +119,8 @@ const Assets = {
     Inviteicon,
     Membersicon,
     Linkicon,
-    NextIconPrimary
+    NextIconPrimary,
+    Planpicture,
 
 };
 export default Assets;
