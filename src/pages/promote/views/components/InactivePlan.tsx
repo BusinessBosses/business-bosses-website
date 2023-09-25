@@ -12,12 +12,12 @@ const InactivePlan = ({ plan, onChangePlan }: Props) => {
       className="p-3 rounded-2xl my-2 lg:my-5 flex justify-between items-start"
     >
       <div className="">
-        <p className="text-[#333333] font-semibold">${plan.amount}.00 </p>
-        <div className='bg-[#f1f1f1] text-xs py-1 px-3 inline-block rounded-md mt-1'>
+        <p className="text-[#333333] font-semibold lg:text-base">${plan.amount}.00 </p>
+        <div className='bg-[#f1f1f1] text-xs py-1 px-3 lg:text-sm inline-block rounded-md mt-1'>
                 {plan.duration}
             </div>
             <div>
-        <small className="text-[#777777]">{plan.reach}</small></div>
+        <div className="text-[#777777] lg:text-base  text-sm mt-1 ">{plan.reach}</div></div>
       </div>
       <div
                     className='w-7 h-7 mt-20 rounded-full text-center border'

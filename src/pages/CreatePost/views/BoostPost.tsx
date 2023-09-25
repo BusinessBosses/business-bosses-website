@@ -55,7 +55,7 @@ const BoostPost = () => {
                         <img src={Assets.BoostBanner} alt="Boost Banner" />
                         <div style={{ position: "absolute", bottom: 20, left: 0, width: "100%", }}>
                             <div className='pl-5  text-white'>
-                                <div className='font-black text-lg'> Reach</div>
+                                <div className='font-black text-lg '> Reach</div>
                                 <div className='font-black text-lg'> a Wider Audience</div>
                                 <div className='flex pt-3'>
                                     <input type="checkbox" checked disabled />
@@ -98,7 +98,7 @@ const BoostPost = () => {
                                 checked={isCoin}
                                 onChange={(e) => setIsCoin(e.target.checked)}
                             />
-                            <div className='pl-3 text-sm'>Pay With Coin (100 Coins = $1)</div>
+                            <div className='pl-3 text-sm lg:text-base'>Pay With Coin (100 Coins = $1)</div>
                         </div>
                         <div></div>
                     </div>

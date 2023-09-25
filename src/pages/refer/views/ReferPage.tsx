@@ -8,6 +8,11 @@ import { User } from "../../../common/interfaces/user";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import { useAppSelector } from "../../../redux/store/store";
 import { toast } from "react-toastify";
+import { profile } from "console";
+import Loader from "../../../common/components/loader/Loader";
+import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import ComputerHeader from "../../home/views/components/ComputerHeader";
+import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 
 const ReferPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,6 +24,7 @@ const ReferPage = () => {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
+  const profile = useAppSelector((state) => state.user);
 
   const onRefer = async () => {
     if (!!!selectedUsers.length) return;
@@ -68,84 +74,221 @@ const ReferPage = () => {
   }, []);
   return (
     <div className="">
-      <div
-        className="bg-white top-0 w-full z-50"
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-          borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
-          boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
-        }}
-      >
-        <CommonPageHeader title="Refer" />
-      </div>
-      <div className="p-5">
-        {loading ? (
-          <FetchStatus
-            error={false}
-            errorMessage="Something went wrong!!"
-            loading={true}
-            onReload={() => {}}
-          />
-        ) : err ? (
-          <FetchStatus
-            error={true}
-            errorMessage="Something went wrong!!"
-            loading={false}
-            onReload={() => {
-              getReferables(referredUserId!);
-            }}
-          />
-        ) : (
-          <div className="">
-            {refers.map((connection, index) => {
-              return (
-                <div
-                  key={index}
-                  className="flex my-5 items-center justify-between"
-                >
-                  <label htmlFor={`check_${index}`}>
-                    <div className="flex items-center gap-3">
-                      <UserAvatar
-                        imageSize="w-10 h-10"
-                        imageURL={
-                          connection?.photoUrl ??
-                          "https://cdn-icons-png.flaticon.com/128/149/149071.png"
-                        }
-                      />
-                      <div className="">
-                        <p className="text-[#333333] text-sm capitalize">
-                          {connection.username}
-                        </p>
-                        <p className="text-xs text-[#777777]">
-                          {trimText(connection.bio ?? "", 20)}
-                        </p>
+      <div className="mobile-only">
+        <div
+          className="bg-white top-0 w-full z-50"
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 100,
+            borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
+          }}
+        >
+          <CommonPageHeader title="Refer" />
+        </div>
+        <div className="p-5">
+          {loading ? (
+            <FetchStatus
+              error={false}
+              errorMessage="Something went wrong!!"
+              loading={true}
+              onReload={() => { }}
+            />
+          ) : err ? (
+            <FetchStatus
+              error={true}
+              errorMessage="Something went wrong!!"
+              loading={false}
+              onReload={() => {
+                getReferables(referredUserId!);
+              }}
+            />
+          ) : (
+            <div className="">
+              {refers.map((connection, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="flex my-5 items-center justify-between"
+                  >
+                    <label htmlFor={`check_${index}`}>
+                      <div className="flex items-center gap-3">
+                        <UserAvatar
+                          imageSize="w-10 h-10"
+                          imageURL={
+                            connection?.photoUrl ??
+                            "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+                          }
+                        />
+                        <div className="">
+                          <p className="text-[#333333] text-sm capitalize">
+                            {connection.username}
+                          </p>
+                          <p className="text-xs text-[#777777]">
+                            {trimText(connection.bio ?? "", 20)}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </label>
-                  <input
-                    id={`check_${index}`}
-                    checked={selectedUsers.includes(connection.uid)}
-                    type="checkbox"
-                    onChange={() => {
-                      onSelect(connection.uid);
-                    }}
-                    className=" accent-primary"
-                  />
-                </div>
-              );
-            })}
-          </div>
-        )}
+                    </label>
+                    <input
+                      id={`check_${index}`}
+                      checked={selectedUsers.includes(connection.uid)}
+                      type="checkbox"
+                      onChange={() => {
+                        onSelect(connection.uid);
+                      }}
+                      className=" accent-primary"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <button
+          onClick={onRefer}
+          disabled={processing || !!!selectedUsers.length}
+          className="fixed py-2 px-5 bottom-5 right-10 rounded-full bg-primary text-white"
+        >
+          {processing ? "Processing" : ` Refer (${selectedUsers.length})`}
+        </button>
       </div>
-      <button
-        onClick={onRefer}
-        disabled={processing || !!!selectedUsers.length}
-        className="fixed py-2 px-5 bottom-5 right-10 rounded-full bg-primary text-white"
-      >
-        {processing ? "Processing" : ` Refer (${selectedUsers.length})`}
-      </button>
+
+      <div className='computer-only'>
+        <ComputerHeader />
+
+        <div className="computer-content">
+          <div
+            className="firstsection ml-5 lg:ml-20 pr-5"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="">
+              <div className=" flex items-center gap-3">
+                <ComputerProfileDetails data={profile.profile!} />
+              </div>
+            </div>
+          </div>
+          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="computer-main-content"
+            style={{ width: "40%", flexGrow: 0 }}
+          >
+            <div className="">
+              <div
+                className="bg-white top-0 w-full z-50"
+                style={{
+                  position: "sticky",
+                  top: 0,
+                  zIndex: 100,
+                  borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
+                  boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
+                }}
+              >
+                <CommonPageHeader title="Refer" />
+              </div>
+              <div className="p-5">
+                {loading ? (
+                  <FetchStatus
+                    error={false}
+                    errorMessage="Something went wrong!!"
+                    loading={true}
+                    onReload={() => { }}
+                  />
+                ) : err ? (
+                  <FetchStatus
+                    error={true}
+                    errorMessage="Something went wrong!!"
+                    loading={false}
+                    onReload={() => {
+                      getReferables(referredUserId!);
+                    }}
+                  />
+                ) : (
+                  <div className="">
+                    {refers.map((connection, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex my-5 items-center justify-between"
+                        >
+                          <label htmlFor={`check_${index}`}>
+                            <div className="flex items-center gap-3">
+                              <UserAvatar
+                                imageSize="w-10 h-10"
+                                imageURL={
+                                  connection?.photoUrl ??
+                                  "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+                                }
+                              />
+                              <div className="">
+                                <p className="text-[#333333] text-sm capitalize">
+                                  {connection.username}
+                                </p>
+                                <p className="text-xs text-[#777777]">
+                                  {trimText(connection.bio ?? "", 20)}
+                                </p>
+                              </div>
+                            </div>
+                          </label>
+                          <input
+                            id={`check_${index}`}
+                            checked={selectedUsers.includes(connection.uid)}
+                            type="checkbox"
+                            onChange={() => {
+                              onSelect(connection.uid);
+                            }}
+                            className=" accent-primary"
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+              <div className="flex justify-end items-end mr-5">
+  <button
+    onClick={onRefer}
+    disabled={processing || !!!selectedUsers.length}
+    className="py-2 px-5 rounded-full bg-primary text-white"
+  >
+    {processing ? "Processing" : `Refer (${selectedUsers.length})`}
+  </button>
+</div>
+
+
+            </div>
+          </div>
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              {profile.bossup ? (
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+              ) : null}
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
     </div>
   );
 };

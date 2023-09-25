@@ -24,7 +24,7 @@ const Chooseplancard: React.FC<ChooseplancardProps> = ({
             onClick={onClick} 
         >
             <div className='flex justify-between'>
-                <div className='text-sm font-bold'>{text}</div>
+                <div className='text-sm lg:text-base font-bold'>{text}</div>
                 <div
                     className='w-7 h-7 mt-20 rounded-full text-center border'
                     style={{
@@ -39,10 +39,10 @@ const Chooseplancard: React.FC<ChooseplancardProps> = ({
                 ></div>
             </div>
 
-            <div className='bg-[#f1f1f1] text-xs py-1 px-3 inline-block rounded-md mt-1'>
+            <div className='bg-[#f1f1f1] text-xs lg:text-base py-1 px-3 inline-block rounded-md mt-1'>
                 {duration}
             </div>
-            <div className='text-xs pt-2'>{reach}</div>
+            <div className='text-xs pt-2 lg:text-base'>{reach}</div>
         </div>
     );
 };

@@ -8,7 +8,7 @@ import Popup from "reactjs-popup";
 import { Post } from "../../../../common/interfaces/post";
 import trimText from "../../../../common/functions/trimText";
 import formatDate from "../../../../common/functions/formatDate";
-import { useAppSelector } from "../../../../redux/store/store";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
 import Comment from "../../../../common/components/comment/Comment";
@@ -19,6 +19,12 @@ import { toast } from "react-toastify";
 import SharePopUp from "../../../../common/components/share/SharePopUp";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import GreyButton from "../../../../common/components/buttons/Greybutton";
+import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
+import { User } from "../../../../common/interfaces/user";
+import { saveUserData } from "../../../../redux/slices/UserSlice";
+import ConnectionsController from "../../../connections/controller/ConnectionsController";
+import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
+import Outlinegrey from "../../../../common/components/buttons/Outlinegrey";
 interface Props {
   data: Post;
   onLike: Function;
@@ -34,6 +40,68 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
   const [err, setErr] = useState<boolean>(false);
   const commentInputRef = useRef<HTMLInputElement>(null);
   const [showShareDialog, setShowShareDialog] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  const connection = async () => {
+    if (profile?.connecteds?.includes(data.user.uid!)) {
+      const newUserData: User = {
+        ...profile,
+        connecteds: profile.connecteds?.filter(
+          (ft) => ft !== data.user.uid!
+        ),
+        connectedCount: (profile?.connectedCount ?? 0) - 1,
+      };
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.disConnect(data.user.uid!);
+    } else {
+      const newUserData: User = {
+        ...profile,
+        connecteds: [...profile?.connecteds!, data.user.uid],
+        connectedCount: (profile?.connectedCount ?? 0) + 1,
+      } as User;
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.connect(data.user.uid!);
+    }
+  };
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+
+  const handleBlockClick = () => {
+    setShowConfirmation(true);
+  };
+  const handleReportClick = () => {
+    setShowReport(true);
+  };
+
+  const handleConfirmBlock = () => {
+    // Add your block logic here
+    // You can call the blockUser function or any other logic to block the user
+    // Don't forget to close the confirmation dialog when the action is complete
+    toast.success("User Blocked");
+    GeneralPostsController.blockUser({
+      postId: data.postId,
+    });
+    setShowConfirmation(false);
+  };
+
+  const handleConfirmReport = () => {
+    toast.success("Post reported");
+    GeneralPostsController.reportPost({
+      postId: data.postId,
+      reason: "",
+    });
+    setShowReport(false);
+  };
+
+  const handleCancelBlock = () => {
+    setShowConfirmation(false);
+  };
+
+  const handleCancelReport = () => {
+    setShowReport(false);
+  };
+
 
   const fetchComments = async () => {
     if (comments.length) return;
@@ -74,6 +142,36 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
   return (
     <div>
+      <div className="bg-black mobilepopup justify-center" style={{ position: "relative" }}>
+        {showConfirmation && (
+          <div className="confirmation-overlay">
+
+          <div className="confirmation-dialog rounded-xl mx-5 bg-white">
+            <div className="font-bold text-lg text-center pt-10">Do you want to block user?</div>
+            <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">You will no longer see {data.user?.username}'s posts and comments on your feed</div>
+            <div className="flex justify-center pt-5 pb-10">
+              <button onClick={handleCancelBlock} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
+              <div className="ml-5">
+                <FilledButtonsmall onClick={handleConfirmBlock} text={"Block"} /></div>
+            </div>
+            </div>
+          </div>
+        )}
+        {showReport && (
+          <div className="confirmation-overlay">
+
+          <div className="confirmation-dialog rounded-xl mx-5 bg-white">
+            <div className="font-bold text-lg text-center pt-10">Do you want to report post?</div>
+            <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">The post will be reported to admin to evaluate if it violates any community policy</div>
+            <div className="flex justify-center pt-5 pb-10">
+              <button onClick={handleCancelReport} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
+              <div className="ml-5">
+                <FilledButtonsmall onClick={handleConfirmReport} text={"Report"} /></div>
+            </div>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="pt-5 px-4 bg-white">
         <SharePopUp
           url={`${window.location.href}post?id=${data.postId}`}
@@ -185,7 +283,20 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
           <div className="flex items-center gap-5">
             {data.user?.isSubscribed && (
-              <GreyButton onClick={() => {}} text={"Connect"} />
+              !profile?.connecteds?.includes(data.user.uid!) ? (
+                <GreyButton
+                  onClick={connection}
+                  text="Connect"
+                />
+              ) : (
+                <Outlinegrey
+                onClick={() => {
+                  navigate(RoutesPath.refer, { state: data.user.uid });
+                }}
+                  text="Refer"
+                />
+              )
+             
             )}
 
             <Popup
@@ -241,27 +352,20 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                       <button
                         onClick={() => {
                           close();
-                          toast.success("User Blocked");
-                          GeneralPostsController.blockUser({
-                            postId: data.postId,
-                          });
+                          handleBlockClick();
                         }}
-                        className=" border-none outline-none"
+                        className="menu-item border-none outline-none font-bold text-[#2D93EC]"
                       >
                         Block @{data.user.username}
                       </button>
                       <button
                         onClick={() => {
                           close();
-                          toast.success("Post reported");
-                          GeneralPostsController.reportPost({
-                            postId: data.postId,
-                            reason: "",
-                          });
+                          handleReportClick();
                         }}
-                        className="menu-item text-primary border-none outline-none"
+                        className="menu-item border-none outline-none text-primary font-bold"
                       >
-                        Report Post
+                        Report this post
                       </button>
                     </div>
                   )) as unknown) as ReactNode
@@ -376,3 +480,5 @@ const PostAction = ({ count, icon, active, onClick }: PostActionProps) => {
     </div>
   );
 };
+
+

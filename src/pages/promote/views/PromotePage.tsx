@@ -127,7 +127,7 @@ const PromotePage = () => {
 
           <Banner />
           <div className="p-5">
-            <div className='pb-2 text-md font-bold'>Choose your Plan</div>
+            <div className='pb-2 text-md lg:text-lg font-bold'>Choose your Plan</div>
 
             {plans.map((plan, index) => {
               return (
@@ -230,7 +230,7 @@ const PromotePage = () => {
 
           <Banner />
           <div className="p-5">
-            <div className='pb-2 text-base font-bold'>Choose your Plan</div>
+            <div className='pb-2 text-lg font-bold'>Choose your Plan</div>
 
             {plans.map((plan, index) => {
               return (
@@ -277,7 +277,7 @@ const PromotePage = () => {
                     checked={isCoin}
                     onChange={(e) => setIsCoin(e.target.checked)}
                   />
-                  <div className='pl-3  text-sm'>Pay With Coin (100 Coins = $1)</div>
+                  <div className='pl-3  text-base'>Pay With Coin (100 Coins = $1)</div>
                 </div>
                 <div></div>
               </div>
