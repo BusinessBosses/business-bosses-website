@@ -8,6 +8,7 @@ import SubscribeButton from "../../../settings/components/Subscribebutton";
 import ConnectRelevant from "../../../settings/views/ConnectRelevant";
 import Popup from "reactjs-popup";
 import { IoIosMore } from "react-icons/io";
+import { ReactNode } from "react";
 
 interface Props {
   data: User;
@@ -47,23 +48,57 @@ const ComputerProfileDetails = ({ data }: Props) => {
           </div>
 
           <Popup
-              trigger={
-                <div>
-                  <IoIosMore size={25} />
-                </div>
-              }
-              position="left top"
-              on="click"
-              closeOnDocumentClick
-              contentStyle={{ padding: "0px", border: "none" }}
-              modal 
-              overlayStyle={{
-                background: 'rgba(0, 0, 0, 0.8)', 
-                zIndex: 1000, 
-              }}
-            >
-             
-            </Popup>
+                trigger={
+                  <div>
+                    <IoIosMore size={20} />
+                  </div>
+                }
+                position="left top"
+                on="click"
+                closeOnDocumentClick
+                contentStyle={{ padding: "0px", border: "none" }}
+              // overlayStyle={{
+              //   background: "rgba(0, 0, 0, 0.8)",
+              //   zIndex: 1000,
+              // }}
+              >
+                {
+                  (((close: any) =>
+                    
+                      <div className=" bg-white shadow-xl rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                        <button
+                          onClick={() => {
+                            close();
+                            
+                          }}
+                          className="menu-item border-none outline-none"
+                        >
+                          My Profile
+                        </button>
+                        <button
+                          onClick={() => {
+                            close();
+                          
+                            
+                          }}
+                          className="menu-item border-none outline-none"
+                        >
+                          Settings
+                        </button>
+                        <button
+                          onClick={() => {
+                            close();
+                          
+                            
+                          }}
+                          className="menu-item border-none outline-none"
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    ) as unknown) as ReactNode
+                }
+              </Popup>
             
         </div>
         <div className="mt-2">

@@ -254,14 +254,14 @@ const ReferPage = () => {
                 )}
               </div>
               <div className="flex justify-end items-end mr-5">
-  <button
-    onClick={onRefer}
-    disabled={processing || !!!selectedUsers.length}
-    className="py-2 px-5 rounded-full bg-primary text-white"
-  >
-    {processing ? "Processing" : `Refer (${selectedUsers.length})`}
-  </button>
-</div>
+                <button
+                  onClick={onRefer}
+                  disabled={processing || !!!selectedUsers.length}
+                  className="py-2 px-5 rounded-full bg-primary text-white"
+                >
+                  {processing ? "Processing" : `Refer (${selectedUsers.length})`}
+                </button>
+              </div>
 
 
             </div>

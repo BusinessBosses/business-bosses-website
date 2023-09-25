@@ -247,7 +247,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                         <button
                           onClick={() => {
                             close();
-                            // navigate(RoutesPath.promotePost, { state: data.forumId });
+                          
+                            
                           }}
                           className="menu-item border-none outline-none"
                         >
