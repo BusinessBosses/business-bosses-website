@@ -24,6 +24,7 @@ import LikeFilled from "./icons/likefilled.svg";
 import Block from "./icons/block.svg";
 import Gallery from "./icons/gallery.svg";
 import One from "./icons/one.png";
+import Lefttab from "./icons/lefttab.png";
 import Planpicture from "./icons/planpicture.png";
 import Two from "./icons/two.png";
 import Three from "./icons/three.png";
@@ -121,6 +122,7 @@ const Assets = {
     Linkicon,
     NextIconPrimary,
     Planpicture,
+    Lefttab,
 
 };
 export default Assets;

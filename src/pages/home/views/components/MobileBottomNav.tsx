@@ -4,6 +4,8 @@ import { BsPlusLg } from "react-icons/bs";
 import RoutesPath from "../../../../constants/Routes";
 import { MdPadding } from "react-icons/md";
 import React from "react";
+import { profile } from "console";
+import { useAppSelector } from "../../../../redux/store/store";
 
 interface Props {
   currentIndex: number;
@@ -13,6 +15,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
   const primaryColor = "#F21C29";
   const strokeColor = "#A9A9A9";
   const navigate = useNavigate();
+  const profile = useAppSelector((state) => state.user);
 
   return (
     <div
@@ -24,6 +27,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
         <button
           onClick={() => {
             navigate(RoutesPath.home);
+            
           }}
           className="flex flex-col items-center"
         >
@@ -74,7 +78,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
           }}
         >
           <button
-            onClick={() => navigate(RoutesPath.createPost)}
+            onClick={() => profile.profile?.uid != '66k2ktKA3xQOXouGG1H8KUPvzD02'? navigate(RoutesPath.createPost): navigate(RoutesPath.login)}
             className="p-4 bg-primary rounded-full  text-white flex items-center justify-center"
             style={{ width: 55, height: 55 }}
           >

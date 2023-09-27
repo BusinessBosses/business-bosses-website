@@ -21,6 +21,11 @@ import { User } from "../../../common/interfaces/user";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { useEffect, useState } from "react";
+import { Login } from "@mui/icons-material";
+import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsmall";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../constants/Routes";
+import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
 
 interface Props {
   socket: Socket;
@@ -30,6 +35,7 @@ const HomePage = ({ socket }: Props) => {
   const posts = useAppSelector((state) => state.post.mixedPosts);
   const profile = useAppSelector((state) => state.user);
   const chats = useAppSelector((state) => state.chat.chats);
+  const navigate = useNavigate();
   const onLike = (args: LikeStruct, postIndex: number) => {
     let post = posts[postIndex];
     if (post.data.likes!.includes(profile.profile?.uid!)) {
@@ -121,6 +127,17 @@ const HomePage = ({ socket }: Props) => {
     <div>
       {screenWidth <= 576 ? (
         <div className="mobile-only bg-[#fff]">
+          {profile.profile?.uid == "66k2ktKA3xQOXouGG1H8KUPvzD02" ? <div className=" justify-center items-center p-5">
+            <div className="text-center">
+              Login to see more
+            </div>
+            <div className="flex justify-center items-center pt-5"> 
+            <div className="mr-2"><FilledButtonsmall onClick={()=>navigate(RoutesPath.login)} text={"Login"}/></div>
+            <div><FilledButtonsmall onClick={()=>navigate(RoutesPath.login)} text={"Sign up"}/></div>
+            </div>
+            
+          </div> : null}
+          <div className="" style={{borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)'}}></div>
           <MobileHeader
             coins={profile?.profile!.coinscount}
             unseenNotification={profile?.profile!.unReadCount! > 0}
@@ -130,6 +147,7 @@ const HomePage = ({ socket }: Props) => {
               )
             }
           />
+          
           <div className="">
             {profile.bossup ? (
               <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
@@ -140,7 +158,7 @@ const HomePage = ({ socket }: Props) => {
             if (post.isForum) {
               return (
                 <ForumItem
-                  onEdit={() => {}}
+                  onEdit={() => { }}
                   onComment={(comment: Comment) => {
                     onComment(comment, index);
                   }}
@@ -228,7 +246,8 @@ const HomePage = ({ socket }: Props) => {
             >
               <div className="">
                 <div className=" flex items-center gap-3">
-                  <ComputerProfileDetails data={profile.profile!} />
+                {profile.profile?.uid != "66k2ktKA3xQOXouGG1H8KUPvzD02"?
+                  <ComputerProfileDetails data={profile.profile!} /> : <Computerlefttabsignedoutuser data={profile.profile!}/>}
                 </div>
               </div>
             </div>
@@ -241,7 +260,7 @@ const HomePage = ({ socket }: Props) => {
                 if (post.isForum) {
                   return (
                     <ForumItem
-                      onEdit={() => {}}
+                      onEdit={() => { }}
                       onComment={(comment: Comment) => {
                         onComment(comment, index);
                       }}
