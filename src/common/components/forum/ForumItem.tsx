@@ -20,6 +20,13 @@ import { toast } from "react-toastify";
 import SharePopUp from "../share/SharePopUp";
 import GreyButton from "../buttons/Greybutton";
 import FilledButtonsmall from "../buttons/FilledButtonsmall";
+import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
+import ConnectionsController from "../../../pages/connections/controller/ConnectionsController";
+import { saveUserData } from "../../../redux/slices/UserSlice";
+import { User } from "../../interfaces/user";
+import Outlinegrey from "../buttons/Outlinegrey";
+import Lightbox from "react-spring-lightbox";
+import FilledButton from "../buttons/FilledButton";
 
 interface Props {
   data: Forum;
@@ -39,6 +46,49 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
   const [showShareDialog, setShowShareDialog] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showReport, setShowReport] = useState(false);
+  const [showExpandedImages, setShowExpandedImages] = useState<boolean>(false);
+
+  const handleExpanded = () => {
+    setShowExpandedImages(true);
+  };
+
+  const images: ImagesListItem[] = (data.images || []).map((imageUrl, index) => ({
+    src: imageUrl,
+    loading: 'lazy',
+    alt: `Image ${index + 1}`,
+  }));
+
+
+  const [currentImageIndex, setCurrentIndex] = useState(0);
+
+  const gotoPrevious = () =>
+    currentImageIndex > 0 && setCurrentIndex(currentImageIndex - 1);
+
+  const gotoNext = () =>
+    currentImageIndex + 1 < images?.length! &&
+    setCurrentIndex(currentImageIndex + 1);
+
+    const connection = async () => {
+      if (profile?.connecteds?.includes(data.user?.uid!)) {
+        const newUserData: User = {
+          ...profile,
+          connecteds: profile.connecteds?.filter(
+            (ft) => ft !== data.user?.uid!
+          ),
+          connectedCount: (profile?.connectedCount ?? 0) - 1,
+        };
+        dispatch(saveUserData(newUserData));
+        await ConnectionsController.disConnect(data.user?.uid!);
+      } else {
+        const newUserData: User = {
+          ...profile,
+          connecteds: [...profile?.connecteds!, data.user?.uid],
+          connectedCount: (profile?.connectedCount ?? 0) + 1,
+        } as User;
+        dispatch(saveUserData(newUserData));
+        await ConnectionsController.connect(data.user?.uid!);
+      }
+    };
 
   const handleBlockClick = () => {
     setShowConfirmation(true);
@@ -48,9 +98,6 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
   };
 
   const handleConfirmBlock = () => {
-    // Add your block logic here
-    // You can call the blockUser function or any other logic to block the user
-    // Don't forget to close the confirmation dialog when the action is complete
     toast.success("User Blocked");
     GeneralPostsController.blockUser({
       postId: data.forumId,
@@ -212,9 +259,22 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
               </div>
             </div>
             <div className="flex items-center gap-5">
-              {data.user?.isSubscribed && (
-                <GreyButton onClick={() => { }} text={"Connect"} />
-              )}
+            {data.user?.isSubscribed && (
+              !profile?.connecteds?.includes(data.user.uid!) ? (
+                <GreyButton
+                  onClick={connection}
+                  text="Connect"
+                />
+              ) : (
+                <Outlinegrey
+                  onClick={() => {
+                    navigate(RoutesPath.refer, { state: data.user?.uid });
+                  }}
+                  text="Refer"
+                />
+              )
+
+            )}
 
               <Popup
                 trigger={
@@ -293,30 +353,68 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
               <p className="text-[#4E4B4B] text-xs my-2">{data.industry}</p>
             ) : null}
             {data.images ? (
-              <div className="mt-2">
-                <img
-                  loading="lazy"
-                  src={data.images[0]}
-                  alt=""
-                  className="rounded-lg w-full h-64 object-cover"
-                />
-                <div className="flex overflow-x-scroll mt-2 hide-scroll-bar">
-                  <div className="flex flex-nowrap gap-2">
-                    {data.images.map((img) => (
-                      <div key={img} className="inline-block">
-                        <div className="w-20 h-20 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+            <div className="mt-2">
+              <Lightbox className="lg:p-10 p-5" style={{ background: 'rgba(0, 0, 0, 0.98)' }}
+                isOpen={showExpandedImages}
+                onPrev={gotoPrevious}
+                onNext={gotoNext}
+                images={images}
+                currentIndex={currentImageIndex}
+                renderHeader={() => (<FilledButton onClick={() => setShowExpandedImages(false)} text={"Close"} />)}
+                // renderFooter={() => (<CustomFooter />)}
+                renderPrevButton={() => (<Assets.Backbutton style={{ position: 'relative', zIndex: '500' }} onClick={gotoPrevious} />)}
+                renderNextButton={() => (
+                  <Assets.Backbutton
+                    style={{ transform: 'rotate(180deg)' }}
+                    onClick={gotoNext}
+                  />
+                )}
+
+                // renderImageOverlay={() => (<ImageOverlayComponent >)}
+
+                /* Add styling */
+                // className="cool-class"
+                // style={{ background: "grey" }}
+
+                /* Handle closing */
+                // onClose={handleClose}
+
+                /* Use single or double click to zoom */
+                // singleClickToZoom
+
+                /* react-spring config for open/close animation */
+                pageTransitionConfig={{
+                  from: { transform: "scale(0.75)", opacity: 0 },
+                  enter: { transform: "scale(1)", opacity: 1 },
+                  leave: { transform: "scale(0.75)", opacity: 0 },
+                  config: { mass: 1, tension: 320, friction: 32 }
+                }}
+              />
+              <img
+                onClick={() => { handleExpanded(); }}
+                src={data.images[0]}
+                alt=""
+                className="rounded-lg w-full h-64 object-cover"
+              />
+              <div className="flex overflow-x-hidden mt-2 hide-scroll-bar">
+                <div className="flex flex-nowrap gap-2">
+                  {data.images.map((img, index) => (
+                    <div key={img} className="inline-block">
+                      {index === 0 ? null : (
+                        <div className="max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
                           <img
+                            onClick={() => { handleExpanded(); }}
                             src={img}
                             alt=""
                             className="rounded-lg w-20 h-20 object-cover"
                           />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                        </div>)}
+                    </div>
+                  ))}
                 </div>
               </div>
-            ) : null}
+            </div>
+          ) : null}
             <div className="mt-5 flex items-center justify-between mb-3">
               <div className="flex gap-5">
                 <PostAction
@@ -398,3 +496,7 @@ const PostAction = ({ count, icon, active, onClick }: ForumActionProps) => {
     </div>
   );
 };
+function dispatch(arg0: { payload: User; type: "user/saveUserData"; }) {
+  throw new Error("Function not implemented.");
+}
+

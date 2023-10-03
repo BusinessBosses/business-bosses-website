@@ -18,8 +18,7 @@ const Comment = ({ comment }: Props) => {
       >
         <UserAvatar
           imageURL={
-            comment.user?.photoUrl ??
-            "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+            comment.user?.photoUrl 
           }
         />
         <div className="">

@@ -53,6 +53,8 @@ import RenewSubscriptionConfirmationPage from "./pages/subscription/views/RenewS
 import BoostPostConfirmationPage from "./pages/subscription/views/BoostpostConfirmationPage";
 import BoostPost from "./pages/CreatePost/views/BoostPost";
 import ReviewPaymentPage from "./pages/subscription/views/ReviewPaymentPage";
+import { toast } from "react-toastify";
+import AuthController from "./pages/authentication/controller/AuthController";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -156,6 +158,35 @@ const App = () => {
     // console.info("Sending handshake to server ...");
   };
 
+  const login = async () => {
+   
+    const validate = AuthController.validateLogin({
+      email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
+      password:`${process.env.REACT_APP_DUMMY_PASSWORD}`,
+      terms: true,
+    });
+    if (validate) {
+      const response = await AuthController.loginRequest({
+        email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
+        password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
+      });
+      if (response.success) {
+        localStorage.setItem(
+          StorageEnum.AccessToken,
+          response.data.accessToken
+        );
+        localStorage.setItem(StorageEnum.UserId, response.data.uid);
+
+        navigate(RoutesPath.home);
+      }else{
+        toast.error("Oops, try again! An Error Occurred");
+
+      }
+
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (
       localStorage.getItem(StorageEnum.UserId) &&
@@ -165,7 +196,7 @@ const App = () => {
       StartListeners();
       SendHandshake();
     } else {
-      navigate(RoutesPath.login);
+      login()
     }
   }, []);
   return loading ? (

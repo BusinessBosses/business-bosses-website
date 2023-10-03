@@ -43,6 +43,8 @@ import { ReactComponent as Appstorelogo } from "./icons/app-store.svg"
 import { ReactComponent as Playstorelogo } from "./icons/google-play.svg"
 import Authback from "./icons/authback.png"
 import NoProfile from "./icons/noprofile.png"
+import Mobiletop from "./icons/mobiletopnotsignedinuser.png"
+import Notsignedinpopupback from "./icons/nosignedinpopupback.png"
 import { ReactComponent as Checkmark } from "./icons/premiumbadge.svg"
 import { ReactComponent as NextIconPrimary } from "./icons/nexticon_primary.svg"
 import { ReactComponent as Moreconnections } from "./icons/moreconnections.svg"
@@ -58,6 +60,7 @@ import { ReactComponent as Topicsicon } from "./icons/topics.svg"
 import { ReactComponent as Inviteicon } from "./icons/invite.svg"
 import { ReactComponent as Membersicon } from "./icons/members.svg"
 import { ReactComponent as Linkicon } from "./icons/link.svg"
+import { ReactComponent as Bolticon } from "./icons/bolt.svg"
 
 
 
@@ -123,6 +126,9 @@ const Assets = {
     NextIconPrimary,
     Planpicture,
     Lefttab,
+    Mobiletop,
+    Bolticon,
+    Notsignedinpopupback,
 
 };
 export default Assets;

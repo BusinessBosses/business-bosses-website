@@ -26,11 +26,14 @@ import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsm
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
+import Assets from "../../../assets";
+
 
 interface Props {
   socket: Socket;
 }
 const HomePage = ({ socket }: Props) => {
+  
   const dispatch = useAppDispatch();
   const posts = useAppSelector((state) => state.post.mixedPosts);
   const profile = useAppSelector((state) => state.user);
@@ -127,17 +130,34 @@ const HomePage = ({ socket }: Props) => {
     <div>
       {screenWidth <= 576 ? (
         <div className="mobile-only bg-[#fff]">
-          {profile.profile?.uid == "66k2ktKA3xQOXouGG1H8KUPvzD02" ? <div className=" justify-center items-center p-5">
-            <div className="text-center">
-              Login to see more
+          {profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ? <div className="justify-center items-center flex ">
+            <div style={{ position: 'relative' }}>
+              <img src={Assets.Mobiletop} style={{ position: 'absolute', zIndex: 1 , height:'100%', width:'100%'}} />
+              <div className="p-4 flex justify-between items-center" style={{ position: 'relative', zIndex: 2 }}>
+                <div className="mr-3">
+                  <div className="flex gap-2 items-center pb-2">
+                  <div className="text-sm font-bold">Login to do more</div> 
+                  <Assets.Bolticon/>
+                  </div>
+                  <div className="text-xs">We have so much more to offer to ensure you have a truly boss experience</div>
+                </div>
+
+                <div className="flex" style={{ height: '100%' }}>
+                  <button
+                    onClick={() => navigate(RoutesPath.login)}
+                    className={`bg-white rounded-xl text-primary text-xs shadow-lg flex items-center justify-center font-bold p-2 px-4`}
+                    style={{ height: '100%', whiteSpace: 'nowrap' }}
+                  >
+                    Log in
+                  </button>
+                </div>
+              </div>
+
             </div>
-            <div className="flex justify-center items-center pt-5"> 
-            <div className="mr-2"><FilledButtonsmall onClick={()=>navigate(RoutesPath.login)} text={"Login"}/></div>
-            <div><FilledButtonsmall onClick={()=>navigate(RoutesPath.login)} text={"Sign up"}/></div>
-            </div>
-            
+
           </div> : null}
-          <div className="" style={{borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)'}}></div>
+         
+          <div className="" style={{ borderBottom: '1.2px solid rgba(0, 0, 0, 0.1)' }}></div>
           <MobileHeader
             coins={profile?.profile!.coinscount}
             unseenNotification={profile?.profile!.unReadCount! > 0}
@@ -147,7 +167,9 @@ const HomePage = ({ socket }: Props) => {
               )
             }
           />
-          
+
+
+
           <div className="">
             {profile.bossup ? (
               <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
@@ -228,7 +250,7 @@ const HomePage = ({ socket }: Props) => {
           <MobileBottomNav currentIndex={0} />
         </div>
       ) : null}
-      {screenWidth >= 576 ? (
+    
         <div className="computer-only bg-[#fff]">
           <ComputerHeader />
 
@@ -246,8 +268,8 @@ const HomePage = ({ socket }: Props) => {
             >
               <div className="">
                 <div className=" flex items-center gap-3">
-                {profile.profile?.uid != "66k2ktKA3xQOXouGG1H8KUPvzD02"?
-                  <ComputerProfileDetails data={profile.profile!} /> : <Computerlefttabsignedoutuser data={profile.profile!}/>}
+                  {profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                    <ComputerProfileDetails data={profile.profile!} /> : <Computerlefttabsignedoutuser data={profile.profile!} />}
                 </div>
               </div>
             </div>
@@ -349,7 +371,7 @@ const HomePage = ({ socket }: Props) => {
             </div>
           </div>
         </div>
-      ) : null}
+ 
     </div>
   );
 };

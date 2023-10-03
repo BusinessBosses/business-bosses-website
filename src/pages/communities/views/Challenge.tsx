@@ -19,6 +19,7 @@ import RoutesPath from "../../../constants/Routes";
 import serviceApi from "../../../services/serviceApi";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 import Assets from "../../../assets";
+import NotsignedinPopUp from "../../../common/components/popups/notsignedinpopup";
 interface Props {
   forums: Forum[];
   socket: Socket;
@@ -151,9 +152,8 @@ const Challenge = ({ forums, socket }: Props) => {
             <div
               ref={popupRef}
               className="mobilepopup"
-              style={{ overflowY: "scroll" }}
             >
-              <Bossoftheweekpopup />
+              <NotsignedinPopUp />
             </div>
           </div>
         )}

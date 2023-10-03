@@ -160,12 +160,12 @@ const SubscriptionPage = () => {
                 <FilledButton
                   onClick={createSubscriptionIntent}
                   text={
-                    'Continue'
-                    // processing
-                    //   ? "Processing..."
-                    //   : selectedIndex === 0
-                    //     ? "Subscribe at $4.99"
-                    //     : "Subscribe at $49.99"
+                    // 'Continue'
+                    processing
+                      ? "Processing..."
+                      : selectedIndex === 0
+                        ? "Subscribe at $4.99"
+                        : "Subscribe at $49.99"
                   }
                   className="w-full p-3"
                 />
@@ -278,13 +278,14 @@ const SubscriptionPage = () => {
 
                   <div className="mt-5">
                     <FilledButton
-                      onClick={() => navigate(RoutesPath.reviewpaymentpage)}
-                      text={'Continue'
-                        // processing
-                        //   ? "Processing..."
-                        //   : selectedIndex === 0
-                        //     ? "Subscribe at $4.99"
-                        //     : "Subscribe at $49.99"
+                      onClick={createSubscriptionIntent}
+                      text={
+                        // 'Continue'
+                        processing
+                          ? "Processing..."
+                          : selectedIndex === 0
+                            ? "Subscribe at $4.99"
+                            : "Subscribe at $49.99"
                       }
                       className="w-full p-3"
                     />

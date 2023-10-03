@@ -80,7 +80,7 @@ const ComputerTopNav = ({
       case 0:
         return (
           <button
-            onClick={openPopup}
+            onClick={()=>navigate(RoutesPath.createPost)}
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}

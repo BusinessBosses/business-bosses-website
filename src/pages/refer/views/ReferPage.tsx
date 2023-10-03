@@ -117,8 +117,7 @@ const ReferPage = () => {
                         <UserAvatar
                           imageSize="w-10 h-10"
                           imageURL={
-                            connection?.photoUrl ??
-                            "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+                            connection?.photoUrl 
                           }
                         />
                         <div className="">
@@ -224,8 +223,7 @@ const ReferPage = () => {
                               <UserAvatar
                                 imageSize="w-10 h-10"
                                 imageURL={
-                                  connection?.photoUrl ??
-                                  "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+                                  connection?.photoUrl 
                                 }
                               />
                               <div className="">

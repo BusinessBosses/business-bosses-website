@@ -78,7 +78,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
           }}
         >
           <button
-            onClick={() => profile.profile?.uid != '66k2ktKA3xQOXouGG1H8KUPvzD02'? navigate(RoutesPath.createPost): navigate(RoutesPath.login)}
+            onClick={() => profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ? navigate(RoutesPath.createPost): navigate(RoutesPath.login)}
             className="p-4 bg-primary rounded-full  text-white flex items-center justify-center"
             style={{ width: 55, height: 55 }}
           >

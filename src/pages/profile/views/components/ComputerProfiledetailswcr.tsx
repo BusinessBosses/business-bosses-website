@@ -8,7 +8,10 @@ import SubscribeButton from "../../../settings/components/Subscribebutton";
 import ConnectRelevant from "../../../settings/views/ConnectRelevant";
 import Popup from "reactjs-popup";
 import { IoIosMore } from "react-icons/io";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { toast } from "react-toastify";
+import { StorageEnum } from "../../../../common/emums/StorageEmuns";
+import AuthController from "../../../authentication/controller/AuthController";
 
 interface Props {
   data: User;
@@ -22,6 +25,36 @@ const ComputerProfileDetails = ({ data }: Props) => {
   const handleProfileClick = () => {
     // Example: Navigate to a specific route when the profile is clicked
     navigate(RoutesPath.myProfile, { state: { userId: data.uid } });
+  };
+  const [loading, setLoading] = useState<boolean>(false);
+  const login = async () => {
+    if (loading) return;
+    const validate = AuthController.validateLogin({
+      email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
+      password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
+      terms: true,
+    });
+    if (validate) {
+      setLoading(true);
+      const response = await AuthController.loginRequest({
+        email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
+        password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
+      });
+      if (response.success) {
+        localStorage.setItem(
+          StorageEnum.AccessToken,
+          response.data.accessToken
+        );
+        localStorage.setItem(StorageEnum.UserId, response.data.uid);
+        toast.success("You have been signed out");
+        navigate(RoutesPath.home);
+      }else{
+        toast.error("Oops, try again! An Error Occurred");
+
+      }
+
+      setLoading(false);
+    }
   };
 
   return (
@@ -87,6 +120,7 @@ const ComputerProfileDetails = ({ data }: Props) => {
                         </button>
                         <button
                           onClick={() => {
+                            login();
                             close();
                           
                             

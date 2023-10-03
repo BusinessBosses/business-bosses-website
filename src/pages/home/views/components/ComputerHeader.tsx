@@ -117,7 +117,7 @@ const ComputerHeader = ({ onTapButton }: Props) => {
       {isPopupOpen &&
         (currentRoute === "/communities" ? (
           <div className="overlay">
-            <div className="popup" style={{ overflowY: "scroll" }}>
+            <div className="popup" >
               <Bossupsearch onClosePopup={closePopup} />
             </div>
           </div>
@@ -129,7 +129,8 @@ const ComputerHeader = ({ onTapButton }: Props) => {
           </div>
         ) : (
           <div className="overlay">
-            <div className="popup" style={{ overflowY: "scroll" }}>
+            <div className="popup" style={{ overflowY: "scroll", scrollbarWidth: "none", msOverflowStyle: "none" }}>
+
               <HomeSearch onClosePopup={closePopup} />
             </div>
           </div>

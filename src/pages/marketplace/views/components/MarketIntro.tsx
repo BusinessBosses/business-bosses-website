@@ -219,14 +219,17 @@ const MarketIntro = () => {
                 alt=""
                 className="w-32 h-20 rounded-lg"
               />
+              <div className="">
+                <p className="text-[#383838] my-2  font-bold text-sm">
+                  - Sell your products and services
+                </p>
+                <p className="text-[#383838] my-2  font-bold text-sm">
+                  - Find Supplies
+                </p>
+              </div>
             </div>
-            <p className="text-[#383838] my-2  font-bold text-sm">
-              - Sell your products and services
-            </p>
-            <p className="text-[#383838] my-2  font-bold text-sm">
-              - Find Supplies
-            </p>
-            <div className="flex items-center justify-between mt-2">
+
+            <div className="flex items-center justify-between mt-5">
               <div className="flex items-center gap-1">
                 <Assets.Membersicon
                   className="text-primary"
@@ -259,7 +262,7 @@ const MarketIntro = () => {
           </div>
         </div>
       </div>
-      <div className="computer-only mt-5"><ComputerBossuppartnersection/></div>
+      <div className="computer-only mt-5"><ComputerBossuppartnersection /></div>
     </div>
   );
 };

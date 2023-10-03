@@ -12,7 +12,10 @@ const OutlinedButton = ({ onClick, text, className, icon }: Props) => {
     <button
       onClick={onClick}
       className={`bg-[#fff] border border-primary gap-1 py-2.5 rounded-xl flex items-center text-sm justify-center text-primary p-2 px-4 ${className}`}
-    >
+      style={{
+        border: '1.5px solid #F21C29',
+        color: '#F21C29',
+      }}>
       {text}
       {icon}
     </button>

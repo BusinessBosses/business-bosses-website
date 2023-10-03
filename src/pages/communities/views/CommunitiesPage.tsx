@@ -32,6 +32,7 @@ import Opportunitiespopup from "../../popups/Opportunitiespopup";
 import AppConstants from "../../../constants/consts";
 import ComputerBossuppartnersection from "../../bossuppartnerpage/computerbossupsection";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
 
 interface Props {
   socket: Socket;
@@ -341,7 +342,6 @@ const CommunitiesPage = ({ socket }: Props) => {
               <div
                 ref={popupRef}
                 className="computerpopup"
-                style={{ overflowY: "scroll" }}
               >
                 {currentRoute === "/communities" ? (
                   <Bossoftheweekpopup />
@@ -369,7 +369,8 @@ const CommunitiesPage = ({ socket }: Props) => {
           >
             <div className="">
               <div className=" flex items-center gap-3">
-                <ComputerProfileDetails data={profile!} />
+              {profilee.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                    <ComputerProfileDetails data={profilee.profile!} /> : <Computerlefttabsignedoutuser data={profilee.profile!} />}
               </div>
             </div>
           </div>

@@ -100,8 +100,8 @@ const ForumCard = ({
               <p className="text-[#383838] font-bold text-sm">{label}</p>
               
             </div>
-            <p className="text-[#383838] pt-5 font-bold text-sm">{label}</p>
-            <div className="flex items-center  justify-between mt-2">
+            
+            <div className="flex items-center  justify-between mt-5">
             <div className="flex items-center gap-1">
               <Assets.Membersicon className="text-primary" stroke="black" />
               <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>

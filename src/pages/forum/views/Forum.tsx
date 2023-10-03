@@ -35,6 +35,7 @@ import Opportunitiespopup from "../../popups/Opportunitiespopup";
 import FilledInputcommunities from "../../../common/components/inputs/FilledInputcommunities";
 import FilledTextareacommunities from "../../../common/components/inputs/FilledTextareacommunities";
 import FormModal from "./components/FormModal";
+import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
 interface Props {
   socket: Socket;
 }
@@ -48,6 +49,7 @@ const Forum = ({ socket }: Props) => {
   const [count, setCount] = useState<number>(0);
   const [forums, setForums] = useState<ForumProp[]>([]);
   const profile = useAppSelector((state) => state.user.profile);
+  const profilee = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [industry, setIndustry] = useState<Industry | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
@@ -499,7 +501,8 @@ const Forum = ({ socket }: Props) => {
           >
             <div className="">
               <div className=" flex items-center gap-3">
-                <ComputerProfileDetails data={profile!} />
+              {profilee.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                    <ComputerProfileDetails data={profilee.profile!} /> : <Computerlefttabsignedoutuser data={profilee.profile!} />}
               </div>
             </div>
           </div>
