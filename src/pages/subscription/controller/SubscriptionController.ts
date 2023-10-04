@@ -2,7 +2,7 @@ import serviceApi from "../../../services/serviceApi"
 
 class SubscriptionController {
     async createSubscriptionIntent(args: PaymentIntentStruct) {
-        const response = await serviceApi.post('/subscription', args)
+        const response = await serviceApi.post('/subscription/web', args)
         return response;
     }
 }

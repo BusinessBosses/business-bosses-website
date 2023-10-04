@@ -24,6 +24,7 @@ import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
 import Lightbox from "react-spring-lightbox";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
+import TranslucentDiv from "../../../../common/components/buttons/Translucentbutton";
 interface Props {
   data: Market;
   onLike: Function;
@@ -341,7 +342,10 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                 onNext={gotoNext}
                 images={images}
                 currentIndex={currentImageIndex}
-                renderHeader={() => (<FilledButton onClick={() => setShowExpandedImages(false)} text={"Close"} />)}
+                renderFooter={() => (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => setShowExpandedImages(false)}>
+                <TranslucentDiv />
+              </div>
+              )}
                 // renderFooter={() => (<CustomFooter />)}
                 renderPrevButton={() => (<Assets.Backbutton style={{ position: 'relative', zIndex: '500' }} onClick={gotoPrevious} />)}
                 renderNextButton={() => (

@@ -22,11 +22,11 @@ const SubscriptionPage = () => {
   const prices: PaymentIntentStruct[] = [
     {
       plan: "monthly",
-      price: "price_1NIrQiEGsMsi6baUybHKB3X5",
+      price: "price_1NfNnDEGsMsi6baU9FbZf8dQ",
     },
     {
       plan: "annually",
-      price: "price_1NIrQiEGsMsi6baUpmQjfsrp",
+      price: "price_1NfNnDEGsMsi6baUkDiWNJr7",
     },
   ];
   const handleSegmentChange = (value: string, index: number) => {
@@ -61,7 +61,10 @@ const SubscriptionPage = () => {
     );
     if (response.success) {
       window.open(response.data, "_blank")?.focus();
+    }else{
+
     }
+    console.log(response);
 
     setProcessing(false);
   };

@@ -41,6 +41,7 @@ const boostpostconfirmationpage = "/boostpostconfirmationpage";
 const boostpost = "/boostpost";
 const communitiesSearch = "/communities-search";
 const reviewpaymentpage = "/reviewpaymentpage";
+const subscriptionfailedpage = "/subscriptionfailedpage";
 
 const RoutesPath = {
     home,
@@ -86,6 +87,7 @@ const RoutesPath = {
     boostpost,
     communitiesSearch,
     reviewpaymentpage,
+    subscriptionfailedpage,
 
 
 

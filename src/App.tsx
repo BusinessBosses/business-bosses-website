@@ -55,6 +55,7 @@ import BoostPost from "./pages/CreatePost/views/BoostPost";
 import ReviewPaymentPage from "./pages/subscription/views/ReviewPaymentPage";
 import { toast } from "react-toastify";
 import AuthController from "./pages/authentication/controller/AuthController";
+import SubscriptionFailedPage from "./pages/subscription/views/Subscriptionfailedpage";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -351,6 +352,10 @@ const App = () => {
        <Route
         path={RoutesPath.reviewpaymentpage}
         element={<ReviewPaymentPage />}
+      />
+      <Route
+        path={RoutesPath.subscriptionfailedpage}
+        element={<SubscriptionFailedPage />}
       />
     </Routes>
   );

@@ -47,15 +47,17 @@ const ComputerProfileDetails = ({ data }: Props) => {
         );
         localStorage.setItem(StorageEnum.UserId, response.data.uid);
         toast.success("You have been signed out");
-        navigate(RoutesPath.home);
-      }else{
+        
+        // Reload the page to navigate to the home
+        window.location.reload();
+      } else {
         toast.error("Oops, try again! An Error Occurred");
-
       }
-
+      
       setLoading(false);
     }
   };
+  
 
   return (
     <div className=" " style={{ cursor: "pointer", height: "100vh", width: "100vh" }}>
@@ -101,6 +103,7 @@ const ComputerProfileDetails = ({ data }: Props) => {
                       <div className=" bg-white shadow-xl rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
                         <button
                           onClick={() => {
+                            navigate(RoutesPath.myProfile)
                             close();
                             
                           }}
@@ -110,6 +113,7 @@ const ComputerProfileDetails = ({ data }: Props) => {
                         </button>
                         <button
                           onClick={() => {
+                            navigate(RoutesPath.settings)
                             close();
                           
                             

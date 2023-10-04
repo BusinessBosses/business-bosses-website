@@ -27,6 +27,7 @@ import { User } from "../../interfaces/user";
 import Outlinegrey from "../buttons/Outlinegrey";
 import Lightbox from "react-spring-lightbox";
 import FilledButton from "../buttons/FilledButton";
+import TranslucentDiv from "../buttons/Translucentbutton";
 
 interface Props {
   data: Forum;
@@ -360,7 +361,10 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                 onNext={gotoNext}
                 images={images}
                 currentIndex={currentImageIndex}
-                renderHeader={() => (<FilledButton onClick={() => setShowExpandedImages(false)} text={"Close"} />)}
+                renderFooter={() => (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => setShowExpandedImages(false)}>
+                <TranslucentDiv />
+              </div>
+              )}
                 // renderFooter={() => (<CustomFooter />)}
                 renderPrevButton={() => (<Assets.Backbutton style={{ position: 'relative', zIndex: '500' }} onClick={gotoPrevious} />)}
                 renderNextButton={() => (

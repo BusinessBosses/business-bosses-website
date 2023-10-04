@@ -27,6 +27,7 @@ import OutlinedButton from "../../../../common/components/buttons/OutlinedButton
 import Outlinegrey from "../../../../common/components/buttons/Outlinegrey";
 import Lightbox, { ImagesListType } from 'react-spring-lightbox';
 import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
+import TranslucentDiv from "../../../../common/components/buttons/Translucentbutton";
 
 interface Props {
   data: Post;
@@ -416,8 +417,11 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 onNext={gotoNext}
                 images={images}
                 currentIndex={currentImageIndex}
-                renderHeader={() => (<FilledButton onClick={() => setShowExpandedImages(false)} text={"Close"} />)}
-                // renderFooter={() => (<CustomFooter />)}
+                renderFooter={() => (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                  onClick={() => setShowExpandedImages(false)}>
+                  <TranslucentDiv />
+                </div>
+                )}
                 renderPrevButton={() => (<Assets.Backbutton style={{ position: 'relative', zIndex: '500' }} onClick={gotoPrevious} />)}
                 renderNextButton={() => (
                   <Assets.Backbutton
@@ -425,20 +429,6 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                     onClick={gotoNext}
                   />
                 )}
-
-                // renderImageOverlay={() => (<ImageOverlayComponent >)}
-
-                /* Add styling */
-                // className="cool-class"
-                // style={{ background: "grey" }}
-
-                /* Handle closing */
-                // onClose={handleClose}
-
-                /* Use single or double click to zoom */
-                // singleClickToZoom
-
-                /* react-spring config for open/close animation */
                 pageTransitionConfig={{
                   from: { transform: "scale(0.75)", opacity: 0 },
                   enter: { transform: "scale(1)", opacity: 1 },

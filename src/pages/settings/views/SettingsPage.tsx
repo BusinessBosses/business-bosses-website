@@ -26,7 +26,7 @@ const SettingsPage = () => {
   const login = async () => {
     if (loading) return;
     const validate = AuthController.validateLogin({
-      email:`${process.env.REACT_APP_DUMMY_EMAIL}`,
+      email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
       password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
       terms: true,
     });
@@ -43,15 +43,17 @@ const SettingsPage = () => {
         );
         localStorage.setItem(StorageEnum.UserId, response.data.uid);
         toast.success("You have been signed out");
-        navigate(RoutesPath.home);
-      }else{
+        
+        // Reload the page to navigate to the home
+        window.location.reload();
+      } else {
         toast.error("Oops, try again! An Error Occurred");
-
       }
-
+      
       setLoading(false);
     }
   };
+  
   const handleConfirmSignOut= () => {
     login();
 
