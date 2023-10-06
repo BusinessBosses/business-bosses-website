@@ -41,6 +41,12 @@ import { ReactComponent as ActiveNotification } from "./icons/active_notificatio
 import { ReactComponent as Backbutton } from "./icons/backbutton.svg"
 import { ReactComponent as Appstorelogo } from "./icons/app-store.svg"
 import { ReactComponent as Playstorelogo } from "./icons/google-play.svg"
+import ad1 from "./icons/ad1.png"
+import ad2 from "./icons/ad2.png"
+import ad3 from "./icons/ad3.png"
+import ad4 from "./icons/ad4.png"
+import ad5 from "./icons/ad5.png"
+import ad6 from "./icons/ad6.png"
 import Authback from "./icons/authback.png"
 import NoProfile from "./icons/noprofile.png"
 import Mobiletop from "./icons/mobiletopnotsignedinuser.png"
@@ -129,6 +135,12 @@ const Assets = {
     Mobiletop,
     Bolticon,
     Notsignedinpopupback,
+    ad1,
+    ad2,
+    ad3,
+    ad4,
+    ad5,
+    ad6,
 
 };
 export default Assets;

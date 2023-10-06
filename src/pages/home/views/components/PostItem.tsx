@@ -168,8 +168,18 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
     await GeneralPostsController.comment(structuredComment);
   };
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+     navigate(RoutesPath.login)
+    } else {
+     
+    }
+  };
+
   return (
-    <div>
+    <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+    handleButtonClick: ()=>{}}>
       <div className="bg-black mobilepopup justify-center" style={{ position: "relative" }}>
         {showConfirmation && (
           <div className="confirmation-overlay">

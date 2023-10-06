@@ -160,33 +160,38 @@ const App = () => {
   };
 
   const login = async () => {
-   
-    const validate = AuthController.validateLogin({
-      email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
-      password:`${process.env.REACT_APP_DUMMY_PASSWORD}`,
-      terms: true,
-    });
-    if (validate) {
-      const response = await AuthController.loginRequest({
-        email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
-        password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
+    try {
+      const validate = AuthController.validateLogin({
+        email: process.env.REACT_APP_DUMMY_EMAIL,
+        password: process.env.REACT_APP_DUMMY_PASSWORD,
+        terms: true,
       });
-      if (response.success) {
-        localStorage.setItem(
-          StorageEnum.AccessToken,
-          response.data.accessToken
-        );
-        localStorage.setItem(StorageEnum.UserId, response.data.uid);
-
-        navigate(RoutesPath.home);
-      }else{
-        toast.error("Oops, try again! An Error Occurred");
-
+      if (validate) {
+        const response = await AuthController.loginRequest({
+          email: process.env.REACT_APP_DUMMY_EMAIL,
+          password: process.env.REACT_APP_DUMMY_PASSWORD,
+        });
+        if (response.success) {
+          localStorage.setItem(StorageEnum.AccessToken, response.data.accessToken);
+          localStorage.setItem(StorageEnum.UserId, response.data.uid);
+          socket.connect();
+          StartListeners();
+          SendHandshake();
+  
+          navigate(RoutesPath.home);
+        } else {
+          toast.error("Oops, try again! An Error Occurred");
+        }
       }
-
-      setLoading(false);
+    } catch (error) {
+      // Handle any errors that occur during login here
+      console.error("An error occurred during login:", error);
+      toast.error("Oops, an error occurred during login. Please try again.");
+    } finally {
+      setLoading(false); // Move this line inside or outside the try-catch block as needed
     }
   };
+  
 
   useEffect(() => {
     if (

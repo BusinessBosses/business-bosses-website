@@ -6,6 +6,7 @@ import MobileBossOfTheWeek from "../home/views/components/BossOfTheWeek";
 import { useAppSelector } from "../../redux/store/store";
 import ComputerHeader from "../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetailswcr";
+import BossupPartnerstile from "../home/views/components/BopssupPartnerstile";
 
 const ComputerBossuppartnersection = () => {
   const profile = useAppSelector((state) => state.user);
@@ -23,6 +24,8 @@ const ComputerBossuppartnersection = () => {
   return (
     <div>
       <div className="bg-[#f4f4f4] rounded-2xl p-3">
+
+        <BossupPartnerstile bossupby={"BB News"} bossupad={""}/>
 
         <PartnerCard
           partnerlogo={undefined}
