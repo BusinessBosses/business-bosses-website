@@ -13,6 +13,7 @@ import CreateBossup from "../../../communities/views/CreateBossup";
 import CreateListing from "../../../marketplace/views/CreateListing";
 import Forum from "../../../forum/views/Forum";
 import { Socket } from "socket.io-client";
+import { profile } from "console";
 
 interface Props {
   // currentIndex: number;
@@ -31,6 +32,7 @@ const ComputerTopNav = ({
   unseenChat,
   unseenNotification,
 }: Props) => {
+  const profile = useAppSelector((state) => state.user.profile);
   const primaryColor = "#F21C29";
   const strokeColor = "#232324";
   const navigate = useNavigate();
@@ -75,12 +77,24 @@ const ComputerTopNav = ({
     }
   };
 
+
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+     navigate(RoutesPath.login)
+    } else {
+     
+    }
+  };
+
+
   const renderButton = (index: number) => {
     switch (index) {
       case 0:
         return (
           <button
-            onClick={()=>navigate(RoutesPath.createPost)}
+            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            handleButtonClick :()=>navigate(RoutesPath.createPost)}
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -97,7 +111,8 @@ const ComputerTopNav = ({
       case 1:
         return (
           <button
-            onClick={() => {
+            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            handleButtonClick :() => {
               if (onTapButton) {
                 onTapButton();
               }
@@ -125,7 +140,8 @@ const ComputerTopNav = ({
       case 2:
         return (
           <button
-            onClick={openPopup}
+            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            handleButtonClick :openPopup}
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -143,7 +159,8 @@ const ComputerTopNav = ({
       default:
         return (
           <button
-            onClick={openPopup}
+            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            handleButtonClick : openPopup}
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -226,7 +243,8 @@ const ComputerTopNav = ({
 
       <div
         className={`tab ${currentIndex === 3 ? "selected-tab" : ""}`}
-        onClick={() => handleTabClick(3)}
+        onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+        handleButtonClick: () => handleTabClick(3)}
       >
         <div className="flex flex-col items-center relative">
           {currentIndex === 3 ? (
@@ -258,7 +276,8 @@ const ComputerTopNav = ({
 
       <div
         className={`tab ${currentIndex === 4 ? "selected-tab" : ""}`}
-        onClick={() => handleTabClick(4)}
+        onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+        handleButtonClick:() => handleTabClick(4)}
       >
         <div className="flex flex-col items-center relative">
           {currentIndex === 4 ? (
@@ -296,7 +315,8 @@ const ComputerTopNav = ({
                         {" "}
                         {/* Wrapping div */}
                         <button
-                          onClick={() => closePopup()}
+                          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                          handleButtonClick:() => closePopup()}
                           className="flex items-center mr-5"
                         >
                           <Assets.Backbutton />
@@ -315,7 +335,8 @@ const ComputerTopNav = ({
                           {" "}
                           {/* Wrapping div */}
                           <button
-                            onClick={() => closePopup()}
+                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                            handleButtonClick:() => closePopup()}
                             className="flex items-center mr-5"
                           >
                             <Assets.Backbutton />
@@ -335,7 +356,8 @@ const ComputerTopNav = ({
                           {" "}
                           {/* Wrapping div */}
                           <button
-                            onClick={() => closePopup()}
+                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                            handleButtonClick:() => closePopup()}
                             className="flex items-center mr-5"
                           >
                             <Assets.Backbutton />
@@ -352,7 +374,8 @@ const ComputerTopNav = ({
                           {" "}
                           {/* Wrapping div */}
                           <button
-                            onClick={() => closePopup()}
+                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                            handleButtonClick:() => closePopup()}
                             className="flex items-center mr-5"
                           >
                             <Assets.Backbutton />
@@ -372,7 +395,8 @@ const ComputerTopNav = ({
                         {" "}
                         {/* Wrapping div */}
                         <button
-                          onClick={() => closePopup()}
+                          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                          handleButtonClick:() => closePopup()}
                           className="flex items-center mr-5"
                         >
                           <Assets.Backbutton />
@@ -390,7 +414,8 @@ const ComputerTopNav = ({
                         {" "}
                         {/* Wrapping div */}
                         <button
-                          onClick={() => closePopup()}
+                          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                          handleButtonClick:() => closePopup()}
                           className="flex items-center mr-5"
                         >
                           <Assets.Backbutton />

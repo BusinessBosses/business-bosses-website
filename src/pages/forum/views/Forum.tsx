@@ -314,6 +314,14 @@ const Forum = ({ socket }: Props) => {
     setProcessing(false);
   };
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      navigate(RoutesPath.login)
+    } else {
+
+    }
+  };
   const joinIndustry = async () => {
     if (!!industry?.joinedUsers?.includes(profile!.uid)) {
       const newJoinedUsers = industry.joinedUsers.filter(
@@ -400,7 +408,8 @@ const Forum = ({ socket }: Props) => {
 
         {industry ? (
           <ForumCard
-            onCreate={() => {
+            onCreate={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            handleButtonClick :() => {
               setOpenModal(true);
             }}
             createLabel={

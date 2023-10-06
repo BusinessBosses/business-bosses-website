@@ -6,6 +6,9 @@ import { FiUsers } from "react-icons/fi";
 import Assets from "../../../assets";
 import BossupPartnerstile from "../../../pages/home/views/components/BopssupPartnerstile";
 import FilledButtonsmall from "../buttons/FilledButtonsmall";
+import { useAppSelector } from "../../../redux/store/store";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../constants/Routes";
 interface Props {
   banner: string;
   label: string;
@@ -20,6 +23,7 @@ interface Props {
   topicsicon: React.ReactNode;
   topicstext: string;
 }
+
 const ForumCard = ({
   banner,
   didJoin,
@@ -34,6 +38,16 @@ const ForumCard = ({
   topicsicon,
   topicstext,
 }: Props) => {
+  const navigate = useNavigate();
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      navigate(RoutesPath.login)
+    } else {
+
+    }
+  };
+  const profile = useAppSelector((state) => state.user.profile);
   return (
     <div>
       <div className="bg-[#EAEAEA] px-4 py-3 mobile-only">
@@ -68,7 +82,8 @@ const ForumCard = ({
               </p>
             </div>
             <button
-              onClick={onJoin}
+              onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                handleButtonClick : onJoin}
               className="bg-white px-6 py-1.5 rounded-xl"
               style={{
                 border: `2px solid ${didJoin ? "#a9a9a9" : "#F21C29"}`,
@@ -98,15 +113,15 @@ const ForumCard = ({
             <div className="flex gap-3 items-center">
               <img src={banner} alt="" className="w-32 h-20 rounded-lg" />
               <p className="text-[#383838] font-bold text-sm">{label}</p>
-              
-            </div>
-            
-            <div className="flex items-center  justify-between mt-5">
-            <div className="flex items-center gap-1">
-              <Assets.Membersicon className="text-primary" stroke="black" />
-              <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
 
             </div>
+
+            <div className="flex items-center  justify-between mt-5">
+              <div className="flex items-center gap-1">
+                <Assets.Membersicon className="text-primary" stroke="black" />
+                <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
+
+              </div>
               <div className="bg-[#FFFFFF1A]  flex whitespace-nowrap px-3 py-1 rounded-full items-center gap-1">
                 {topicsicon}
                 <p className="text-sm text-[#232324] font-bold">

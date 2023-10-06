@@ -224,6 +224,15 @@ const CommunitiesPage = ({ socket }: Props) => {
     }
   };
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      navigate(RoutesPath.login)
+    } else {
+
+    }
+  };
+
   const fetchCall = async () => {
     setForumErr(false);
     setIndustryErr(false);
@@ -369,8 +378,8 @@ const CommunitiesPage = ({ socket }: Props) => {
           >
             <div className="">
               <div className=" flex items-center gap-3">
-              {profilee.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                    <ComputerProfileDetails data={profilee.profile!} /> : <Computerlefttabsignedoutuser data={profilee.profile!} />}
+                {profilee.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  <ComputerProfileDetails data={profilee.profile!} /> : <Computerlefttabsignedoutuser data={profilee.profile!} />}
               </div>
             </div>
           </div>
@@ -438,41 +447,46 @@ const CommunitiesPage = ({ socket }: Props) => {
 
                 <div>
                   <div className=" ">
-                    <div className="flex items-center pb-2">
-                      <div className="flex items-center">
-                        <p className="text-base font-semibold text-[#333333]">
-                          Boss Up Challenge
-                        </p>
+                    <div className="" onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                      handleButtonClick : () => { }}>
+                      <div className="flex items-center pb-2">
+                        <div className="flex items-center">
+                          <p className="text-base font-semibold text-[#333333]">
+                            Boss Up Challenge
+                          </p>
+                        </div>
+                        <div
+                          onClick={openPopup}
+                          className="flex items-center ml-auto gap-1"
+                        >
+                          <p className=" text-base">About</p>
+                          <BsInfoCircle />
+                        </div>
                       </div>
-                      <div
-                        onClick={openPopup}
-                        className="flex items-center ml-auto gap-1"
-                      >
-                        <p className=" text-base">About</p>
-                        <BsInfoCircle />
+                      <div className="rounded-3xl bg-[#f4f4f4] p-3">
+                        <ForumCard
+                          onCreate={() => {
+                            navigate(RoutesPath.CreateBossup, {
+                              state: { industryId: industry?.industryId },
+                            });
+                          }}
+                          createLabel="Enter Challenge"
+                          banner={industry?.photo!}
+                          didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
+                          label={industry?.description ?? "Industry Description"}
+                          members={industry?.joinedUsers?.length ?? 0}
+                          onJoin={joinIndustry}
+                          topics={topicsLength}
+                          aboutontap={openPopup}
+                          aboutontaptext={"About"}
+                          topicsicon={<Assets.Entries width={15} />}
+                          topicstext={"Entries"}
+                        />
                       </div>
                     </div>
-                    <div className="rounded-3xl bg-[#f4f4f4] p-3">
-                      <ForumCard
-                        onCreate={() => {
-                          navigate(RoutesPath.CreateBossup, {
-                            state: { industryId: industry?.industryId },
-                          });
-                        }}
-                        createLabel="Enter Challenge"
-                        banner={industry?.photo!}
-                        didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
-                        label={industry?.description ?? "Industry Description"}
-                        members={industry?.joinedUsers?.length ?? 0}
-                        onJoin={joinIndustry}
-                        topics={topicsLength}
-                        aboutontap={openPopup}
-                        aboutontaptext={"About"}
-                        topicsicon={<Assets.Entries width={15} />}
-                        topicstext={"Entries"}
-                      />
-                    </div>
-                    <div className="mt-5"><ComputerBossuppartnersection /></div>
+                    <div className="font-bold mt-8">Our Partners</div>
+                    <div className="mt-3"><ComputerBossuppartnersection /></div>
+
                   </div>
                 </div> :
 

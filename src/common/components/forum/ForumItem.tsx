@@ -115,6 +115,16 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
     setShowReport(false);
   };
 
+
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+     navigate(RoutesPath.login)
+    } else {
+     
+    }
+  };
+
   const handleCancelBlock = () => {
     setShowConfirmation(false);
   };
@@ -161,7 +171,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
     await GeneralPostsController.comment(structuredComment);
   };
   return (
-    <div>
+    <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+    handleButtonClick: ()=>{}} >
       <div className="bg-black mobilepopup justify-center" style={{ position: "relative" }}>
         {showConfirmation && (
           <div className="confirmation-overlay">
@@ -214,7 +225,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                   name=""
                   id=""
                 />
-                <button onClick={makeComment}>
+                <button onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:makeComment}>
                   <Assets.Send />
                 </button>
               </div>
@@ -238,7 +250,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
           </BottomSheet>
           <div className="flex items-start justify-between">
             <div
-              onClick={() =>
+              onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+              ()=>{}:() =>
                 navigate(RoutesPath.PublicUserProfile, { state: data.user })
               }
               className="flex items-center gap-3"
@@ -263,12 +276,14 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
             {data.user?.isSubscribed && (
               !profile?.connecteds?.includes(data.user.uid!) ? (
                 <GreyButton
-                  onClick={connection}
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  ()=>{}:connection}
                   text="Connect"
                 />
               ) : (
                 <Outlinegrey
-                  onClick={() => {
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  ()=>{}:() => {
                     navigate(RoutesPath.refer, { state: data.user?.uid });
                   }}
                   text="Refer"
@@ -395,7 +410,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                 }}
               />
               <img
-                onClick={() => { handleExpanded(); }}
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => { handleExpanded(); }}
                 src={data.images[0]}
                 alt=""
                 className="rounded-lg w-full h-64 object-cover"
@@ -407,7 +423,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                       {index === 0 ? null : (
                         <div className="max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
                           <img
-                            onClick={() => { handleExpanded(); }}
+                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                            ()=>{}:() => { handleExpanded(); }}
                             src={img}
                             alt=""
                             className="rounded-lg w-20 h-20 object-cover"
@@ -428,7 +445,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                       ? Assets.LikeFilled
                       : Assets.Like
                   }
-                  onClick={() => {
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  ()=>{}:() => {
                     if (onLike) {
                       onLike(data.forumId);
                     }
@@ -437,7 +455,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                 <PostAction
                   count={data.comments!.length.toString()}
                   icon={Assets.Comment}
-                  onClick={() => {
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  ()=>{}:() => {
                     fetchComments();
                     setOpen(true);
                   }}
@@ -445,7 +464,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                 <PostAction
                   count={data.coins!.length.toString()}
                   icon={Assets.Coin}
-                  onClick={() => {
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  ()=>{}:() => {
                     if (onCoin) {
                       onCoin(data.forumId);
                     }
@@ -454,7 +474,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                 <PostAction
                   count=""
                   icon={Assets.Share}
-                  onClick={() => {
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  ()=>{}:() => {
                     setShowShareDialog(true);
                   }}
                 />

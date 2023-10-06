@@ -17,6 +17,15 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user);
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      navigate(RoutesPath.login)
+    } else {
+
+    }
+  };
+
   return (
     <div
       className="fixed w-full bottom-0 bg-white px-4 pb-4 pt-1 pt-2"
@@ -78,7 +87,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
           }}
         >
           <button
-            onClick={() => profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ? navigate(RoutesPath.createPost): navigate(RoutesPath.login)}
+            onClick={() => profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ? navigate(RoutesPath.createPost): handleButtonClick}
             className="p-4 bg-primary rounded-full  text-white flex items-center justify-center"
             style={{ width: 55, height: 55 }}
           >
@@ -117,7 +126,8 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
 
         {/* Profile */}
         <button
-          onClick={() => {
+          onClick={profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+          handleButtonClick :() => {
             navigate(RoutesPath.myProfile);
           }}
           className="flex flex-col items-center"

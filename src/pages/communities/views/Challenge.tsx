@@ -119,6 +119,15 @@ const Challenge = ({ forums, socket }: Props) => {
     dispatch(updateForum({ index: postIndex, forum }));
   };
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      navigate(RoutesPath.login)
+    } else {
+
+    }
+  };
+
   useEffect(() => {
     const filteredIndustries = CommunitiesController.getIndustriesByCategory(
       industries,
@@ -160,7 +169,8 @@ const Challenge = ({ forums, socket }: Props) => {
       </div>
       <div className="mobile-only bg-white">
         <ForumCard
-          onCreate={() => {
+          onCreate={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+          handleButtonClick :() => {
             navigate(RoutesPath.CreateBossup, {
               state: { industryId: industry?.industryId },
             });

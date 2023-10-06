@@ -78,9 +78,19 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
     setIsPopupOpen(false);
   };
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+     navigate(RoutesPath.login)
+    } else {
+     
+    }
+  };
+
   return (
     
-    <div>
+    <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+    handleButtonClick: ()=>{}}>
       <div className="computer-only">
             {isPopupOpen && (
               <div className="overlay">

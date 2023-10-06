@@ -58,6 +58,15 @@ const MarketIntro = () => {
     setIsPopupOpen(false);
   };
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+     navigate(RoutesPath.login)
+    } else {
+     
+    }
+  };
+
   const joinIndustry = async () => {
     const membersIds = market.marketMembers.map((mp) => mp.uid);
     if (!!membersIds.includes(profile!.uid)) {
@@ -108,7 +117,8 @@ const MarketIntro = () => {
           </div>
           <FilledButtonsmall
             icon={<AiOutlinePlus color="white" size={20} />}
-            onClick={() => {
+            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            handleButtonClick :() => {
               navigate(RoutesPath.CreateListing);
             }}
             text="Sell"
@@ -151,7 +161,8 @@ const MarketIntro = () => {
             <div className="flex items-center gap-2">
               <FiUsers className="text-primary" />
               <p
-                onClick={showMarketMembersModal}
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                handleButtonClick :showMarketMembersModal}
                 className="text-primary cursor-pointer underline text-sm font-bold"
               >
                 Members: ({market.marketMembers.length})
@@ -165,7 +176,8 @@ const MarketIntro = () => {
             </div>
 
             <button
-              onClick={joinIndustry}
+              onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+              handleButtonClick :joinIndustry}
               className="bg-white px-6 py-1.5 text-primary rounded-xl "
               style={{ border: "2px solid", borderColor: "primary" }} // Add the border style here
             >
@@ -177,7 +189,8 @@ const MarketIntro = () => {
         <BossupPartnerstile bossupby={""} bossupad={""} />
       </div>
 
-      <div className="computer-only">
+      <div className="computer-only" onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+    handleButtonClick: ()=>{}}>
         <div className="computer-only">
           {isPopupOpen && (
             <div className="overlay ">
@@ -262,7 +275,8 @@ const MarketIntro = () => {
           </div>
         </div>
       </div>
-      <div className="computer-only mt-5"><ComputerBossuppartnersection /></div>
+      <div className="computer-only font-bold mt-8">Our Partners</div>
+      <div className="computer-only mt-3"><ComputerBossuppartnersection /></div>
     </div>
   );
 };

@@ -112,6 +112,16 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
     setLoading(false);
   };
 
+
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+     navigate(RoutesPath.login)
+    } else {
+     
+    }
+  };
+
   const makeComment = async () => {
     if (!commentInputRef.current?.value.trim()) return;
     const commentId = v4();
@@ -138,7 +148,8 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
   return (
 
     <div>
-      <div className="mt-5 px-4">
+      <div className="mt-5 px-4" onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+    handleButtonClick: ()=>{}}>
       {showConfirmation && (
           <div className="confirmation-overlay">
 
@@ -210,7 +221,8 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
           </div>
         </BottomSheet>
         <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3"  onClick={() =>
+          <div className="flex items-center gap-3"  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            ()=>{} :() =>
               navigate(RoutesPath.PublicUserProfile, { state: data.user })
             }>
             <UserAvatar
@@ -229,7 +241,8 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             </div>
           </div>
           <Popup
-            trigger={
+            trigger={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            <div></div>:
               <div>
                 <IoIosMore size={20} />
               </div>
@@ -324,7 +337,8 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
 
 
           </div>
-          <div onClick={()=>navigate(RoutesPath.sellerreview, { state: data.user })} className="flex gap-2">{data.user?.averageRating ? (
+          <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:()=>navigate(RoutesPath.sellerreview, { state: data.user })} className="flex gap-2">{data.user?.averageRating ? (
             <div className="flex  gap-1">
               <AiTwotoneStar className="text-[#FFCA28]" />
               <p className="text-sm font-bold text-[#383838]">
@@ -376,7 +390,8 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                 }}
               />
               <img
-                onClick={() => { handleExpanded(); }}
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{} :() => { handleExpanded(); }}
                 src={data.images[0]}
                 alt=""
                 className="rounded-lg w-full h-64 object-cover"
@@ -388,7 +403,8 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                       {index === 0 ? null : (
                         <div className="max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
                           <img
-                            onClick={() => { handleExpanded(); }}
+                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                            ()=>{} :() => { handleExpanded(); }}
                             src={img}
                             alt=""
                             className="rounded-lg w-20 h-20 object-cover"
@@ -410,14 +426,16 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                     ? Assets.LikeFilled
                     : Assets.Like
                 }
-                onClick={() => {
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{} :() => {
                   onLike(data.marketId);
                 }}
               />
               <PostAction
                 count={data.comments!.length.toString()}
                 icon={Assets.Comment}
-                onClick={() => {
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => {
                   fetchComments();
                   setOpen(true);
                 }}
@@ -425,20 +443,23 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
               <PostAction
                 count={data.coins!.length.toString()}
                 icon={Assets.Coin}
-                onClick={() => {
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => {
                   onCoin(data.marketId);
                 }}
               />
               <PostAction
                 count=""
                 icon={Assets.Share}
-                onClick={() => {
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => {
                   setShowShareDialog(true);
                 }}
               />
             </div>
 
-            <OutlinedButton onClick={() => {navigate(RoutesPath.ChatRoom, { state: { user: data } }); }} text={"Message Seller"} />
+            <OutlinedButton onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            ()=>{} :() => {navigate(RoutesPath.ChatRoom, { state: { user: data } }); }} text={"Message Seller"} />
           </div>
         </div>
 
