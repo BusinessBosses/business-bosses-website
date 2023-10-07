@@ -24,6 +24,8 @@ import LikeFilled from "./icons/likefilled.svg";
 import Block from "./icons/block.svg";
 import Gallery from "./icons/gallery.svg";
 import One from "./icons/one.png";
+import Lefttab from "./icons/lefttab.png";
+import Planpicture from "./icons/planpicture.png";
 import Two from "./icons/two.png";
 import Three from "./icons/three.png";
 import Four from "./icons/four.png";
@@ -39,8 +41,16 @@ import { ReactComponent as ActiveNotification } from "./icons/active_notificatio
 import { ReactComponent as Backbutton } from "./icons/backbutton.svg"
 import { ReactComponent as Appstorelogo } from "./icons/app-store.svg"
 import { ReactComponent as Playstorelogo } from "./icons/google-play.svg"
+import ad1 from "./icons/ad1.png"
+import ad2 from "./icons/ad2.png"
+import ad3 from "./icons/ad3.png"
+import ad4 from "./icons/ad4.png"
+import ad5 from "./icons/ad5.png"
+import ad6 from "./icons/ad6.png"
 import Authback from "./icons/authback.png"
 import NoProfile from "./icons/noprofile.png"
+import Mobiletop from "./icons/mobiletopnotsignedinuser.png"
+import Notsignedinpopupback from "./icons/nosignedinpopupback.png"
 import { ReactComponent as Checkmark } from "./icons/premiumbadge.svg"
 import { ReactComponent as NextIconPrimary } from "./icons/nexticon_primary.svg"
 import { ReactComponent as Moreconnections } from "./icons/moreconnections.svg"
@@ -56,6 +66,7 @@ import { ReactComponent as Topicsicon } from "./icons/topics.svg"
 import { ReactComponent as Inviteicon } from "./icons/invite.svg"
 import { ReactComponent as Membersicon } from "./icons/members.svg"
 import { ReactComponent as Linkicon } from "./icons/link.svg"
+import { ReactComponent as Bolticon } from "./icons/bolt.svg"
 
 
 
@@ -118,7 +129,18 @@ const Assets = {
     Inviteicon,
     Membersicon,
     Linkicon,
-    NextIconPrimary
+    NextIconPrimary,
+    Planpicture,
+    Lefttab,
+    Mobiletop,
+    Bolticon,
+    Notsignedinpopupback,
+    ad1,
+    ad2,
+    ad3,
+    ad4,
+    ad5,
+    ad6,
 
 };
 export default Assets;

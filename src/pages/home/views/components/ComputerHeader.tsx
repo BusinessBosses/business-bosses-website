@@ -37,6 +37,15 @@ const ComputerHeader = ({ onTapButton }: Props) => {
     setIsPopupOpen(false);
   };
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      navigate(RoutesPath.login)
+    } else {
+
+    }
+  };
+
   return (
     <div
       className="bg-white top-0 w-full z-50"
@@ -56,7 +65,8 @@ const ComputerHeader = ({ onTapButton }: Props) => {
           <div className="computer-only">
             <div className="hidden lg:block">
               <button
-                onClick={openPopup}
+                onClick={profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                handleButtonClick : openPopup}
                 className="flex items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg ml-5"
               >
                 <CiSearch className="text-[#A9A9A9]" size={20} />
@@ -117,7 +127,7 @@ const ComputerHeader = ({ onTapButton }: Props) => {
       {isPopupOpen &&
         (currentRoute === "/communities" ? (
           <div className="overlay">
-            <div className="popup" style={{ overflowY: "scroll" }}>
+            <div className="popup" >
               <Bossupsearch onClosePopup={closePopup} />
             </div>
           </div>
@@ -129,7 +139,8 @@ const ComputerHeader = ({ onTapButton }: Props) => {
           </div>
         ) : (
           <div className="overlay">
-            <div className="popup" style={{ overflowY: "scroll" }}>
+            <div className="popup" style={{ overflowY: "scroll", scrollbarWidth: "none", msOverflowStyle: "none" }}>
+
               <HomeSearch onClosePopup={closePopup} />
             </div>
           </div>

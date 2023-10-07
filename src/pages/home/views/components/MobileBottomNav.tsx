@@ -4,6 +4,8 @@ import { BsPlusLg } from "react-icons/bs";
 import RoutesPath from "../../../../constants/Routes";
 import { MdPadding } from "react-icons/md";
 import React from "react";
+import { profile } from "console";
+import { useAppSelector } from "../../../../redux/store/store";
 
 interface Props {
   currentIndex: number;
@@ -13,6 +15,16 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
   const primaryColor = "#F21C29";
   const strokeColor = "#A9A9A9";
   const navigate = useNavigate();
+  const profile = useAppSelector((state) => state.user);
+
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      navigate(RoutesPath.login)
+    } else {
+
+    }
+  };
 
   return (
     <div
@@ -24,6 +36,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
         <button
           onClick={() => {
             navigate(RoutesPath.home);
+            
           }}
           className="flex flex-col items-center"
         >
@@ -74,7 +87,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
           }}
         >
           <button
-            onClick={() => navigate(RoutesPath.createPost)}
+            onClick={() => profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ? navigate(RoutesPath.createPost): handleButtonClick}
             className="p-4 bg-primary rounded-full  text-white flex items-center justify-center"
             style={{ width: 55, height: 55 }}
           >
@@ -113,7 +126,8 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
 
         {/* Profile */}
         <button
-          onClick={() => {
+          onClick={profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+          handleButtonClick :() => {
             navigate(RoutesPath.myProfile);
           }}
           className="flex flex-col items-center"

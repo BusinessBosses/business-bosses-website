@@ -28,6 +28,7 @@ import Marketplacesearchpopup from "../../popups/Marketplacesearchpopup";
 import BossupPartnerstile from "../../home/views/components/BopssupPartnerstile";
 import Bossuppartnerpage from "../../bossuppartnerpage/bossuppartnerpage";
 import { User } from "../../../common/interfaces/user";
+import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
 interface Props {
   socket: Socket;
 }
@@ -270,7 +271,8 @@ const MarketPlacePage = ({ socket }: Props) => {
           >
             <div className="">
               <div className=" flex items-center gap-3">
-                <ComputerProfileDetails data={profile.profile!} />
+              {profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                    <ComputerProfileDetails data={profile.profile!} /> : <Computerlefttabsignedoutuser data={profile.profile!} />}
               </div>
             </div>
           </div>

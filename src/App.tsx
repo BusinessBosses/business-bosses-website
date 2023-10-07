@@ -52,6 +52,10 @@ import SubscriptionConfirmationPage from "./pages/subscription/views/Subscriptio
 import RenewSubscriptionConfirmationPage from "./pages/subscription/views/RenewSubscriptionConfirmationPage";
 import BoostPostConfirmationPage from "./pages/subscription/views/BoostpostConfirmationPage";
 import BoostPost from "./pages/CreatePost/views/BoostPost";
+import ReviewPaymentPage from "./pages/subscription/views/ReviewPaymentPage";
+import { toast } from "react-toastify";
+import AuthController from "./pages/authentication/controller/AuthController";
+import SubscriptionFailedPage from "./pages/subscription/views/Subscriptionfailedpage";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -155,6 +159,40 @@ const App = () => {
     // console.info("Sending handshake to server ...");
   };
 
+  const login = async () => {
+    try {
+      const validate = AuthController.validateLogin({
+        email: process.env.REACT_APP_DUMMY_EMAIL,
+        password: process.env.REACT_APP_DUMMY_PASSWORD,
+        terms: true,
+      });
+      if (validate) {
+        const response = await AuthController.loginRequest({
+          email: process.env.REACT_APP_DUMMY_EMAIL,
+          password: process.env.REACT_APP_DUMMY_PASSWORD,
+        });
+        if (response.success) {
+          localStorage.setItem(StorageEnum.AccessToken, response.data.accessToken);
+          localStorage.setItem(StorageEnum.UserId, response.data.uid);
+          socket.connect();
+          StartListeners();
+          SendHandshake();
+  
+          navigate(RoutesPath.home);
+        } else {
+          toast.error("Oops, try again! An Error Occurred");
+        }
+      }
+    } catch (error) {
+      // Handle any errors that occur during login here
+      console.error("An error occurred during login:", error);
+      toast.error("Oops, an error occurred during login. Please try again.");
+    } finally {
+      setLoading(false); // Move this line inside or outside the try-catch block as needed
+    }
+  };
+  
+
   useEffect(() => {
     if (
       localStorage.getItem(StorageEnum.UserId) &&
@@ -164,7 +202,7 @@ const App = () => {
       StartListeners();
       SendHandshake();
     } else {
-      navigate(RoutesPath.login);
+      login()
     }
   }, []);
   return loading ? (
@@ -315,6 +353,14 @@ const App = () => {
        <Route
         path={RoutesPath.boostpost}
         element={<BoostPost />}
+      />
+       <Route
+        path={RoutesPath.reviewpaymentpage}
+        element={<ReviewPaymentPage />}
+      />
+      <Route
+        path={RoutesPath.subscriptionfailedpage}
+        element={<SubscriptionFailedPage />}
       />
     </Routes>
   );

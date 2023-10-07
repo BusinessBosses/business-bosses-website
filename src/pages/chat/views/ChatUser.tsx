@@ -21,8 +21,7 @@ const ChatUser = ({ chat }: Props) => {
     >
       <UserAvatar
         imageURL={
-          chat.user?.photoUrl ??
-          "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+          chat.user?.photoUrl 
         }
       />
       <div className="">

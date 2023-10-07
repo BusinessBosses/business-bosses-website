@@ -31,6 +31,8 @@ import Learningpopup from "../../popups/Learningpopup";
 import Opportunitiespopup from "../../popups/Opportunitiespopup";
 import AppConstants from "../../../constants/consts";
 import ComputerBossuppartnersection from "../../bossuppartnerpage/computerbossupsection";
+import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
 
 interface Props {
   socket: Socket;
@@ -50,6 +52,7 @@ const CommunitiesPage = ({ socket }: Props) => {
   const topicsLength: number = useAppSelector((state) => state.forum.count);
   const dispatch = useAppDispatch();
   const currentRoute = location.pathname;
+  const profilee = useAppSelector((state) => state.user);
 
   const [industry, setIndustry] = useState<Industry | null>(null);
   const profile = useAppSelector((state) => state.user.profile);
@@ -215,9 +218,18 @@ const CommunitiesPage = ({ socket }: Props) => {
               topicstext={"Entries"}
             />
           </div>
-          <div className="mt-5"><ComputerBossuppartnersection/></div>
+          <div className="mt-5"><ComputerBossuppartnersection /></div>
         </div>
       );
+    }
+  };
+
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      navigate(RoutesPath.login)
+    } else {
+
     }
   };
 
@@ -339,7 +351,6 @@ const CommunitiesPage = ({ socket }: Props) => {
               <div
                 ref={popupRef}
                 className="computerpopup"
-                style={{ overflowY: "scroll" }}
               >
                 {currentRoute === "/communities" ? (
                   <Bossoftheweekpopup />
@@ -367,7 +378,8 @@ const CommunitiesPage = ({ socket }: Props) => {
           >
             <div className="">
               <div className=" flex items-center gap-3">
-                <ComputerProfileDetails data={profile!} />
+                {profilee.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  <ComputerProfileDetails data={profilee.profile!} /> : <Computerlefttabsignedoutuser data={profilee.profile!} />}
               </div>
             </div>
           </div>
@@ -412,15 +424,15 @@ const CommunitiesPage = ({ socket }: Props) => {
                 )}
               </div>
             ) : currentIndex === 1 ? (
-              <ChooseTile />
+              <div className="px-5">{renderLastSectionContent()}</div>
             ) : (
-              <ChooseTile />
+              <div className="px-5">{renderLastSectionContent()}</div>
             )}
           </div>
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
           <div
-            className="lastsection ml-5 mr-5 mb-40 lg:mr-20 pr-0"
+            className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
             style={{
               width: "30%",
               flexGrow: 0,
@@ -428,11 +440,60 @@ const CommunitiesPage = ({ socket }: Props) => {
               position: "sticky",
               top: 0,
               zIndex: 1,
-              height: "100vh",
-              scrollbarWidth: "none",
             }}
           >
-            {renderLastSectionContent()}
+            <div className="rounded-xl overflow-hidden" style={{}}>{
+              currentIndex === 0 ?
+
+                <div>
+                  <div className=" ">
+                    <div className="" onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                      handleButtonClick : () => { }}>
+                      <div className="flex items-center pb-2">
+                        <div className="flex items-center">
+                          <p className="text-base font-semibold text-[#333333]">
+                            Boss Up Challenge
+                          </p>
+                        </div>
+                        <div
+                          onClick={openPopup}
+                          className="flex items-center ml-auto gap-1"
+                        >
+                          <p className=" text-base">About</p>
+                          <BsInfoCircle />
+                        </div>
+                      </div>
+                      <div className="rounded-3xl bg-[#f4f4f4] p-3">
+                        <ForumCard
+                          onCreate={() => {
+                            navigate(RoutesPath.CreateBossup, {
+                              state: { industryId: industry?.industryId },
+                            });
+                          }}
+                          createLabel="Enter Challenge"
+                          banner={industry?.photo!}
+                          didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
+                          label={industry?.description ?? "Industry Description"}
+                          members={industry?.joinedUsers?.length ?? 0}
+                          onJoin={joinIndustry}
+                          topics={topicsLength}
+                          aboutontap={openPopup}
+                          aboutontaptext={"About"}
+                          topicsicon={<Assets.Entries width={15} />}
+                          topicstext={"Entries"}
+                        />
+                      </div>
+                    </div>
+                    <div className="font-bold mt-8">Our Partners</div>
+                    <div className="mt-3"><ComputerBossuppartnersection /></div>
+
+                  </div>
+                </div> :
+
+
+                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} />
+            }
+            </div>
           </div>
         </div>
       </div>

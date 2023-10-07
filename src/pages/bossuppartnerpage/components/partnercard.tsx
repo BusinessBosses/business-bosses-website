@@ -35,12 +35,12 @@ const PartnerCard = ({
 
             <div className="bg-[#f4f4f4] mx-1 rounded-lg computer-only flex justify-center items-center">
 
-                <div className="bg-[#f4f4f4] py-1 mb-3 flex items-center ">
-                    <div className="flex flex-col items-center rounded-xl mr-6"><img src={partnerlogo} alt="" className="w-20 h-20" /></div>
+                <div className="bg-[#f4f4f4] py-1 mb-3  items-center ">
+                    <div className="flex flex-col items-center pt-5 rounded-xl mr-6"><img src={partnerlogo} alt="" className="w-20 h-20" /></div>
                     <div>
-                        <p className="text-[#383838] text-md font-bold lg:text-base">{adtitle}</p>
+                        <p className="text-[#383838] text-md pt-5 font-bold lg:text-base">{adtitle}</p>
                         <p className="text-[#383838] text-sm font-medium mb-2">{addescription}</p>
-                        <div onClick={() => { }} className="flex items-center gap-2 bg-[#eaeaea] py-1 px-2 rounded-lg">
+                        <div onClick={() => { }} className="flex items-center gap-2 bg-[#eaeaea] py-2 px-2 rounded-lg">
                             <Assets.Linkicon />
                             <p className="text-[#383838] text-xs lg:text-xs font-light underline">{partnerurl}</p>
                         </div>

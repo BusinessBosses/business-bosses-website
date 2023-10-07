@@ -1,17 +1,13 @@
 import React from 'react';
 
-interface ChooseplancardProps {
+interface ChoosepaymentoptioncardProps {
     text: string;
-    duration: string;
-    reach: string;
     isSelected: boolean;
     onClick: () => void;
 }
 
-const Chooseplancard: React.FC<ChooseplancardProps> = ({
+const Choosepaymentoptioncard: React.FC<ChoosepaymentoptioncardProps> = ({
     text,
-    duration,
-    reach,
     isSelected,
     onClick,
 }) => {
@@ -19,17 +15,17 @@ const Chooseplancard: React.FC<ChooseplancardProps> = ({
 
     return (
         <div
-            className={`flex-grow rounded-2xl mx-5 bg-white border p-3`}
+            className={`flex-grow rounded-2xl mb-3 bg-white border p-2.5`}
             style={{ borderColor: borderColor, borderWidth: '4px' }}
             onClick={onClick} 
         >
-            <div className='flex justify-between'>
-                <div className='text-sm lg:text-base font-bold'>{text}</div>
+            <div className='flex justify-between items-center'>
+                <div className='text-sm font-bold'>{text}</div>
                 <div
-                    className='w-7 h-7 mt-20 rounded-full text-center border'
+                    className='w-4 h-4 mt-20 rounded-full text-center border'
                     style={{
                         borderColor: borderColor,
-                        borderWidth: '5px',
+                        borderWidth: '4px',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -39,12 +35,8 @@ const Chooseplancard: React.FC<ChooseplancardProps> = ({
                 ></div>
             </div>
 
-            <div className='bg-[#f1f1f1] text-xs lg:text-base py-1 px-3 inline-block rounded-md mt-1'>
-                {duration}
-            </div>
-            <div className='text-xs pt-2 lg:text-base'>{reach}</div>
         </div>
     );
 };
 
-export default Chooseplancard;
+export default Choosepaymentoptioncard;

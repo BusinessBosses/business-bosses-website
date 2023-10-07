@@ -3,7 +3,7 @@ import {
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 interface Props {
   onSuccess: VoidFunction;

@@ -19,6 +19,7 @@ import RoutesPath from "../../../constants/Routes";
 import serviceApi from "../../../services/serviceApi";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 import Assets from "../../../assets";
+import NotsignedinPopUp from "../../../common/components/popups/notsignedinpopup";
 interface Props {
   forums: Forum[];
   socket: Socket;
@@ -118,6 +119,15 @@ const Challenge = ({ forums, socket }: Props) => {
     dispatch(updateForum({ index: postIndex, forum }));
   };
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      navigate(RoutesPath.login)
+    } else {
+
+    }
+  };
+
   useEffect(() => {
     const filteredIndustries = CommunitiesController.getIndustriesByCategory(
       industries,
@@ -151,16 +161,16 @@ const Challenge = ({ forums, socket }: Props) => {
             <div
               ref={popupRef}
               className="mobilepopup"
-              style={{ overflowY: "scroll" }}
             >
-              <Bossoftheweekpopup />
+              <NotsignedinPopUp />
             </div>
           </div>
         )}
       </div>
       <div className="mobile-only bg-white">
         <ForumCard
-          onCreate={() => {
+          onCreate={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+          handleButtonClick :() => {
             navigate(RoutesPath.CreateBossup, {
               state: { industryId: industry?.industryId },
             });

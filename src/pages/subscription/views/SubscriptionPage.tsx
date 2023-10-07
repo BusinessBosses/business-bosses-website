@@ -10,20 +10,23 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { useAppSelector } from "../../../redux/store/store";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../constants/Routes";
 
 const SubscriptionPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const controlRef = useRef<HTMLDivElement>(null);
   const [processing, setProcessing] = useState<boolean>(false);
   const profile = useAppSelector((state) => state.user);
+  const navigate = useNavigate();
   const prices: PaymentIntentStruct[] = [
     {
       plan: "monthly",
-      price: "price_1NIrQiEGsMsi6baUybHKB3X5",
+      price: "price_1NfNnDEGsMsi6baU9FbZf8dQ",
     },
     {
       plan: "annually",
-      price: "price_1NIrQiEGsMsi6baUpmQjfsrp",
+      price: "price_1NfNnDEGsMsi6baUkDiWNJr7",
     },
   ];
   const handleSegmentChange = (value: string, index: number) => {
@@ -58,7 +61,10 @@ const SubscriptionPage = () => {
     );
     if (response.success) {
       window.open(response.data, "_blank")?.focus();
+    }else{
+
     }
+    console.log(response);
 
     setProcessing(false);
   };
@@ -157,6 +163,7 @@ const SubscriptionPage = () => {
                 <FilledButton
                   onClick={createSubscriptionIntent}
                   text={
+                    // 'Continue'
                     processing
                       ? "Processing..."
                       : selectedIndex === 0
@@ -276,6 +283,7 @@ const SubscriptionPage = () => {
                     <FilledButton
                       onClick={createSubscriptionIntent}
                       text={
+                        // 'Continue'
                         processing
                           ? "Processing..."
                           : selectedIndex === 0

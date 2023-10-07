@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useRef, useState } from "react";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 import Assets from "../../../assets";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
@@ -10,12 +10,79 @@ import RoutesPath from "../../../constants/Routes";
 import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
+import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsmall";
+import { toast } from "react-toastify";
+import { StorageEnum } from "../../../common/emums/StorageEmuns";
+import AuthController from "../../authentication/controller/AuthController";
 
 const SettingsPage = () => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const handleSignOutClick = () => {
+    setShowConfirmation(true);
+  };
+  const [loading, setLoading] = useState<boolean>(false);
+  const login = async () => {
+    if (loading) return;
+    const validate = AuthController.validateLogin({
+      email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
+      password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
+      terms: true,
+    });
+    if (validate) {
+      setLoading(true);
+      const response = await AuthController.loginRequest({
+        email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
+        password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
+      });
+      if (response.success) {
+        localStorage.setItem(
+          StorageEnum.AccessToken,
+          response.data.accessToken
+        );
+        localStorage.setItem(StorageEnum.UserId, response.data.uid);
+        toast.success("You have been signed out");
+        
+        // Reload the page to navigate to the home
+        window.location.reload();
+      } else {
+        toast.error("Oops, try again! An Error Occurred");
+      }
+      
+      setLoading(false);
+    }
+  };
+  
+  const handleConfirmSignOut= () => {
+    login();
+
+   
+    setShowConfirmation(false);
+  };
+
+  const handleCancelSignout= () => {
+    setShowConfirmation(false);
+  };
+
+
+
   return (
     <div>
+      {showConfirmation && (
+          <div className="confirmation-overlay">
+
+          <div className="confirmation-dialog rounded-xl mx-5 bg-white">
+            <div className="font-bold text-lg text-center pt-10">Do you want to Sign Out?</div>
+            <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">You will be signed out of your account and you will no longer be able to use Business Bosses extra features.</div>
+            <div className="flex justify-center pt-5 pb-10">
+              <button onClick={handleCancelSignout} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
+              <div className="ml-5">
+                <FilledButtonsmall onClick={handleConfirmSignOut} text={"Sign Out"} /></div>
+            </div>
+            </div>
+          </div>
+        )}
       <div className=" top-0 w-full z-50 mobile-only " style={{ position: 'sticky', top: 0, zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
 
         <CommonPageHeader title="Settings" />
@@ -32,10 +99,11 @@ const SettingsPage = () => {
         <Tab
           onClick={() => {
             localStorage.clear();
-            navigate(RoutesPath.login);
+            handleSignOutClick();
           }}
           text="Sign Out"
         />
+        
         <div className="my-10 flex items-center justify-center">
           <img src={Assets.Logo} className="h-16 w-16" alt="" />
         </div>
@@ -86,7 +154,8 @@ const SettingsPage = () => {
               <Tab
                 onClick={() => {
                   localStorage.clear();
-                  navigate(RoutesPath.login);
+                  handleSignOutClick();
+                  
                 }}
                 text="Sign Out"
               />

@@ -13,11 +13,12 @@ import Assets from "../../../assets";
 import { CiSearch } from "react-icons/ci";
 import ChatUser from "./ChatUser";
 import { AiOutlineClose } from "react-icons/ai";
+import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 
 const ChatPage = () => {
   const navigate = useNavigate();
   const chats = useAppSelector((state) => state.chat.chats);
-  const profile = useAppSelector((state) => state.user.profile);
+  const profile = useAppSelector((state) => state.user);
   const [uniqueChats, setUniqueChats] = useState<Chat[]>([]);
   const [isSearch, setIsSeach] = useState<boolean>(false);
 
@@ -31,7 +32,7 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
-    setUniqueChats(ChatController.reduceDuplicateChats(chats, profile!));
+    setUniqueChats(ChatController.reduceDuplicateChats(chats, profile.profile!));
   }, [chats]);
   return (
     <div>
@@ -49,7 +50,7 @@ const ChatPage = () => {
             {isSearch ? (
               <div className="bg-white px-4 py-3 flex gap-3 items-center justify-between">
                 <div>
-                  <CiSearch size={25} strokeWidth={0.5} onClick={() => {}} />
+                  <CiSearch size={25} strokeWidth={0.5} onClick={() => { }} />
                 </div>
                 <div className="flex-grow ">
                   <input
@@ -65,7 +66,7 @@ const ChatPage = () => {
                   <AiOutlineClose
                     size={25}
                     strokeWidth={0.5}
-                    onClick={() => {}}
+                    onClick={() => { }}
                   />
                 </button>
               </div>
@@ -87,11 +88,11 @@ const ChatPage = () => {
         <div className="px-4">
           {isSearch
             ? searchResults.map((chat, index) => {
-                return <ChatUser key={index} chat={chat} />;
-              })
+              return <ChatUser key={index} chat={chat} />;
+            })
             : uniqueChats.map((chat, index) => {
-                return <ChatUser key={index} chat={chat} />;
-              })}
+              return <ChatUser key={index} chat={chat} />;
+            })}
         </div>
       </div>
 
@@ -112,7 +113,7 @@ const ChatPage = () => {
           >
             <div className="">
               <div className=" flex items-center gap-3">
-                <ComputerProfileDetails data={profile!} />
+                <ComputerProfileDetails data={profile.profile!} />
               </div>
             </div>
           </div>
@@ -122,29 +123,22 @@ const ChatPage = () => {
             className="computer-main-content p-5"
             style={{ width: "40%", flexGrow: 0 }}
           >
-            <ChooseTile />
-          </div>
-
-          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div
-            className="lastsection ml-5 mr-5 lg:mr-20 pr-0 mb-0"
-            style={{
-              width: "30%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
-          >
             <div className="rounded-xl overflow-hidden" style={{}}>
-              <div className="mt-5 text-lg font-semibold text-[#333333]">
+              <div className="text-lg font-semibold text-[#333333]">
                 Chats
               </div>
 
               <div className="">
-                {uniqueChats.map((chat, index) => {
-                  return (
+                {uniqueChats.length === 0 ? (
+                  <div className="text-center flex justify-center items-center pb-40" style={{height:'100vh'}}>
+                    <div>
+                      <div className="font-bold">No Chats Found</div>
+                      <div>Search for friends or connections and chat with them</div>
+                    </div>
+                  </div>
+
+                ) : (
+                  uniqueChats.map((chat, index) => (
                     <div
                       key={index}
                       onClick={() => {
@@ -158,8 +152,7 @@ const ChatPage = () => {
                     >
                       <UserAvatar
                         imageURL={
-                          chat.user?.photoUrl ??
-                          "https://cdn-icons-png.flaticon.com/128/149/149071.png"
+                          chat.user?.photoUrl 
                         }
                       />
                       <div className="">
@@ -173,10 +166,32 @@ const ChatPage = () => {
                         </p>
                       </div>
                     </div>
-                  );
-                })}
+                  ))
+                )}
               </div>
+
             </div>
+          </div>
+
+          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
+          <div
+            className="lastsection mt-5 ml-5 mr-5 lg:mr-20 pr-0 mb-0"
+            style={{
+              width: "30%",
+              flexGrow: 0,
+              overflow: "none",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              {profile.bossup ? (
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+              ) : null}
+            </div>
+
+
           </div>
         </div>
       </div>

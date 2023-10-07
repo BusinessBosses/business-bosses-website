@@ -78,8 +78,32 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
     setIsPopupOpen(false);
   };
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+     navigate(RoutesPath.login)
+    } else {
+     
+    }
+  };
+
   return (
-    <div>
+    
+    <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+    handleButtonClick: ()=>{}}>
+      <div className="computer-only">
+            {isPopupOpen && (
+              <div className="overlay">
+                <div
+                  ref={popupRef}
+                  className="computerpopup"
+                 
+                >
+                  <Bossoftheweekpopup />
+                </div>
+              </div>
+            )}
+          </div>
       <div className="bg-[#EAEAEA] lg:bg-[#f4f4f4]  lg:rounded-2xl px-4 py-3" style={{}}>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
@@ -144,13 +168,14 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
                 <div
                   ref={popupRef}
                   className="mobilepopup"
-                  style={{ overflowY: "scroll" }}
+                  
                 >
                   <Bossoftheweekpopup />
                 </div>
               </div>
             )}
           </div>
+          
 
           <div className="mobile-only">
             <BossupPartnerstile bossupby={""} bossupad={""} />

@@ -8,6 +8,10 @@ import SubscribeButton from "../../../settings/components/Subscribebutton";
 import ConnectRelevant from "../../../settings/views/ConnectRelevant";
 import Popup from "reactjs-popup";
 import { IoIosMore } from "react-icons/io";
+import { ReactNode, useState } from "react";
+import { toast } from "react-toastify";
+import { StorageEnum } from "../../../../common/emums/StorageEmuns";
+import AuthController from "../../../authentication/controller/AuthController";
 
 interface Props {
   data: User;
@@ -22,6 +26,38 @@ const ComputerProfileDetails = ({ data }: Props) => {
     // Example: Navigate to a specific route when the profile is clicked
     navigate(RoutesPath.myProfile, { state: { userId: data.uid } });
   };
+  const [loading, setLoading] = useState<boolean>(false);
+  const login = async () => {
+    if (loading) return;
+    const validate = AuthController.validateLogin({
+      email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
+      password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
+      terms: true,
+    });
+    if (validate) {
+      setLoading(true);
+      const response = await AuthController.loginRequest({
+        email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
+        password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
+      });
+      if (response.success) {
+        localStorage.setItem(
+          StorageEnum.AccessToken,
+          response.data.accessToken
+        );
+        localStorage.setItem(StorageEnum.UserId, response.data.uid);
+        toast.success("You have been signed out");
+        
+        // Reload the page to navigate to the home
+        window.location.reload();
+      } else {
+        toast.error("Oops, try again! An Error Occurred");
+      }
+      
+      setLoading(false);
+    }
+  };
+  
 
   return (
     <div className=" " style={{ cursor: "pointer", height: "100vh", width: "100vh" }}>
@@ -47,23 +83,60 @@ const ComputerProfileDetails = ({ data }: Props) => {
           </div>
 
           <Popup
-              trigger={
-                <div>
-                  <IoIosMore size={25} />
-                </div>
-              }
-              position="left top"
-              on="click"
-              closeOnDocumentClick
-              contentStyle={{ padding: "0px", border: "none" }}
-              modal 
-              overlayStyle={{
-                background: 'rgba(0, 0, 0, 0.8)', 
-                zIndex: 1000, 
-              }}
-            >
-             
-            </Popup>
+                trigger={
+                  <div>
+                    <IoIosMore size={20} />
+                  </div>
+                }
+                position="left top"
+                on="click"
+                closeOnDocumentClick
+                contentStyle={{ padding: "0px", border: "none" }}
+              // overlayStyle={{
+              //   background: "rgba(0, 0, 0, 0.8)",
+              //   zIndex: 1000,
+              // }}
+              >
+                {
+                  (((close: any) =>
+                    
+                      <div className=" bg-white shadow-xl rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                        <button
+                          onClick={() => {
+                            navigate(RoutesPath.myProfile)
+                            close();
+                            
+                          }}
+                          className="menu-item border-none outline-none"
+                        >
+                          My Profile
+                        </button>
+                        <button
+                          onClick={() => {
+                            navigate(RoutesPath.settings)
+                            close();
+                          
+                            
+                          }}
+                          className="menu-item border-none outline-none"
+                        >
+                          Settings
+                        </button>
+                        <button
+                          onClick={() => {
+                            login();
+                            close();
+                          
+                            
+                          }}
+                          className="menu-item border-none outline-none"
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    ) as unknown) as ReactNode
+                }
+              </Popup>
             
         </div>
         <div className="mt-2">

@@ -8,7 +8,7 @@ import Popup from "reactjs-popup";
 import { Post } from "../../../../common/interfaces/post";
 import trimText from "../../../../common/functions/trimText";
 import formatDate from "../../../../common/functions/formatDate";
-import { useAppSelector } from "../../../../redux/store/store";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
 import Comment from "../../../../common/components/comment/Comment";
@@ -19,6 +19,16 @@ import { toast } from "react-toastify";
 import SharePopUp from "../../../../common/components/share/SharePopUp";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import GreyButton from "../../../../common/components/buttons/Greybutton";
+import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
+import { User } from "../../../../common/interfaces/user";
+import { saveUserData } from "../../../../redux/slices/UserSlice";
+import ConnectionsController from "../../../connections/controller/ConnectionsController";
+import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
+import Outlinegrey from "../../../../common/components/buttons/Outlinegrey";
+import Lightbox, { ImagesListType } from 'react-spring-lightbox';
+import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
+import TranslucentDiv from "../../../../common/components/buttons/Translucentbutton";
+
 interface Props {
   data: Post;
   onLike: Function;
@@ -34,6 +44,92 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
   const [err, setErr] = useState<boolean>(false);
   const commentInputRef = useRef<HTMLInputElement>(null);
   const [showShareDialog, setShowShareDialog] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const [showExpandedImages, setShowExpandedImages] = useState<boolean>(false);
+
+  const handleExpanded = () => {
+    setShowExpandedImages(true);
+  };
+
+  const images: ImagesListItem[] = (data.images || []).map((imageUrl, index) => ({
+    src: imageUrl,
+    loading: 'lazy',
+    alt: `Image ${index + 1}`,
+  }));
+
+
+
+
+
+
+  const [currentImageIndex, setCurrentIndex] = useState(0);
+
+  const gotoPrevious = () =>
+    currentImageIndex > 0 && setCurrentIndex(currentImageIndex - 1);
+
+  const gotoNext = () =>
+    currentImageIndex + 1 < images?.length! &&
+    setCurrentIndex(currentImageIndex + 1);
+
+
+
+  const connection = async () => {
+    if (profile?.connecteds?.includes(data.user.uid!)) {
+      const newUserData: User = {
+        ...profile,
+        connecteds: profile.connecteds?.filter(
+          (ft) => ft !== data.user.uid!
+        ),
+        connectedCount: (profile?.connectedCount ?? 0) - 1,
+      };
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.disConnect(data.user.uid!);
+    } else {
+      const newUserData: User = {
+        ...profile,
+        connecteds: [...profile?.connecteds!, data.user.uid],
+        connectedCount: (profile?.connectedCount ?? 0) + 1,
+      } as User;
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.connect(data.user.uid!);
+    }
+  };
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+
+  const handleBlockClick = () => {
+    setShowConfirmation(true);
+  };
+  const handleReportClick = () => {
+    setShowReport(true);
+  };
+
+  const handleConfirmBlock = () => {
+    toast.success("User Blocked");
+    GeneralPostsController.blockUser({
+      postId: data.postId,
+    });
+    setShowConfirmation(false);
+  };
+
+  const handleConfirmReport = () => {
+    toast.success("Post reported");
+    GeneralPostsController.reportPost({
+      postId: data.postId,
+      reason: "",
+    });
+    setShowReport(false);
+  };
+
+  const handleCancelBlock = () => {
+    setShowConfirmation(false);
+  };
+
+  const handleCancelReport = () => {
+    setShowReport(false);
+  };
+
 
   const fetchComments = async () => {
     if (comments.length) return;
@@ -72,8 +168,48 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
     await GeneralPostsController.comment(structuredComment);
   };
 
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+     navigate(RoutesPath.login)
+    } else {
+     
+    }
+  };
+
   return (
-    <div>
+    <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+    handleButtonClick: ()=>{}}>
+      <div className="bg-black mobilepopup justify-center" style={{ position: "relative" }}>
+        {showConfirmation && (
+          <div className="confirmation-overlay">
+
+            <div className="confirmation-dialog rounded-xl mx-5 bg-white">
+              <div className="font-bold text-lg text-center pt-10">Do you want to block user?</div>
+              <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">You will no longer see {data.user?.username}'s posts and comments on your feed</div>
+              <div className="flex justify-center pt-5 pb-10">
+                <button onClick={handleCancelBlock} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
+                <div className="ml-5">
+                  <FilledButtonsmall onClick={handleConfirmBlock} text={"Block"} /></div>
+              </div>
+            </div>
+          </div>
+        )}
+        {showReport && (
+          <div className="confirmation-overlay">
+
+            <div className="confirmation-dialog rounded-xl mx-5 bg-white">
+              <div className="font-bold text-lg text-center pt-10">Do you want to report post?</div>
+              <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">The post will be reported to admin to evaluate if it violates any community policy</div>
+              <div className="flex justify-center pt-5 pb-10">
+                <button onClick={handleCancelReport} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
+                <div className="ml-5">
+                  <FilledButtonsmall onClick={handleConfirmReport} text={"Report"} /></div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="pt-5 px-4 bg-white">
         <SharePopUp
           url={`${window.location.href}post?id=${data.postId}`}
@@ -96,7 +232,8 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   name=""
                   id=""
                 />
-                <button onClick={makeComment}>
+                <button onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:makeComment}>
                   <Assets.Send />
                 </button>
               </div>
@@ -108,7 +245,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   error={err}
                   errorMessage="Something went wrong!!"
                   loading={loading}
-                  onReload={() => {}}
+                  onReload={() => { }}
                 />
               )}
               <div className="px-4">
@@ -135,7 +272,8 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   name=""
                   id=""
                 />
-                <button onClick={makeComment}>
+                <button onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:makeComment}>
                   <Assets.Send />
                 </button>
               </div>
@@ -147,7 +285,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   error={err}
                   errorMessage="Something went wrong!!"
                   loading={loading}
-                  onReload={() => {}}
+                  onReload={() => { }}
                 />
               )}
               <div className="px-4">
@@ -161,7 +299,8 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
         <div className="flex items-start justify-between">
           <div
-            onClick={() =>
+            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            ()=>{}:() =>
               navigate(RoutesPath.PublicUserProfile, { state: data.user })
             }
             className="flex items-center gap-3"
@@ -185,7 +324,22 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
           <div className="flex items-center gap-5">
             {data.user?.isSubscribed && (
-              <GreyButton onClick={() => {}} text={"Connect"} />
+              !profile?.connecteds?.includes(data.user.uid!) ? (
+                <GreyButton
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  ()=>{}:connection}
+                  text="Connect"
+                />
+              ) : (
+                <Outlinegrey
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  ()=>{}:() => {
+                    navigate(RoutesPath.refer, { state: data.user.uid });
+                  }}
+                  text="Refer"
+                />
+              )
+
             )}
 
             <Popup
@@ -198,10 +352,10 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               on="click"
               closeOnDocumentClick
               contentStyle={{ padding: "0px", border: "none" }}
-              // overlayStyle={{
-              //   background: "rgba(0, 0, 0, 0.8)",
-              //   zIndex: 1000,
-              // }}
+            // overlayStyle={{
+            //   background: "rgba(0, 0, 0, 0.8)",
+            //   zIndex: 1000,
+            // }}
             >
               {
                 (((close: any) =>
@@ -241,27 +395,20 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                       <button
                         onClick={() => {
                           close();
-                          toast.success("User Blocked");
-                          GeneralPostsController.blockUser({
-                            postId: data.postId,
-                          });
+                          handleBlockClick();
                         }}
-                        className=" border-none outline-none"
+                        className="menu-item border-none outline-none font-bold text-[#2D93EC]"
                       >
                         Block @{data.user.username}
                       </button>
                       <button
                         onClick={() => {
                           close();
-                          toast.success("Post reported");
-                          GeneralPostsController.reportPost({
-                            postId: data.postId,
-                            reason: "",
-                          });
+                          handleReportClick();
                         }}
-                        className="menu-item text-primary border-none outline-none"
+                        className="menu-item border-none outline-none text-primary font-bold"
                       >
-                        Report Post
+                        Report this post
                       </button>
                     </div>
                   )) as unknown) as ReactNode
@@ -269,6 +416,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
             </Popup>
           </div>
         </div>
+
         <div className="mt-2">
           {data.promote ? (
             <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
@@ -278,22 +426,52 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
           </p>
           {data.images ? (
             <div className="mt-2">
+              <Lightbox className="lg:p-10 p-5" style={{ background: 'rgba(0, 0, 0, 0.98)' }}
+                isOpen={showExpandedImages}
+                onPrev={gotoPrevious}
+                onNext={gotoNext}
+                images={images}
+                currentIndex={currentImageIndex}
+                renderFooter={() => (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                  onClick={() => setShowExpandedImages(false)}>
+                  <TranslucentDiv />
+                </div>
+                )}
+                renderPrevButton={() => (<Assets.Backbutton style={{ position: 'relative', zIndex: '500' }} onClick={gotoPrevious} />)}
+                renderNextButton={() => (
+                  <Assets.Backbutton
+                    style={{ transform: 'rotate(180deg)' }}
+                    onClick={gotoNext}
+                  />
+                )}
+                pageTransitionConfig={{
+                  from: { transform: "scale(0.75)", opacity: 0 },
+                  enter: { transform: "scale(1)", opacity: 1 },
+                  leave: { transform: "scale(0.75)", opacity: 0 },
+                  config: { mass: 1, tension: 320, friction: 32 }
+                }}
+              />
               <img
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => { handleExpanded(); }}
                 src={data.images[0]}
                 alt=""
                 className="rounded-lg w-full h-64 object-cover"
               />
-              <div className="flex overflow-x-scroll mt-2 hide-scroll-bar">
+              <div className="flex overflow-x-hidden mt-2 hide-scroll-bar">
                 <div className="flex flex-nowrap gap-2">
-                  {data.images.map((img) => (
+                  {data.images.map((img, index) => (
                     <div key={img} className="inline-block">
-                      <div className="w-20 h-20 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img
-                          src={img}
-                          alt=""
-                          className="rounded-lg w-20 h-20 object-cover"
-                        />
-                      </div>
+                      {index === 0 ? null : (
+                        <div className="max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                          <img
+                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                            ()=>{}:() => { handleExpanded(); }}
+                            src={img}
+                            alt=""
+                            className="rounded-lg w-20 h-20 object-cover"
+                          />
+                        </div>)}
                     </div>
                   ))}
                 </div>
@@ -309,14 +487,16 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                     ? Assets.LikeFilled
                     : Assets.Like
                 }
-                onClick={() => {
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => {
                   onLike(data.postId);
                 }}
               />
               <PostAction
                 count={data.comments.length.toString()}
                 icon={Assets.Comment}
-                onClick={() => {
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => {
                   fetchComments();
                   setOpen(true);
                 }}
@@ -324,14 +504,16 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               <PostAction
                 count={data.coins.length.toString()}
                 icon={Assets.Coin}
-                onClick={() => {
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => {
                   onCoin(data.postId);
                 }}
               />
               <PostAction
                 count=""
                 icon={Assets.Share}
-                onClick={() => {
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => {
                   setShowShareDialog(true);
                 }}
               />
@@ -376,3 +558,5 @@ const PostAction = ({ count, icon, active, onClick }: PostActionProps) => {
     </div>
   );
 };
+
+
