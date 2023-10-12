@@ -93,6 +93,18 @@ const App = () => {
     }
   };
 
+  const fetchPartner = async() => {
+     const response = await serviceApi.fetch('partner/all');
+    try {
+      const response = await serviceApi.fetch('partner/all');
+      return response;
+    } catch (error) {
+      // Handle the error appropriately
+      console.error('Error fetching partner:', error);
+      throw error;
+    }
+  }
+
   const fetchData = async () => {
     setLoading(true);
     setErr(false);
@@ -126,8 +138,12 @@ const App = () => {
       localStorage.getItem(StorageEnum.AccessToken)
     ) {
       fetchData();
+      socket.connect();
+      StartListeners();
+      SendHandshake();
     } else {
       setLoading(false);
+      login()
     }
   }, []);
 
@@ -159,52 +175,46 @@ const App = () => {
     // console.info("Sending handshake to server ...");
   };
 
-  const login = async () => {
+  const login = () => {
     try {
-      const validate = AuthController.validateLogin({
+      AuthController.loginRequest({
         email: process.env.REACT_APP_DUMMY_EMAIL,
         password: process.env.REACT_APP_DUMMY_PASSWORD,
-        terms: true,
-      });
-      if (validate) {
-        const response = await AuthController.loginRequest({
-          email: process.env.REACT_APP_DUMMY_EMAIL,
-          password: process.env.REACT_APP_DUMMY_PASSWORD,
+      })
+        .then((response) => {
+          if (response.success) {
+            window.location.reload(); 
+            localStorage.setItem(StorageEnum.AccessToken, response.data.accessToken);
+            localStorage.setItem(StorageEnum.UserId, response.data.uid);
+            socket.connect();
+            StartListeners();
+            SendHandshake();
+            navigate(RoutesPath.home);
+         
+          } else {
+            toast.error("Oops, try again! An Error Occurred");
+          }
+        })
+        .catch((error) => {
+          // Handle any errors that occur during login here
+          console.error("An error occurred during login:", error);
+          toast.error("Oops, an error occurred during login. Please try again.");
+        })
+        .finally(() => {
+          setLoading(false);
         });
-        if (response.success) {
-          localStorage.setItem(StorageEnum.AccessToken, response.data.accessToken);
-          localStorage.setItem(StorageEnum.UserId, response.data.uid);
-          socket.connect();
-          StartListeners();
-          SendHandshake();
-  
-          navigate(RoutesPath.home);
-        } else {
-          toast.error("Oops, try again! An Error Occurred");
-        }
-      }
     } catch (error) {
-      // Handle any errors that occur during login here
+      // Handle any errors that occur synchronously here
       console.error("An error occurred during login:", error);
       toast.error("Oops, an error occurred during login. Please try again.");
-    } finally {
-      setLoading(false); // Move this line inside or outside the try-catch block as needed
+      setLoading(false);
     }
   };
   
+  
 
-  useEffect(() => {
-    if (
-      localStorage.getItem(StorageEnum.UserId) &&
-      localStorage.getItem(StorageEnum.AccessToken)
-    ) {
-      socket.connect();
-      StartListeners();
-      SendHandshake();
-    } else {
-      login()
-    }
-  }, []);
+
+
   return loading ? (
     <FetchStatus
       error={err}

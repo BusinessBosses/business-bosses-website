@@ -186,7 +186,7 @@ const MarketIntro = () => {
           </div>
         </div>
 
-        <BossupPartnerstile bossupby={""} bossupad={""} />
+        <BossupPartnerstile />
       </div>
 
       <div className="computer-only" onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?

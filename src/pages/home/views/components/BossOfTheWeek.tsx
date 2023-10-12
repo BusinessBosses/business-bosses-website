@@ -178,7 +178,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
           
 
           <div className="mobile-only">
-            <BossupPartnerstile bossupby={""} bossupad={""} />
+            <BossupPartnerstile />
           </div>
 
 

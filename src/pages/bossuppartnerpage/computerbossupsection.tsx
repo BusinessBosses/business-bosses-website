@@ -25,7 +25,7 @@ const ComputerBossuppartnersection = () => {
     <div>
       <div className="bg-[#f4f4f4] rounded-2xl p-3">
 
-        <BossupPartnerstile bossupby={"BB News"} bossupad={""}/>
+        <BossupPartnerstile/>
 
         <PartnerCard
           partnerlogo={undefined}

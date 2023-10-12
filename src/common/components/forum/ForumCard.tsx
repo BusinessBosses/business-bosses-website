@@ -96,7 +96,7 @@ const ForumCard = ({
           </div>
         </div>
         <div className="mobile-only">
-          <BossupPartnerstile bossupby={""} bossupad={""} />
+          <BossupPartnerstile />
         </div>
       </div>
 
