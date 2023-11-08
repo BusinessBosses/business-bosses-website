@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { BiArrowBack } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import HomeSearchTabs from "./components/HomeSearchTabs";
@@ -167,34 +166,34 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
               loading
               error={false}
               errorMessage=""
-              onReload={() => {}}
+              onReload={() => { }}
             />
           ) : isSearch ? (
             searchedPosts.map((post: Post, index: number) => {
               return (
                 <div className="mx-5 bg-white"> <PostItem
-                key={index}
-                data={post}
-                onCoin={() => {}}
-                onComment={() => {}}
-                onLike={() => {}}
-              /></div>
-               
+                  key={index}
+                  data={post}
+                  onCoin={() => { }}
+                  onComment={() => { }}
+                  onLike={() => { }}
+                  onView={() => {}}
+                /></div>
+
               );
             })
           ) : (
             recommendedPosts.map((post: Post, index: number) => {
               return (
                 <div className="mt-0 mx-5 bg-white">
-                   <PostItem
-                  key={index}
-                  data={post}
-                  onCoin={() => {}}
-                  onComment={() => {}}
-                  onLike={() => {}}
-                />
+                  <PostItem
+                    key={index}
+                    data={post}
+                    onCoin={() => { } }
+                    onComment={() => { } }
+                    onLike={() => { } } onView={() => {}}                  />
                 </div>
-               
+
               );
             })
           )

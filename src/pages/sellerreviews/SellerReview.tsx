@@ -18,6 +18,8 @@ import serviceApi from "../../services/serviceApi";
 import FetchStatus from "../../common/components/fetch_status/FetchStatus";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import Assets from "../../assets";
+import { PartnerData } from "../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../common/interfaces/partnerdatatile";
 interface Review {
   id: number;
   sellerId: string;
@@ -28,7 +30,12 @@ interface Review {
   createdAt: string;
 }
 
-const SellerReview = () => {
+interface Props {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+
+const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const [seller, setSeller] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<boolean>(false);
@@ -275,7 +282,7 @@ const SellerReview = () => {
       </div>
 
       <div className="computer-only bg-[#fff]">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
         <div className="computer-content">
           <div
@@ -513,7 +520,7 @@ const SellerReview = () => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

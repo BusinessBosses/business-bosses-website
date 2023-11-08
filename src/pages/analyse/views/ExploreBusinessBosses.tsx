@@ -13,8 +13,15 @@ import Analyserows from "./components/analyserows";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import axios from "axios";
 import Loader from "../../../common/components/loader/Loader";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
-const ExploreBusinessBosses = () => {
+interface Props {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+
+const ExploreBusinessBosses: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user);
   const [description, setDescription] = useState('');
@@ -83,7 +90,7 @@ const ExploreBusinessBosses = () => {
       </div>
 
       <div className='computer-only'>
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
         <div className="computer-content">
           <div
@@ -144,7 +151,7 @@ const ExploreBusinessBosses = () => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

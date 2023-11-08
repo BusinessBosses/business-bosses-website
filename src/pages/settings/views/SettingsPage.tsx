@@ -14,8 +14,15 @@ import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsm
 import { toast } from "react-toastify";
 import { StorageEnum } from "../../../common/emums/StorageEmuns";
 import AuthController from "../../authentication/controller/AuthController";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
-const SettingsPage = () => {
+interface Props {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+
+const SettingsPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -67,6 +74,25 @@ const SettingsPage = () => {
 
 
 
+  const handleContactUs = () => {
+    const email = 'support@businessbosses.co.uk';
+    const subject = 'Contact Business Bosses';
+
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+
+    try {
+      window.location.href = mailtoLink;
+    } catch (e) {
+      console.error(`Could not launch ${mailtoLink}`);
+      // Handle the error as needed, e.g., display an error message.
+    }
+  }
+
+
+
+
+
+
   return (
     <div>
       {showConfirmation && (
@@ -90,19 +116,18 @@ const SettingsPage = () => {
 
 
       <div className="px-5 mobile-only">
-        <Tab onClick={() => { navigate(RoutesPath.communityrules); }} text="Community Rules" />
-        <Tab onClick={() => { navigate(RoutesPath.invitetandcs); }} text="Invite a friends terms & conditions" />
-        <Tab onClick={() => { }} text="Contact Us" />
-        <Tab onClick={() => { }} text="Change Password" />
-        <Tab onClick={() => { }} text="Delete Account" />
+        <Tab onClick={() => { navigate(RoutesPath.communityrules); } } text="Community Rules" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+        <Tab onClick={() => { navigate(RoutesPath.invitetandcs); } } text="Invite a friends terms & conditions" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+        <Tab onClick={() => { handleContactUs()} } text="Contact Us" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+        <Tab onClick={() => { } } text="Change Password" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+        <Tab onClick={() => { } } text="Delete Account" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
         <div className="my-10"></div>
         <Tab
           onClick={() => {
             localStorage.clear();
             handleSignOutClick();
-          }}
-          text="Sign Out"
-        />
+          } }
+          text="Sign Out" partnerData={partnerData}   partnerDatatile={partnerDatatile}        />
         
         <div className="my-10 flex items-center justify-center">
           <img src={Assets.Logo} className="h-16 w-16" alt="" />
@@ -111,7 +136,7 @@ const SettingsPage = () => {
       </div>
 
       <div className="bg-[#ffffff] min-h-screen h-full computer-only">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
         <div className="computer-content">
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
@@ -145,20 +170,19 @@ const SettingsPage = () => {
 
 
             <div className="px-5">
-              <Tab onClick={() => { navigate(RoutesPath.communityrules); }} text="Community Rules" />
-              <Tab onClick={() => { navigate(RoutesPath.invitetandcs); }} text="Invite a friends terms & conditions" />
-              <Tab onClick={() => { }} text="Contact Us" />
-              <Tab onClick={() => { }} text="Change Password" />
-              <Tab onClick={() => { }} text="Delete Account" />
+              <Tab onClick={() => { navigate(RoutesPath.communityrules); } } text="Community Rules" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+              <Tab onClick={() => { navigate(RoutesPath.invitetandcs); } } text="Invite a friends terms & conditions" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+              <Tab onClick={() => { handleContactUs()} } text="Contact Us" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+              <Tab onClick={() => { } } text="Change Password" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+              <Tab onClick={() => { } } text="Delete Account" partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               <div className="my-10"></div>
               <Tab
                 onClick={() => {
                   localStorage.clear();
                   handleSignOutClick();
-                  
-                }}
-                text="Sign Out"
-              />
+
+                } }
+                text="Sign Out" partnerData={partnerData}   partnerDatatile={partnerDatatile}              />
               <div className="my-10 flex items-center justify-center">
                 <img src={Assets.Logo} className="h-16 w-16" alt="" />
               </div>
@@ -181,7 +205,7 @@ const SettingsPage = () => {
                     >
                         <div className="rounded-xl overflow-hidden" style={{}}>
                             {profile.bossup ? (
-                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
                             ) : null}
                         </div>
                     </div>
@@ -222,3 +246,7 @@ const Tab = ({ onClick, text }: Props) => {
     </div>
   );
 };
+function encodeQueryParameters(params: any) {
+  throw new Error("Function not implemented.");
+}
+

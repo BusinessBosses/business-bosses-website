@@ -15,6 +15,14 @@ class GeneralPostsController {
         await serviceApi.post('/comments', args);
     }
 
+    async addView(args: ViewStruct) {
+        await serviceApi.update('/post/update-post/'+ args.postId, args);
+    }
+
+    async addForumView(args: ViewStruct) {
+        await serviceApi.update('/forum/update/'+ args.postId, args);
+    }
+
     async reportPost(args: ReportStruct) {
         await serviceApi.post('/reportedpost', args);
     }
@@ -51,6 +59,11 @@ export interface CoinStruct {
     type: string,
     timestamp: number,
     receiverUid?: string
+}
+
+export interface ViewStruct {
+    postId: string,
+    views: number,
 }
 
 

@@ -107,7 +107,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
 
   return (
     <div>
-      {screenWidth <= 576 ? (
+     
         <div className="p-5 mobile-only bg-white">
           <div className="flex items-start gap-10 my-10">
             <div className="flex items-center flex-col gap-1">
@@ -138,13 +138,13 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           >
             <FilledInput
               inputRef={emailRef}
-              onchange={() => {}}
+              onchange={() => { }}
               placeholder="Email"
               type="email"
             />
             <FilledInput
               inputRef={passwordRef}
-              onchange={(e) => {}}
+              onchange={(e) => { }}
               placeholder="Password"
               type={passwordVisible ? "text" : "password"}
               onPressSuffixIcon={() => setPasswordVisible((prev) => !prev)}
@@ -156,7 +156,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                 )
               }
             />
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-end mb-5">
               <button
                 type="button"
                 onClick={() => {
@@ -167,26 +167,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                 Forgot Password?
               </button>
             </div>
-            <div className="flex items-center my-5 gap-4">
-              <input
-                defaultChecked
-                ref={termsRef}
-                type="checkbox"
-                className="acc accent-primary"
-                name=""
-                id=""
-              />
-              <div className="text-sm font-[800]">
-                <span className="text-[#999797] ">I agree to the </span>
-                <span className="text-primary underline">
-                  {" "}
-                  Terms of Service{" "}
-                </span>
-                <span className="text-[#999797] "> and </span>
-                <span className="text-primary underline"> Privacy Policy </span>
-                <span className="text-[#999797] "> of Business Bosses </span>
-              </div>
-            </div>
+
 
             <div className="">
               <FilledButton
@@ -204,9 +185,35 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
             <GoogleButton
               onClick={googleLogin}
               text="Sign in with Google"
-              className="w-full p-3 mb-10"
+              className="w-full p-3 mb-5"
             />
           </form>
+
+          <div className="px-5 pb-3">
+            <div className="mt-3 gap-2" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <div style={{ width: '55%', display: 'flex', justifyContent: 'center' }}>
+                <Assets.Appstorelogo
+                  onClick={() =>
+                    (window.location.href = "https://apps.apple.com/gh/app/business-bosses-networking/id1569332982")
+                  }
+                />
+              </div>
+              <div style={{ width: '55%', display: 'flex', justifyContent: 'center' }}>
+                <Assets.Playstorelogo
+                  onClick={() =>
+                    (window.location.href = "https://play.google.com/store/search?q=Business%20bosses&c=apps")
+                  }
+                />
+              </div>
+            </div>
+          </div>
+
+
+          <div className="text-[#333333] mb-10 text-sm lg:text-base" style={{ textAlign: "center" }}>
+            No.1 App to Start,
+            <br />
+            Grow And Promote Your Business.
+          </div>
 
           <div
             className=""
@@ -226,7 +233,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           </div>
 
           <div
-            className="p-5 mt-5"
+            className="p-5 flex items-center justify-center"
             style={{
               width: "100%",
               height: "40vh",
@@ -235,54 +242,21 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
               border: "1px solid white",
               backdropFilter: "blur(1px)",
               WebkitBackdropFilter: "blur(10px)",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
+              
             }}
           >
-            <div className="">
-              <img src={Assets.Logo} className="w-20 h-20" alt="" />
+             <div className="">
+              <img src={Assets.Logo} className="w-10 h-10" alt="" />
             </div>
-            <div className="mb-3 text-[#232324] font-[600] text-xl pl-3">
+            <div className=" text-[#232324] font-[600] text-md pl-3">
               Business Bosses
             </div>
-            <div className="text-[#333333]" style={{ textAlign: "center" }}>
-              No.1 App to Start, Grow And Promote Your Business.
-            </div>
-            <div className="text-[#333333]" style={{ textAlign: "center" }}>
-              Join Now for free & Unlock Your Potential
-            </div>
-            <div
-              className="mt-3"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <div className="pr-2">
-                <Assets.Appstorelogo
-                  onClick={() =>
-                    (window.location.href =
-                      "https://apps.apple.com/gh/app/business-bosses-networking/id1569332982")
-                  }
-                />
-              </div>
-              <div>
-                <Assets.Playstorelogo
-                  onClick={() =>
-                    (window.location.href =
-                      "https://play.google.com/store/search?q=Business%20bosses&c=apps")
-                  }
-                />
-              </div>
-            </div>
+            
           </div>
         </div>
-      ) : null}
+   
 
-      {screenWidth >= 576 ? (
+     
         <div className="computer-only">
           <div className="flex">
             <div
@@ -345,16 +319,16 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                   <div className="pr-2">
                     <Assets.Appstorelogo
                       onClick={() =>
-                        (window.location.href =
-                          "https://apps.apple.com/gh/app/business-bosses-networking/id1569332982")
+                      (window.location.href =
+                        "https://apps.apple.com/gh/app/business-bosses-networking/id1569332982")
                       }
                     />
                   </div>
                   <div>
                     <Assets.Playstorelogo
                       onClick={() =>
-                        (window.location.href =
-                          "https://play.google.com/store/search?q=Business%20bosses&c=apps")
+                      (window.location.href =
+                        "https://play.google.com/store/search?q=Business%20bosses&c=apps")
                       }
                     />
                   </div>
@@ -368,7 +342,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                   src={Assets.Logo}
                   className="w-12 h-12 my-3 cursor-pointer"
                   alt=""
-                  onClick={() => {}}
+                  onClick={() => { }}
                 />
                 <div className="text-[#232324] font-[600] text-xl pl-3">
                   Business Bosses
@@ -405,13 +379,13 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                 {/* <FilledInput onchange={() => {}} placeholder="Username" /> */}
                 <FilledInput
                   inputRef={emailRef}
-                  onchange={() => {}}
+                  onchange={() => { }}
                   placeholder="Email"
                   type="email"
                 />
                 <FilledInput
                   inputRef={passwordRef}
-                  onchange={(e) => {}}
+                  onchange={(e) => { }}
                   placeholder="Password"
                   type={passwordVisible ? "text" : "password"}
                   onPressSuffixIcon={() => setPasswordVisible((prev) => !prev)}
@@ -423,7 +397,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                     )
                   }
                 />
-                <div className="flex items-center justify-end">
+                <div className="flex items-center justify-end pb-10">
                   <button
                     type="button"
                     onClick={() => {
@@ -434,32 +408,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
                     Forgot Password?
                   </button>
                 </div>
-                <div className="flex items-center my-10 gap-4">
-                  <input
-                    defaultChecked
-                    ref={termsRef}
-                    type="checkbox"
-                    className="acc accent-primary"
-                    name=""
-                    id=""
-                  />
-                  <div className="text-sm font-[800]">
-                    <span className="text-[#999797] ">I agree to the </span>
-                    <span className="text-primary underline">
-                      {" "}
-                      Terms of Service{" "}
-                    </span>
-                    <span className="text-[#999797] "> and </span>
-                    <span className="text-primary underline">
-                      {" "}
-                      Privacy Policy{" "}
-                    </span>
-                    <span className="text-[#999797] ">
-                      {" "}
-                      of Business Bosses{" "}
-                    </span>
-                  </div>
-                </div>
+
 
                 <div className="">
                   <FilledButton
@@ -483,7 +432,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
             </div>
           </div>
         </div>
-      ) : null}
+    
     </div>
   );
 };

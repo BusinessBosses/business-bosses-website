@@ -12,8 +12,14 @@ import ComputerProfileDetails from "../../profile/views/components/ComputerProfi
 import { useAppSelector } from "../../../redux/store/store";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
-const SubscriptionPage = () => {
+interface Props {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+const SubscriptionPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const controlRef = useRef<HTMLDivElement>(null);
   const [processing, setProcessing] = useState<boolean>(false);
@@ -181,7 +187,7 @@ const SubscriptionPage = () => {
 
 
       <div className="computer-only bg-[#fff]">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData} partnerDatatile={partnerDatatile}   />
 
         <div className="computer-content">
           <div
@@ -312,7 +318,7 @@ const SubscriptionPage = () => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

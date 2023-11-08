@@ -420,9 +420,9 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
           <div className="mt-5 flex items-center justify-between mb-3">
             <div className="flex gap-5">
               <PostAction
-                count={data.likes!.length.toString()}
+                count={data.likes.length.toString()}
                 icon={
-                  data.likes?.includes(profile!.uid)
+                  data.likes.includes(profile!.uid)
                     ? Assets.LikeFilled
                     : Assets.Like
                 }
@@ -449,6 +449,14 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                 }}
               />
               <PostAction
+                count={data.views!.toString()}
+                icon={Assets.Viewsicon}
+                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => {
+                  
+                }}
+              />
+              <PostAction
                 count=""
                 icon={Assets.Share}
                 onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
@@ -458,8 +466,8 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
               />
             </div>
 
-            <OutlinedButton onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            ()=>{} :() => {navigate(RoutesPath.ChatRoom, { state: { user: data } }); }} text={"Message Seller"} />
+            { data.userId !== profile?.uid ?<OutlinedButton onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            ()=>{} :() => {navigate(RoutesPath.ChatRoom, { state: { user: data } }); }} text={"Message Seller"} />  : null}
           </div>
         </div>
 

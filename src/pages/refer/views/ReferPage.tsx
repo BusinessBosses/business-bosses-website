@@ -13,8 +13,15 @@ import Loader from "../../../common/components/loader/Loader";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
-const ReferPage = () => {
+interface Props {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+
+const ReferPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [processing, setProcessing] = useState<boolean>(false);
   const myId = useAppSelector((state) => state.user.profile!.uid);
@@ -155,7 +162,7 @@ const ReferPage = () => {
       </div>
 
       <div className='computer-only'>
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
         <div className="computer-content">
           <div
@@ -184,7 +191,7 @@ const ReferPage = () => {
               <div
                 className="bg-white top-0 w-full z-50"
                 style={{
-                  position: "sticky",
+              
                   top: 0,
                   zIndex: 100,
                   borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)",
@@ -278,7 +285,7 @@ const ReferPage = () => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

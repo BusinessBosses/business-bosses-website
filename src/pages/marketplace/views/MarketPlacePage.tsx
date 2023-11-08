@@ -29,10 +29,14 @@ import BossupPartnerstile from "../../home/views/components/BopssupPartnerstile"
 import Bossuppartnerpage from "../../bossuppartnerpage/bossuppartnerpage";
 import { User } from "../../../common/interfaces/user";
 import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 interface Props {
   socket: Socket;
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
 }
-const MarketPlacePage = ({ socket }: Props) => {
+const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
   const market = useAppSelector((state) => state.market);
   const [loading, setLoading] = useState<boolean>(false);
   const profile = useAppSelector((state) => state.user);
@@ -190,7 +194,7 @@ const MarketPlacePage = ({ socket }: Props) => {
         </div>
 
         <div className="">
-          <MobileMarketIntro />
+          <MobileMarketIntro partnerData={partnerData}   partnerDatatile={partnerDatatile} />
         </div>
 
         <div className="">
@@ -250,13 +254,13 @@ const MarketPlacePage = ({ socket }: Props) => {
       {isPopupOpen && (
         <div className="overlay">
           <div className="mobilepopup" style={{ overflowY: "scroll" }}>
-            <Marketplacesearchpopup />
+            <Marketplacesearchpopup  onClosePopup={closePopup} />
           </div>
         </div>
       )}
 
       <div className="computer-only">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
         <div className="computer-content">
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
@@ -346,7 +350,7 @@ const MarketPlacePage = ({ socket }: Props) => {
             }}
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
-              <MobileMarketIntro />
+              <MobileMarketIntro partnerData={partnerData}   partnerDatatile={partnerDatatile} />
             </div>
           </div>
         </div>

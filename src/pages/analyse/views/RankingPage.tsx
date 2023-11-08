@@ -11,8 +11,14 @@ import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import Analyserows from "./components/analyserows";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
-const RankingPage = () => {
+interface Props {
+    partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+  }
+const RankingPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
     const navigate = useNavigate();
     const profile = useAppSelector((state) => state.user);
     return (
@@ -73,7 +79,7 @@ const RankingPage = () => {
             </div>
 
             <div className="computer-only bg-[#fff]">
-                <ComputerHeader />
+                <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
                 <div className="computer-content">
                     <div
@@ -159,7 +165,7 @@ const RankingPage = () => {
                     >
                         <div className="rounded-xl overflow-hidden" style={{}}>
                             {profile.bossup ? (
-                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
                             ) : null}
                         </div>
                     </div>

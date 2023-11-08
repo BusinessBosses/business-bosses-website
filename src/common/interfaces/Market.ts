@@ -12,7 +12,8 @@ export interface Market {
     user?: User;
     promote: boolean;
     timestamp?: number;
-    likes?: string[];
+    likes: string[];
     coins?: string[];
     comments?: Comment[];
+    views?: number;
 }

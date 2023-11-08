@@ -9,6 +9,8 @@ import FilledButtonsmall from "../buttons/FilledButtonsmall";
 import { useAppSelector } from "../../../redux/store/store";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
+import { PartnerData } from "../../interfaces/partnerdata";
+import { PartnerDatatile } from "../../interfaces/partnerdatatile";
 interface Props {
   banner: string;
   label: string;
@@ -22,6 +24,8 @@ interface Props {
   aboutontaptext: string;
   topicsicon: React.ReactNode;
   topicstext: string;
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
 }
 
 const ForumCard = ({
@@ -37,6 +41,8 @@ const ForumCard = ({
   aboutontaptext,
   topicsicon,
   topicstext,
+  partnerData,
+  partnerDatatile,
 }: Props) => {
   const navigate = useNavigate();
   const handleButtonClick = () => {
@@ -96,7 +102,7 @@ const ForumCard = ({
           </div>
         </div>
         <div className="mobile-only">
-          <BossupPartnerstile />
+          <BossupPartnerstile    partnerDatatile={partnerDatatile} />
         </div>
       </div>
 

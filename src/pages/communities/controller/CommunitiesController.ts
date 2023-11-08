@@ -8,6 +8,7 @@ class CommunitiesController {
     async fetchData() {
         const industries = await serviceApi.fetch('/industry/get')
         const forums = await ForumController.fetchForums(AppConstants.BOSSUPINDUSTRYID, 0)
+        
         return { forums, industries }
     }
 

@@ -16,8 +16,15 @@ import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import trimText from "../../../../common/functions/trimText";
 import MarketMembers from "./MarketMembers";
 import ComputerBossuppartnersection from "../../../bossuppartnerpage/computerbossupsection";
+import { PartnerData } from "../../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../../common/interfaces/partnerdatatile";
 
-const MarketIntro = () => {
+interface MarketIntroProps {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+
+const MarketIntro: React.FC<MarketIntroProps> = ({ partnerData, partnerDatatile }) => {
   const navigate = useNavigate();
   const popupRef = useRef<HTMLDivElement | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -186,7 +193,7 @@ const MarketIntro = () => {
           </div>
         </div>
 
-        <BossupPartnerstile />
+        <BossupPartnerstile    partnerDatatile={partnerDatatile} />
       </div>
 
       <div className="computer-only" onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
@@ -276,7 +283,7 @@ const MarketIntro = () => {
         </div>
       </div>
       <div className="computer-only font-bold mt-8">Our Partners</div>
-      <div className="computer-only mt-3"><ComputerBossuppartnersection /></div>
+      <div className="computer-only mt-3"><ComputerBossuppartnersection partnerData={partnerData}   partnerDatatile={partnerDatatile} /></div>
     </div>
   );
 };

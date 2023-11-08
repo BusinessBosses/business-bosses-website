@@ -3,15 +3,25 @@ import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../../constants/Routes";
 import { User } from "../../../../common/interfaces/user";
-import { useAppSelector } from "../../../../redux/store/store";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import SubscribeButton from "../../../settings/components/Subscribebutton";
 import ConnectRelevant from "../../../settings/views/ConnectRelevant";
 import Popup from "reactjs-popup";
 import { IoIosMore } from "react-icons/io";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { StorageEnum } from "../../../../common/emums/StorageEmuns";
 import AuthController from "../../../authentication/controller/AuthController";
+import MyProfileDetails from "./MyProfileDetails";
+import Posts from "./Posts";
+import ProfileController from "../../controller/ProfileController";
+import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
+import About from "./About";
+import { savePostsToState } from "../../../../redux/slices/UserSlice";
+import Tabs from "./Tabs";
+import { Post } from "../../../../common/interfaces/post";
+import MyProfileHeader from "./MyProfileHeader";
+import MarketItem from "../../../marketplace/views/components/MarketItem";
 
 interface Props {
   data: User;
@@ -19,7 +29,39 @@ interface Props {
 
 const ComputerProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
+  const market = useAppSelector((state) => state.market);
+  const [currentTabIndex, setCurrentTabIndex] = useState<number>(0);
   const profile = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const [err, setErr] = useState<boolean>(false);
+  const fetchPosts = async (userId: string) => {
+    setLoading(true);
+    setErr(false);
+    const response = await ProfileController.fetchUserPosts(userId);
+    if (response.success) {
+      dispatch(
+        savePostsToState(
+          response.data.posts.rows.map((mp: Post) => ({
+            ...mp,
+            coins: mp.coins.map((cn: any) => cn.userId),
+            likes: mp.likes.map((lk: any) => lk.userId),
+          }))
+        )
+      );
+    } else {
+      setErr(true);
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (!!!profile.posts.length) {
+      fetchPosts(profile.profile?.uid!);
+    }
+  }, [profile.profile?.uid]);
+  
+
 
   // Function to handle the click event
   const handleProfileClick = () => {
@@ -62,93 +104,73 @@ const ComputerProfileDetails = ({ data }: Props) => {
   return (
     <div className=" " style={{ cursor: "pointer", height: "100vh", width: "100vh" }}>
      
-      <div className="mt-5 ">
-        <div className="flex items-top jusity-between gap-3">
-          <div className="flex flex-grow" onClick={handleProfileClick}>
-            <UserAvatar imageSize="h-24 w-24" imageURL={data.photoUrl} />
-            <div className="ml-5">
-              <p className="text-xl font-semibold">{data.name}</p>
-              <p className="text-lg font-medium">{data.category}</p>
-              <p className="font-medium">{data.companyName}</p>
-              <p className="text-sm font-light text-[#A9A9A9]">
-                {data.location}
-              </p>
-              <div className="flex items-center mt-1">
-                <div className="bg-[#F4F4F4] rounded-full mr-3 flex items-center py-1 px-2">
-                  <img src={Assets.Coin} alt="" className="w-4 h-4" />
-                  <small className="ml-2">{data.coinscount}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Popup
-                trigger={
-                  <div>
-                    <IoIosMore size={20} />
-                  </div>
-                }
-                position="left top"
-                on="click"
-                closeOnDocumentClick
-                contentStyle={{ padding: "0px", border: "none" }}
-              // overlayStyle={{
-              //   background: "rgba(0, 0, 0, 0.8)",
-              //   zIndex: 1000,
-              // }}
-              >
-                {
-                  (((close: any) =>
-                    
-                      <div className=" bg-white shadow-xl rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
-                        <button
-                          onClick={() => {
-                            navigate(RoutesPath.myProfile)
-                            close();
-                            
-                          }}
-                          className="menu-item border-none outline-none"
-                        >
-                          My Profile
-                        </button>
-                        <button
-                          onClick={() => {
-                            navigate(RoutesPath.settings)
-                            close();
-                          
-                            
-                          }}
-                          className="menu-item border-none outline-none"
-                        >
-                          Settings
-                        </button>
-                        <button
-                          onClick={() => {
-                            login();
-                            close();
-                          
-                            
-                          }}
-                          className="menu-item border-none outline-none"
-                        >
-                          Sign Out
-                        </button>
-                      </div>
-                    ) as unknown) as ReactNode
-                }
-              </Popup>
-            
-        </div>
-        <div className="mt-2">
-          <SubscribeButton />
-        </div>
-
+      <div className="mt-0 ">
         <div>
-          <div className="flex items-center mt-5 pb-2">
-            <div className="font-bold">Connect Relevant People</div>
-          </div>
           <div className="pb-2"></div>
-          <ConnectRelevant />
+          <MyProfileHeader />
+          <MyProfileDetails data={profile.profile!} />
+           <div className="mt-3">
+          <Tabs
+              currentIndex={currentTabIndex}
+              onChangeRoute={(index: number) => setCurrentTabIndex(index)} uid={profile.profile?.uid.toString}          />
+
+          {currentTabIndex === 0 ? <About data={profile.profile!} /> : null}
+          {currentTabIndex === 1 ? (
+            loading ? (
+              <FetchStatus
+                error={false}
+                errorMessage="Something went wrong!!"
+                loading={true}
+                onReload={() => { }}
+              />
+            ) : err ? (
+              <FetchStatus
+                error={true}
+                errorMessage="Something went wrong!!"
+                loading={false}
+                onReload={() => {
+                  fetchPosts(profile.profile?.uid!);
+                }}
+              />
+            ) : (
+              <div className="">
+              <Posts posts={profile.posts} /></div>
+            )
+          ) : null}
+           {currentTabIndex === 2 ? (
+              loading ? (
+                <FetchStatus
+                  error={false}
+                  errorMessage="Something went wrong!!"
+                  loading={true}
+                  onReload={() => {}}
+                />
+              ) : err ? (
+                <FetchStatus
+                  error={true}
+                  errorMessage="Something went wrong!!"
+                  loading={false}
+                  onReload={() => {
+                    // fetchMarketUsers();
+                  }}
+                />
+              ) : (
+                <div>
+                  {market.markets
+                    .filter((market) => market.userId === profile.profile?.uid)
+                    .map((market, index) => (
+                      <MarketItem
+                        data={market}
+                        onLike={() => {}}
+                        onCoin={() => {}}
+                        onComment={() => {}}
+                        key={market.marketId}
+                      />
+                    ))}
+                </div>
+              )
+            ) : null}
+        </div>
         </div>
       </div>
     </div>

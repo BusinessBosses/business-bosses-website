@@ -67,7 +67,7 @@ const Bossupsearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
   }, [onClosePopup]);
 
   return (
-    <div>
+    <div style={{ height: "100%", overflowY: "auto" }}>
       <div
         className="bg-white top-0 w-full z-50"
         style={{
@@ -120,7 +120,7 @@ const Bossupsearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4" >
         {currentIndex === 0 ? (
           <div className="grid px-4 grid-cols-2 gap-3">
             {searchedGroups.map((group, index) => {
@@ -134,19 +134,20 @@ const Bossupsearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
               loading
               error={false}
               errorMessage=""
-              onReload={() => {}}
+              onReload={() => { }}
             />
           ) : (
             searchedTopics.map((post: Forum, index: number) => {
               return (
                 <div className="my-2 bg-white">
                   <ForumItem
-                    onEdit={() => {}}
+                    onEdit={() => { }}
                     key={index}
                     data={post}
-                    onCoin={() => {}}
-                    onComment={() => {}}
-                    onLike={() => {}}
+                    onCoin={() => { }}
+                    onComment={() => { }}
+                    onLike={() => { }}
+                    onView={() => { }}
                   />
                 </div>
               );
@@ -154,6 +155,7 @@ const Bossupsearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
           )
         ) : null}
       </div>
+
     </div>
   );
 };

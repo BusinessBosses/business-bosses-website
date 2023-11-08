@@ -74,7 +74,7 @@ const FilledInput = ({
             <label className="text-[#333333] text-sm font-[700]">{label}</label>
           ) : null}
 
-          <div className="bg-[#fff] rounded-lg p-5 flex items-center gap-2">
+          <div className="bg-[#f1f1f1] rounded-lg p-5 flex items-center gap-2">
             <input
               className={`border-none text-[#232324CC] outline-none w-full bg-transparent ${className}`}
               type={type ?? "text"}

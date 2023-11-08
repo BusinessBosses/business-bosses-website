@@ -1,8 +1,12 @@
+import { useAppSelector } from "../../../../redux/store/store";
+
 interface Props {
   currentIndex: number;
   onChangeRoute: Function;
+  uid:any;
 }
-const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
+const Tabs = ({ currentIndex, onChangeRoute,uid }: Props) => {
+  const market = useAppSelector((state) => state.market);
   return (<div className="sticky">
     <div className="mobile-only" style={{ height: "1px", width: "100%", background: "#f4f4f4" }}></div>
     <div className=" top-12 bg-[#f9f9f9] z-50">
@@ -26,7 +30,8 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
         >
           Posts
         </button>
-        <button
+        
+       { market.markets.filter((market) => market.userId === uid).length === 0  ? <button
           onClick={() => onChangeRoute(2)}
           className={`${currentIndex === 2
             ? "text-[#333333] w-full flex-grow border-b-2 border-b-primary pb-3 pt-3 text-xs font-bold lg:text-base"
@@ -34,7 +39,7 @@ const Tabs = ({ currentIndex, onChangeRoute }: Props) => {
             }`}
         >
           Store
-        </button>
+        </button> : null}
       </div>
     </div>
     <div className="mobile-only" style={{ height: "1px", width: "100%", background: "#f4f4f4" }}></div>

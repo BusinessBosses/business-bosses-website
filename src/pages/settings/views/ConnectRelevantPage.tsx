@@ -17,17 +17,22 @@ import SubscribeButton from "../../settings/components/Subscribebutton";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ConnectRelevant from "./ConnectRelevant";
 import ComputerProfileDetailsonly from "../../profile/views/components/ComputerProfiledetailsonly";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
+interface Props {
+    partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+  }
 
-
-const ConnectRelevantPage = () => {
+const ConnectRelevantPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
     const profile = useAppSelector((state) => state.user);
     const navigate = useNavigate();
 
     return (
         <div>
             <div className="computer-only">
-                <ComputerHeader />
+                <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
                 <div className="computer-content">
                     <div
@@ -82,7 +87,7 @@ const ConnectRelevantPage = () => {
                     >
                         <div className="rounded-xl overflow-hidden" style={{}}>
                             {profile.bossup ? (
-                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
                             ) : null}
                         </div>
                     </div>
