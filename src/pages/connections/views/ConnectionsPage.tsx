@@ -11,8 +11,15 @@ import { saveUserData } from "../../../redux/slices/UserSlice";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
-const ConnectionsPage = () => {
+interface Props {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+
+const ConnectionsPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [data, setData] = useState<{
     connections: User[];
@@ -151,7 +158,7 @@ const ConnectionsPage = () => {
 
 
       {loading ? null : <div className="computer-only bg-[#fff]">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
         <div className="computer-content">
           <div
@@ -248,7 +255,7 @@ const ConnectionsPage = () => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profilee.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

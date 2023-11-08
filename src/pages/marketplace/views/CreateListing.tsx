@@ -202,7 +202,10 @@ const CreateListing = () => {
             placeholder="Describe your listing"
             className="text-sm"
           />
+          <div className="bg-[#f1f1f1]">
+            
           <FilledSelect
+          className=""
             defaultValue={stateProps?.category}
             inputRef={categoryRef}
             data={[
@@ -222,6 +225,8 @@ const CreateListing = () => {
             ]}
             onchange={(e) => { }}
           />
+          </div>
+          
 
           <div className="my-10">
             <CountryDropdown

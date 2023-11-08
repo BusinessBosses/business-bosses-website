@@ -14,8 +14,15 @@ import { CiSearch } from "react-icons/ci";
 import ChatUser from "./ChatUser";
 import { AiOutlineClose } from "react-icons/ai";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
-const ChatPage = () => {
+interface Props {
+  partnerData: PartnerData | null;
+  partnerDatatile: PartnerDatatile | null;
+}
+
+const ChatPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const navigate = useNavigate();
   const chats = useAppSelector((state) => state.chat.chats);
   const profile = useAppSelector((state) => state.user);
@@ -97,7 +104,7 @@ const ChatPage = () => {
       </div>
 
       <div className="computer-only">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData} partnerDatatile={partnerDatatile} />
 
         <div className="computer-content">
           <div
@@ -130,7 +137,7 @@ const ChatPage = () => {
 
               <div className="">
                 {uniqueChats.length === 0 ? (
-                  <div className="text-center flex justify-center items-center pb-40" style={{height:'100vh'}}>
+                  <div className="text-center flex justify-center items-center pb-40" style={{ height: '100vh' }}>
                     <div>
                       <div className="font-bold">No Chats Found</div>
                       <div>Search for friends or connections and chat with them</div>
@@ -152,18 +159,21 @@ const ChatPage = () => {
                     >
                       <UserAvatar
                         imageURL={
-                          chat.user?.photoUrl 
+                          chat.user?.photoUrl
                         }
                       />
                       <div className="">
-                        <h4 className="text-[#383838] text-xl capitalize">
+                        <h2 className="text-[#383838] text-base font-bold capitalize">
                           {chat.user?.username}
-                        </h4>
+                        </h2>
                         <p className="text-[#6B6969]">
-                          {!!chat.messageText && chat.messageText !== ""
-                            ? chat.messageText
+                          {chat.messageText && chat.messageText !== ""
+                            ? chat.messageText.length > 30
+                              ? chat.messageText.slice(0, 30) + "..." // Truncate and add ellipsis
+                              : chat.messageText
                             : "Image"}
                         </p>
+
                       </div>
                     </div>
                   ))
@@ -187,7 +197,7 @@ const ChatPage = () => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData} partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
 

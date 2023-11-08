@@ -7,6 +7,8 @@ class ProfileController {
         return response;
     }
 
+    
+
     validateProfileUpdate(data: User) {
         if (!data.username) {
             return 'Invalid Username';

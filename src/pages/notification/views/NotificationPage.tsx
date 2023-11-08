@@ -15,8 +15,15 @@ import DailyQuotes from "./components/DailyQuotes";
 import Notification from "./components/Notification";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
-const NotificationPage = () => {
+interface Props {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+
+const NotificationPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const notification = useAppSelector((state) => state.notification);
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
@@ -78,7 +85,7 @@ const NotificationPage = () => {
           />
         ) : (
           <div>
-            <DailyQuotes quote={notification.quote} />
+            <DailyQuotes quote={notification.quote} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
 
             <div className="px-5 pt-5" >
               <h4 className="text-xl font-bold">Activity</h4>
@@ -105,7 +112,7 @@ const NotificationPage = () => {
       </div>
 
       <div className="computer-only">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
         <div className="computer-content">
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
@@ -185,7 +192,7 @@ const NotificationPage = () => {
             }}
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
-              <DailyQuotes quote={notification.quote} />
+              <DailyQuotes quote={notification.quote} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
             </div>
           </div>
         </div>

@@ -4,9 +4,63 @@ import OutlinedButton from "../../common/components/buttons/OutlinedButton";
 import { useAppSelector } from "../../redux/store/store";
 import ComputerHeader from "../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetailswcr";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface PartnerData {
+  partnerlogo: string | null;
+  adtitle: string;
+  addescription: string;
+  partnerurl: string;
+}
 
 const Bossuppartnerpage = () => {
   const profile = useAppSelector((state) => state.user);
+  const [partnerData, setPartnerData] = useState<PartnerData | null>({
+    partnerlogo: null,
+    adtitle: '',
+    addescription: '',
+    partnerurl: '',
+  });
+
+  const fetchPartnerData = async () => {
+    try {
+      const response = await axios.get('https://orca-app-5dg8w.ondigitalocean.app/api/v1/partner/all');
+      console.log(response);
+      
+      
+  
+      if (response.status === 200) {
+        const partnerData = response.data.data; // Access the "data" property
+  
+        if (partnerData && partnerData.rows) {
+          // Check if "rows" exists and is an array
+          const partners = partnerData.rows;
+  
+          // Find the partner with id 5
+          const getTitle = partners.find((item: { id: number; }) => item.id === 1);
+  
+          if (getTitle) {
+            setPartnerData({
+              partnerlogo: getTitle.companyPhoto,
+              adtitle: getTitle.companyName,
+              addescription: getTitle.companyDescription,
+              partnerurl: getTitle.companyUrl,
+            });
+          }
+        }
+      } else {
+        console.error('Failed to fetch partner data.');
+      }
+    } catch (error) {
+      console.error('Error fetching partner data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPartnerData();
+  }, []);
+  
   return (
     <div>
       <div className="bg-white mobile-only">
@@ -19,19 +73,17 @@ const Bossuppartnerpage = () => {
 
         <div style={{ borderTop: "15px solid #f4f4f4" }}></div>
 
-        <PartnerCard
-          partnerlogo={undefined}
-          adtitle={"Partner ad title"}
-          addescription={"description"}
-          partnerurl={"http:sjkdjdkmdddd"}
-        />
-        <PartnerCard
-          partnerlogo={undefined}
-          adtitle={"Partner ad title"}
-          addescription={"description"}
-          partnerurl={"http:sjkdjdkmdddd"}
-        />
-
+        {partnerData ? (
+          <PartnerCard
+            partnerlogo={partnerData.partnerlogo}
+            adtitle={partnerData.adtitle}
+            addescription={partnerData.addescription}
+            partnerurl={partnerData.partnerurl}
+          />
+        ) : (
+          <p>Loading partner data...</p>
+        )}
+       
         <div
           className="flex items-center px-5 py-3"
           style={{
@@ -46,52 +98,7 @@ const Bossuppartnerpage = () => {
         </div>
       </div>
 
-      <div className="computer-only bg-[#fff]">
-        <ComputerHeader />
-
-        <div className="computer-content">
-          <div
-            className="firstsection ml-5 lg:ml-20 pr-5"
-            style={{
-              width: "30%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-            <div className="">
-              <div className=" flex items-center gap-3">
-                <ComputerProfileDetails data={profile.profile!} />
-              </div>
-            </div>
-          </div>
-          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div
-            className="computer-main-content"
-            style={{ width: "40%", flexGrow: 0 }}
-          ></div>
-          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div
-            className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
-            style={{
-              width: "30%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-            {/* <div className="rounded-xl overflow-hidden" style={{}}>
-              {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
-              ) : null}
-            </div> */}
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 };

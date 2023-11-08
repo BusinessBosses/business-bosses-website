@@ -11,6 +11,14 @@ interface Props {
 
 const About = ({ data }: Props) => {
   const navigate = useNavigate();
+  const handleButtonClick = (url: string | URL | undefined) => {
+    const confirmMessage = 'Are you sure you want to leave this page?';
+    if (window.confirm(confirmMessage)) {
+      window.open(url, '_blank');
+    } else {
+      // Handle the cancel action
+    }
+  };
   return (
     <div className="px-4 pt-10">
       <div
@@ -21,20 +29,19 @@ const About = ({ data }: Props) => {
       </div>
 
       <div className="flex items-center gap-4 mt-3">
-        {data.website && (
-          <div className="flex items-center gap-2">
-            <FiLink />
-            <small className="text-xs underline">{data.website}</small>
-          </div>
-        )}
-        {data.instagram && (
-          <button className="bg-[#F4F4F4] p-2.5 rounded-full">
-            <img src={Assets.Instagram} className="w-3 h-3" alt="" />
+        <div className="flex items-center gap-2" onClick={() => {  handleButtonClick(`https://${data.website}`)  }}>
+          <FiLink />
+          <small className="text-xs underline">{data.website}</small>
+        </div>
+
+        {data.twitter && (
+          <button className="bg-[#F4F4F4] p-2.5 rounded-full" onClick={() => { handleButtonClick(`https://twitter.com/${data.twitter}`) }}>
+            <img src={Assets.Twitter} className="w-3 h-3" alt="" />
           </button>
         )}
-        {data.twitter && (
-          <button className="bg-[#F4F4F4] p-2.5 rounded-full">
-            <img src={Assets.Twitter} className="w-3 h-3" alt="" />
+        {data.instagram && (
+          <button className="bg-[#F4F4F4] p-2.5 rounded-full" onClick={() => { handleButtonClick(`https://www.instagram.com/${data.instagram}`) }}>
+            <img src={Assets.Instagram} className="w-3 h-3" alt="" />
           </button>
         )}
       </div>
@@ -46,19 +53,19 @@ const About = ({ data }: Props) => {
             <h3 className="text-lg font-bold">Products and Services</h3>
             {data.productsandservices.map((product: string, index: number) => (
               <div
-              key={index}
-              className="flex items-center gap-3 my-2 max-w-max bg-[#f4f4f4] px-4 py-1 rounded-full"
-            >
-              <div className="rounded-full w-4 h-4 bg-white my-2"></div>
-              <p>{product}</p>
-            </div>
-            
+                key={index}
+                className="flex items-center gap-3 my-2 max-w-max bg-[#f4f4f4] px-4 py-1 rounded-full"
+              >
+                <div className="rounded-full w-4 h-4 bg-white my-2"></div>
+                <p>{product}</p>
+              </div>
+
             ))}
           </div>
         )}
       {data.interests && data.interests.length > 0 && (
         <div className="my-4">
-          <h3 className="text-lg font-bold">Interests</h3>
+          <h3 className="text-lg font-bold pb-2">Interests</h3>
           {data.interests.map((interest: Industry, index: number) => (
             <button
               onClick={() => {
@@ -69,7 +76,8 @@ const About = ({ data }: Props) => {
                 }
               }}
               key={index}
-              className="flex items-center w-full justify-between my-5 border-y-[0.1px] border-y-[#f1f1f1] p-3 rounded-lg"
+              className="flex items-center w-full justify-between border border-[#f1f1f1] p-3 rounded-lg"
+
             >
               <p className="">{interest.industry}</p>
               <Assets.NextIconPrimary />

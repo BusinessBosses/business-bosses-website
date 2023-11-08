@@ -15,22 +15,24 @@ interface Props {
 const MyProfileDetails = ({ data }: Props) => {
   const navigate = useNavigate();
   const truncatedName = data.name && data.name.length > 20 ? `${data.name.slice(0, 20)}...` : data.name;
+  const truncateduserName = data.username && data.username.length > 20 ? `${data.username.slice(0, 20)}...` : data.name;
 
   return (
     
     <div>
-      <div className="mt-5 px-4">
+      <div className="mt-3">
         <div className=" flex items-center gap-3">
           <UserAvatarbig imageSize="h-20 w-20" imageURL={data.photoUrl}  />
           <div className="">
             <p className=" font-semibold flex items-center text-base md:text-lg lg:text-xl capitalize">
-              {truncatedName}
+              {truncatedName ?? truncateduserName}
               {data.isSubscribed && (
                 <div className="ml-1">
                   <Assets.Checkmark width={9} />
                 </div>
               )}
             </p>
+          
             <p className="text-sm font-semibold text-[#333333] lg:text-lg">{data.category}</p>
             <p className="font-medium text-xs lg:text-base">{data.companyName}</p>
             <p className="text-xs font-light text-[#A9A9A9] lg:text-sm">{data.location}</p>

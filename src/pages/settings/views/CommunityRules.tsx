@@ -6,8 +6,15 @@ import ComputerProfileDetails from '../../profile/views/components/ComputerProfi
 import { useAppSelector } from '../../../redux/store/store';
 import axios from 'axios';
 import Loader from '../../../common/components/loader/Loader';
+import { PartnerData } from '../../../common/interfaces/partnerdata';
+import { PartnerDatatile } from '../../../common/interfaces/partnerdatatile';
 
-const CommunityRules = () => {
+interface Props {
+    partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+  }
+
+  const CommunityRules: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
     const profile = useAppSelector((state) => state.user);
     const [description, setDescription] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +86,7 @@ const CommunityRules = () => {
 
 
             <div className='computer-only'>
-                <ComputerHeader />
+                <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
                 <div className="computer-content">
                     <div
@@ -141,7 +148,7 @@ const CommunityRules = () => {
                     >
                         <div className="rounded-xl overflow-hidden" style={{}}>
                             {profile.bossup ? (
-                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
                             ) : null}
                         </div>
                     </div>

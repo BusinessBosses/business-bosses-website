@@ -17,12 +17,16 @@ import SubscribeButton from "../../settings/components/Subscribebutton";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import SharePopUp from "../../../common/components/share/SharePopUp";
 import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsmall";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
 interface Props {
   coins?: number;
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
 }
 
-const InvitePage = ({ coins }: Props) => {
+const InvitePage = ({ coins, partnerData, partnerDatatile }: Props) => {
   const profile = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const [showInviteDialog, setShowInviteDialog] = useState<boolean>(false);
@@ -168,7 +172,7 @@ const InvitePage = ({ coins }: Props) => {
       </div>
 
       <div className="computer-only">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
         <div className="computer-content">
           <div
             className="firstsection ml-5 mr-5 lg:ml-20"
@@ -343,7 +347,7 @@ const InvitePage = ({ coins }: Props) => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

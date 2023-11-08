@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import serviceApi from "../../../services/serviceApi"
 
 class MarketController {
+    markets: any;
     async fetchMarkets(page: number) {
         const response = await serviceApi.fetch(`/markets/all?size=20&page=${page}`);
         return response

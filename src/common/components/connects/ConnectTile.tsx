@@ -14,6 +14,7 @@ interface Props {
 const ConnectTile = ({ profile, connected, onConnect }: Props) => {
   const navigate = useNavigate();
   const truncatedName = profile.name && profile.name.length > 20 ? `${profile.name.slice(0, 20)}...` : profile.name;
+  const truncateduserName = profile.username && profile.username.length > 20 ? `${profile.username.slice(0, 20)}...` : profile.username;
   return (
     <div>
       <div className="flex items-center justify-between my-3 " onClick={() =>
@@ -24,7 +25,7 @@ const ConnectTile = ({ profile, connected, onConnect }: Props) => {
             <UserAvatar imageSize="w-12 h-12" imageURL={profile.photoUrl} />
           </div>
           <div className=" max-w-[75%]">
-            <p className="text-[#333333] font-medium">{truncatedName}</p>
+            <p className="text-[#333333] font-medium">{truncatedName ?? truncateduserName}</p>
             <p className="text-[#777777] text-sm line-clamp-1">
               {profile.category}
             </p>

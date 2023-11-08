@@ -26,6 +26,8 @@ import serviceApi from "../../../services/serviceApi";
 import TimeFormat from "../controller/AnalyseController";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
 ChartJS.register(
   CategoryScale,
@@ -38,7 +40,8 @@ ChartJS.register(
 );
 
 interface Props {
-  data: User;
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
 }
 
 interface MyConnect {
@@ -53,7 +56,7 @@ interface ConnState {
   disconnections: MyConnect[];
 }
 
-const AnalyseProfilePage = () => {
+const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user);
   const [loading, setLoading] = useState<boolean>(false);
@@ -308,7 +311,7 @@ const AnalyseProfilePage = () => {
       </div>
 
       <div className="computer-only bg-[#fff]">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
         <div className="computer-content">
           <div
@@ -460,7 +463,7 @@ const AnalyseProfilePage = () => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

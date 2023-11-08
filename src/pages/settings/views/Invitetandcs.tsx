@@ -6,8 +6,14 @@ import ComputerProfileDetails from '../../profile/views/components/ComputerProfi
 import { useAppSelector } from '../../../redux/store/store';
 import axios from 'axios';
 import Loader from '../../../common/components/loader/Loader';
+import { PartnerData } from '../../../common/interfaces/partnerdata';
+import { PartnerDatatile } from '../../../common/interfaces/partnerdatatile';
 
-const Invitetandcs = () => {
+interface Props {
+    partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+  }
+  const Invitetandcs: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
     const profile = useAppSelector((state) => state.user);
     const [description, setDescription] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +83,7 @@ const Invitetandcs = () => {
             </div>
 
             <div className='computer-only'>
-                <ComputerHeader />
+                <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
                 <div className="computer-content">
                     <div
@@ -141,7 +147,7 @@ const Invitetandcs = () => {
                     >
                         <div className="rounded-xl overflow-hidden" style={{}}>
                             {profile.bossup ? (
-                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
                             ) : null}
                         </div>
                     </div>

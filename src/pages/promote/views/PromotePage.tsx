@@ -17,6 +17,8 @@ import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsm
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
 export interface PlanInterface {
   amount: number;
@@ -24,7 +26,12 @@ export interface PlanInterface {
   reach: string;
 }
 
-const PromotePage = () => {
+interface Props {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+
+const PromotePage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const [openPaymentElement, setOpenPaymentElement] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [postId, setPostId] = useState<string>("");
@@ -195,7 +202,7 @@ const PromotePage = () => {
 
 
       <div className='computer-only'>
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
         <div className="computer-content">
           <div
@@ -311,7 +318,7 @@ const PromotePage = () => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

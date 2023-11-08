@@ -70,10 +70,11 @@ const FormModal = ({
               }
             }}
           >
+            <div className="mobile-only">
             <FilledInput
               defaultValue={stateProps?.title}
               inputRef={titleRef}
-              onchange={() => {}}
+              onchange={() => { }}
               placeholder={
                 industry?.categoryId === AppConstants.LEARNINGID
                   ? "Enter Topic Title"
@@ -81,10 +82,32 @@ const FormModal = ({
               }
               className="text-sm"
             />
+            </div>
+           
+            <div className="computer-only">
+              <div className="my-5 xl:block lg:block md:block sm:hidden xs:hidden">
+                <div className="bg-[#fff] rounded-lg p-5 flex items-center gap-2">
+                  <input
+                    className={`border-none text-[#232324CC] outline-none w-full bg-transparent text-sm`}
+                   
+                    ref={titleRef}
+                    placeholder={
+                      industry?.categoryId === AppConstants.LEARNINGID
+                        ? "Enter Topic Title"
+                        : "Enter Opportunity Title"
+                    }
+                    onChange={() => { }}
+                  />
+                 
+                    
+                </div>
+              </div>
+            </div>
+            <div className="mobile-only">
             <FilledTextareacommunities
               defaultValue={stateProps?.description}
               inputRef={descriptionRef}
-              onchange={() => {}}
+              onchange={() => { }}
               placeholder={
                 industry?.categoryId === AppConstants.LEARNINGID
                   ? "Enter your Description"
@@ -92,6 +115,24 @@ const FormModal = ({
               }
               className="text-sm"
             />
+            </div>
+           <div className="computer-only my-5 ">
+              <textarea
+                ref={descriptionRef}
+                className={`border-none bg-[#fff] text-[#232324CC] outline-none w-full p-3 rounded-lg resize-none text-sm`}
+                placeholder={
+                  industry?.categoryId === AppConstants.LEARNINGID
+                    ? "Enter your Description"
+                    : "Describe the Opportunity"
+                }
+                defaultValue={stateProps?.description}
+                onChange={()=> {}}
+                name=""
+                id=""
+                rows={5}
+              ></textarea>
+            </div>
+            
 
             <div className="flex items-center justify-between bg-white p-3 rounded-lg">
               <div className="flex items-center gap-3">

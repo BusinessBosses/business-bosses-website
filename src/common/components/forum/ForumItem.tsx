@@ -28,15 +28,17 @@ import Outlinegrey from "../buttons/Outlinegrey";
 import Lightbox from "react-spring-lightbox";
 import FilledButton from "../buttons/FilledButton";
 import TranslucentDiv from "../buttons/Translucentbutton";
+import VisibilitySensor  from 'react-visibility-sensor';
 
 interface Props {
   data: Forum;
   onLike?: Function;
   onCoin?: Function;
   onComment?: Function;
+  onView: Function;
   onEdit: VoidFunction;
 }
-const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
+const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const navigate = useNavigate();
   const [comments, setComments] = useState<CommentStruct[]>([]);
@@ -48,9 +50,17 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [showExpandedImages, setShowExpandedImages] = useState<boolean>(false);
+  const [viewCounted, setViewCounted] = useState(false);
 
   const handleExpanded = () => {
     setShowExpandedImages(true);
+  };
+
+  const handleOnVisibilityChange = (isVisible: any) => {
+    if (isVisible && !viewCounted) {
+      onView(data.forumId);
+      setViewCounted(true);
+    }
   };
 
   const images: ImagesListItem[] = (data.images || []).map((imageUrl, index) => ({
@@ -256,7 +266,9 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
               }
               className="flex items-center gap-3"
             >
-              <UserAvatar imageURL={data.user?.photoUrl} />
+              <UserAvatar imageURL={data.user?.photoUrl}
+              isRanked={data.user?.isRanked}
+              />
               <div className="flex-grow">
                 <p className="font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                   {data.user?.name}
@@ -471,6 +483,16 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit }: Props) => {
                     }
                   }}
                 />
+                <VisibilitySensor onChange={handleOnVisibilityChange}>
+                <PostAction
+                  count={data.views!.toString()}
+                  icon={Assets.Viewsicon}
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  ()=>{}:() => {
+                    
+                  }}
+                />
+                </VisibilitySensor>
                 <PostAction
                   count=""
                   icon={Assets.Share}

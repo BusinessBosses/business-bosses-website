@@ -21,7 +21,11 @@ const Notification = ({ data }: Props) => {
 
         <div className="">
           <h4 className="font-bold">{data.title}</h4>
-          <small className="line-clamp-1">{data.message}</small>
+          <small className="line-clamp-1">{data.message && data.message !== ""
+            ? data.message.length > 50
+              ? data.message.slice(0, 50) + "..."
+              : data.message
+            : ""}</small>
         </div>
       </div>
       <div className="mt-3" style={{ borderBottom: "0.5px solid rgba(0, 0, 0, 0.1)" }}></div>

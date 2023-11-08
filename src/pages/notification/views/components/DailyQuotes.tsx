@@ -1,10 +1,15 @@
 import Assets from "../../../../assets";
+import { PartnerData } from "../../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../../common/interfaces/partnerdatatile";
 import { Quote } from "../../../../common/interfaces/quote";
 import ComputerBossuppartnersection from "../../../bossuppartnerpage/computerbossupsection";
 interface Props {
   quote: Quote;
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
 }
-const DailyQuotes = ({ quote }: Props) => {
+
+const DailyQuotes = ({ quote, partnerData, partnerDatatile }: Props) => {
   return (
     <div>
       <div className="mobile-only">
@@ -33,7 +38,7 @@ const DailyQuotes = ({ quote }: Props) => {
           </p>
           <h4 className="font-bold mt-5 text-start">{quote.by}</h4>
         </div>
-        <div className="mt-5"><ComputerBossuppartnersection/></div>
+        <div className="mt-5"><ComputerBossuppartnersection partnerData={partnerData}   partnerDatatile={partnerDatatile} /></div>
         
       </div>
     </div>

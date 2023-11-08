@@ -237,3 +237,20 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   object-fit: contain;
 }
 
+.marquee {
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee .marquee-text {
+  animation: marquee 16s linear infinite; /* Double the animation time to account for both directions */
+  display: inline-block;
+  white-space: nowrap;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(60%); }
+  50% { transform: translateX(-60%); } /* Reverse direction halfway */
+  100% { transform: translateX(60%); } /* Continue reversing to the start */
+}
