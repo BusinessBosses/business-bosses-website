@@ -1,19 +1,18 @@
 import { toast } from "react-toastify"
 import serviceApi from "../../../services/serviceApi";
+import { error } from "console";
 
 class Authentication {
     validateLogin(data: LoginStruct): boolean {
         if (!!!data.email) {
             console.log(data.email)
+            console.log()
             toast.error("Invalid Email");
             return false
         } else if (!!!data.password) {
             toast.error("Invalid Password");
             return false
-        } else if (!data.terms) {
-            toast.error("You must agree to our terms and conditions");
-            return false
-        }
+        } 
         return true
     }
 

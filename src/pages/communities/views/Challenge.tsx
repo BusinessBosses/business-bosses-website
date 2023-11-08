@@ -9,6 +9,7 @@ import AppConstants from "../../../constants/consts";
 import GeneralPostsController, {
   CoinStruct,
   LikeStruct,
+  ViewStruct,
 } from "../../../common/controllers/GeneralPostsController";
 import { saveUserData } from "../../../redux/slices/UserSlice";
 import { Comment } from "../../../common/interfaces/comment";
@@ -20,11 +21,15 @@ import serviceApi from "../../../services/serviceApi";
 import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
 import Assets from "../../../assets";
 import NotsignedinPopUp from "../../../common/components/popups/notsignedinpopup";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 interface Props {
   forums: Forum[];
   socket: Socket;
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
 }
-const Challenge = ({ forums, socket }: Props) => {
+const Challenge = ({ forums, socket, partnerData, partnerDatatile }: Props) => {
   const [industry, setIndustry] = useState<Industry | null>(null);
   const industries = useAppSelector((state) => state.industry.industries);
   const dispatch = useAppDispatch();
@@ -79,6 +84,22 @@ const Challenge = ({ forums, socket }: Props) => {
     }
     dispatch(updateForum({ index: postIndex, forum }));
     GeneralPostsController.like(args, socket);
+  };
+
+  const onView = (args: ViewStruct, postIndex: number) => {
+    // Get the post from the posts array
+    let forum = forumsState[postIndex];
+    
+    // Increment the view count
+    forum = {
+      ...forum,
+        views: forum.views + 1,
+    };
+
+    // Dispatch the updated post to Redux
+    dispatch(updateForum({ index: postIndex, forum }));
+
+    GeneralPostsController.addForumView(args);
   };
 
   const onCoin = (args: CoinStruct, postIndex: number) => {
@@ -170,11 +191,11 @@ const Challenge = ({ forums, socket }: Props) => {
       <div className="mobile-only bg-white">
         <ForumCard
           onCreate={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-          handleButtonClick :() => {
-            navigate(RoutesPath.CreateBossup, {
-              state: { industryId: industry?.industryId },
-            });
-          }}
+            handleButtonClick : () => {
+              navigate(RoutesPath.CreateBossup, {
+                state: { industryId: industry?.industryId },
+              });
+            } }
           createLabel="Enter Challenge"
           banner={industry?.photo!}
           didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
@@ -185,8 +206,7 @@ const Challenge = ({ forums, socket }: Props) => {
           aboutontap={openPopup}
           aboutontaptext={"About"}
           topicsicon={<Assets.Entries width={12} />}
-          topicstext={"Entries"}
-        />
+          topicstext={"Entries"} partnerData={partnerData}   partnerDatatile={partnerDatatile}        />
       </div>
       <div className="bg-white">
         {forums.map((forum: Forum, index: number) => (
@@ -224,6 +244,7 @@ const Challenge = ({ forums, socket }: Props) => {
                 index
               );
             }}
+            onView={(postId: string) => onView({ postId: postId, views: forum.views + 1 }, index)}
             key={forum.forumId}
             data={forum}
           />

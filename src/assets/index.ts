@@ -16,6 +16,7 @@ import { ReactComponent as Send } from "./icons/send.svg";
 import { ReactComponent as File } from "./icons/file.svg";
 import { ReactComponent as Upload } from "./icons/upload.svg";
 import Coin from "./icons/coin.svg";
+import Viewsicon from "./icons/views.svg";
 import Comment from "./icons/comment.svg";
 import Share from "./icons/share.svg";
 import Like from "./icons/like.svg";
@@ -47,6 +48,7 @@ import ad3 from "./icons/ad3.png"
 import ad4 from "./icons/ad4.png"
 import ad5 from "./icons/ad5.png"
 import ad6 from "./icons/ad6.png"
+import Liveeventback from "./icons/liveeventback.jpeg"
 import Authback from "./icons/authback.png"
 import NoProfile from "./icons/noprofile.png"
 import Mobiletop from "./icons/mobiletopnotsignedinuser.png"
@@ -141,6 +143,8 @@ const Assets = {
     ad4,
     ad5,
     ad6,
+    Viewsicon,
+    Liveeventback,
 
 };
 export default Assets;

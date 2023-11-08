@@ -14,5 +14,6 @@ export interface Forum {
     comments?: Comment[];
     user?: User;
     isRanked?: boolean;
+    views: number;
 
 }

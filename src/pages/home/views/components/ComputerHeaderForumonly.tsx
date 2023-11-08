@@ -11,19 +11,24 @@ import Bossupsearch from "../../../communities/views/Bossupsearch";
 import Marketplacesearchpopup from "../../../popups/Marketplacesearchpopup";
 import { PartnerData } from "../../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../../common/interfaces/partnerdatatile";
+import ComputerTopNavForumonly from "./ComputerTopNavForumonly";
+import { Industry } from "../../../../common/interfaces/industry";
 interface Props {
   onTapButton?: () => void;
   partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
+  partnerDatatile: PartnerDatatile | null;
+  industry: string ;
+  handleOpenModal: () => void; 
 }
 
-const ComputerHeader = ({ onTapButton, partnerData, partnerDatatile }: Props) => {
+const ComputerHeaderForumonly = ({ onTapButton, partnerData, partnerDatatile, industry, handleOpenModal }: Props) => {
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const location = useLocation();
   const currentRoute = location.pathname;
   const profile = useAppSelector((state) => state.user);
   const chats = useAppSelector((state) => state.chat.chats);
+  
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (isPopupOpen) {
@@ -70,7 +75,7 @@ const ComputerHeader = ({ onTapButton, partnerData, partnerDatatile }: Props) =>
             <div className="hidden lg:block">
               <button
                 onClick={profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                handleButtonClick : openPopup}
+                  handleButtonClick : openPopup}
                 className="flex items-center gap-2 bg-[#F4F4F4] py-4 px-12 rounded-lg ml-5"
               >
                 <CiSearch className="text-[#A9A9A9]" size={20} />
@@ -106,7 +111,7 @@ const ComputerHeader = ({ onTapButton, partnerData, partnerDatatile }: Props) =>
           </div>
         </div>
 
-        <ComputerTopNav
+        <ComputerTopNavForumonly
           onTapButton={() => {
             if (onTapButton) {
               onTapButton();
@@ -116,7 +121,7 @@ const ComputerHeader = ({ onTapButton, partnerData, partnerDatatile }: Props) =>
           unseenNotification={profile?.profile!.unReadCount! > 0}
           unseenChat={!!chats.find(
             (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
-          )} partnerData={partnerData}   partnerDatatile={partnerDatatile}        />
+          )} partnerData={partnerData} partnerDatatile={partnerDatatile} industry={industry} handleOpenModal={handleOpenModal}  />
       </div>
       <div
         style={{
@@ -135,7 +140,7 @@ const ComputerHeader = ({ onTapButton, partnerData, partnerDatatile }: Props) =>
         ) : currentRoute === "/market" ? (
           <div className="overlay">
             <div className="popup" style={{ overflowY: "scroll" }}>
-              <Marketplacesearchpopup  onClosePopup={closePopup} />
+              <Marketplacesearchpopup onClosePopup={closePopup} />
             </div>
           </div>
         ) : (
@@ -150,4 +155,4 @@ const ComputerHeader = ({ onTapButton, partnerData, partnerDatatile }: Props) =>
   );
 };
 
-export default ComputerHeader;
+export default ComputerHeaderForumonly;

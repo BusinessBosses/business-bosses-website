@@ -17,6 +17,7 @@ import { profile } from "console";
 import { PartnerData } from "../../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../../common/interfaces/partnerdatatile";
 import { toast } from "react-toastify";
+import AppConstants from "../../../../constants/consts";
 
 interface Props {
   // currentIndex: number;
@@ -26,11 +27,14 @@ interface Props {
   unseenNotification?: boolean;
   onTapButton?: () => void;
   partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
+  partnerDatatile: PartnerDatatile | null;
+  industry : string;
+  handleOpenModal : () => void;
 
 }
 
-const ComputerTopNav = ({
+
+const ComputerTopNavForumonly = ({
   // currentIndex,
   // onTabClick,
   onTapButton,
@@ -39,6 +43,8 @@ const ComputerTopNav = ({
   unseenNotification,
   partnerData,
   partnerDatatile,
+  industry,
+  handleOpenModal,
 }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const primaryColor = "#F21C29";
@@ -122,15 +128,12 @@ const ComputerTopNav = ({
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
             handleButtonClick: () => {
               if (onTapButton) {
-                if (currentRoute === "/communities") {
-                  navigate(RoutesPath.CreateBossup);
-                } else if (currentRoute === "/communities/learning") {
-                  toast.error("You need to choose a category first ")
-
-                } else if (currentRoute === "/communities/opportunities") {
-                  toast.error("You need to choose a category first ")
-
-                } else if (currentRoute === "/forum" ){
+                if (industry === AppConstants.LEARNINGID) {
+                  handleOpenModal()
+                  
+                } else {
+                  handleOpenModal()
+                  
 
                 } 
               }
@@ -141,9 +144,7 @@ const ComputerTopNav = ({
             key={index}
           >
             <p className="text-white font-semibold mr-2">
-              {currentRoute === "/communities"
-                ? "Enter Challenge"
-                : currentRoute === "/communities/learning"
+              {industry === AppConstants.LEARNINGID
                 ? "Start A Topic"
                 : "Share opportunities"}
             </p>
@@ -175,24 +176,7 @@ const ComputerTopNav = ({
           </button>
         );
 
-      default:
-        return (
-          <button
-            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            handleButtonClick : ()=>navigate(RoutesPath.createPost)}
-            className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
-            style={{ marginLeft: 100 }}
-            key={index}
-          >
-            <p className="text-white font-semibold mr-2">{"Create Post"}</p>
-            <BsPlusLg
-              strokeWidth={1.2}
-              color="white"
-              className="mr-2"
-              style={{ width: "18px", height: "18px" }}
-            />
-          </button>
-        );
+     
     }
   };
 
@@ -436,4 +420,4 @@ const ComputerTopNav = ({
   );
 };
 
-export default ComputerTopNav;
+export default ComputerTopNavForumonly;

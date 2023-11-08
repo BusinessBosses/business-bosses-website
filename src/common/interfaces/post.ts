@@ -18,6 +18,7 @@ export interface Post {
     promotionDuration: any
     plan?: string
     approved?: boolean
+    views: number
 }
 
 

@@ -33,11 +33,15 @@ import AppConstants from "../../../constants/consts";
 import ComputerBossuppartnersection from "../../bossuppartnerpage/computerbossupsection";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
 interface Props {
   socket: Socket;
+  partnerData : PartnerData | null;
+  partnerDatatile : PartnerDatatile | null;
 }
-const CommunitiesPage = ({ socket }: Props) => {
+const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
   const tabs: string[] = ["", RoutesPath.learning, RoutesPath.opportunities];
   const location = useLocation();
   const navigate = useNavigate();
@@ -204,7 +208,7 @@ const CommunitiesPage = ({ socket }: Props) => {
                 navigate(RoutesPath.CreateBossup, {
                   state: { industryId: industry?.industryId },
                 });
-              }}
+              } }
               createLabel="Enter Challenge"
               banner={industry?.photo!}
               didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
@@ -215,10 +219,9 @@ const CommunitiesPage = ({ socket }: Props) => {
               aboutontap={openPopup}
               aboutontaptext={"About"}
               topicsicon={<Assets.Entries width={15} />}
-              topicstext={"Entries"}
-            />
+              topicstext={"Entries"} partnerData={partnerData}   partnerDatatile={partnerDatatile}            />
           </div>
-          <div className="mt-5"><ComputerBossuppartnersection /></div>
+          <div className="mt-5"><ComputerBossuppartnersection partnerData={partnerData}   partnerDatatile={partnerDatatile} /></div>
         </div>
       );
     }
@@ -239,28 +242,34 @@ const CommunitiesPage = ({ socket }: Props) => {
     setForumLoading(true);
     setIndustryLoading(true);
     const data = await CommunitiesController.fetchData();
+  
     if (data.forums.success) {
+      const forumsData = data.forums.data.rows.map((mp: Forum) => ({
+        ...mp,
+        coins: mp.coins!.map((cn: any) => cn.userId),
+        likes: mp.likes!.map((lk: any) => lk.userId),
+      }));
+  
+      // Sort the forums data based on the highest number of likes first
+      forumsData.sort((a: any, b: any) => {
+        if (b.isRanked && !a.isRanked) return 1; // Forum b is ranked, but forum a is not, so b comes first.
+        if (a.isRanked && !b.isRanked) return -1; // Forum a is ranked, but forum b is not, so a comes first.
+        return b.likes.length - a.likes.length; // If both are ranked or not ranked, sort by likes.
+      });
+  
       dispatch(saveCount(data.forums.data.count));
       dispatch(incrementPage());
-      dispatch(
-        addForumsToState(
-          data.forums.data.rows.map((mp: Forum) => ({
-            ...mp,
-            coins: mp.coins!.map((cn: any) => cn.userId),
-            likes: mp.likes!.map((lk: any) => lk.userId),
-          }))
-        )
-      );
+      dispatch(addForumsToState(forumsData));
     } else {
       setForumErr(true);
     }
-
+  
     if (data.industries.success) {
       dispatch(saveIndustriesToState(data.industries.data.rows));
     } else {
       setIndustryErr(true);
     }
-
+  
     setForumLoading(false);
     setIndustryLoading(false);
   };
@@ -330,7 +339,7 @@ const CommunitiesPage = ({ socket }: Props) => {
             <Routes>
               <Route
                 index
-                element={<Challenge socket={socket} forums={forums} />}
+                element={<Challenge socket={socket} forums={forums} partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
               />
               <Route path={RoutesPath.learning} element={<Learning />} />
               <Route
@@ -363,7 +372,7 @@ const CommunitiesPage = ({ socket }: Props) => {
             </div>
           )}
         </div>
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
         <div className="computer-content">
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
@@ -420,7 +429,7 @@ const CommunitiesPage = ({ socket }: Props) => {
                     onReload={fetchCall}
                   />
                 ) : (
-                  <Challenge socket={socket} forums={forums} />
+                  <Challenge socket={socket} forums={forums} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
                 )}
               </div>
             ) : currentIndex === 1 ? (
@@ -469,7 +478,7 @@ const CommunitiesPage = ({ socket }: Props) => {
                             navigate(RoutesPath.CreateBossup, {
                               state: { industryId: industry?.industryId },
                             });
-                          }}
+                          } }
                           createLabel="Enter Challenge"
                           banner={industry?.photo!}
                           didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
@@ -480,18 +489,17 @@ const CommunitiesPage = ({ socket }: Props) => {
                           aboutontap={openPopup}
                           aboutontaptext={"About"}
                           topicsicon={<Assets.Entries width={15} />}
-                          topicstext={"Entries"}
-                        />
+                          topicstext={"Entries"} partnerData={partnerData}   partnerDatatile={partnerDatatile}                        />
                       </div>
                     </div>
                     <div className="font-bold mt-8">Our Partners</div>
-                    <div className="mt-3"><ComputerBossuppartnersection /></div>
+                    <div className="mt-3"><ComputerBossuppartnersection partnerData={partnerData}   partnerDatatile={partnerDatatile} /></div>
 
                   </div>
                 </div> :
 
 
-                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
             }
             </div>
           </div>

@@ -18,6 +18,7 @@ const PublicProfileDetails = ({ data }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const truncatedName = data.name && data.name.length > 20 ? `${data.name.slice(0, 20)}...` : data.name;
+  const truncateduserName = data.username && data.username.length > 20 ? `${data.username.slice(0, 20)}...` : data.name;
   const connection = async () => {
     if (profile?.connecteds?.includes(data.uid)) {
       const newUserData: User = {
@@ -42,7 +43,7 @@ const PublicProfileDetails = ({ data }: Props) => {
           <UserAvatarbig imageSize="h-20 w-20" imageURL={data.photoUrl} />
           <div className="">
             <p className="font-semibold flex items-center text-base md:text-lg lg:text-lg capitalize">
-              {truncatedName}
+              {truncatedName ?? truncateduserName}
               {data.isSubscribed && (
                 <div className="ml-1">
                   <Assets.Checkmark width={9} />

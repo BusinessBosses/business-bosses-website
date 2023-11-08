@@ -10,6 +10,7 @@ import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import GeneralPostsController, {
   CoinStruct,
   LikeStruct,
+  ViewStruct,
 } from "../../../common/controllers/GeneralPostsController";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import { saveUserData } from "../../../redux/slices/UserSlice";
@@ -36,10 +37,15 @@ import FilledInputcommunities from "../../../common/components/inputs/FilledInpu
 import FilledTextareacommunities from "../../../common/components/inputs/FilledTextareacommunities";
 import FormModal from "./components/FormModal";
 import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import ComputerHeaderForumonly from "../../home/views/components/ComputerHeaderForumonly";
 interface Props {
   socket: Socket;
+  partnerData : PartnerData | null ;
+  partnerDatatile : PartnerDatatile | null ;
 }
-const Forum = ({ socket }: Props) => {
+const Forum = ({ socket, partnerData, partnerDatatile }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -65,6 +71,7 @@ const Forum = ({ socket }: Props) => {
 
     setForums(forumsDP);
   };
+  
 
   useEffect(() => {
     const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
@@ -164,6 +171,22 @@ const Forum = ({ socket }: Props) => {
     }
     updateForum({ index: postIndex, forum });
     GeneralPostsController.coin(args, socket);
+  };
+
+  const onView = (args: ViewStruct, postIndex: number) => {
+    // Get the post from the posts array
+    let forum = forums[postIndex];
+    
+    // Increment the view count
+    forum = {
+      ...forum,
+        views: forum.views + 1,
+    };
+
+    // Dispatch the updated post to Redux
+    updateForum({ index: postIndex, forum });
+
+    GeneralPostsController.addForumView(args);
   };
 
   const onComment = (comment: Comment, postIndex: number) => {
@@ -314,6 +337,9 @@ const Forum = ({ socket }: Props) => {
     setProcessing(false);
   };
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
   const handleButtonClick = () => {
     const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
     if (window.confirm(confirmMessage)) {
@@ -409,14 +435,12 @@ const Forum = ({ socket }: Props) => {
         {industry ? (
           <ForumCard
             onCreate={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            handleButtonClick :() => {
-              setOpenModal(true);
-            }}
-            createLabel={
-              industry.categoryId === AppConstants.LEARNINGID
-                ? "Start a topic"
-                : "Share Opportunities"
-            }
+              handleButtonClick : () => {
+                setOpenModal(true);
+              } }
+            createLabel={industry.categoryId === AppConstants.LEARNINGID
+              ? "Start a topic"
+              : "Share Opportunities"}
             banner={industry?.photo!}
             didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
             label={industry?.description ?? "Industry description"}
@@ -426,12 +450,9 @@ const Forum = ({ socket }: Props) => {
             aboutontap={openPopup}
             aboutontaptext={"Info"}
             topicsicon={<Assets.Topicsicon />}
-            topicstext={
-              industry.categoryId === AppConstants.LEARNINGID
-                ? "Topics"
-                : "Opport."
-            }
-          />
+            topicstext={industry.categoryId === AppConstants.LEARNINGID
+              ? "Topics"
+              : "Opport."} partnerData={partnerData}   partnerDatatile={partnerDatatile}          />
         ) : null}
         {loading ? (
           <FetchStatus
@@ -484,6 +505,7 @@ const Forum = ({ socket }: Props) => {
                   index
                 );
               }}
+              onView={(postId: string) => onView({ postId: postId, views: forum.views + 1 }, index)}
               key={forum.forumId}
               data={forum}
             />
@@ -491,11 +513,7 @@ const Forum = ({ socket }: Props) => {
         </div>
       </div>
       <div className="computer-only">
-        <ComputerHeader
-          onTapButton={() => {
-            setOpenModal(true);
-          }}
-        />
+        <ComputerHeaderForumonly partnerData={partnerData} partnerDatatile={partnerDatatile} industry={industry?.categoryId ? industry.categoryId.toString() : ''} handleOpenModal={handleOpenModal} />
         <div className="computer-content">
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
@@ -571,6 +589,7 @@ const Forum = ({ socket }: Props) => {
                       index
                     );
                   }}
+                  onView={(postId: string) => onView({ postId: postId, views: forum.views + 1 }, index)}
                   key={forum.forumId}
                   data={forum}
                 />
@@ -601,12 +620,10 @@ const Forum = ({ socket }: Props) => {
                 <ForumCard
                   onCreate={() => {
                     setOpenModal(true);
-                  }}
-                  createLabel={
-                    industry.categoryId === AppConstants.LEARNINGID
-                      ? "Start a topic"
-                      : "Share Opportunities"
-                  }
+                  } }
+                  createLabel={industry.categoryId === AppConstants.LEARNINGID
+                    ? "Start a topic"
+                    : "Share Opportunities"}
                   banner={industry?.photo!}
                   didJoin={!!industry.joinedUsers?.includes(profile!.uid)}
                   label={industry?.description ?? "Industry description"}
@@ -616,12 +633,9 @@ const Forum = ({ socket }: Props) => {
                   aboutontap={openPopup}
                   aboutontaptext="Info"
                   topicsicon={<Assets.Topicsicon />}
-                  topicstext={
-                    industry.categoryId === AppConstants.LEARNINGID
-                      ? "Topics"
-                      : "Opport."
-                  }
-                />
+                  topicstext={industry.categoryId === AppConstants.LEARNINGID
+                    ? "Topics"
+                    : "Opport."} partnerData={partnerData}   partnerDatatile={partnerDatatile}                />
               </div>
             ) : null}
           </div>

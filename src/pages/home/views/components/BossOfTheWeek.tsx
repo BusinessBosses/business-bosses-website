@@ -16,10 +16,22 @@ import Bossuppartnerpage from "../../../bossuppartnerpage/bossuppartnerpage";
 import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
 import OutlinedButtonsmall from "../../../../common/components/buttons/OutlinedButtonsmall";
 import ComputerBossuppartnersection from "../../../bossuppartnerpage/computerbossupsection";
+import { useLottie } from "lottie-react";
+import liveeventanim from '../../../../liveevent.json';
+import GreyButton from "../../../../common/components/buttons/Greybutton";
+import { GradeOutlined } from "@mui/icons-material";
+import Outlinegrey from "../../../../common/components/buttons/Outlinegrey";
+import { PartnerData } from "../../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../../common/interfaces/partnerdatatile";
+
+
 interface Props {
   bossOfTheWeek: User;
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+
 }
-const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
+const MobileBossOfTheWeek = ({ bossOfTheWeek, partnerData, partnerDatatile }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -81,29 +93,35 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
   const handleButtonClick = () => {
     const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
     if (window.confirm(confirmMessage)) {
-     navigate(RoutesPath.login)
+      navigate(RoutesPath.login)
     } else {
-     
+
     }
   };
+  const options = {
+    animationData: liveeventanim,
+    loop: true
+  };
+
+  const { View } = useLottie(options);
 
   return (
-    
+
     <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-    handleButtonClick: ()=>{}}>
+      handleButtonClick : () => { }}>
       <div className="computer-only">
-            {isPopupOpen && (
-              <div className="overlay">
-                <div
-                  ref={popupRef}
-                  className="computerpopup"
-                 
-                >
-                  <Bossoftheweekpopup />
-                </div>
-              </div>
-            )}
+        {isPopupOpen && (
+          <div className="overlay">
+            <div
+              ref={popupRef}
+              className="computerpopup"
+
+            >
+              <Bossoftheweekpopup />
+            </div>
           </div>
+        )}
+      </div>
       <div className="bg-[#EAEAEA] lg:bg-[#f4f4f4]  lg:rounded-2xl px-4 py-3" style={{}}>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
@@ -168,18 +186,19 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
                 <div
                   ref={popupRef}
                   className="mobilepopup"
-                  
+
                 >
                   <Bossoftheweekpopup />
                 </div>
               </div>
             )}
           </div>
-          
+
 
           <div className="mobile-only">
-            <BossupPartnerstile />
+            <BossupPartnerstile   partnerDatatile={partnerDatatile} />
           </div>
+
 
 
         </div>
@@ -189,7 +208,20 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
 
 
 
+
+
       </div>
+
+      <div className="bg-[#1A1A1A] lg:rounded-2xl lg:mt-5  flex px-4 lg:py-5 py-2 items-center justify-between">
+        <div className="mr-2" style={{ width: 25, height: 25, flex: '0 0 auto' }}>{View}</div>
+        <div className="text-white text-sm lg:text-base marquee" style={{ flex: '1', marginRight: '10px' }}>
+          <div className="marquee-text">
+            Live Events - Create or Start listening to live events from bosses.
+          </div>
+        </div>
+        <GreyButton onClick={() => {navigate(RoutesPath.liveevent) }} text={"Live Events"} />
+      </div>
+
 
 
       <div className="flex computer-only items-center mt-8">
@@ -197,7 +229,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek }: Props) => {
       </div>
 
       <div className=" computer-only mt-3">
-        <ComputerBossuppartnersection />
+        <ComputerBossuppartnersection partnerData={partnerData}   partnerDatatile={partnerDatatile} />
       </div>
     </div>
   );

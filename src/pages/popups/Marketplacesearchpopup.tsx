@@ -4,16 +4,20 @@ import { useRef, useState } from "react";
 import { Market } from "../../common/interfaces/Market";
 import FilledButtonsmall from "../../common/components/buttons/FilledButtonsmall";
 import FilledButton from "../../common/components/buttons/FilledButton";
+import Assets from "../../assets";
 
-const Marketplacesearchpopup = () => {
+const Marketplacesearchpopup = ({ onClosePopup }: { onClosePopup: () => void }) => {
     const [stateProps, setStateProps] = useState<Market | null>(null);
     const categoryRef = useRef<HTMLSelectElement>(null);
     const [country, setCountry] = useState<string | null>(null);
     return (
         <div className="px-5">
-            <div className="jsutify-between flex items-center">
-                <div className="text-black font-bold pt-10 text-lg">Filter</div>
-                
+            <div className="flex items-center pt-10">
+                <button onClick={() => onClosePopup()}>
+                    <Assets.Backbutton />
+                </button>
+                <div className="text-black font-bold pl-10 text-lg">Filter</div>
+
             </div>
 
             <FilledSelect
@@ -51,13 +55,13 @@ const Marketplacesearchpopup = () => {
             <div className="flex items-center gap-5 pb-5 justify-end">
                 <div className="text-primary">Reset</div>
                 <div className="">
-                    <FilledButtonsmall onClick={()=>{}} text={"Search"}/>
+                    <FilledButtonsmall onClick={() => { }} text={"Search"} />
 
                 </div>
 
             </div>
 
-            
+
 
         </div>
     );

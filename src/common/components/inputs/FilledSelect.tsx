@@ -32,12 +32,12 @@ const FilledSelect = ({
   }, []); // Empty dependency array to run the effect only once on mount
 
   return (
-    <div className="my-5 ">
+    <div className="my-5  ">
       {label ? (
         <label className="text-[#333333] text-sm font-[700]">{label}</label>
       ) : null}
 
-      {screenWidth <= 576 && (
+<div className="mobile-only">
         <select
           ref={inputRef}
           defaultValue={defaultValue}
@@ -52,9 +52,10 @@ const FilledSelect = ({
             );
           })}
         </select>
-      )}
+    </div>
 
-      {screenWidth >= 576 && (
+      <div className="computer-only">
+  
         <select
           defaultValue={defaultValue}
           id={label}
@@ -68,7 +69,8 @@ const FilledSelect = ({
             );
           })}
         </select>
-      )}
+      
+      </div>
     </div>
   );
 };

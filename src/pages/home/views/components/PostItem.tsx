@@ -17,25 +17,25 @@ import GeneralPostsController from "../../../../common/controllers/GeneralPostsC
 import { v4 } from "uuid";
 import { toast } from "react-toastify";
 import SharePopUp from "../../../../common/components/share/SharePopUp";
-import FilledButton from "../../../../common/components/buttons/FilledButton";
 import GreyButton from "../../../../common/components/buttons/Greybutton";
 import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
 import { User } from "../../../../common/interfaces/user";
 import { saveUserData } from "../../../../redux/slices/UserSlice";
 import ConnectionsController from "../../../connections/controller/ConnectionsController";
-import OutlinedButton from "../../../../common/components/buttons/OutlinedButton";
 import Outlinegrey from "../../../../common/components/buttons/Outlinegrey";
-import Lightbox, { ImagesListType } from 'react-spring-lightbox';
+import Lightbox from 'react-spring-lightbox';
 import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
 import TranslucentDiv from "../../../../common/components/buttons/Translucentbutton";
+import VisibilitySensor  from 'react-visibility-sensor';
 
 interface Props {
   data: Post;
   onLike: Function;
   onCoin: Function;
   onComment: Function;
+  onView: Function;
 }
-const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
+const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const [comments, setComments] = useState<CommentStruct[]>([]);
@@ -46,9 +46,17 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
   const [showShareDialog, setShowShareDialog] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [showExpandedImages, setShowExpandedImages] = useState<boolean>(false);
+  const [viewCounted, setViewCounted] = useState(false);
 
   const handleExpanded = () => {
     setShowExpandedImages(true);
+  };
+
+  const handleOnVisibilityChange = (isVisible: any) => {
+    if (isVisible && !viewCounted) {
+      onView(data.postId);
+      setViewCounted(true);
+    }
   };
 
   const images: ImagesListItem[] = (data.images || []).map((imageUrl, index) => ({
@@ -56,10 +64,6 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
     loading: 'lazy',
     alt: `Image ${index + 1}`,
   }));
-
-
-
-
 
 
   const [currentImageIndex, setCurrentIndex] = useState(0);
@@ -78,7 +82,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
       const newUserData: User = {
         ...profile,
         connecteds: profile.connecteds?.filter(
-          (ft) => ft !== data.user.uid!
+          (ft: any) => ft !== data.user.uid!
         ),
         connectedCount: (profile?.connectedCount ?? 0) - 1,
       };
@@ -178,7 +182,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
   };
 
   return (
-    <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+    <div onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
     handleButtonClick: ()=>{}}>
       <div className="bg-black mobilepopup justify-center" style={{ position: "relative" }}>
         {showConfirmation && (
@@ -232,7 +236,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   name=""
                   id=""
                 />
-                <button onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                <button onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 ()=>{}:makeComment}>
                   <Assets.Send />
                 </button>
@@ -272,7 +276,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                   name=""
                   id=""
                 />
-                <button onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                <button onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 ()=>{}:makeComment}>
                   <Assets.Send />
                 </button>
@@ -299,13 +303,13 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
 
         <div className="flex items-start justify-between">
           <div
-            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
             ()=>{}:() =>
               navigate(RoutesPath.PublicUserProfile, { state: data.user })
             }
             className="flex items-center gap-3"
           >
-            <UserAvatar imageURL={data.user.photoUrl} />
+            <UserAvatar imageURL={data.user.photoUrl} isRanked={data.user.isRanked} />
             <div className="flex-grow">
               <p className=" font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                 {data.user?.name}
@@ -326,13 +330,13 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
             {data.user?.isSubscribed && (
               !profile?.connecteds?.includes(data.user.uid!) ? (
                 <GreyButton
-                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                   ()=>{}:connection}
                   text="Connect"
                 />
               ) : (
                 <Outlinegrey
-                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                   ()=>{}:() => {
                     navigate(RoutesPath.refer, { state: data.user.uid });
                   }}
@@ -418,7 +422,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
         </div>
 
         <div className="mt-2">
-          {data.promote ? (
+          {data.promote && data.approved ? (
             <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
           ) : null}
           <p className="text-sm text-[#303133] lg:text-base break-words">
@@ -452,7 +456,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                 }}
               />
               <img
-                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 ()=>{}:() => { handleExpanded(); }}
                 src={data.images[0]}
                 alt=""
@@ -465,7 +469,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                       {index === 0 ? null : (
                         <div className="max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
                           <img
-                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                            onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                             ()=>{}:() => { handleExpanded(); }}
                             src={img}
                             alt=""
@@ -487,7 +491,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
                     ? Assets.LikeFilled
                     : Assets.Like
                 }
-                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 ()=>{}:() => {
                   onLike(data.postId);
                 }}
@@ -495,7 +499,7 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               <PostAction
                 count={data.comments.length.toString()}
                 icon={Assets.Comment}
-                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 ()=>{}:() => {
                   fetchComments();
                   setOpen(true);
@@ -504,15 +508,24 @@ const PostItem = ({ data, onCoin, onLike, onComment }: Props) => {
               <PostAction
                 count={data.coins.length.toString()}
                 icon={Assets.Coin}
-                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 ()=>{}:() => {
                   onCoin(data.postId);
                 }}
               />
+              <VisibilitySensor onChange={handleOnVisibilityChange}>
+              <PostAction
+                count={data.views.toString()}
+                icon={Assets.Viewsicon}
+                onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                ()=>{}:() => {
+                }}
+              />
+              </VisibilitySensor>
               <PostAction
                 count=""
                 icon={Assets.Share}
-                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 ()=>{}:() => {
                   setShowShareDialog(true);
                 }}

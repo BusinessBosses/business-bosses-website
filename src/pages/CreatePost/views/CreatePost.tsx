@@ -14,8 +14,15 @@ import { MdCancel } from "react-icons/md";
 import Loader from "../../../common/components/loader/Loader";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 
-const CreatePost = () => {
+interface Props {
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+
+const CreatePost: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
@@ -319,7 +326,7 @@ const CreatePost = () => {
       </div>
 
       <div className='computer-only'>
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
 
         <div className="computer-content">
           <div
@@ -525,7 +532,7 @@ const CreatePost = () => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profilee.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} />
+                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

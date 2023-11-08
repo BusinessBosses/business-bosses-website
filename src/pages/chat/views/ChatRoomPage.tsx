@@ -17,10 +17,14 @@ import ComputerProfileDetails from "../../profile/views/components/ComputerProfi
 import ChatController from "../controller/ChatController";
 import RoutesPath from "../../../constants/Routes";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 interface Props {
   socket: Socket;
+  partnerData: PartnerData | null;
+  partnerDatatile: PartnerDatatile | null;
 }
-const ChatRoomPage = ({ socket }: Props) => {
+const ChatRoomPage = ({ socket, partnerData, partnerDatatile }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [chatParty, setChatParty] = useState<User | null>(null);
@@ -127,7 +131,7 @@ const ChatRoomPage = ({ socket }: Props) => {
               <UserAvatar
                 imageSize="w-10 h-10"
                 imageURL={
-                  chatParty?.photoUrl 
+                  chatParty?.photoUrl
                 }
               />
               <div className="">
@@ -243,7 +247,7 @@ const ChatRoomPage = ({ socket }: Props) => {
       </div>
 
       <div className="computer-only bg-[#ffffff] min-h-screen h-full">
-        <ComputerHeader />
+        <ComputerHeader partnerData={partnerData} partnerDatatile={partnerDatatile} />
         <div className="computer-content">
           <div
             className="firstsection ml-5 lg:ml-20 pr-5"
@@ -286,7 +290,7 @@ const ChatRoomPage = ({ socket }: Props) => {
                   <UserAvatar
                     imageSize="w-10 h-10"
                     imageURL={
-                      chatParty?.photoUrl 
+                      chatParty?.photoUrl
                     }
                   />
                   <div className="">
@@ -302,7 +306,7 @@ const ChatRoomPage = ({ socket }: Props) => {
             <div
               style={{ borderBottom: "1.2px solid rgba(0, 0, 0, 0.1)" }}
             ></div>
-            <div className="py-3 px-4 bg-[#f9f9f9]">
+            <div className="py-3 px-4 pb-20 bg-[#f9f9f9]">
               {messages.map((message, index) => {
                 if (message.image) {
                   return (
@@ -365,8 +369,8 @@ const ChatRoomPage = ({ socket }: Props) => {
               <div ref={scrollRef} />
             </div>
 
-            <div className=" fixed bottom-5">
-              <div className="bg-white shadow mx-5 rounded-full p-3 flex items-center justify-between">
+            <div className="sticky bottom-5">
+              <div className="bg-white shadow mx-5 rounded-full p-3 flex items-center justify-between" style={{ width: "92%" }}>
                 <input
                   type="text"
                   placeholder="Type your messages..."
@@ -379,6 +383,7 @@ const ChatRoomPage = ({ socket }: Props) => {
                 </button>
               </div>
             </div>
+
           </div>
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
@@ -393,12 +398,12 @@ const ChatRoomPage = ({ socket }: Props) => {
               zIndex: 1,
             }}
           >
-             <div className="rounded-xl overflow-hidden" style={{}}>
-                {profile.bossup ? (
-                  <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} />
-                ) : null}
-              </div>
-            
+            <div className="rounded-xl overflow-hidden" style={{}}>
+              {profile.bossup ? (
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData} partnerDatatile={partnerDatatile} />
+              ) : null}
+            </div>
+
           </div>
         </div>
       </div>

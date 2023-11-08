@@ -112,7 +112,7 @@ const MobileHeader = ({ unseenChat, unseenNotification, coins }: Props) => {
             <div className="p-4 flex justify-between items-center mt-12" style={{ position: 'relative', zIndex: 2 }}>
               <div className="flex" style={{ height: '100%' }}>
                 <button
-                  onClick={() => navigate(RoutesPath.register)}
+                  onClick={() => navigate(RoutesPath.login)}
                   className={`bg-white shadow-xl rounded-full text-primary text-xs shadow-lg flex items-center justify-center font-bold p-2 px-4 relative`}
                   style={{ height: '100%', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center' }}
                 >
