@@ -4,8 +4,8 @@
   "private": true,
   "proxy": "http://http://44.210.87.234/",
   "engines": {
-    "node": "18.x",
-    "npm": "9.5.1"
+    "node": "14.x",
+    "npm": "6.14.15"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
