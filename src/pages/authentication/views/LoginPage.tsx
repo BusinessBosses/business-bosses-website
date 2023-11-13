@@ -20,10 +20,51 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>(null);
+  const emailReff = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordReff = useRef<HTMLInputElement>(null);
   const termsRef = useRef<HTMLInputElement>(null);
+  const termsReff = useRef<HTMLInputElement>(null);
 
   const googleLogin = useGoogleLogin({
+    onSuccess: async (credentialResponse) => {
+      try {
+        setLoading(true);
+        const user = await axios.get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${credentialResponse.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${credentialResponse.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        if (user.data.id) {
+          const response = await AuthController.googleLoginRequest({
+            email: user.data.email,
+            token: credentialResponse.access_token,
+          });
+          if (response.success) {
+            localStorage.setItem(
+              StorageEnum.AccessToken,
+              response.data.accessToken
+            );
+            localStorage.setItem(StorageEnum.UserId, response.data.uid);
+            onLoginSuccess();
+            navigate(RoutesPath.home);
+          }
+        }
+        setLoading(false);
+      } catch (error) {
+        toast.error("Something went Wrong!");
+      }
+    },
+    onError: () => {
+      toast.error("OOPS!! Something went wrong");
+    },
+  });
+
+  const googleLoginn = useGoogleLogin({
     onSuccess: async (credentialResponse) => {
       try {
         setLoading(true);
@@ -88,22 +129,34 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
     }
   };
 
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+  const loginn = async () => {
+    if (loading) return;
+    const validate = AuthController.validateLogin({
+      email: emailReff.current?.value.trim(),
+      password: passwordReff.current?.value.trim(),
+      terms: termsReff.current?.checked,
+    });
+    if (validate) {
+      setLoading(true);
+      const response = await AuthController.loginRequest({
+        email: emailReff.current?.value.trim(),
+        password: passwordReff.current?.value.trim(),
+      });
+      if (response.success) {
+        localStorage.setItem(
+          StorageEnum.AccessToken,
+          response.data.accessToken
+        );
+        localStorage.setItem(StorageEnum.UserId, response.data.uid);
+        onLoginSuccess();
+        navigate(RoutesPath.home);
+      }
 
-  const handleScreenWidthChange = () => {
-    setScreenWidth(window.innerWidth);
-    // Perform any actions or updates based on the screen width change
+      setLoading(false);
+    }
   };
 
-  useEffect(() => {
-    // Event listener for screen resize
-    window.addEventListener("resize", handleScreenWidthChange);
-
-    return () => {
-      // Cleanup the event listener when the component unmounts
-      window.removeEventListener("resize", handleScreenWidthChange);
-    };
-  }, []); // Empty dependency array to run the effect only once on mount
+  
 
   return (
     <div>
@@ -132,62 +185,63 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           </div>
 
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <FilledInput
-              inputRef={emailRef}
-              onchange={() => { }}
-              placeholder="Email"
-              type="email"
-            />
-            <FilledInput
-              inputRef={passwordRef}
-              onchange={(e) => { }}
-              placeholder="Password"
-              type={passwordVisible ? "text" : "password"}
-              onPressSuffixIcon={() => setPasswordVisible((prev) => !prev)}
-              suffixIcon={
-                passwordVisible ? (
-                  <AiOutlineEyeInvisible color="#A9A9A9" size={25} />
-                ) : (
-                  <Assets.Visible />
-                )
-              }
-            />
-            <div className="flex items-center justify-end mb-5">
-              <button
-                type="button"
-                onClick={() => {
-                  navigate(RoutesPath.forgotPassword);
+                onSubmit={(e) => {
+                  e.preventDefault();
                 }}
-                className="underline text-sm"
               >
-                Forgot Password?
-              </button>
-            </div>
+                {/* <FilledInput onchange={() => {}} placeholder="Username" /> */}
+                <FilledInput
+                  inputRef={emailReff}
+                  onchange={() => { }}
+                  placeholder="Email"
+                  type="email"
+                />
+                <FilledInput
+                  inputRef={passwordReff}
+                  onchange={(e) => { }}
+                  placeholder="Password"
+                  type={passwordVisible ? "text" : "password"}
+                  onPressSuffixIcon={() => setPasswordVisible((prev) => !prev)}
+                  suffixIcon={
+                    passwordVisible ? (
+                      <AiOutlineEyeInvisible color="#A9A9A9" size={25} />
+                    ) : (
+                      <Assets.Visible />
+                    )
+                  }
+                />
+                <div className="flex items-center justify-end pb-10">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigate(RoutesPath.forgotPassword);
+                    }}
+                    className="underline text-sm"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
 
 
-            <div className="">
-              <FilledButton
-                onClick={login}
-                text={loading ? "Authenticating..." : "Sign in"}
-                className="w-full p-3"
-              />
-            </div>
-            <div className="flex items-center gap-2 my-5">
-              <div className="bg-[#A9A9A999] h-[1px] w-full" />
-              <p className="text-[#383838CC] font-[400]">or</p>
-              <div className="bg-[#A9A9A999] h-[1px] w-full" />
-            </div>
+                <div className="">
+                  <FilledButton
+                    onClick={loginn}
+                    text={loading ? "Authenticating..." : "Sign in"}
+                    className="w-full p-3"
+                  />
+                </div>
+                <div className="flex items-center gap-2 my-5">
+                  <div className="bg-[#A9A9A999] h-[1px] w-full" />
+                  <p className="text-[#383838CC] font-[400]">or</p>
+                  <div className="bg-[#A9A9A999] h-[1px] w-full" />
+                </div>
 
-            <GoogleButton
-              onClick={googleLogin}
-              text="Sign in with Google"
-              className="w-full p-3 mb-5"
-            />
-          </form>
+                <GoogleButton
+                  onClick={googleLoginn}
+                  text="Sign in with Google"
+                  className="w-full p-3"
+                />
+              </form>
 
           <div className="px-5 pb-3">
             <div className="mt-3 gap-2" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

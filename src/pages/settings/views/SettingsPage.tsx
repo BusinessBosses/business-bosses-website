@@ -63,6 +63,7 @@ const SettingsPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   
   const handleConfirmSignOut= () => {
     login();
+    navigate(RoutesPath.home);
 
    
     setShowConfirmation(false);

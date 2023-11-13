@@ -63,7 +63,7 @@ class ServiceApi {
         try {
             const formData = new FormData();
             formData.append('file', file);
-            const response = await axios.post('http://44.210.87.234/upload.php', formData, {
+            const response = await axios.post('https://businessbosses.com.ng/upload.php', formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
