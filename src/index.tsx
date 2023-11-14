@@ -8,8 +8,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+// const clientId =
+//   "649062195170-80sp6r23ouiitro904vgqfso9767413u.apps.googleusercontent.com";346913891380-jc6ue1tk6jb1urt1r7sv6rg65eucjot5.apps.googleusercontent.com
 const clientId =
-  "649062195170-80sp6r23ouiitro904vgqfso9767413u.apps.googleusercontent.com";
+  "346913891380-jc6ue1tk6jb1urt1r7sv6rg65eucjot5.apps.googleusercontent.com";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
