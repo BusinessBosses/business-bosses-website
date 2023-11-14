@@ -6,6 +6,7 @@ import { MdPadding } from "react-icons/md";
 import React from "react";
 import { profile } from "console";
 import { useAppSelector } from "../../../../redux/store/store";
+import UserAvatar from "../../../../common/components/avatars/UserAvatar";
 
 interface Props {
   currentIndex: number;
@@ -132,11 +133,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
           }}
           className="flex flex-col items-center"
         >
-          <Assets.ProfileIcon
-            stroke={currentIndex === 3 ? primaryColor : strokeColor}
-            strokeWidth={2}
-           
-          />
+          <UserAvatar imageSize="h-7 w-7" imageURL={profile.profile!.photoUrl}  />
           <p
             className={
               currentIndex === 3 ? "text-primary font-semibold" : "text-gray-500"
