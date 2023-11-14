@@ -72,7 +72,7 @@ const MobileBottomNav = ({ currentIndex }: Props) => {
               currentIndex === 1 ? "text-primary font-semibold" : "text-gray-500"
             }
           >
-            Bossup
+            Boss Up
           </p>
         </button>
         </div>

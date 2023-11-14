@@ -456,6 +456,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                   
                 }}
               />
+              <div className="computer-only">
               <PostAction
                 count=""
                 icon={Assets.Share}
@@ -464,6 +465,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                   setShowShareDialog(true);
                 }}
               />
+              </div>
             </div>
 
             { data.userId !== profile?.uid ?<OutlinedButton onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
