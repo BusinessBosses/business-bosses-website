@@ -252,7 +252,7 @@ const ChatRoomPage = ({ socket, partnerData, partnerDatatile }: Props) => {
           <div
             className="firstsection ml-5 lg:ml-20 pr-5"
             style={{
-              width: "30%",
+              width: "25%",
               flexGrow: 0,
               overflow: "none",
               position: "sticky",
@@ -270,7 +270,7 @@ const ChatRoomPage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
           <div
             className="computer-main-content  "
-            style={{ width: "40%", flexGrow: 0 }}
+            style={{ width: "50%", flexGrow: 0 }}
           >
             <div
               className=" bg-white top-0 z-50 px-4 py-5 "
@@ -390,7 +390,7 @@ const ChatRoomPage = ({ socket, partnerData, partnerDatatile }: Props) => {
           <div
             className="lastsection ml-5 mt-5 mr-5 lg:mr-20 pr-0 mb-0"
             style={{
-              width: "30%",
+              width: "25%",
               flexGrow: 0,
               overflow: "none",
               position: "sticky",

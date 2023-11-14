@@ -377,7 +377,7 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
             style={{
-              width: "30%",
+              width: "25%",
               flexGrow: 0,
               overflow: "none",
               position: "sticky",
@@ -395,7 +395,7 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
           <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
           <div
             className="computer-main-content"
-            style={{ width: "40%", flexGrow: 0 }}
+            style={{ width: "50%", flexGrow: 0 }}
           >
             <div
               style={{
@@ -443,7 +443,7 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
           <div
             className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
             style={{
-              width: "30%",
+              width: "25%",
               flexGrow: 0,
               overflow: "auto",
               position: "sticky",
