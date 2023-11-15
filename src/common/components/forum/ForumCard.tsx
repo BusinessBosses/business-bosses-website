@@ -99,7 +99,7 @@ const ForumCard = ({
             <button
               onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 handleButtonClick : onJoin}
-              className="bg-white px-6 py-1.5 rounded-xl"
+              className="bg-white px-3 text-sm py-1.5 rounded-xl"
               style={{
                 border: `2px solid ${didJoin ? "#a9a9a9" : "#F21C29"}`,
                 color: didJoin ? "#a9a9a9" : "#F21C29"
@@ -124,7 +124,7 @@ const ForumCard = ({
         <div className="bg-[#f4f4f4] p-3 computer-only rounded-2xl">
 
 
-          <div className="bg-[#ffffff] p-3 rounded-lg">
+          <div className="bg-[#ffffff] p-0 rounded-lg">
             <div className="flex gap-3 items-center">
               <img src={banner} alt="" className="w-32 h-20 rounded-lg" />
               <p className="text-[#383838] font-bold text-sm">{label}</p>
@@ -145,7 +145,7 @@ const ForumCard = ({
               </div>
               <button
                 onClick={onJoin}
-                className="bg-white px-6 py-1.5 text-primary rounded-xl "
+                className="bg-white px-3 py-1.5 text-primary text-base rounded-xl "
                 style={{ border: "2px solid", borderColor: "primary" }} // Add the border style here
               >
                 {didJoin ? "Leave" : "Join"}
