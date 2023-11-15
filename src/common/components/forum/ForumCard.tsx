@@ -54,6 +54,15 @@ const ForumCard = ({
     }
   };
   const profile = useAppSelector((state) => state.user.profile);
+
+  function formatNumber(number: number) {
+    if (number >= 1000) {
+      const truncatedNumber = (number / 1000).toFixed(1);
+      return `${truncatedNumber}k`;
+    } else {
+      return number.toString();
+    }
+  }
   return (
     <div>
       <div className="bg-[#EAEAEA] px-4 py-3 mobile-only">
@@ -78,7 +87,7 @@ const ForumCard = ({
           <div className="flex items-center  justify-between mt-2">
             <div className="flex items-center gap-1">
               <Assets.Membersicon className="text-primary" stroke="black" />
-              <p className="text-primary underline text-sm  lg:text-base font-bold">Members ({members.toString()})</p>
+              <p className="text-primary underline text-sm  lg:text-base font-bold">Members ({formatNumber(members).toString()})</p>
 
             </div>
             <div className="bg-[#FFFFFF1A]  flex whitespace-nowrap px-3 py-1 rounded-full items-center gap-1">
@@ -125,7 +134,7 @@ const ForumCard = ({
             <div className="flex items-center  justify-between mt-5">
               <div className="flex items-center gap-1">
                 <Assets.Membersicon className="text-primary" stroke="black" />
-                <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
+                <p className="text-primary underline text-sm font-bold">Members ({formatNumber(members).toString()})</p>
 
               </div>
               <div className="bg-[#FFFFFF1A]  flex whitespace-nowrap px-3 py-1 rounded-full items-center gap-1">
