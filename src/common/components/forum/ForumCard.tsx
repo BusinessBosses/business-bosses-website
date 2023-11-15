@@ -87,12 +87,12 @@ const ForumCard = ({
           <div className="flex items-center  justify-between mt-2">
             <div className="flex items-center gap-1">
               <Assets.Membersicon className="text-primary" stroke="black" />
-              <p className="text-primary underline text-sm  lg:text-base font-bold">Members ({formatNumber(members).toString()})</p>
+              <p className="text-primary underline text-xs  lg:text-base font-bold">Members ({formatNumber(members).toString()})</p>
 
             </div>
             <div className="bg-[#FFFFFF1A]  flex whitespace-nowrap px-3 py-1 rounded-full items-center gap-1">
               {topicsicon}
-              <p className="text-sm text-[#232324] font-bold">
+              <p className="text-xs text-[#232324] font-bold">
                 {`${topicstext} (${topics.toString()})`}
               </p>
             </div>
