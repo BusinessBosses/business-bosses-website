@@ -38,7 +38,7 @@ const Bossuppartnerpage = () => {
           const partners = partnerData.rows;
   
           // Find the partner with id 5
-          const getTitle = partners.find((item: { id: number; }) => item.id === 5);
+          const getTitle = partners.find((item: { id: number; }) => item.id === 12);
   
           if (getTitle) {
             setPartnerData({

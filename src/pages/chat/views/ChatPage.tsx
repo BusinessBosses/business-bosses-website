@@ -110,7 +110,7 @@ const ChatPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
             style={{
-              width: "30%",
+              width: "25%",
               flexGrow: 0,
               overflow: "none",
               position: "sticky",
@@ -128,7 +128,7 @@ const ChatPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
           <div
             className="computer-main-content p-5"
-            style={{ width: "40%", flexGrow: 0 }}
+            style={{ width: "50%", flexGrow: 0 }}
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               <div className="text-lg font-semibold text-[#333333]">
@@ -187,7 +187,7 @@ const ChatPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
           <div
             className="lastsection mt-5 ml-5 mr-5 lg:mr-20 pr-0 mb-0"
             style={{
-              width: "30%",
+              width: "25%",
               flexGrow: 0,
               overflow: "none",
               position: "sticky",

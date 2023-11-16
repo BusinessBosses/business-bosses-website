@@ -113,7 +113,7 @@ const App = () => {
           const partners = partnerData.rows;
   
           // Find the partner with id 5
-          const getTitle = partners.find((item: { id: number; }) => item.id === 1);
+          const getTitle = partners.find((item: { id: number; }) => item.id === 12);
   
           if (getTitle) {
             setPartnerData({
