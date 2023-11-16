@@ -40,7 +40,7 @@ const ComputerBossuppartnersection: React.FC<ComputerBossuppartnersectionProps> 
         {partnerData ? (
           <PartnerCard
             partnerlogo={partnerData.partnerlogo}
-            adtitle={partnerData.adtitle}
+            adtitle={''}
             addescription={partnerData.addescription}
             partnerurl={partnerData.partnerurl}
           />
