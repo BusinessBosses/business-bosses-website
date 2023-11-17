@@ -1,8 +1,4 @@
-import { useState, useEffect } from "react";
-import CommonPageHeader from "../../common/components/headers/CommonPageHeader";
 import PartnerCard from "./components/partnercard";
-import OutlinedButton from "../../common/components/buttons/OutlinedButton";
-import { useAppSelector } from "../../redux/store/store";
 import BossupPartnerstile from "../home/views/components/BopssupPartnerstile";
 import { PartnerData } from "../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../common/interfaces/partnerdatatile";
@@ -16,7 +12,6 @@ partnerDatatile: PartnerDatatile | null;
 }
 
 const ComputerBossuppartnersection: React.FC<ComputerBossuppartnersectionProps> = ({ partnerData, partnerDatatile }) => {
-  const profile = useAppSelector((state) => state.user);
 
 
 
@@ -45,7 +40,7 @@ const ComputerBossuppartnersection: React.FC<ComputerBossuppartnersectionProps> 
         {partnerData ? (
           <PartnerCard
             partnerlogo={partnerData.partnerlogo}
-            adtitle={partnerData.adtitle}
+            adtitle={''}
             addescription={partnerData.addescription}
             partnerurl={partnerData.partnerurl}
           />

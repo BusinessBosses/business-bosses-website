@@ -54,6 +54,15 @@ const ForumCard = ({
     }
   };
   const profile = useAppSelector((state) => state.user.profile);
+
+  function formatNumber(number: number) {
+    if (number >= 1000) {
+      const truncatedNumber = (number / 1000).toFixed(1);
+      return `${truncatedNumber}k`;
+    } else {
+      return number.toString();
+    }
+  }
   return (
     <div>
       <div className="bg-[#EAEAEA] px-4 py-3 mobile-only">
@@ -78,19 +87,19 @@ const ForumCard = ({
           <div className="flex items-center  justify-between mt-2">
             <div className="flex items-center gap-1">
               <Assets.Membersicon className="text-primary" stroke="black" />
-              <p className="text-primary underline text-sm  lg:text-base font-bold">Members ({members.toString()})</p>
+              <p className="text-primary underline text-xs  lg:text-base font-bold">Members ({formatNumber(members).toString()})</p>
 
             </div>
             <div className="bg-[#FFFFFF1A]  flex whitespace-nowrap px-3 py-1 rounded-full items-center gap-1">
               {topicsicon}
-              <p className="text-sm text-[#232324] font-bold">
+              <p className="text-xs text-[#232324] font-bold">
                 {`${topicstext} (${topics.toString()})`}
               </p>
             </div>
             <button
               onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 handleButtonClick : onJoin}
-              className="bg-white px-6 py-1.5 rounded-xl"
+              className="bg-white px-3 text-sm py-1.5 rounded-xl"
               style={{
                 border: `2px solid ${didJoin ? "#a9a9a9" : "#F21C29"}`,
                 color: didJoin ? "#a9a9a9" : "#F21C29"
@@ -115,7 +124,7 @@ const ForumCard = ({
         <div className="bg-[#f4f4f4] p-3 computer-only rounded-2xl">
 
 
-          <div className="bg-[#ffffff] p-3 rounded-lg">
+          <div className="bg-[#ffffff] p-0 rounded-lg">
             <div className="flex gap-3 items-center">
               <img src={banner} alt="" className="w-32 h-20 rounded-lg" />
               <p className="text-[#383838] font-bold text-sm">{label}</p>
@@ -125,7 +134,7 @@ const ForumCard = ({
             <div className="flex items-center  justify-between mt-5">
               <div className="flex items-center gap-1">
                 <Assets.Membersicon className="text-primary" stroke="black" />
-                <p className="text-primary underline text-sm font-bold">Members ({members.toString()})</p>
+                <p className="text-primary underline text-sm font-bold">Members ({formatNumber(members).toString()})</p>
 
               </div>
               <div className="bg-[#FFFFFF1A]  flex whitespace-nowrap px-3 py-1 rounded-full items-center gap-1">
@@ -136,7 +145,7 @@ const ForumCard = ({
               </div>
               <button
                 onClick={onJoin}
-                className="bg-white px-6 py-1.5 text-primary rounded-xl "
+                className="bg-white px-3 py-1.5 text-primary text-base rounded-xl "
                 style={{ border: "2px solid", borderColor: "primary" }} // Add the border style here
               >
                 {didJoin ? "Leave" : "Join"}

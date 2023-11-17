@@ -153,7 +153,7 @@ const MarketIntro: React.FC<MarketIntroProps> = ({ partnerData, partnerDatatile 
         >
           <div className="flex items-center gap-3">
             <img
-              src="http://44.210.87.234/learningImages/marketplace.jpg"
+              src="https://businessbosses.com.ng/learningImages/marketplace.jpg"
               alt=""
               className="w-32 h-20 rounded-lg"
             />
@@ -235,7 +235,7 @@ const MarketIntro: React.FC<MarketIntroProps> = ({ partnerData, partnerDatatile 
           >
             <div className="flex items-center gap-3">
               <img
-                src="http://44.210.87.234/learningImages/marketplace.jpg"
+                src="https://businessbosses.com.ng/learningImages/marketplace.jpg"
                 alt=""
                 className="w-32 h-20 rounded-lg"
               />
