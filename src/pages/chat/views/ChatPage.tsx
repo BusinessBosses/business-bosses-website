@@ -185,7 +185,7 @@ const ChatPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
           <div
-            className="lastsection mt-5 ml-5 mr-5 lg:mr-20 pr-0 mb-0"
+            className="lastsection pl-5 mt-5  mr-5 lg:mr-20 pr-0 mb-0"
             style={{
               width: "25%",
               flexGrow: 0,

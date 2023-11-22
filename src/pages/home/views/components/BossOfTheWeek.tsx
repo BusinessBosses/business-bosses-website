@@ -219,7 +219,8 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek, partnerData, partnerDatatile }: Pr
             Live Events - Create or Start listening to live events from bosses.
           </div>
         </div>
-        <GreyButton onClick={() => {navigate(RoutesPath.liveevent) }} text={"Live Events"} />
+        <GreyButton onClick={() => profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+      null :navigate(RoutesPath.liveevent) } text={"Live Events"} />
       </div>
 
 

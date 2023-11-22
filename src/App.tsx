@@ -381,7 +381,7 @@ const App = () => {
         path={RoutesPath.forgotPassword}
         element={<RequestOtpForForgotPassword />}
       />
-      <Route path={RoutesPath.editProfile} element={<EditProfilePage />} />
+      <Route path={RoutesPath.editProfile} element={<EditProfilePage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route path={RoutesPath.chats} element={<ChatPage partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
       <Route
         path={RoutesPath.ChatRoom}
