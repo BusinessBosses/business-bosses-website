@@ -327,7 +327,7 @@ const ComputerTopNav = ({
           <div className="overlay">
             <div className="popup">
               <div className="computer-only">
-                {currentIndex === 0 ? (
+                {currentRoute === "/" ? (
                   <div>
                     <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                       <div className="flex items-center">
@@ -346,7 +346,7 @@ const ComputerTopNav = ({
                     </div>
                     <CreatePost partnerData={partnerData}   partnerDatatile={partnerDatatile} />
                   </div>
-                ) : currentIndex === 1 ? (
+                ) : currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"? (
                   currentRoute === "/communities" ? (
                     <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                       <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
@@ -407,7 +407,7 @@ const ComputerTopNav = ({
                       </div>
                     </div>
                   )
-                ) : currentIndex === 2 ? (
+                ) : currentRoute === "/market" ? (
                   <div>
                     <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                       <div className="flex items-center">
