@@ -22,6 +22,7 @@ const CreateListing = () => {
   const profile = useAppSelector((state) => state.user.profile);
   const markets = useAppSelector((state) => state.market.markets);
   const priceRef = useRef<HTMLInputElement>(null);
+  const discountRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
   const [stateProps, setStateProps] = useState<Market | null>(null);
   const dispatch = useAppDispatch();
@@ -57,6 +58,7 @@ const CreateListing = () => {
           category: categoryRef.current?.value.trim(),
           location: country ?? undefined,
           price: priceRef.current?.value.trim(),
+          discount: discountRef.current?.value.trim(),
         });
         if (response.success) {
           dispatch(
@@ -87,6 +89,7 @@ const CreateListing = () => {
         category: categoryRef.current?.value.trim(),
         location: country ?? undefined,
         price: priceRef.current?.value.trim(),
+        discount: discountRef.current?.value.trim(),
       });
       if (response.success) {
         dispatch(
@@ -130,6 +133,7 @@ const CreateListing = () => {
         category: categoryRef.current?.value.trim(),
         location: country ?? undefined,
         price: priceRef.current?.value.trim(),
+        discount:discountRef.current?.value.trim(),
       }
     );
     if (response.success) {
@@ -177,7 +181,7 @@ const CreateListing = () => {
           </button>
         </div>
       </div>
-      <div className="mt-20 px-4">
+      <div className="pt-20 px-4 bg-white">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -188,13 +192,28 @@ const CreateListing = () => {
             }
           }}
         >
-          <FilledInput
-            defaultValue={stateProps?.price}
-            inputRef={priceRef}
-            onchange={() => { }}
-            placeholder="Enter Price"
-            className="text-sm"
-          />
+          <div className="flex w-full">
+  <div className="flex-1">
+    <FilledInput
+      defaultValue={stateProps?.price}
+      inputRef={priceRef}
+      onchange={() => {}}
+      placeholder="Enter Price in USD (Eg $10)"
+      className="text-sm w-full"
+    />
+  </div>
+  <div className="flex-2 ml-2">
+    <FilledInput
+      defaultValue={stateProps?.discount}
+      inputRef={discountRef}
+      onchange={() => {}}
+      placeholder="Discount %"
+      className="text-sm w-full"
+    />
+  </div>
+</div>
+
+          
           <FilledTextarea
             defaultValue={stateProps?.description}
             inputRef={descriptionRef}
