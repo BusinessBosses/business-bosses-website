@@ -96,9 +96,9 @@ const ComputerTopNav = ({
   };
 
 
-  const renderButton = (index: number) => {
+  const renderButton = (index: string) => {
     switch (index) {
-      case 0:
+      case "/" :
         return (
           <button
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
@@ -116,7 +116,7 @@ const ComputerTopNav = ({
             />
           </button>
         );
-      case 1:
+      case "/communities":
         return (
           <button
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
@@ -156,7 +156,7 @@ const ComputerTopNav = ({
             />
           </button>
         );
-      case 2:
+      case "/market":
         return (
           <button
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
@@ -199,17 +199,17 @@ const ComputerTopNav = ({
   return (
     <div className="flex justify-between" style={{ gap: "15px" }}>
       <div
-        className={`tab ${currentIndex === 0 ? "selected-tab" : ""}`}
+        className={`tab ${currentRoute === "/" ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(0)}
       >
         <div className="flex flex-col items-center">
           <Assets.Home
-            stroke={currentIndex === 0 ? primaryColor : strokeColor}
+            stroke={currentRoute === "/"  ? primaryColor : strokeColor}
             style={{ width: "25px", height: "22px" }}
           />
           <p
             className={
-              currentIndex === 0
+              currentRoute === "/" 
                 ? "text-primary font-semibold text-base"
                 : "text-[#232324] text-base"
             }
@@ -220,17 +220,17 @@ const ComputerTopNav = ({
       </div>
 
       <div
-        className={`tab ${currentIndex === 1 ? "selected-tab" : ""}`}
+        className={`tab ${ currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(1)}
       >
         <div className="flex flex-col items-center">
           <Assets.BossupIcon
-            fill={currentIndex === 1 ? primaryColor : strokeColor}
+            fill={currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"  ? primaryColor : strokeColor}
             style={{ width: "33px", height: "23px" }}
           />
           <p
             className={
-              currentIndex === 1
+              currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"
                 ? "text-primary font-semibold text-base"
                 : "text-[#232324] text-base"
             }
@@ -241,16 +241,16 @@ const ComputerTopNav = ({
       </div>
 
       <div
-        className={`tab ${currentIndex === 2 ? "selected-tab" : ""}`}
+        className={`tab ${currentRoute === "/market"  ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(2)}
       >
         <div className="flex flex-col items-center">
           <Assets.MarketPlace
-            fill={currentIndex === 2 ? primaryColor : strokeColor}
+            fill={currentRoute === "/market"  ? primaryColor : strokeColor}
           />
           <p
             className={
-              currentIndex === 2
+              currentRoute === "/market" 
                 ? "text-primary font-semibold text-base"
                 : "text-[#232324] text-base"
             }
@@ -261,19 +261,19 @@ const ComputerTopNav = ({
       </div>
 
       <div
-        className={`tab ${currentIndex === 3 ? "selected-tab" : ""}`}
+        className={`tab ${currentRoute === "/chats"  ? "selected-tab" : ""}`}
         onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
         handleButtonClick: () => handleTabClick(3)}
       >
         <div className="flex flex-col items-center relative">
-          {currentIndex === 3 ? (
+          {currentRoute === "/chats"  ? (
             <Assets.Activemessage
-              stroke={currentIndex === 3 ? primaryColor : strokeColor}
+              stroke={currentRoute === "/chats"? primaryColor : strokeColor}
               style={{ width: "24px", height: "24px" }}
             />
           ) : (
             <Assets.Messagenoback
-              stroke={currentIndex === 3 ? primaryColor : strokeColor}
+              stroke={currentRoute === "/chats"  ? primaryColor : strokeColor}
               style={{ width: "24px", height: "24px" }}
             />
           )}
@@ -283,7 +283,7 @@ const ComputerTopNav = ({
           ) : null}
           <p
             className={
-              currentIndex === 3
+              currentRoute === "/chats" 
                 ? "text-primary font-semibold text-base"
                 : "text-[#232324] text-base"
             }
@@ -294,12 +294,12 @@ const ComputerTopNav = ({
       </div>
 
       <div
-        className={`tab ${currentIndex === 4 ? "selected-tab" : ""}`}
+        className={`tab ${currentRoute === "/notifications"  ? "selected-tab" : ""}`}
         onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
         handleButtonClick:() => handleTabClick(4)}
       >
         <div className="flex flex-col items-center relative">
-          {currentIndex === 4 ? (
+          {currentRoute === "/notifications" ? (
             <Assets.ActiveNotification
               style={{ width: "24px", height: "25px" }}
             />
@@ -312,7 +312,7 @@ const ComputerTopNav = ({
           ) : null}
           <p
             className={
-              currentIndex === 4
+              currentRoute === "/notifications" 
                 ? "text-primary font-semibold text-base"
                 : "text-[#232324] text-base"
             }
@@ -322,7 +322,7 @@ const ComputerTopNav = ({
         </div>
       </div>
       <div className="pb-3">
-        {renderButton(currentIndex)}
+        {renderButton(currentRoute)}
         {isPopupOpen && (
           <div className="overlay">
             <div className="popup">

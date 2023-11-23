@@ -43,6 +43,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
   const [showExpandedImages, setShowExpandedImages] = useState<boolean>(false);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showdelConfirmation, setShowdelConfirmation] = useState(false);
   const [showReport, setShowReport] = useState(false);
 
   const handleBlockClick = () => {
@@ -50,6 +51,9 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
   };
   const handleReportClick = () => {
     setShowReport(true);
+  };
+  const handleDeleteClick = () => {
+    setShowdelConfirmation(true);
   };
 
   const handleExpanded = () => {
@@ -73,6 +77,14 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
     });
     setShowReport(false);
   };
+
+  const handledelConfirm = () => {
+    toast.success("Post Deleted Successfully");
+    // GeneralPostsController.deletePost({
+    // });
+    setShowdelConfirmation(false);
+  };
+
 
   const handleConfirmBlock = () => {
     toast.success("User Blocked");
@@ -178,6 +190,20 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             </div>
           </div>
         )}
+        {showdelConfirmation && (
+          <div className="confirmation-overlay">
+
+            <div className="confirmation-dialog rounded-xl mx-5 bg-white">
+              <div className="font-bold text-lg text-center pt-10">Do you want to block user?</div>
+              <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">You will no longer see {data.user?.username}'s posts and comments on your feed</div>
+              <div className="flex justify-center pt-5 pb-10">
+                <button onClick={handleCancelBlock} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
+                <div className="ml-5">
+                  <FilledButtonsmall onClick={handleConfirmBlock} text={"Block"} /></div>
+              </div>
+            </div>
+          </div>
+        )}
         <SharePopUp
           url={`${window.location.href}post?id=${data.marketId}`}
           onClose={() => setShowShareDialog(false)}
@@ -275,6 +301,14 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                       className="menu-item"
                     >
                       Promote
+                    </button>
+                    <button
+                      onClick={() => {
+                       
+                      }}
+                      className="menu-item text-primary"
+                    >
+                      Delete
                     </button>
                   </div>
                 ) : (

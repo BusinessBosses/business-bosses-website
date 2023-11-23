@@ -68,7 +68,7 @@ const PublicProfileDetails = ({ data }: Props) => {
             }
             className="text-center"
           >
-            <p>{data.connectionCount}</p>
+            <p className="font-bold">{data.connectionCount}</p>
             <p className="text-xs font-semibold text-[#A9A9A9]">Connections</p>
           </button>
           <button
@@ -82,7 +82,7 @@ const PublicProfileDetails = ({ data }: Props) => {
             }
             className="text-center"
           >
-            <p>{data.connectedCount}</p>
+            <p className="font-bold">{data.connectedCount}</p>
             <p className="text-xs font-semibold text-[#A9A9A9]">Connected</p>
           </button>
           <button
@@ -96,7 +96,7 @@ const PublicProfileDetails = ({ data }: Props) => {
             }
             className="text-center"
           >
-            <p>{data.referalCount}</p>
+            <p className="font-bold">{data.referalCount}</p>
             <p className="text-xs font-semibold text-[#A9A9A9]">Referals</p>
           </button>
         </div>
