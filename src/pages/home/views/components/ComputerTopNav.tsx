@@ -220,17 +220,17 @@ const ComputerTopNav = ({
       </div>
 
       <div
-        className={`tab ${ currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" ? "selected-tab" : ""}`}
+        className={`tab ${ currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"  || currentRoute === "/forum" ? "selected-tab" : ""}`}
         onClick={() => handleTabClick(1)}
       >
         <div className="flex flex-col items-center">
           <Assets.BossupIcon
-            fill={currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"  ? primaryColor : strokeColor}
+            fill={currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"  || currentRoute === "/forum"  ? primaryColor : strokeColor}
             style={{ width: "33px", height: "23px" }}
           />
           <p
             className={
-              currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"
+              currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" || currentRoute === "/forum" 
                 ? "text-primary font-semibold text-base"
                 : "text-[#232324] text-base"
             }

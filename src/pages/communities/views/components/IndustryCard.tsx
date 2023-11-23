@@ -11,6 +11,7 @@ const IndustryCard = ({ industry }: Props) => {
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const profile = useAppSelector((state) => state.user);
+  
 
   useEffect(() => {
     if (isPopupOpen) {
@@ -40,8 +41,8 @@ const IndustryCard = ({ industry }: Props) => {
     <div>
     <div
       className="bg-white shadow p-2 rounded-xl mobile-only"
-      onClick={() => profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-      handleButtonClick : navigate(RoutesPath.forum, { state: industry })}
+      onClick={profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+      handleButtonClick : ()=>navigate(RoutesPath.forum, { state: industry })}
     >
       <div className="flex items-center justify-between mb-3">
         <p className="text-[#333333] text-sm font-[700]">{industry.industry}</p>
@@ -56,8 +57,9 @@ const IndustryCard = ({ industry }: Props) => {
 
     <div
       className="bg-white shadow p-2 rounded-xl computer-only"
-      onClick={() => profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-      handleButtonClick :openPopup}
+      onClick={profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                handleButtonClick : ()=>navigate(RoutesPath.forum, { state: industry })}
+    
     >
       <div className="flex items-center justify-between mb-3">
         <p className="text-[#333333] text-base font-[700] ">{industry.industry}</p>
