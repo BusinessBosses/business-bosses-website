@@ -28,7 +28,7 @@ import Outlinegrey from "../buttons/Outlinegrey";
 import Lightbox from "react-spring-lightbox";
 import FilledButton from "../buttons/FilledButton";
 import TranslucentDiv from "../buttons/Translucentbutton";
-import VisibilitySensor  from 'react-visibility-sensor';
+import VisibilitySensor from 'react-visibility-sensor';
 
 interface Props {
   data: Forum;
@@ -79,27 +79,27 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
     currentImageIndex + 1 < images?.length! &&
     setCurrentIndex(currentImageIndex + 1);
 
-    const connection = async () => {
-      if (profile?.connecteds?.includes(data.user?.uid!)) {
-        const newUserData: User = {
-          ...profile,
-          connecteds: profile.connecteds?.filter(
-            (ft) => ft !== data.user?.uid!
-          ),
-          connectedCount: (profile?.connectedCount ?? 0) - 1,
-        };
-        dispatch(saveUserData(newUserData));
-        await ConnectionsController.disConnect(data.user?.uid!);
-      } else {
-        const newUserData: User = {
-          ...profile,
-          connecteds: [...profile?.connecteds!, data.user?.uid],
-          connectedCount: (profile?.connectedCount ?? 0) + 1,
-        } as User;
-        dispatch(saveUserData(newUserData));
-        await ConnectionsController.connect(data.user?.uid!);
-      }
-    };
+  const connection = async () => {
+    if (profile?.connecteds?.includes(data.user?.uid!)) {
+      const newUserData: User = {
+        ...profile,
+        connecteds: profile.connecteds?.filter(
+          (ft) => ft !== data.user?.uid!
+        ),
+        connectedCount: (profile?.connectedCount ?? 0) - 1,
+      };
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.disConnect(data.user?.uid!);
+    } else {
+      const newUserData: User = {
+        ...profile,
+        connecteds: [...profile?.connecteds!, data.user?.uid],
+        connectedCount: (profile?.connectedCount ?? 0) + 1,
+      } as User;
+      dispatch(saveUserData(newUserData));
+      await ConnectionsController.connect(data.user?.uid!);
+    }
+  };
 
   const handleBlockClick = () => {
     setShowConfirmation(true);
@@ -129,9 +129,9 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
   const handleButtonClick = () => {
     const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
     if (window.confirm(confirmMessage)) {
-     navigate(RoutesPath.login)
+      navigate(RoutesPath.login)
     } else {
-     
+
     }
   };
 
@@ -182,33 +182,33 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
   };
   return (
     <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-    handleButtonClick: ()=>{}} >
+      handleButtonClick : () => { }} >
       <div className="bg-black mobilepopup justify-center" style={{ position: "relative" }}>
         {showConfirmation && (
           <div className="confirmation-overlay">
 
-          <div className="confirmation-dialog rounded-xl mx-5 bg-white">
-            <div className="font-bold text-lg text-center pt-10">Do you want to block user?</div>
-            <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">You will no longer see {data.user?.username}'s posts and comments on your feed</div>
-            <div className="flex justify-center pt-5 pb-10">
-              <button onClick={handleCancelBlock} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
-              <div className="ml-5">
-                <FilledButtonsmall onClick={handleConfirmBlock} text={"Block"} /></div>
-            </div>
+            <div className="confirmation-dialog rounded-xl mx-5 bg-white">
+              <div className="font-bold text-lg text-center pt-10">Do you want to block user?</div>
+              <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">You will no longer see {data.user?.username}'s posts and comments on your feed</div>
+              <div className="flex justify-center pt-5 pb-10">
+                <button onClick={handleCancelBlock} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
+                <div className="ml-5">
+                  <FilledButtonsmall onClick={handleConfirmBlock} text={"Block"} /></div>
+              </div>
             </div>
           </div>
         )}
         {showReport && (
           <div className="confirmation-overlay">
 
-          <div className="confirmation-dialog rounded-xl mx-5 bg-white">
-            <div className="font-bold text-lg text-center pt-10">Do you want to report post?</div>
-            <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">The post will be reported to admin to evaluate if it violates any community policy</div>
-            <div className="flex justify-center pt-5 pb-10">
-              <button onClick={handleCancelReport} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
-              <div className="ml-5">
-                <FilledButtonsmall onClick={handleConfirmReport} text={"Report"} /></div>
-            </div>
+            <div className="confirmation-dialog rounded-xl mx-5 bg-white">
+              <div className="font-bold text-lg text-center pt-10">Do you want to report post?</div>
+              <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">The post will be reported to admin to evaluate if it violates any community policy</div>
+              <div className="flex justify-center pt-5 pb-10">
+                <button onClick={handleCancelReport} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
+                <div className="ml-5">
+                  <FilledButtonsmall onClick={handleConfirmReport} text={"Report"} /></div>
+              </div>
             </div>
           </div>
         )}
@@ -236,7 +236,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                   id=""
                 />
                 <button onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:makeComment}>
+                  () => { } : makeComment}>
                   <Assets.Send />
                 </button>
               </div>
@@ -261,13 +261,13 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
           <div className="flex items-start justify-between">
             <div
               onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-              ()=>{}:() =>
-                navigate(RoutesPath.PublicUserProfile, { state: data.user })
+                () => { } : () =>
+                  navigate(RoutesPath.PublicUserProfile, { state: data.user })
               }
               className="flex items-center gap-3"
             >
               <UserAvatar imageURL={data.user?.photoUrl}
-              isRanked={data.user?.isRanked}
+                isRanked={data.user?.isRanked}
               />
               <div className="flex-grow">
                 <p className="font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
@@ -285,24 +285,24 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
               </div>
             </div>
             <div className="flex items-center gap-5">
-            {data.user?.isSubscribed && (
-              !profile?.connecteds?.includes(data.user.uid!) ? (
-                <GreyButton
-                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  ()=>{}:connection}
-                  text="Connect"
-                />
-              ) : (
-                <Outlinegrey
-                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  ()=>{}:() => {
-                    navigate(RoutesPath.refer, { state: data.user?.uid });
-                  }}
-                  text="Refer"
-                />
-              )
+              {data.user?.isSubscribed && (
+                !profile?.connecteds?.includes(data.user.uid!) ? (
+                  <GreyButton
+                    onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                      () => { } : connection}
+                    text="Connect"
+                  />
+                ) : (
+                  <Outlinegrey
+                    onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                      () => { } : () => {
+                        navigate(RoutesPath.refer, { state: data.user?.uid });
+                      }}
+                    text="Refer"
+                  />
+                )
 
-            )}
+              )}
 
               <Popup
                 trigger={
@@ -335,8 +335,8 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                         <button
                           onClick={() => {
                             close();
-                          
-                            
+
+
                           }}
                           className="menu-item border-none outline-none"
                         >
@@ -378,76 +378,80 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
               {data.description}
             </p>
             {data.industry ? (
-              <p className="text-[#4E4B4B] text-xs my-2">{data.industry}</p>
-            ) : null}
+  <div className="text-[#4E4B4B] text-xs my-2 px-3 py-1 rounded-lg" style={{ backgroundColor: '#f1f1f1', display: 'inline-block' }}>
+    {data.industry}
+  </div>
+) : null}
+
+
             {data.images ? (
-            <div className="mt-2">
-              <Lightbox className="lg:p-10 p-5" style={{ background: 'rgba(0, 0, 0, 0.98)' }}
-                isOpen={showExpandedImages}
-                onPrev={gotoPrevious}
-                onNext={gotoNext}
-                images={images}
-                currentIndex={currentImageIndex}
-                renderFooter={() => (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => setShowExpandedImages(false)}>
-                <TranslucentDiv />
-              </div>
-              )}
-                // renderFooter={() => (<CustomFooter />)}
-                renderPrevButton={() => (<Assets.Backbutton style={{ position: 'relative', zIndex: '500' }} onClick={gotoPrevious} />)}
-                renderNextButton={() => (
-                  <Assets.Backbutton
-                    style={{ transform: 'rotate(180deg)' }}
-                    onClick={gotoNext}
-                  />
-                )}
+              <div className="mt-2">
+                <Lightbox className="lg:p-10 p-5" style={{ background: 'rgba(0, 0, 0, 0.98)' }}
+                  isOpen={showExpandedImages}
+                  onPrev={gotoPrevious}
+                  onNext={gotoNext}
+                  images={images}
+                  currentIndex={currentImageIndex}
+                  renderFooter={() => (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => setShowExpandedImages(false)}>
+                    <TranslucentDiv />
+                  </div>
+                  )}
+                  // renderFooter={() => (<CustomFooter />)}
+                  renderPrevButton={() => (<Assets.Backbutton style={{ position: 'relative', zIndex: '500' }} onClick={gotoPrevious} />)}
+                  renderNextButton={() => (
+                    <Assets.Backbutton
+                      style={{ transform: 'rotate(180deg)' }}
+                      onClick={gotoNext}
+                    />
+                  )}
 
-                // renderImageOverlay={() => (<ImageOverlayComponent >)}
+                  // renderImageOverlay={() => (<ImageOverlayComponent >)}
 
-                /* Add styling */
-                // className="cool-class"
-                // style={{ background: "grey" }}
+                  /* Add styling */
+                  // className="cool-class"
+                  // style={{ background: "grey" }}
 
-                /* Handle closing */
-                // onClose={handleClose}
+                  /* Handle closing */
+                  // onClose={handleClose}
 
-                /* Use single or double click to zoom */
-                // singleClickToZoom
+                  /* Use single or double click to zoom */
+                  // singleClickToZoom
 
-                /* react-spring config for open/close animation */
-                pageTransitionConfig={{
-                  from: { transform: "scale(0.75)", opacity: 0 },
-                  enter: { transform: "scale(1)", opacity: 1 },
-                  leave: { transform: "scale(0.75)", opacity: 0 },
-                  config: { mass: 1, tension: 320, friction: 32 }
-                }}
-              />
-              <img
-                onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:() => { handleExpanded(); }}
-                src={data.images[0]}
-                alt=""
-                className="rounded-lg w-full h-64 object-cover"
-              />
-              <div className="flex overflow-x-hidden mt-2 hide-scroll-bar">
-                <div className="flex flex-nowrap gap-2">
-                  {data.images.map((img, index) => (
-                    <div key={img} className="inline-block">
-                      {index === 0 ? null : (
-                        <div className="max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                          <img
-                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                            ()=>{}:() => { handleExpanded(); }}
-                            src={img}
-                            alt=""
-                            className="rounded-lg w-20 h-20 object-cover"
-                          />
-                        </div>)}
-                    </div>
-                  ))}
+                  /* react-spring config for open/close animation */
+                  pageTransitionConfig={{
+                    from: { transform: "scale(0.75)", opacity: 0 },
+                    enter: { transform: "scale(1)", opacity: 1 },
+                    leave: { transform: "scale(0.75)", opacity: 0 },
+                    config: { mass: 1, tension: 320, friction: 32 }
+                  }}
+                />
+                <img
+                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                    () => { } : () => { handleExpanded(); }}
+                  src={data.images[0]}
+                  alt=""
+                  className="rounded-lg w-full h-64 object-cover"
+                />
+                <div className="flex overflow-x-hidden mt-2 hide-scroll-bar">
+                  <div className="flex flex-nowrap gap-2">
+                    {data.images.map((img, index) => (
+                      <div key={img} className="inline-block">
+                        {index === 0 ? null : (
+                          <div className="max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                            <img
+                              onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                                () => { } : () => { handleExpanded(); }}
+                              src={img}
+                              alt=""
+                              className="rounded-lg w-20 h-20 object-cover"
+                            />
+                          </div>)}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : null}
+            ) : null}
             <div className="mt-5 flex items-center justify-between mb-3">
               <div className="flex gap-5">
                 <PostAction
@@ -458,48 +462,48 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                       : Assets.Like
                   }
                   onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  ()=>{}:() => {
-                    if (onLike) {
-                      onLike(data.forumId);
-                    }
-                  }}
+                    () => { } : () => {
+                      if (onLike) {
+                        onLike(data.forumId);
+                      }
+                    }}
                 />
                 <PostAction
                   count={data.comments!.length.toString()}
                   icon={Assets.Comment}
                   onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  ()=>{}:() => {
-                    fetchComments();
-                    setOpen(true);
-                  }}
+                    () => { } : () => {
+                      fetchComments();
+                      setOpen(true);
+                    }}
                 />
                 <PostAction
                   count={data.coins!.length.toString()}
                   icon={Assets.Coin}
                   onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  ()=>{}:() => {
-                    if (onCoin) {
-                      onCoin(data.forumId);
-                    }
-                  }}
+                    () => { } : () => {
+                      if (onCoin) {
+                        onCoin(data.forumId);
+                      }
+                    }}
                 />
                 <VisibilitySensor onChange={handleOnVisibilityChange}>
-                <PostAction
-                  count={data.views!.toString()}
-                  icon={Assets.Viewsicon}
-                  onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  ()=>{}:() => {
-                    
-                  }}
-                />
+                  <PostAction
+                    count={data.views!.toString()}
+                    icon={Assets.Viewsicon}
+                    onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                      () => { } : () => {
+
+                      }}
+                  />
                 </VisibilitySensor>
                 <PostAction
                   count=""
                   icon={Assets.Share}
                   onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  ()=>{}:() => {
-                    setShowShareDialog(true);
-                  }}
+                    () => { } : () => {
+                      setShowShareDialog(true);
+                    }}
                 />
               </div>
               <small className="text-[#B4B4B4]">

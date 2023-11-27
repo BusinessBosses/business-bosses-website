@@ -6,7 +6,7 @@ import ComputerBossuppartnersection from "../../../bossuppartnerpage/computerbos
 interface Props {
   quote: Quote;
   partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
+  partnerDatatile: PartnerDatatile | null;
 }
 
 const DailyQuotes = ({ quote, partnerData, partnerDatatile }: Props) => {
@@ -16,11 +16,11 @@ const DailyQuotes = ({ quote, partnerData, partnerDatatile }: Props) => {
         <div className="bg-[#F4F4F4] p-5">
           <h3 className="text-sm font-semibold">Today’s Quote</h3>
           <div className="flex items-center gap-3 mt-3">
-  <img src={Assets.Logo} className="w-8 h-8" alt="" />
-  <p className="text-[#6B6969] text-sm mt-0">
-    {quote.message}
-  </p>
-</div>
+            <img src={Assets.Logo} className="w-8 h-8" alt="" />
+            <p className="text-[#6B6969] text-sm mt-0">
+              {quote.message}
+            </p>
+          </div>
 
 
           <h4 className="font-bold mt-2 text-end">{quote.by}</h4>
@@ -38,8 +38,8 @@ const DailyQuotes = ({ quote, partnerData, partnerDatatile }: Props) => {
           </p>
           <h4 className="font-bold mt-5 text-start">{quote.by}</h4>
         </div>
-        <div className="mt-5"><ComputerBossuppartnersection partnerData={partnerData}   partnerDatatile={partnerDatatile} /></div>
-        
+        <div className="mt-5"><ComputerBossuppartnersection partnerData={partnerData} partnerDatatile={partnerDatatile} /></div>
+
       </div>
     </div>
   );

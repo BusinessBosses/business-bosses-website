@@ -115,7 +115,7 @@ const NotificationPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => 
         <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
         <div className="computer-content">
           <div
-            className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
+            className="firstsection ml-5 lg:ml-20 pr-5 "
             style={{
               width: "25%",
               flexGrow: 0,
@@ -183,7 +183,7 @@ const NotificationPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => 
           <div
             className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
             style={{
-              width: "25%",
+              width: "30%",
               flexGrow: 0,
               overflow: "none",
               position: "sticky",
@@ -197,6 +197,8 @@ const NotificationPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => 
           </div>
         </div>
       </div>
+
+      
     </div>
   );
 };

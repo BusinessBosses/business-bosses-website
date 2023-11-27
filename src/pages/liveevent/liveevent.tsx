@@ -10,6 +10,7 @@ import MobileBossOfTheWeek from "../home/views/components/BossOfTheWeek";
 import ComputerHeader from "../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetailswcr";
 import Assets from "../../assets";
+import Computerlefttabsignedoutuser from "../profile/views/components/Computerlefttabsignedoutuser";
 
 
 interface Props {
@@ -84,10 +85,11 @@ const Liveevent: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                         }}
                     >
                         <div className="">
-                            <div className=" flex items-center gap-3">
-                                <ComputerProfileDetails data={profile.profile!} />
-                            </div>
-                        </div>
+              <div className=" flex items-center gap-3">
+                {profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  <ComputerProfileDetails data={profile.profile!} /> : <Computerlefttabsignedoutuser data={profile.profile!} />}
+              </div>
+            </div>
                     </div>
                     <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
                     <div

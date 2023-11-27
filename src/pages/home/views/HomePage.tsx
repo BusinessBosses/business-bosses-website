@@ -7,7 +7,7 @@ import GeneralPostsController, {
 } from "../../../common/controllers/GeneralPostsController";
 import { Forum } from "../../../common/interfaces/forum";
 import { Post } from "../../../common/interfaces/post";
-import { MixedPostState, updatePost } from "../../../redux/slices/PostSlice";
+import { MixedPostState, addPostToState, updatePost } from "../../../redux/slices/PostSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 
 import MobileBottomNav from "./components/MobileBottomNav";
@@ -31,6 +31,8 @@ import Assets from "../../../assets";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 import { log } from "console";
+import serviceApi from "../../../services/serviceApi";
+import HomeController from "../controller/HomeController";
 
 
 interface Props {
@@ -45,6 +47,52 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
   const profile = useAppSelector((state) => state.user);
   const chats = useAppSelector((state) => state.chat.chats);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+
+  const fetchMorePosts = async () => {
+    try {
+      setLoading(true);
+      const lastTimestamp = page > 0 ? posts[posts.length - 1]?.data.timestamp || 0 : 0;
+   
+  
+      const response = await serviceApi.fetch(`/post/get-posts?page=${page}&size=${50}&lastTimestamp=${lastTimestamp}`);
+     
+  
+      if (response && response.data && response.data.posts) {
+        const processedPosts = HomeController.processnewData(response); // Pass the entire response to processData
+        dispatch(addPostToState(processedPosts));
+        setPage((prevPage) => prevPage + 1);
+      } else {
+        console.error("Invalid response format:", response);
+      }
+  
+    } catch (error) {
+      console.error("Error fetching more posts:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
+
+  useEffect(() => {
+    function handleScroll() {
+      if (
+        window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight
+      ) {
+        
+        fetchMorePosts();
+      }
+    }
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]); // Empty dependency array to run the effect only once on mount
+
+
+
   const onLike = (args: LikeStruct, postIndex: number) => {
     let post = posts[postIndex];
     if (post.data.likes!.includes(profile.profile?.uid!)) {
@@ -137,25 +185,14 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
     }
   };
 
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
 
-  const handleScreenWidthChange = () => {
-    setScreenWidth(window.innerWidth);
-    // Perform any actions or updates based on the screen width change
-  };
 
-  useEffect(() => {
-    // Event listener for screen resize
-    window.addEventListener("resize", handleScreenWidthChange);
+  
 
-    return () => {
-      // Cleanup the event listener when the component unmounts
-      window.removeEventListener("resize", handleScreenWidthChange);
-    };
-  }, []); // Empty dependency array to run the effect only once on mount
 
   return (
     <div>
+
 
       <div className="mobile-only bg-[#fff]">
         <div className="justify-center items-center flex ">

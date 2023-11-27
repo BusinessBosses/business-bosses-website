@@ -54,7 +54,7 @@ const MyProfileDetails = ({ data }: Props) => {
             }
             className="text-center"
           >
-            <p>{data.connectedCount}</p>
+            <p className="font-bold">{data.connectionCount}</p>
             <p className="text-xs font-semibold text-[#A9A9A9]">Connections</p>
           </button>
           <button
@@ -68,7 +68,7 @@ const MyProfileDetails = ({ data }: Props) => {
             }
             className="text-center"
           >
-            <p>{data.connectedCount}</p>
+            <p className="font-bold">{data.connecteds?.length}</p>
             <p className="text-xs font-semibold text-[#A9A9A9]">Connected</p>
           </button>
           <button
@@ -82,7 +82,7 @@ const MyProfileDetails = ({ data }: Props) => {
             }
             className="text-center"
           >
-            <p>{data.referalCount}</p>
+            <p className="font-bold">{data.referalCount}</p>
             <p className="text-xs font-semibold text-[#A9A9A9]">Referals</p>
           </button>
         </div>
