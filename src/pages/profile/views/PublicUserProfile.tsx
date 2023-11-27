@@ -26,7 +26,7 @@ import MarketItem from "../../marketplace/views/components/MarketItem";
 
 interface Props {
   partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
+  partnerDatatile: PartnerDatatile | null;
 }
 
 const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
@@ -34,24 +34,20 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
   const [loading, setLoading] = useState<boolean>(false);
   const [err, setErr] = useState<boolean>(false);
   const [posts, setPosts] = useState<Post[]>([]);
-  const market = useAppSelector((state) => state.market);
   const [publicUser, setPublicUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useAppDispatch();
   const profile = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const market = useAppSelector((state) => state.market);
+
   const fetchPosts = async (userId: string) => {
     setLoading(true);
     setErr(false);
     const response = await ProfileController.fetchUserPosts(userId);
+
     if (response.success) {
-      setPosts(
-        response.data.posts.rows.map((mp: Post) => ({
-          ...mp,
-          coins: mp.coins.map((cn: any) => cn.userId),
-          likes: mp.likes.map((lk: any) => lk.userId),
-        }))
-      );
+      setPosts(response.data.posts.rows.map((mp: Post) => ({ ...mp })));
       setPublicUser(response.data.user.data);
     } else {
       setErr(true);
@@ -60,37 +56,22 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
     setLoading(false);
   };
 
-  const fetchData = async (userId: string) => {
-    // Fetch user posts
+  const fetchMarkets = async (userId: string) => {
     setLoading(true);
     setErr(false);
 
-    const responsePosts = await ProfileController.fetchUserPosts(userId);
-    if (responsePosts.success) {
-      dispatch(
-        savePostsToState(
-          responsePosts.data.posts.rows.map((mp: Post) => ({
-            ...mp,
-            coins: mp.coins.map((cn: any) => cn.userId),
-            likes: mp.likes.map((lk: any) => lk.userId),
-          }))
-        )
-      );
-    } else {
-      setErr(true);
-    }
-
-    // Fetch user markets
     const responseMarkets = await MarketController.fetchMarkets(market.page);
+
     if (responseMarkets.success) {
       dispatch(incrementPage());
+
       const filteredMarkets = responseMarkets.data.rows
         .map((mp: Market) => ({
           ...mp,
           coins: mp.coins!.map((cn: any) => cn.userId),
           likes: mp.likes!.map((lk: any) => lk.userId),
         }))
-        .filter((market: { userId: string | undefined; }) => market.userId === profile.profile?.uid);
+        .filter((market: { userId: string | undefined }) => market.userId === userId);
 
       dispatch(addMarketsToState(filteredMarkets));
       dispatch(saveCount(responseMarkets.data.count));
@@ -101,17 +82,16 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
     setLoading(false);
   };
 
-
   useEffect(() => {
     const state = location.state;
-    if (!!!state) {
+
+    if (!state || !state.uid) {
       navigate(-1);
     } else {
       const publicUserState: User = state;
       setPublicUser(publicUserState);
       fetchPosts(publicUserState.uid);
-      // fetchMarkets(publicUserState.uid);
-
+      fetchMarkets(publicUserState.uid);
     }
   }, []);
   return (
@@ -162,7 +142,7 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
                   errorMessage="Something went wrong!!"
                   loading={false}
                   onReload={() => {
-                    // fetchMarketUsers();
+                  fetchMarkets(publicUser?.uid!);
                   }}
                 />
               ) : (
