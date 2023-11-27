@@ -53,21 +53,26 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
   const fetchMorePosts = async () => {
     try {
       setLoading(true);
-      const response = await serviceApi.fetch(`/init?page=${page}`);
-      console.log('Server Response:', response);
+      const lastTimestamp = page > 0 ? posts[posts.length - 1]?.data.timestamp || 0 : 0;
+   
   
-      const processedPosts = HomeController.processData(response);
-      console.log('Processed Posts:', processedPosts);
+      const response = await serviceApi.fetch(`/post/get-posts?page=${page}&size=${50}&lastTimestamp=${lastTimestamp}`);
+     
   
-      dispatch(addPostToState(processedPosts));
-      setPage((prevPage) => prevPage + 1);
+      if (response && response.data && response.data.posts) {
+        const processedPosts = HomeController.processnewData(response); // Pass the entire response to processData
+        dispatch(addPostToState(processedPosts));
+        setPage((prevPage) => prevPage + 1);
+      } else {
+        console.error("Invalid response format:", response);
+      }
+  
     } catch (error) {
       console.error("Error fetching more posts:", error);
     } finally {
       setLoading(false);
     }
   };
-  
   
 
 
@@ -77,6 +82,7 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
         window.innerHeight + document.documentElement.scrollTop ===
         document.documentElement.offsetHeight
       ) {
+        
         fetchMorePosts();
       }
     }
@@ -186,6 +192,7 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
+
 
       <div className="mobile-only bg-[#fff]">
         <div className="justify-center items-center flex ">

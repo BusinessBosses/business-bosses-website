@@ -356,10 +356,11 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
           <div className="flex">
             <p className="text-[#232324] font-bold my-1">{data.price}</p>
             {data.discount !== null && (
-              <div className="ml-3 rounded-lg px-3 py-1 bg-[#D6F8E6] font-bold text-[#64AB5B]">
+              <div className="ml-3 flex items-center rounded-lg px-3 py-1 bg-[#D6F8E6] font-bold text-[#64AB5B]" style={{ fontSize: "12px" }}>
                 {data.discount}% off
               </div>
             )}
+
 
           </div>
 
