@@ -16,4 +16,5 @@ export interface Market {
     coins?: string[];
     comments?: Comment[];
     views?: number;
+    discount?: string;
 }

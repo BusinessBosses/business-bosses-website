@@ -43,6 +43,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
   const [showExpandedImages, setShowExpandedImages] = useState<boolean>(false);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showdelConfirmation, setShowdelConfirmation] = useState(false);
   const [showReport, setShowReport] = useState(false);
 
   const handleBlockClick = () => {
@@ -50,6 +51,9 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
   };
   const handleReportClick = () => {
     setShowReport(true);
+  };
+  const handleDeleteClick = () => {
+    setShowdelConfirmation(true);
   };
 
   const handleExpanded = () => {
@@ -73,6 +77,14 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
     });
     setShowReport(false);
   };
+
+  const handledelConfirm = () => {
+    toast.success("Post Deleted Successfully");
+    // GeneralPostsController.deletePost({
+    // });
+    setShowdelConfirmation(false);
+  };
+
 
   const handleConfirmBlock = () => {
     toast.success("User Blocked");
@@ -178,6 +190,20 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             </div>
           </div>
         )}
+        {showdelConfirmation && (
+          <div className="confirmation-overlay">
+
+            <div className="confirmation-dialog rounded-xl mx-5 bg-white">
+              <div className="font-bold text-lg text-center pt-10">Do you want to block user?</div>
+              <div className="text-center text-sm lg:text-base pt-2 pl-10 pr-10">You will no longer see {data.user?.username}'s posts and comments on your feed</div>
+              <div className="flex justify-center pt-5 pb-10">
+                <button onClick={handleCancelBlock} style={{ color: 'grey', fontWeight: 'bold' }}>Cancel</button>
+                <div className="ml-5">
+                  <FilledButtonsmall onClick={handleConfirmBlock} text={"Block"} /></div>
+              </div>
+            </div>
+          </div>
+        )}
         <SharePopUp
           url={`${window.location.href}post?id=${data.marketId}`}
           onClose={() => setShowShareDialog(false)}
@@ -232,8 +258,8 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             />
             <div className="">
               <p className="font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
-                {data.user?.username}
-                {data.user?.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
+                {data.user?.name ?? data.user?.username}
+                {data.user!.isSubscribed && <div className="ml-1"><Assets.Checkmark width={9} /></div>}
               </p>
               <p className="text-sm text-[#777777] lg:text-base">
                 {trimText(data.user?.bio ?? "", 20)}
@@ -275,6 +301,14 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                       className="menu-item"
                     >
                       Promote
+                    </button>
+                    <button
+                      onClick={() => {
+
+                      }}
+                      className="menu-item text-primary"
+                    >
+                      Delete
                     </button>
                   </div>
                 ) : (
@@ -319,7 +353,17 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
           {data.promote ? (
             <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
           ) : null}
-          <p className="text-[#232324] font-bold my-1">${data.price}</p>
+          <div className="flex">
+            <p className="text-[#232324] font-bold my-1">{data.price}</p>
+            {data.discount !== null && (
+              <div className="ml-3 flex items-center rounded-lg px-3 py-1 bg-[#D6F8E6] font-bold text-[#64AB5B]" style={{ fontSize: "12px" }}>
+                {data.discount}% off
+              </div>
+            )}
+
+
+          </div>
+
           <p className="text-sm text-[#303133] lg:text-base break-words">{data.description}</p>
           <div className="my-1 flex items-center gap-3">
             {data.location ? (
@@ -469,13 +513,13 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             </div>
 
             {data.userId !== profile?.uid ?
-  <div className="text-xs text-primary lg:text-sm font-bold border rounded-lg lg:rounded-xl p-1.5 cursor-pointer"
-    style={{ borderColor: '#F21C29' , borderWidth:'2px' }}
-    onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-      () => { } : () => { navigate(RoutesPath.ChatRoom, { state: { user: data } }); }}>
-    Message Seller
-  </div>
-  : null}
+              <div className="text-xs text-primary lg:text-sm font-bold border rounded-lg lg:rounded-xl p-1.5 cursor-pointer"
+                style={{ borderColor: '#F21C29', borderWidth: '2px' }}
+                onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  () => { } : () => { navigate(RoutesPath.ChatRoom, { state: { user: data } }); }}>
+                Message Seller
+              </div>
+              : null}
 
 
           </div>

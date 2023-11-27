@@ -68,5 +68,6 @@ interface MarketStruct {
     price?: string,
     location?: string,
     timestamp?: number
+    discount?: string,
 }
 

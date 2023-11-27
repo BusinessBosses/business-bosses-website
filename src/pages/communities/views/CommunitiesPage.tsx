@@ -443,7 +443,7 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
           <div
             className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
             style={{
-              width: "25%",
+              width: "30%",
               flexGrow: 0,
               overflow: "auto",
               position: "sticky",

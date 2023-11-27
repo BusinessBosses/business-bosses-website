@@ -341,7 +341,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
           <div
             className="lastsection ml-5 mr-5 mt-5 lg:mr-20"
             style={{
-              width: "25%",
+              width: "29%",
               flexGrow: 0,
               overflow: "none",
               position: "sticky",
