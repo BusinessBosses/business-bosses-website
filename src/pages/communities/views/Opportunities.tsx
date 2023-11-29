@@ -4,6 +4,7 @@ import { Industry } from "../../../common/interfaces/industry";
 import CommunitiesController from "../controller/CommunitiesController";
 import AppConstants from "../../../constants/consts";
 import IndustryCard from "./components/IndustryCard";
+import { Helmet } from "react-helmet";
 
 const Opportunities = () => {
   const industries = useAppSelector((state) => state.industry.industries);
@@ -19,6 +20,13 @@ const Opportunities = () => {
   }, [industries]);
   return (
     <div>
+      <Helmet>
+        <title>Boss Up Opportunities - Business Bosses</title>
+        <meta name="description" content="Join a collaborative haven for entrepreneurs to explore and capitalize on diverse business opportunities. 
+        Learn and thrive with like-minded leaders in this dynamic space. 
+        Unleash your potential and seize the opportunities that shape success" />
+          {/* meta tags */}
+      </Helmet>
     <div className="mobile-only bg-[#F4F4F4] px-4 py-3">
       <div className="grid grid-cols-2 gap-3">
         {opportunitiesIndustries.map((industry) => {
