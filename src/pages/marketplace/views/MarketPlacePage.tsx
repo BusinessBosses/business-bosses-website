@@ -175,7 +175,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
          <Helmet>
         <title>Marketplace - Business Bosses</title>
         <meta name="description" content="Sell your Products and Services. Find Supplies" />
-          {/* meta tags */}
+        <meta name="keywords" content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />
       </Helmet>
       <div className="mobile-only bg-white" style={{}}>
         <div

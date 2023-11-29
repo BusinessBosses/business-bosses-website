@@ -333,7 +333,12 @@ const App = () => {
         onReload={fetchData}
       />
     )
-  ) : (
+  ) : (<>
+    <Helmet>
+    <title>Business Bosses</title>
+    <meta name="description" content="Social Entrepreneur Community - Grow and Promote your Business" />
+    {/* Add any other default meta tags here */}
+  </Helmet>
     <Routes>
       <Route path={RoutesPath.home} element={<HomePage socket={socket} partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
       <Route
@@ -447,6 +452,7 @@ const App = () => {
       />
       
     </Routes>
+    </>
   );
 };
 
