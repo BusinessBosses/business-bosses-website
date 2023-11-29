@@ -31,6 +31,7 @@ import { User } from "../../../common/interfaces/user";
 import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 interface Props {
   socket: Socket;
   partnerData: PartnerData | null;
@@ -171,6 +172,11 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
+         <Helmet>
+        <title>Marketplace - Business Bosses</title>
+        <meta name="description" content="Sell your Products and Services. Find Supplies" />
+          {/* meta tags */}
+      </Helmet>
       <div className="mobile-only bg-white" style={{}}>
         <div
           className="bg-white top-0 w-full z-50"

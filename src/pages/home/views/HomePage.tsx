@@ -33,6 +33,7 @@ import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 import { log } from "console";
 import serviceApi from "../../../services/serviceApi";
 import HomeController from "../controller/HomeController";
+import { Helmet } from "react-helmet";
 
 
 interface Props {
@@ -54,11 +55,11 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
     try {
       setLoading(true);
       const lastTimestamp = page > 0 ? posts[posts.length - 1]?.data.timestamp || 0 : 0;
-   
-  
+
+
       const response = await serviceApi.fetch(`/post/get-posts?page=${page}&size=${50}&lastTimestamp=${lastTimestamp}`);
-     
-  
+
+
       if (response && response.data && response.data.posts) {
         const processedPosts = HomeController.processnewData(response); // Pass the entire response to processData
         dispatch(addPostToState(processedPosts));
@@ -66,14 +67,14 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
       } else {
         console.error("Invalid response format:", response);
       }
-  
+
     } catch (error) {
       console.error("Error fetching more posts:", error);
     } finally {
       setLoading(false);
     }
   };
-  
+
 
 
   useEffect(() => {
@@ -82,11 +83,11 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
         window.innerHeight + document.documentElement.scrollTop ===
         document.documentElement.offsetHeight
       ) {
-        
+
         fetchMorePosts();
       }
     }
-  
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loading]); // Empty dependency array to run the effect only once on mount
@@ -187,11 +188,16 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
 
 
-  
+
 
 
   return (
     <div>
+      <Helmet>
+        <title>Home - Business Bosses</title>
+        <meta name="description" content="Social Entrepreneur Community - Grow and Promote your Business" />
+          {/* meta tags */}
+      </Helmet>
 
 
       <div className="mobile-only bg-[#fff]">

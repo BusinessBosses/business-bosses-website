@@ -35,6 +35,7 @@ import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   socket: Socket;
@@ -282,6 +283,12 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
+       <Helmet>
+        <title>Boss Up Challenge - Business Bosses</title>
+        <meta name="description" content="Become the Boss of the week and enjoy high visibility on your profile 
+        giving you and your business access to wider audience." />
+          {/* meta tags */}
+      </Helmet>
       <div className="mobile-only">
         <div
           className="bg-white top-0 w-full z-50"
