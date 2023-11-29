@@ -61,6 +61,7 @@ import { PartnerData } from "./common/interfaces/partnerdata";
 import axios from "axios";
 import { PartnerDatatile } from "./common/interfaces/partnerdatatile";
 import Liveevent from "./pages/liveevent/liveevent";
+import { Helmet } from "react-helmet";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
