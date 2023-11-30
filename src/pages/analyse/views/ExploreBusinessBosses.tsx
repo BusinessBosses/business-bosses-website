@@ -15,6 +15,7 @@ import axios from "axios";
 import Loader from "../../../common/components/loader/Loader";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -67,6 +68,9 @@ const ExploreBusinessBosses: React.FC<Props> = ({ partnerData, partnerDatatile }
     <div>
       <div>
         <div>
+        <Helmet>
+                <title>Explore Business Bosses - Business Bosses</title>
+            </Helmet>
           <div className="mobile-only">
             <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, borderBottom: '15px solid rgba(244, 244, 244, 1)' }}>
               <CommonPageHeader title="Explore Business Bosses" />

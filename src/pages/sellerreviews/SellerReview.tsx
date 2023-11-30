@@ -20,6 +20,7 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import Assets from "../../assets";
 import { PartnerData } from "../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 interface Review {
   id: number;
   sellerId: string;
@@ -92,6 +93,9 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
   return (
     <div>
+         <Helmet>
+        <title>{seller?.username}'s Reviews - Business Bosses</title>
+      </Helmet>
       <div className="mobile-only">
         <div
           className=" top-0 w-full z-50 mobile-only "

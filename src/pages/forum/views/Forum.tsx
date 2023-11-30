@@ -40,6 +40,7 @@ import Computerlefttabsignedoutuser from "../../profile/views/components/Compute
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 import ComputerHeaderForumonly from "../../home/views/components/ComputerHeaderForumonly";
+import { Helmet } from "react-helmet";
 interface Props {
   socket: Socket;
   partnerData : PartnerData | null ;
@@ -388,6 +389,9 @@ const Forum = ({ socket, partnerData, partnerDatatile }: Props) => {
   };
   return (
     <div>
+        <Helmet>
+                <title>{industry?.industry} - Business Bosses</title>
+            </Helmet>
       <FormModal
         closeModal={() => setOpenModal(false)}
         createPost={createPost}

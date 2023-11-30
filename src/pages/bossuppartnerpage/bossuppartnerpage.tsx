@@ -6,6 +6,7 @@ import ComputerHeader from "../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetailswcr";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 interface PartnerData {
   partnerlogo: string | null;
@@ -63,6 +64,9 @@ const Bossuppartnerpage = () => {
   
   return (
     <div>
+        <Helmet>
+                <title>Our Partners - Business Bosses</title>
+            </Helmet>
       <div className="bg-white mobile-only">
         <div
           className=" top-0 w-full z-50 mobile-only "

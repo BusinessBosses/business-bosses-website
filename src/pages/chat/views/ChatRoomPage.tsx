@@ -19,6 +19,7 @@ import RoutesPath from "../../../constants/Routes";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 interface Props {
   socket: Socket;
   partnerData: PartnerData | null;
@@ -112,6 +113,9 @@ const ChatRoomPage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
+        <Helmet>
+                <title>Chat - Business Bosses</title>
+            </Helmet>
       <div className="mobile-only bg-[#f4f4f4] min-h-screen h-full">
         <div
           className="px-4 py-3"

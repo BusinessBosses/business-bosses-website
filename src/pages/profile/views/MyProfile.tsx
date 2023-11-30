@@ -19,6 +19,7 @@ import MarketController from "../../marketplace/controller/MarketController";
 import { addMarketsToState, addMembersToState, incrementPage, saveCount } from "../../../redux/slices/MarketSlice";
 import MarketItem from "../../marketplace/views/components/MarketItem";
 import { Market } from "../../../common/interfaces/Market";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -103,6 +104,9 @@ const MyProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
   return (
     <div>
+         <Helmet>
+        <title>@{profile.profile!.username} - Business Bosses</title>
+      </Helmet>
       <div className="mobile-only bg-white w-full" style={{ height: "100vh" }}>
         <MyProfileHeader />
         <div className="mx-5"><MyProfileDetails data={profile.profile!} /></div>

@@ -16,6 +16,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -43,6 +44,9 @@ const ChatPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   }, [chats]);
   return (
     <div>
+        <Helmet>
+                <title>Messages - Business Bosses</title>
+            </Helmet>
       <div className="mobile-only">
         <div
           style={{

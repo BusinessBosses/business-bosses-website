@@ -5,6 +5,7 @@ import FilledButtonsmall from '../../../common/components/buttons/FilledButtonsm
 import RoutesPath from '../../../constants/Routes';
 import { useNavigate } from 'react-router-dom';
 import Chooseplancard from '../components/chooseplancard';
+import { Helmet } from 'react-helmet';
 
 const BoostPost = () => {
     const [isProcessing, setIsProcessing] = useState(false);
@@ -35,6 +36,9 @@ const BoostPost = () => {
     
     return (
         <div>
+              <Helmet>
+                <title>Boost Post - Business Bosses</title>
+            </Helmet>
             <div className="bg-white" style={{ height: '100vh' }}>
                 <div
                     className="bg-white top-0 w-full z-50 "

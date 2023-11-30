@@ -6,6 +6,7 @@ import FilledButtonsmall from '../../../common/components/buttons/FilledButtonsm
 import RoutesPath from '../../../constants/Routes';
 import { useNavigate } from 'react-router-dom';
 import { Padding } from '@mui/icons-material';
+import { Helmet } from 'react-helmet';
 
 const RenewSubscriptionConfirmationPage: React.FC = () => {
     const navigate = useNavigate();
@@ -14,6 +15,10 @@ const RenewSubscriptionConfirmationPage: React.FC = () => {
 
     return (
         <div>
+
+            <Helmet>
+                <title>Payment Confirmation - Business Bosses</title>
+            </Helmet>
 
 
             <div className="mobile-only bg-white " style={{ height: "100vh" }} >

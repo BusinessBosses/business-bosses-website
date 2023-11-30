@@ -11,6 +11,7 @@ import ComputerHeader from "../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../profile/views/components/ComputerProfiledetailswcr";
 import Assets from "../../assets";
 import Computerlefttabsignedoutuser from "../profile/views/components/Computerlefttabsignedoutuser";
+import { Helmet } from "react-helmet";
 
 
 interface Props {
@@ -26,6 +27,9 @@ const Liveevent: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
     return (
         <div>
+             <Helmet>
+        <title>Live Event - Business Bosses</title>
+      </Helmet>
             <div>
                 <div>
                     <div className="mobile-only">

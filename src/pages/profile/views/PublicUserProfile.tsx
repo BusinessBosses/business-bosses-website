@@ -23,6 +23,7 @@ import { addMarketsToState } from "../../../redux/slices/MarketSlice";
 import { incrementPage } from "../../../redux/slices/PostSlice";
 import { savePostsToState } from "../../../redux/slices/UserSlice";
 import MarketItem from "../../marketplace/views/components/MarketItem";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -96,6 +97,9 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
   }, []);
   return (
     <div>
+      <Helmet>
+        <title>@{publicUser?.username ?? ""} - Business Bosses</title>
+      </Helmet>
       <div className="mobile-only bg-white" style={{height:"100vh"}}>
         <PublicProfileHeader name={publicUser?.username ?? ""} />
 
