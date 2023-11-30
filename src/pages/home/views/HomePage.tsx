@@ -193,11 +193,8 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
-      <Helmet>
-        <title>Home - Business Bosses</title>
-        <meta name="description" content="Social Entrepreneur Community - Grow and Promote your Business" />
-          {/* meta tags */}
-      </Helmet>
+
+
 
 
       <div className="mobile-only bg-[#fff]">
