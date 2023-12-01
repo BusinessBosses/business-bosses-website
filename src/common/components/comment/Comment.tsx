@@ -14,13 +14,14 @@ const Comment = ({ comment }: Props) => {
         onClick={() =>
           navigate(RoutesPath.PublicUserProfile, { state: comment.user })
         }
-        className="flex items-center gap-3"
+        className="flex items-center"
       >
         <UserAvatar
           imageURL={
             comment.user?.photoUrl 
           }
         />
+         <div className="w-3"></div>
         <div className="">
           <p className="text-[#333333] font-bold text-xs capitalize">
             {comment.user?.username}

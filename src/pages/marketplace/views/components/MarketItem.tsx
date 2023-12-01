@@ -247,7 +247,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
           </div>
         </BottomSheet>
         <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3" onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+          <div className="flex items-center" onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
             () => { } : () =>
               navigate(RoutesPath.PublicUserProfile, { state: data.user })
           }>
@@ -256,6 +256,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                 data.user?.photoUrl
               }
             />
+             <div className="w-3"></div>
             <div className="">
               <p className="font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                 {data.user?.name ?? data.user?.username}
@@ -475,6 +476,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                     onLike(data.marketId);
                   }}
               />
+               <div className="w-5"></div>
               <PostAction
                 count={data.comments!.length.toString()}
                 icon={Assets.Comment}
@@ -484,6 +486,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                     setOpen(true);
                   }}
               />
+               <div className="w-5"></div>
               <PostAction
                 count={data.coins!.length.toString()}
                 icon={Assets.Coin}
@@ -492,6 +495,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                     onCoin(data.marketId);
                   }}
               />
+               <div className="w-5"></div>
               <PostAction
                 count={data.views!.toString()}
                 icon={Assets.Viewsicon}
@@ -500,7 +504,9 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
 
                   }}
               />
+            
               <div className="computer-only">
+              <div className="w-5"></div>
                 <PostAction
                   count=""
                   icon={Assets.Share}
