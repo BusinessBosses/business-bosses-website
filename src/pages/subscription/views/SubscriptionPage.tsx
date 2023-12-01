@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -77,6 +78,9 @@ const SubscriptionPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => 
 
   return (
     <div>
+       <Helmet>
+        <title>Become a Premium Member - Business Bosses</title>
+      </Helmet>
       <div className=""
 
       >

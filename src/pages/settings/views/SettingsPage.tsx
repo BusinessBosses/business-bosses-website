@@ -16,6 +16,7 @@ import { StorageEnum } from "../../../common/emums/StorageEmuns";
 import AuthController from "../../authentication/controller/AuthController";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -96,6 +97,9 @@ const SettingsPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
   return (
     <div>
+         <Helmet>
+        <title>Settings - Business Bosses</title>
+      </Helmet>
       {showConfirmation && (
           <div className="confirmation-overlay">
 

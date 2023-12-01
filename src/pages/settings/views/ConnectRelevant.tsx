@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { storeRelevantUsers } from "../../../redux/slices/UserSlice";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
+import { Helmet } from "react-helmet";
 
 const ConnectRelevant = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -38,6 +39,9 @@ const ConnectRelevant = () => {
 
   return (
     <div>
+         <Helmet>
+        <title>Connect Relevant Users - Business Bosses</title>
+      </Helmet>
       <div
         className="mobile-only"
         style={{

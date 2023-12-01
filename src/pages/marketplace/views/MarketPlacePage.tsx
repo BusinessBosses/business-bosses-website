@@ -35,7 +35,7 @@ import { Helmet } from "react-helmet";
 interface Props {
   socket: Socket;
   partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
+  partnerDatatile: PartnerDatatile | null;
 }
 const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
   const market = useAppSelector((state) => state.market);
@@ -172,10 +172,27 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
-         <Helmet>
+      <Helmet>
+
         <title>Marketplace - Business Bosses</title>
-        <meta name="description" content="Sell your Products and Services. Find Supplies" />
-          {/* meta tags */}
+        <meta name="description"  content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />
+
+        <meta itemProp="name" content="Business Bosses" />
+        <meta itemProp="description"  content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />       <meta itemProp="image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+        <meta property="og:url" content="https://businessbosses.co.uk" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Business Bosses" />
+        <meta property="og:description"  content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />
+        <meta property="og:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Business Bosses" />
+        <meta name="twitter:description" content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />
+        <meta name="twitter:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
       </Helmet>
       <div className="mobile-only bg-white" style={{}}>
         <div
@@ -200,7 +217,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
         </div>
 
         <div className="">
-          <MobileMarketIntro partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+          <MobileMarketIntro partnerData={partnerData} partnerDatatile={partnerDatatile} />
         </div>
 
         <div className="">
@@ -209,7 +226,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
               error={false}
               errorMessage="Something went wrong!!"
               loading={true}
-              onReload={() => {}}
+              onReload={() => { }}
             />
           ) : null}
           {err ? (
@@ -260,13 +277,13 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
       {isPopupOpen && (
         <div className="overlay">
           <div className="mobilepopup" style={{ overflowY: "scroll" }}>
-            <Marketplacesearchpopup  onClosePopup={closePopup} />
+            <Marketplacesearchpopup onClosePopup={closePopup} />
           </div>
         </div>
       )}
 
       <div className="computer-only">
-        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
+        <ComputerHeader partnerData={partnerData} partnerDatatile={partnerDatatile} />
         <div className="computer-content">
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
@@ -281,8 +298,8 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
           >
             <div className="">
               <div className=" flex items-center gap-3">
-              {profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                    <ComputerProfileDetails data={profile.profile!} /> : <Computerlefttabsignedoutuser data={profile.profile!} />}
+                {profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                  <ComputerProfileDetails data={profile.profile!} /> : <Computerlefttabsignedoutuser data={profile.profile!} />}
               </div>
             </div>
           </div>
@@ -297,7 +314,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
                   error={false}
                   errorMessage="Something went wrong!!"
                   loading={true}
-                  onReload={() => {}}
+                  onReload={() => { }}
                 />
               ) : null}
               {err ? (
@@ -356,7 +373,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
             }}
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
-              <MobileMarketIntro partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+              <MobileMarketIntro partnerData={partnerData} partnerDatatile={partnerDatatile} />
             </div>
           </div>
         </div>

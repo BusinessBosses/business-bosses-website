@@ -26,7 +26,7 @@ import Outlinegrey from "../../../../common/components/buttons/Outlinegrey";
 import Lightbox from 'react-spring-lightbox';
 import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
 import TranslucentDiv from "../../../../common/components/buttons/Translucentbutton";
-import VisibilitySensor  from 'react-visibility-sensor';
+import VisibilitySensor from 'react-visibility-sensor';
 
 interface Props {
   data: Post;
@@ -175,15 +175,15 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
   const handleButtonClick = () => {
     const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
     if (window.confirm(confirmMessage)) {
-     navigate(RoutesPath.login)
+      navigate(RoutesPath.login)
     } else {
-     
+
     }
   };
 
   return (
     <div onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-    handleButtonClick: ()=>{}}>
+      handleButtonClick : () => { }}>
       <div className="bg-black mobilepopup justify-center" style={{ position: "relative" }}>
         {showConfirmation && (
           <div className="confirmation-overlay">
@@ -237,7 +237,7 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
                   id=""
                 />
                 <button onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:makeComment}>
+                  () => { } : makeComment}>
                   <Assets.Send />
                 </button>
               </div>
@@ -277,7 +277,7 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
                   id=""
                 />
                 <button onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:makeComment}>
+                  () => { } : makeComment}>
                   <Assets.Send />
                 </button>
               </div>
@@ -304,12 +304,13 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
         <div className="flex items-start justify-between">
           <div
             onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            ()=>{}:() =>
-              navigate(RoutesPath.PublicUserProfile, { state: data.user })
+              () => { } : () =>
+                navigate(RoutesPath.PublicUserProfile, { state: data.user })
             }
-            className="flex items-center gap-3"
+            className="flex items-center"
           >
             <UserAvatar imageURL={data.user.photoUrl} isRanked={data.user.isRanked} />
+            <div className="w-3"></div>
             <div className="flex-grow">
               <p className=" font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                 {data.user?.name}
@@ -326,25 +327,27 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
             </div>
           </div>
 
-          <div className="flex items-center gap-5">
+          <div className="flex items-center ">
             {data.user?.isSubscribed && (
               !profile?.connecteds?.includes(data.user.uid!) ? (
                 <GreyButton
                   onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  ()=>{}:connection}
+                    () => { } : connection}
                   text="Connect"
                 />
               ) : (
                 <Outlinegrey
                   onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  ()=>{}:() => {
-                    navigate(RoutesPath.refer, { state: data.user.uid });
-                  }}
+                    () => { } : () => {
+                      navigate(RoutesPath.refer, { state: data.user.uid });
+                    }}
                   text="Refer"
                 />
               )
 
+
             )}
+            <div className="w-2"></div>
 
             <Popup
               trigger={
@@ -457,7 +460,7 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
               />
               <img
                 onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:() => { handleExpanded(); }}
+                  () => { } : () => { handleExpanded(); }}
                 src={data.images[0]}
                 alt=""
                 className="rounded-lg w-full h-64 object-cover"
@@ -470,7 +473,7 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
                         <div className="max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
                           <img
                             onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                            ()=>{}:() => { handleExpanded(); }}
+                              () => { } : () => { handleExpanded(); }}
                             src={img}
                             alt=""
                             className="rounded-lg w-20 h-20 object-cover"
@@ -483,7 +486,7 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
             </div>
           ) : null}
           <div className="mt-5 flex items-center justify-between mb-3">
-            <div className="flex gap-5">
+            <div className="flex">
               <PostAction
                 count={data.likes.length.toString()}
                 icon={
@@ -492,43 +495,47 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
                     : Assets.Like
                 }
                 onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:() => {
-                  onLike(data.postId);
-                }}
+                  () => { } : () => {
+                    onLike(data.postId);
+                  }}
               />
+              <div className="w-5"></div>
               <PostAction
                 count={data.comments.length.toString()}
                 icon={Assets.Comment}
                 onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:() => {
-                  fetchComments();
-                  setOpen(true);
-                }}
+                  () => { } : () => {
+                    fetchComments();
+                    setOpen(true);
+                  }}
               />
+              <div className="w-5"></div>
               <PostAction
                 count={data.coins.length.toString()}
                 icon={Assets.Coin}
                 onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:() => {
-                  onCoin(data.postId);
-                }}
+                  () => { } : () => {
+                    onCoin(data.postId);
+                  }}
               />
+              <div className="w-5"></div>
               <VisibilitySensor onChange={handleOnVisibilityChange}>
-              <PostAction
-                count={data.views.toString()}
-                icon={Assets.Viewsicon}
-                onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:() => {
-                }}
-              />
+                <PostAction
+                  count={data.views.toString()}
+                  icon={Assets.Viewsicon}
+                  onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                    () => { } : () => {
+                    }}
+                />
               </VisibilitySensor>
+              <div className="w-5"></div>
               <PostAction
                 count=""
                 icon={Assets.Share}
                 onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                ()=>{}:() => {
-                  setShowShareDialog(true);
-                }}
+                  () => { } : () => {
+                    setShowShareDialog(true);
+                  }}
               />
             </div>
             <small className="text-[#B4B4B4]">

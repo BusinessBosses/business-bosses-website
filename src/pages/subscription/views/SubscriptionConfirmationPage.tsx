@@ -5,6 +5,7 @@ import Assets from '../../../assets';
 import FilledButtonsmall from '../../../common/components/buttons/FilledButtonsmall';
 import RoutesPath from '../../../constants/Routes';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const SubscriptionConfirmationPage: React.FC = () => {
     const navigate = useNavigate();
@@ -12,6 +13,10 @@ const SubscriptionConfirmationPage: React.FC = () => {
 
 
     return (
+        <>
+        <Helmet>
+        <title>Payment Confirmation - Business Bosses</title>
+      </Helmet>
         <div className="mobile-only bg-white " style={{ height: "100vh" }} >
             <div
                 className="bg-white top-0 w-full z-50"
@@ -134,6 +139,7 @@ const SubscriptionConfirmationPage: React.FC = () => {
             </div>
 
         </div>
+        </>
     );
 };
 

@@ -14,17 +14,21 @@ import SubscribeButton from "../../settings/components/Subscribebutton";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
     partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
-  }
+    partnerDatatile: PartnerDatatile | null;
+}
 
 const AnalysePage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
     const navigate = useNavigate();
     const profile = useAppSelector((state) => state.user);
     return (
         <div>
+            <Helmet>
+                <title>Analyse - Business Bosses</title>
+            </Helmet>
             <div className=" top-0 w-full z-50 mobile-only" style={{ position: 'sticky', top: 0, zIndex: 100, }}>
 
                 <CommonPageHeader title="Analyse" />
@@ -55,7 +59,7 @@ const AnalysePage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
 
             <div className="computer-only">
-                <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
+                <ComputerHeader partnerData={partnerData} partnerDatatile={partnerDatatile} />
 
                 <div className="computer-content">
                     <div
@@ -87,7 +91,7 @@ const AnalysePage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                         </div>
 
 
-                        <div className=" pt-10 bg-white" style={{ height: "100vh",  }}>
+                        <div className=" pt-10 bg-white" style={{ height: "100vh", }}>
 
                             <div className="flex justify-between items-center mx-5">
                                 <div className="text-lg font-bold">Hi</div>
@@ -123,7 +127,7 @@ const AnalysePage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                     >
                         <div className="rounded-xl overflow-hidden" style={{}}>
                             {profile.bossup ? (
-                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+                                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData} partnerDatatile={partnerDatatile} />
                             ) : null}
                         </div>
                     </div>

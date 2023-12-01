@@ -13,6 +13,7 @@ import ComputerProfileDetails from "../../profile/views/components/ComputerProfi
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -81,6 +82,9 @@ const ConnectionsPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   }, []);
   return (
     <div>
+        <Helmet>
+                <title>Connections - Business Bosses</title>
+            </Helmet>
       {loading ? (
         <FetchStatus
           error={false}

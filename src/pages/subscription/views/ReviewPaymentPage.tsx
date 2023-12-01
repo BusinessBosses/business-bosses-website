@@ -6,11 +6,16 @@ import FilledButtonsmall from '../../../common/components/buttons/FilledButtonsm
 import RoutesPath from '../../../constants/Routes';
 import { useNavigate } from 'react-router-dom';
 import Choosepaymentoptioncard from '../components/choosepaymentoptioncard';
+import { Helmet } from 'react-helmet';
 
 const ReviewPaymentPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (<div>
+
+    <Helmet>
+      <title>Review Payment - Business Bosses</title>
+    </Helmet>
 
 
     <div className="mobile-only bg-white " style={{ height: "100vh" }} >

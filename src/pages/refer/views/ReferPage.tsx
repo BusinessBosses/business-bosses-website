@@ -15,6 +15,7 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -81,6 +82,9 @@ const ReferPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   }, []);
   return (
     <div className="">
+         <Helmet>
+        <title>Refer a user - Business Bosses</title>
+      </Helmet>
       <div className="mobile-only">
         <div
           className="bg-white top-0 w-full z-50"

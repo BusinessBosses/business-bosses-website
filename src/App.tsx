@@ -104,18 +104,18 @@ const App = () => {
   const fetchPartnerData = async () => {
     try {
       const response = await axios.get('https://orca-app-5dg8w.ondigitalocean.app/api/v1/partner/all');
-      
-  
+
+
       if (response.status === 200) {
         const partnerData = response.data.data; // Access the "data" property
-  
+
         if (partnerData && partnerData.rows) {
           // Check if "rows" exists and is an array
           const partners = partnerData.rows;
-  
+
           // Find the partner with id 5
           const getTitle = partners.find((item: { id: number; }) => item.id === 12);
-  
+
           if (getTitle) {
             setPartnerData({
               partnerlogo: getTitle.companyPhoto,
@@ -136,19 +136,19 @@ const App = () => {
   const fetchPartnerDatatile = async () => {
     try {
       const response = await axios.get('https://orca-app-5dg8w.ondigitalocean.app/api/v1/partner/all');
-      
-  
+
+
       if (response.status === 200) {
         const partnerData = response.data.data; // Access the "data" property
-  
+
         if (partnerData && partnerData.rows) {
           // Check if "rows" exists and is an array
           const partners = partnerData.rows;
-  
+
           // Find the partner with id 5
           const getTitle = partners.find((item: { id: number; }) => item.id === 5);
           const getTitlee = partners.find((item: { id: number; }) => item.id === 12);
-  
+
           if (getTitle) {
             setPartnerDatatile({
               partnerlogo: getTitle.companyPhoto,
@@ -248,14 +248,14 @@ const App = () => {
       })
         .then((response) => {
           if (response.success) {
-            window.location.reload(); 
+            window.location.reload();
             localStorage.setItem(StorageEnum.AccessToken, response.data.accessToken);
             localStorage.setItem(StorageEnum.UserId, response.data.uid);
             socket.connect();
             StartListeners();
             SendHandshake();
             navigate(RoutesPath.home);
-         
+
           } else {
             toast.error("Oops, try again! An Error Occurred");
           }
@@ -275,8 +275,8 @@ const App = () => {
       setLoading(false);
     }
   };
-  
-  
+
+
 
 
 
@@ -289,7 +289,7 @@ const App = () => {
     />
   ) : err ? (
     errorMessage.toLowerCase() === "send a valid token" ||
-    errorMessage.toLowerCase() === "invalid token" ? (
+      errorMessage.toLowerCase() === "invalid token" ? (
       <Popup
         closeOnDocumentClick={false}
         closeOnEscape={false}
@@ -333,42 +333,66 @@ const App = () => {
         onReload={fetchData}
       />
     )
-  ) : (
+  ) : (<>
+    <Helmet>
+
+      <title>Business Bosses</title>
+      <meta name="description" content="Social Entrepreneur Community - Grow and Promote your Business." />
+
+
+      <meta itemProp="name" content="Business Bosses" />
+      <meta itemProp="description" content="Social Entrepreneur Community - Grow and Promote your Business." />
+      <meta itemProp="image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+      <meta property="og:url" content="https://businessbosses.co.uk" />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="Business Bosses" />
+      <meta property="og:description" content="Social Entrepreneur Community - Grow and Promote your Business." />
+      <meta property="og:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="Business Bosses" />
+      <meta name="twitter:description" content="Social Entrepreneur Community - Grow and Promote your Business." />
+      <meta name="twitter:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+    </Helmet>
     <Routes>
-      <Route path={RoutesPath.home} element={<HomePage socket={socket} partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.home} element={<HomePage socket={socket} partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route
         path={RoutesPath.marketPlace}
-        element={<MarketPlacePage socket={socket} partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
+        element={<MarketPlacePage socket={socket} partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
-      <Route path={RoutesPath.myProfile} element={<MyProfile partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.myProfile} element={<MyProfile partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route
         path={RoutesPath.communities}
-        element={<CommunitiesPage socket={socket} partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
+        element={<CommunitiesPage socket={socket} partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
-      <Route path={RoutesPath.forum} element={<Forum socket={socket} partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.forum} element={<Forum socket={socket} partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route path={RoutesPath.CreateBossup} element={<CreateBossup partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
-      <Route path={RoutesPath.createPost} element={<CreatePost partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
-      <Route path={RoutesPath.promotePost} element={<PromotePage partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
-      <Route path={RoutesPath.settings} element={<SettingsPage partnerData={partnerData}   partnerDatatile={partnerDatatile} onClick={()=>{}} text={""}  />} />
-      <Route path={RoutesPath.invite} element={<InvitePage partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
-      <Route path={RoutesPath.notifications} element={<NotificationPage partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.createPost} element={<CreatePost partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.promotePost} element={<PromotePage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.settings} element={<SettingsPage partnerData={partnerData} partnerDatatile={partnerDatatile} onClick={() => { }} text={""} />} />
+      <Route path={RoutesPath.invite} element={<InvitePage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.notifications} element={<NotificationPage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route
         path={RoutesPath.subscriptionpage}
-        element={<SubscriptionPage partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
+        element={<SubscriptionPage partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
-      <Route path={RoutesPath.refer} element={<ReferPage partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.refer} element={<ReferPage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route
         path={RoutesPath.homeSearch}
         element={<HomeSearch onClosePopup={closePopup} />}
       />
-      <Route path={RoutesPath.connections} element={<ConnectionsPage partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.connections} element={<ConnectionsPage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route
         path={RoutesPath.register}
         element={<RegisterPage onSuccess={fetchData} />}
       />
       <Route
         path={RoutesPath.communitiesSearch}
-        element={<Bossupsearch onClosePopup={() => {}} />}
+        element={<Bossupsearch onClosePopup={() => { }} />}
       />
       <Route
         path={RoutesPath.login}
@@ -383,35 +407,35 @@ const App = () => {
         element={<RequestOtpForForgotPassword />}
       />
       <Route path={RoutesPath.editProfile} element={<EditProfilePage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
-      <Route path={RoutesPath.chats} element={<ChatPage partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.chats} element={<ChatPage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route
         path={RoutesPath.ChatRoom}
-        element={<ChatRoomPage socket={socket} partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
+        element={<ChatRoomPage socket={socket} partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
       <Route path={RoutesPath.CreateListing} element={<CreateListing />} />
       <Route
         path={RoutesPath.PublicUserProfile}
-        element={<PublicUserProfile partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
+        element={<PublicUserProfile partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
-      <Route path={RoutesPath.analysepage} element={<AnalysePage partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
-      <Route path={RoutesPath.communityrules} element={<CommunityRules partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
-      <Route path={RoutesPath.invitetandcs} element={<Invitetandcs partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.analysepage} element={<AnalysePage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.communityrules} element={<CommunityRules partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.invitetandcs} element={<Invitetandcs partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route
         path={RoutesPath.analyseprofilepage}
-        element={<AnalyseProfilePage partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
+        element={<AnalyseProfilePage partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
       <Route path={RoutesPath.connectrelevant} element={<ConnectRelevant />} />
-      <Route path={RoutesPath.rankingpage} element={<RankingPage partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.rankingpage} element={<RankingPage partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route
         path={RoutesPath.explorebusinessbosses}
-        element={<ExploreBusinessBosses partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
+        element={<ExploreBusinessBosses partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
-      <Route path={RoutesPath.sellerreview} element={<SellerReview partnerData={partnerData}   partnerDatatile={partnerDatatile} />} />
+      <Route path={RoutesPath.sellerreview} element={<SellerReview partnerData={partnerData} partnerDatatile={partnerDatatile} />} />
       <Route path={RoutesPath.expandedimages} element={<ExpandedImages />} />
       <Route path={RoutesPath.bossuppartners} element={<Bossuppartnerpage />} />
       <Route
         path={RoutesPath.connectrelevantpage}
-        element={<ConnectRelevantPage partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
+        element={<ConnectRelevantPage partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
       <Route
         path={RoutesPath.subscriptionconfirmationpage}
@@ -425,11 +449,11 @@ const App = () => {
         path={RoutesPath.boostpostconfirmationpage}
         element={<BoostPostConfirmationPage />}
       />
-       <Route
+      <Route
         path={RoutesPath.boostpost}
         element={<BoostPost />}
       />
-       <Route
+      <Route
         path={RoutesPath.reviewpaymentpage}
         element={<ReviewPaymentPage />}
       />
@@ -437,16 +461,17 @@ const App = () => {
         path={RoutesPath.subscriptionfailedpage}
         element={<SubscriptionFailedPage />}
       />
-       <Route
+      <Route
         path={RoutesPath.computerbossupsectionpage}
-        element={<ComputerBossuppartnersection partnerData={partnerData}   partnerDatatile={partnerDatatile}  />}
+        element={<ComputerBossuppartnersection partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
       <Route
         path={RoutesPath.liveevent}
-        element={<Liveevent partnerData={partnerData}   partnerDatatile={partnerDatatile}  />}
+        element={<Liveevent partnerData={partnerData} partnerDatatile={partnerDatatile} />}
       />
-      
+
     </Routes>
+  </>
   );
 };
 
