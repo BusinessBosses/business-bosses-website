@@ -80,10 +80,10 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
   useEffect(() => {
     function handleScroll() {
       if (
+        window.innerWidth < 768 &&
         window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.offsetHeight
+          document.documentElement.offsetHeight
       ) {
-
         fetchMorePosts();
       }
     }

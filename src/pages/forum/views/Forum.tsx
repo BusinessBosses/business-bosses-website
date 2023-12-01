@@ -390,7 +390,7 @@ const Forum = ({ socket, partnerData, partnerDatatile }: Props) => {
   return (
     <div>
         <Helmet>
-                <title>{industry?.industry} - Business Bosses</title>
+        ( <title>{`${industry?.industry} - Business Bosses`}</title> )
             </Helmet>
       <FormModal
         closeModal={() => setOpenModal(false)}

@@ -104,9 +104,9 @@ const MyProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
   return (
     <div>
-         <Helmet>
-        <title>@{profile.profile!.username} - Business Bosses</title>
-      </Helmet>
+       <Helmet>
+        ( <title>{`@${profile.profile!.username} - Business Bosses`}</title> )
+            </Helmet>
       <div className="mobile-only bg-white w-full" style={{ height: "100vh" }}>
         <MyProfileHeader />
         <div className="mx-5"><MyProfileDetails data={profile.profile!} /></div>

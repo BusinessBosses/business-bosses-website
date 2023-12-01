@@ -97,9 +97,9 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
   }, []);
   return (
     <div>
-      <Helmet>
-        <title>@{publicUser?.username ?? ""} - Business Bosses</title>
-      </Helmet>
+       <Helmet>
+        ( <title>{`@${publicUser?.username ?? ""} - Business Bosses`}</title> )
+            </Helmet>
       <div className="mobile-only bg-white" style={{height:"100vh"}}>
         <PublicProfileHeader name={publicUser?.username ?? ""} />
 
