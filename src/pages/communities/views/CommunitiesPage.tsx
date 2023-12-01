@@ -39,8 +39,8 @@ import { Helmet } from "react-helmet";
 
 interface Props {
   socket: Socket;
-  partnerData : PartnerData | null;
-  partnerDatatile : PartnerDatatile | null;
+  partnerData: PartnerData | null;
+  partnerDatatile: PartnerDatatile | null;
 }
 const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
   const tabs: string[] = ["", RoutesPath.learning, RoutesPath.opportunities];
@@ -209,7 +209,7 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
                 navigate(RoutesPath.CreateBossup, {
                   state: { industryId: industry?.industryId },
                 });
-              } }
+              }}
               createLabel="Enter Challenge"
               banner={industry?.photo!}
               didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
@@ -220,9 +220,9 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
               aboutontap={openPopup}
               aboutontaptext={"About"}
               topicsicon={<Assets.Entries width={15} />}
-              topicstext={"Entries"} partnerData={partnerData}   partnerDatatile={partnerDatatile}            />
+              topicstext={"Entries"} partnerData={partnerData} partnerDatatile={partnerDatatile} />
           </div>
-          <div className="mt-5"><ComputerBossuppartnersection partnerData={partnerData}   partnerDatatile={partnerDatatile} /></div>
+          <div className="mt-5"><ComputerBossuppartnersection partnerData={partnerData} partnerDatatile={partnerDatatile} /></div>
         </div>
       );
     }
@@ -243,34 +243,34 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
     setForumLoading(true);
     setIndustryLoading(true);
     const data = await CommunitiesController.fetchData();
-  
+
     if (data.forums.success) {
       const forumsData = data.forums.data.rows.map((mp: Forum) => ({
         ...mp,
         coins: mp.coins!.map((cn: any) => cn.userId),
         likes: mp.likes!.map((lk: any) => lk.userId),
       }));
-  
+
       // Sort the forums data based on the highest number of likes first
       forumsData.sort((a: any, b: any) => {
         if (b.isRanked && !a.isRanked) return 1; // Forum b is ranked, but forum a is not, so b comes first.
         if (a.isRanked && !b.isRanked) return -1; // Forum a is ranked, but forum b is not, so a comes first.
         return b.likes.length - a.likes.length; // If both are ranked or not ranked, sort by likes.
       });
-  
+
       dispatch(saveCount(data.forums.data.count));
       dispatch(incrementPage());
       dispatch(addForumsToState(forumsData));
     } else {
       setForumErr(true);
     }
-  
+
     if (data.industries.success) {
       dispatch(saveIndustriesToState(data.industries.data.rows));
     } else {
       setIndustryErr(true);
     }
-  
+
     setForumLoading(false);
     setIndustryLoading(false);
   };
@@ -283,11 +283,31 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
-       <Helmet>
+      <Helmet>
+
         <title>Boss Up Challenge - Business Bosses</title>
         <meta name="description" content="Become the Boss of the week and enjoy high visibility on your profile 
         giving you and your business access to wider audience." />
-          {/* meta tags */}
+
+        <meta itemProp="name" content="Business Bosses" />
+        <meta itemProp="description" content="Become the Boss of the week and enjoy high visibility on your profile 
+        giving you and your business access to wider audience." />        <meta itemProp="image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+        <meta property="og:url" content="https://businessbosses.co.uk" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Business Bosses" />
+        <meta property="og:description" content="Become the Boss of the week and enjoy high visibility on your profile 
+        giving you and your business access to wider audience." />
+        <meta property="og:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Business Bosses" />
+        <meta name="twitter:description" content="Become the Boss of the week and enjoy high visibility on your profile 
+        giving you and your business access to wider audience." />
+        <meta name="twitter:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
       </Helmet>
       <div className="mobile-only">
         <div
@@ -346,7 +366,7 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
             <Routes>
               <Route
                 index
-                element={<Challenge socket={socket} forums={forums} partnerData={partnerData}   partnerDatatile={partnerDatatile} />}
+                element={<Challenge socket={socket} forums={forums} partnerData={partnerData} partnerDatatile={partnerDatatile} />}
               />
               <Route path={RoutesPath.learning} element={<Learning />} />
               <Route
@@ -379,7 +399,7 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
             </div>
           )}
         </div>
-        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
+        <ComputerHeader partnerData={partnerData} partnerDatatile={partnerDatatile} />
         <div className="computer-content">
           <div
             className="firstsection ml-5 lg:ml-20 pr-5 pl-0"
@@ -436,7 +456,7 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
                     onReload={fetchCall}
                   />
                 ) : (
-                  <Challenge socket={socket} forums={forums} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+                  <Challenge socket={socket} forums={forums} partnerData={partnerData} partnerDatatile={partnerDatatile} />
                 )}
               </div>
             ) : currentIndex === 1 ? (
@@ -485,7 +505,7 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
                             navigate(RoutesPath.CreateBossup, {
                               state: { industryId: industry?.industryId },
                             });
-                          } }
+                          }}
                           createLabel="Enter Challenge"
                           banner={industry?.photo!}
                           didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
@@ -496,17 +516,17 @@ const CommunitiesPage = ({ socket, partnerData, partnerDatatile }: Props) => {
                           aboutontap={openPopup}
                           aboutontaptext={"About"}
                           topicsicon={<Assets.Entries width={15} />}
-                          topicstext={"Entries"} partnerData={partnerData}   partnerDatatile={partnerDatatile}                        />
+                          topicstext={"Entries"} partnerData={partnerData} partnerDatatile={partnerDatatile} />
                       </div>
                     </div>
                     <div className="font-bold mt-8">Our Partners</div>
-                    <div className="mt-3"><ComputerBossuppartnersection partnerData={partnerData}   partnerDatatile={partnerDatatile} /></div>
+                    <div className="mt-3"><ComputerBossuppartnersection partnerData={partnerData} partnerDatatile={partnerDatatile} /></div>
 
                   </div>
                 </div> :
 
 
-                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+                <MobileBossOfTheWeek bossOfTheWeek={profilee.bossup!} partnerData={partnerData} partnerDatatile={partnerDatatile} />
             }
             </div>
           </div>
