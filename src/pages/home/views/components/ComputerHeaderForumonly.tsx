@@ -98,36 +98,37 @@ const ComputerHeaderForumonly = ({ onTapButton, partnerData, partnerDatatile, in
                 </button>
               </div>
             </div>
-          </div>
-          <div className="flex items-center ">
-            <div className="lg:hidden ml-5 mr-5">
-              <div
-                className="bg-[#f4f4f4] rounded-full p-2 cursor-pointer"
-                onClick={openPopup}
-              >
-                <CiSearch
-                  className="text-[#333333]"
-                  size={23}
-                  style={{ strokeWidth: 1 }}
-                />
-                <div className="w-2"></div>
+
+            <div className="flex items-center ">
+              <div className="lg:hidden ml-5 mr-5">
+                <div
+                  className="bg-[#f4f4f4] rounded-full p-2 cursor-pointer"
+                  onClick={openPopup}
+                >
+                  <CiSearch
+                    className="text-[#333333]"
+                    size={23}
+                    style={{ strokeWidth: 1 }}
+                  />
+                  <div className="w-2"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div className="flex-grow items-end justify-end">
-        <ComputerTopNavForumonly
-          onTapButton={() => {
-            if (onTapButton) {
-              onTapButton();
-            }
-          }}
-          currentRoute={currentRoute}
-          unseenNotification={profile?.profile!.unReadCount! > 0}
-          unseenChat={!!chats.find(
-            (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
-          )} partnerData={partnerData} partnerDatatile={partnerDatatile} industry={industry} handleOpenModal={handleOpenModal} />
-          </div>
+          <ComputerTopNavForumonly
+            onTapButton={() => {
+              if (onTapButton) {
+                onTapButton();
+              }
+            }}
+            currentRoute={currentRoute}
+            unseenNotification={profile?.profile!.unReadCount! > 0}
+            unseenChat={!!chats.find(
+              (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
+            )} partnerData={partnerData} partnerDatatile={partnerDatatile} industry={industry} handleOpenModal={handleOpenModal} />
+        </div>
       </div>
       <div
         style={{

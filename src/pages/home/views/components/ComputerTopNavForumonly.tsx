@@ -310,14 +310,35 @@ const ComputerTopNavForumonly = ({
             </p>
           </div>
         </div>
-        <div className="pb-3 pl-5 mr-5 lg:mr-20 pr-0 mb-0">
-          {renderButton(currentIndex)}
-          {isPopupOpen && (
-            <div className="overlay">
-              <div className="popup">
-                <div className="computer-only">
-                  {currentIndex === 0 ? (
-                    <div>
+      </div>
+      <div className="pb-3 pl-5 mr-5 lg:mr-20 pr-0 mb-0">
+        {renderButton(currentIndex)}
+        {isPopupOpen && (
+          <div className="overlay">
+            <div className="popup">
+              <div className="computer-only">
+                {currentIndex === 0 ? (
+                  <div>
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                      <div className="flex items-center">
+                        {" "}
+                        {/* Wrapping div */}
+                        <button
+                          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                            handleButtonClick : () => closePopup()}
+                          className="flex items-center mr-5"
+                        >
+                          <Assets.Backbutton />
+                        </button>
+                        <p className="text-2xl font-bold">Create Post</p>
+                      </div>
+                      <div />
+                    </div>
+                    <CreatePost partnerData={partnerData} partnerDatatile={partnerDatatile} />
+                  </div>
+                ) : currentIndex === 1 ? (
+                  currentRoute === "/communities" ? (
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                       <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                         <div className="flex items-center">
                           {" "}
@@ -329,75 +350,16 @@ const ComputerTopNavForumonly = ({
                           >
                             <Assets.Backbutton />
                           </button>
-                          <p className="text-2xl font-bold">Create Post</p>
+                          <p className="text-2xl font-bold">
+                            Introduce your Business
+                          </p>
                         </div>
                         <div />
                       </div>
-                      <CreatePost partnerData={partnerData} partnerDatatile={partnerDatatile} />
+                      <CreateBossup partnerData={partnerData} partnerDatatile={partnerDatatile} />
                     </div>
-                  ) : currentIndex === 1 ? (
-                    currentRoute === "/communities" ? (
-                      <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                        <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                          <div className="flex items-center">
-                            {" "}
-                            {/* Wrapping div */}
-                            <button
-                              onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                                handleButtonClick : () => closePopup()}
-                              className="flex items-center mr-5"
-                            >
-                              <Assets.Backbutton />
-                            </button>
-                            <p className="text-2xl font-bold">
-                              Introduce your Business
-                            </p>
-                          </div>
-                          <div />
-                        </div>
-                        <CreateBossup partnerData={partnerData} partnerDatatile={partnerDatatile} />
-                      </div>
-                    ) : currentRoute === "/communities/learning" ? (
-                      <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                        <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                          <div className="flex items-center">
-                            {" "}
-                            {/* Wrapping div */}
-                            <button
-                              onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                                handleButtonClick : () => closePopup()}
-                              className="flex items-center mr-5"
-                            >
-                              <Assets.Backbutton />
-                            </button>
-                            <p className="text-2xl font-bold">Start a Topic</p>
-                          </div>
-                          <div />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                        <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
-                          <div className="flex items-center">
-                            {" "}
-                            {/* Wrapping div */}
-                            <button
-                              onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                                handleButtonClick : () => closePopup()}
-                              className="flex items-center mr-5"
-                            >
-                              <Assets.Backbutton />
-                            </button>
-                            <p className="text-2xl font-bold">
-                              Share Opportunities
-                            </p>
-                          </div>
-                          <div />
-                        </div>
-                      </div>
-                    )
-                  ) : currentIndex === 2 ? (
-                    <div>
+                  ) : currentRoute === "/communities/learning" ? (
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                       <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                         <div className="flex items-center">
                           {" "}
@@ -409,18 +371,56 @@ const ComputerTopNavForumonly = ({
                           >
                             <Assets.Backbutton />
                           </button>
-                          <p className="text-2xl font-bold">Create Listing</p>
+                          <p className="text-2xl font-bold">Start a Topic</p>
                         </div>
                         <div />
                       </div>
-                      <CreateListing />
                     </div>
-                  ) : null}
-                </div>
+                  ) : (
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                      <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                        <div className="flex items-center">
+                          {" "}
+                          {/* Wrapping div */}
+                          <button
+                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                              handleButtonClick : () => closePopup()}
+                            className="flex items-center mr-5"
+                          >
+                            <Assets.Backbutton />
+                          </button>
+                          <p className="text-2xl font-bold">
+                            Share Opportunities
+                          </p>
+                        </div>
+                        <div />
+                      </div>
+                    </div>
+                  )
+                ) : currentIndex === 2 ? (
+                  <div>
+                    <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
+                      <div className="flex items-center">
+                        {" "}
+                        {/* Wrapping div */}
+                        <button
+                          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                            handleButtonClick : () => closePopup()}
+                          className="flex items-center mr-5"
+                        >
+                          <Assets.Backbutton />
+                        </button>
+                        <p className="text-2xl font-bold">Create Listing</p>
+                      </div>
+                      <div />
+                    </div>
+                    <CreateListing />
+                  </div>
+                ) : null}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
