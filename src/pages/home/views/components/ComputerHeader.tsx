@@ -104,6 +104,7 @@ const ComputerHeader = ({ onTapButton, partnerData, partnerDatatile }: Props) =>
                     size={23}
                     style={{ strokeWidth: 1 }}
                   />
+                  <div className="w-2"></div>
 
                 </div>
 
