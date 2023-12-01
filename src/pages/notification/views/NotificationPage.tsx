@@ -17,6 +17,7 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -56,6 +57,9 @@ const NotificationPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => 
   }, []);
   return (
     <div>
+       <Helmet>
+        <title>Notifications - Business Bosses</title>
+      </Helmet>
       <div className="mobile-only bg-white" style={{height:"100vh"}}>
         <div
           className="bg-white top-0 w-full z-50"

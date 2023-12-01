@@ -20,12 +20,36 @@ const Opportunities = () => {
   }, [industries]);
   return (
     <div>
+     
       <Helmet>
+
         <title>Boss Up Opportunities - Business Bosses</title>
-        <meta name="description" content="Join a collaborative haven for entrepreneurs to explore and capitalize on diverse business opportunities. 
+        <meta name="description"  content="Join a collaborative haven for entrepreneurs to explore and capitalize on diverse business opportunities. 
         Learn and thrive with like-minded leaders in this dynamic space. 
         Unleash your potential and seize the opportunities that shape success" />
-          {/* meta tags */}
+
+        <meta itemProp="name" content="Business Bosses" />
+        <meta itemProp="description"  content="Join a collaborative haven for entrepreneurs to explore and capitalize on diverse business opportunities. 
+        Learn and thrive with like-minded leaders in this dynamic space. 
+        Unleash your potential and seize the opportunities that shape success" />      <meta itemProp="image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+        <meta property="og:url" content="https://businessbosses.co.uk" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Business Bosses" />
+        <meta property="og:description" content="Join a collaborative haven for entrepreneurs to explore and capitalize on diverse business opportunities. 
+        Learn and thrive with like-minded leaders in this dynamic space. 
+        Unleash your potential and seize the opportunities that shape success" />
+        <meta property="og:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Business Bosses" />
+        <meta name="twitter:description"  content="Join a collaborative haven for entrepreneurs to explore and capitalize on diverse business opportunities. 
+        Learn and thrive with like-minded leaders in this dynamic space. 
+        Unleash your potential and seize the opportunities that shape success" />
+        <meta name="twitter:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
       </Helmet>
     <div className="mobile-only bg-[#F4F4F4] px-4 py-3">
       <div className="grid grid-cols-2 gap-3">

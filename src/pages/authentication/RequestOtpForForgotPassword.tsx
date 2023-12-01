@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../constants/Routes";
 import AuthController from "./controller/AuthController";
 import CommonPageHeader from "../../common/components/headers/CommonPageHeader";
+import { Helmet } from "react-helmet";
 
 const RequestOtpForForgotPassword = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -29,6 +30,9 @@ const RequestOtpForForgotPassword = () => {
   };
   return (
     <div className="w-full min-h-screen h-full bg-white">
+        <Helmet>
+                <title>Forgot Password - Business Bosses</title>
+            </Helmet>
       <CommonPageHeader title={"Forgot Password"} />
       <div className="p-5 lg:px-80 w-full justify-center">
         <div className="pb-10"

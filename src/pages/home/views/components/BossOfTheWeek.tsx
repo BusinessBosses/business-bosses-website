@@ -124,8 +124,9 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek, partnerData, partnerDatatile }: Pr
       </div>
       <div className="bg-[#EAEAEA] lg:bg-[#f4f4f4]  lg:rounded-2xl px-4 py-3" style={{}}>
         <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center">
             <img src={Assets.Logo} className="w-10 h-10" alt="" />
+            <div className="w-3"></div>
             <p
               className="text-[#333333]  "
               style={{
@@ -156,7 +157,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek, partnerData, partnerDatatile }: Pr
                   : bossOfTheWeek.bio}
               </p>
 
-              <div className="flex items-center gap-3 mt-2 mb-1 lg:mb-4">
+              <div className="flex items-center mt-2 mb-1 lg:mb-4">
                 {!profile?.connecteds?.includes(bossOfTheWeek.uid!) ? (
                   <FilledButtonsmall
                     onClick={connection}
@@ -170,6 +171,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek, partnerData, partnerDatatile }: Pr
                     className="px-2 py-1.5"
                   />
                 )}
+                <div className="w-3"></div>
                 <OutlinedButtonsmall
                   onClick={() => {
                     navigate(RoutesPath.refer, { state: bossOfTheWeek.uid });

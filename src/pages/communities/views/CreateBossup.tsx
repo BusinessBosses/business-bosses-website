@@ -19,6 +19,7 @@ import ComputerHeader from "../../home/views/components/ComputerHeader";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -172,6 +173,9 @@ const CreateBossup: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
   return (
     <div className="">
+        <Helmet>
+                <title>Enter Bossup Challenge - Business Bosses</title>
+            </Helmet>
       <div className="mobile-only">
         <div className="mobile-only top-0 w-full z-50 bg-white" style={{ position: 'sticky', top: 0, zIndex: 100, }}>
           <div className="bg-white flex items-center px-4 pt-5 justify-between">

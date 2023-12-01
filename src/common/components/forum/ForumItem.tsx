@@ -264,11 +264,12 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                 () => { } : () =>
                   navigate(RoutesPath.PublicUserProfile, { state: data.user })
               }
-              className="flex items-center gap-3"
+              className="flex items-center "
             >
               <UserAvatar imageURL={data.user?.photoUrl}
                 isRanked={data.user?.isRanked}
               />
+               <div className="w-3"></div>
               <div className="flex-grow">
                 <p className="font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                   {data.user?.name}
@@ -453,7 +454,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
               </div>
             ) : null}
             <div className="mt-5 flex items-center justify-between mb-3">
-              <div className="flex gap-5">
+              <div className="flex">
                 <PostAction
                   count={data.likes!.length.toString()}
                   icon={
@@ -468,6 +469,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                       }
                     }}
                 />
+                 <div className="w-5"></div>
                 <PostAction
                   count={data.comments!.length.toString()}
                   icon={Assets.Comment}
@@ -477,6 +479,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                       setOpen(true);
                     }}
                 />
+                 <div className="w-5"></div>
                 <PostAction
                   count={data.coins!.length.toString()}
                   icon={Assets.Coin}
@@ -487,6 +490,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                       }
                     }}
                 />
+                 <div className="w-5"></div>
                 <VisibilitySensor onChange={handleOnVisibilityChange}>
                   <PostAction
                     count={data.views!.toString()}
@@ -497,6 +501,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                       }}
                   />
                 </VisibilitySensor>
+                <div className="w-5"></div>
                 <PostAction
                   count=""
                   icon={Assets.Share}

@@ -14,8 +14,9 @@ const NotsignedinPopUp = () => {
       <img src={Assets.Notsignedinpopupback} />
       <div className="p-5">
       <div className="justify-center items-center pb-3"><FilledButtonsmall className="px-8 py-3" onClick={() => navigate(RoutesPath.register)} text={"Sign Up"} /></div>
-      <div className="flex gap-2">
+      <div className="flex">
         <div className="text-sm">Already have an account?</div>
+        <div className="w-2"></div>
         <div className="text-primary text-sm font-bold">Log in</div>
       </div>
       </div>

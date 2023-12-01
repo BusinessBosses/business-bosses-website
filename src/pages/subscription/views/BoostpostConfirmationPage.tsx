@@ -5,11 +5,15 @@ import Assets from '../../../assets';
 import FilledButtonsmall from '../../../common/components/buttons/FilledButtonsmall';
 import RoutesPath from '../../../constants/Routes';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const BoostPostConfirmationPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (<div>
+           <Helmet>
+        <title>Payment Confirmation - Business Bosses</title>
+      </Helmet>
 
  
         <div className="mobile-only bg-white " style={{ height: "100vh" }} >

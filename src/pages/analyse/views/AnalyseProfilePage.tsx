@@ -28,6 +28,7 @@ import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 ChartJS.register(
   CategoryScale,
@@ -41,7 +42,7 @@ ChartJS.register(
 
 interface Props {
   partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
+  partnerDatatile: PartnerDatatile | null;
 }
 
 interface MyConnect {
@@ -178,6 +179,9 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
 
   return (
     <div>
+      <Helmet>
+        <title>Analyse Profile- Business Bosses</title>
+      </Helmet>
       <div className="mobile-only">
         <div
           className=" top-0 w-full z-50 "
@@ -196,7 +200,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
             error={false}
             loading={true}
             errorMessage=""
-            onReload={() => {}}
+            onReload={() => { }}
           />
         ) : (
           <div className=" pt-5 bg-white px-5" style={{ height: "100vh" }}>
@@ -205,7 +209,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
             <div className="font-bold pt-5 text-sm">Weekly</div>
 
             <div className="flex items-center justify-between my-5 mx-10">
-              <button onClick={() => {}} className="text-center">
+              <button onClick={() => { }} className="text-center">
                 <p>
                   {
                     getDurationAnalysis(
@@ -218,7 +222,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                   Connection
                 </p>
               </button>
-              <button onClick={() => {}} className="text-center">
+              <button onClick={() => { }} className="text-center">
                 <p>
                   {
                     getDurationAnalysis(
@@ -231,7 +235,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                   Connected
                 </p>
               </button>
-              <button onClick={() => {}} className="text-center">
+              <button onClick={() => { }} className="text-center">
                 <p>
                   {
                     getDurationAnalysis(
@@ -249,7 +253,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
             <div className="font-bold pt-5 text-sm">Monthly</div>
 
             <div className="flex items-center justify-between my-5 mx-10">
-              <button onClick={() => {}} className="text-center">
+              <button onClick={() => { }} className="text-center">
                 <p>
                   {
                     getDurationAnalysis(
@@ -262,7 +266,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                   Connection
                 </p>
               </button>
-              <button onClick={() => {}} className="text-center">
+              <button onClick={() => { }} className="text-center">
                 <p>
                   {
                     getDurationAnalysis(
@@ -275,7 +279,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                   Connected
                 </p>
               </button>
-              <button onClick={() => {}} className="text-center">
+              <button onClick={() => { }} className="text-center">
                 <p>
                   {
                     getDurationAnalysis(
@@ -311,7 +315,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
       </div>
 
       <div className="computer-only bg-[#fff]">
-        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
+        <ComputerHeader partnerData={partnerData} partnerDatatile={partnerDatatile} />
 
         <div className="computer-content">
           <div
@@ -345,7 +349,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                 <div className="font-bold pt-5 text-base">Weekly</div>
 
                 <div className="flex items-center justify-between my-5 mx-10">
-                  <button onClick={() => {}} className="text-center">
+                  <button onClick={() => { }} className="text-center">
                     <p>
                       {
                         getDurationAnalysis(
@@ -358,7 +362,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                       Connection
                     </p>
                   </button>
-                  <button onClick={() => {}} className="text-center">
+                  <button onClick={() => { }} className="text-center">
                     <p>
                       {
                         getDurationAnalysis(
@@ -371,7 +375,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                       Connected
                     </p>
                   </button>
-                  <button onClick={() => {}} className="text-center">
+                  <button onClick={() => { }} className="text-center">
                     <p>
                       {
                         getDurationAnalysis(
@@ -389,7 +393,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                 <div className="font-bold pt-5 text-base">Monthly</div>
 
                 <div className="flex items-center justify-between my-5 mx-10">
-                  <button onClick={() => {}} className="text-center">
+                  <button onClick={() => { }} className="text-center">
                     <p>
                       {
                         getDurationAnalysis(
@@ -402,7 +406,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                       Connection
                     </p>
                   </button>
-                  <button onClick={() => {}} className="text-center">
+                  <button onClick={() => { }} className="text-center">
                     <p>
                       {
                         getDurationAnalysis(
@@ -415,7 +419,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
                       Connected
                     </p>
                   </button>
-                  <button onClick={() => {}} className="text-center">
+                  <button onClick={() => { }} className="text-center">
                     <p>
                       {
                         getDurationAnalysis(
@@ -463,7 +467,7 @@ const AnalyseProfilePage: React.FC<Props> = ({ partnerData, partnerDatatile }) =
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData} partnerDatatile={partnerDatatile} />
               ) : null}
             </div>
           </div>

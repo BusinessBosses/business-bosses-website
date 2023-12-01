@@ -19,6 +19,7 @@ import ComputerProfileDetails from "../../profile/views/components/ComputerProfi
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 export interface PlanInterface {
   amount: number;
@@ -117,6 +118,9 @@ const PromotePage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
   return (
     <div>
+        <Helmet>
+        <title>Promote Post - Business Bosses</title>
+      </Helmet>
       <div className="mobile-only">
         <div className="bg-white" style={{ height: '100vh' }}>
           <div

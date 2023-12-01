@@ -26,7 +26,7 @@ interface Props {
   unseenNotification?: boolean;
   onTapButton?: () => void;
   partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
+  partnerDatatile: PartnerDatatile | null;
 
 }
 
@@ -89,20 +89,20 @@ const ComputerTopNav = ({
   const handleButtonClick = () => {
     const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
     if (window.confirm(confirmMessage)) {
-     navigate(RoutesPath.login)
+      navigate(RoutesPath.login)
     } else {
-     
+
     }
   };
 
 
   const renderButton = (index: string) => {
     switch (index) {
-      case "/" :
+      case "/":
         return (
           <button
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            handleButtonClick :()=>navigate(RoutesPath.createPost)}
+              handleButtonClick : () => navigate(RoutesPath.createPost)}
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -120,22 +120,22 @@ const ComputerTopNav = ({
         return (
           <button
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            handleButtonClick: () => {
-              if (onTapButton) {
-                if (currentRoute === "/communities") {
-                  navigate(RoutesPath.CreateBossup);
-                } else if (currentRoute === "/communities/learning") {
-                  toast.error("You need to choose a category first ")
+              handleButtonClick : () => {
+                if (onTapButton) {
+                  if (currentRoute === "/communities") {
+                    navigate(RoutesPath.CreateBossup);
+                  } else if (currentRoute === "/communities/learning") {
+                    toast.error("You need to choose a category first ")
 
-                } else if (currentRoute === "/communities/opportunities") {
-                  toast.error("You need to choose a category first ")
+                  } else if (currentRoute === "/communities/opportunities") {
+                    toast.error("You need to choose a category first ")
 
-                } else if (currentRoute === "/forum" ){
+                  } else if (currentRoute === "/forum") {
 
-                } 
+                  }
+                }
               }
             }
-          }            
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -144,8 +144,8 @@ const ComputerTopNav = ({
               {currentRoute === "/communities"
                 ? "Enter Challenge"
                 : currentRoute === "/communities/learning"
-                ? "Start A Topic"
-                : "Share opportunities"}
+                  ? "Start A Topic"
+                  : "Share opportunities"}
             </p>
 
             <BsPlusLg
@@ -160,7 +160,7 @@ const ComputerTopNav = ({
         return (
           <button
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            handleButtonClick :openPopup}
+              handleButtonClick : openPopup}
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -179,7 +179,7 @@ const ComputerTopNav = ({
         return (
           <button
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            handleButtonClick : ()=>navigate(RoutesPath.createPost)}
+              handleButtonClick : () => navigate(RoutesPath.createPost)}
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -197,131 +197,137 @@ const ComputerTopNav = ({
   };
 
   return (
-    <div className="flex justify-between" style={{ gap: "15px" }}>
-      <div
-        className={`tab ${currentRoute === "/" ? "selected-tab" : ""}`}
-        onClick={() => handleTabClick(0)}
-      >
-        <div className="flex flex-col items-center">
-          <Assets.Home
-            stroke={currentRoute === "/"  ? primaryColor : strokeColor}
-            style={{ width: "25px", height: "22px" }}
-          />
-          <p
-            className={
-              currentRoute === "/" 
-                ? "text-primary font-semibold text-base"
-                : "text-[#232324] text-base"
-            }
-          >
-            Home
-          </p>
-        </div>
-      </div>
-
-      <div
-        className={`tab ${ currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"  || currentRoute === "/forum" ? "selected-tab" : ""}`}
-        onClick={() => handleTabClick(1)}
-      >
-        <div className="flex flex-col items-center">
-          <Assets.BossupIcon
-            fill={currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"  || currentRoute === "/forum"  ? primaryColor : strokeColor}
-            style={{ width: "33px", height: "23px" }}
-          />
-          <p
-            className={
-              currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" || currentRoute === "/forum" 
-                ? "text-primary font-semibold text-base"
-                : "text-[#232324] text-base"
-            }
-          >
-            Boss Up
-          </p>
-        </div>
-      </div>
-
-      <div
-        className={`tab ${currentRoute === "/market"  ? "selected-tab" : ""}`}
-        onClick={() => handleTabClick(2)}
-      >
-        <div className="flex flex-col items-center">
-          <Assets.MarketPlace
-            fill={currentRoute === "/market"  ? primaryColor : strokeColor}
-          />
-          <p
-            className={
-              currentRoute === "/market" 
-                ? "text-primary font-semibold text-base"
-                : "text-[#232324] text-base"
-            }
-          >
-            Marketplace
-          </p>
-        </div>
-      </div>
-
-      <div
-        className={`tab ${currentRoute === "/chats"  ? "selected-tab" : ""}`}
-        onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-        handleButtonClick: () => handleTabClick(3)}
-      >
-        <div className="flex flex-col items-center relative">
-          {currentRoute === "/chats"  ? (
-            <Assets.Activemessage
-              stroke={currentRoute === "/chats"? primaryColor : strokeColor}
-              style={{ width: "24px", height: "24px" }}
+    <div className="flex flex-grow justify-between computer-content">
+      <div className="flex justify-center" style={{ width: "58%", flexGrow: 0 }} >
+        <div
+          className={`tab ${currentRoute === "/" ? "selected-tab" : ""}`}
+          onClick={() => handleTabClick(0)}
+        >
+          <div className="flex flex-col items-center">
+            <Assets.Home
+              stroke={currentRoute === "/" ? primaryColor : strokeColor}
+              style={{ width: "25px", height: "22px" }}
             />
-          ) : (
-            <Assets.Messagenoback
-              stroke={currentRoute === "/chats"  ? primaryColor : strokeColor}
-              style={{ width: "24px", height: "24px" }}
-            />
-          )}
+            <p
+              className={
+                currentRoute === "/"
+                  ? "text-primary font-semibold text-base"
+                  : "text-[#232324] text-base"
+              }
+            >
+              Home
+            </p>
+          </div>
+        </div>
+        <div className="w-5"></div>
 
-          {unseenChat ? (
-            <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
-          ) : null}
-          <p
-            className={
-              currentRoute === "/chats" 
-                ? "text-primary font-semibold text-base"
-                : "text-[#232324] text-base"
-            }
-          >
-            Messages
-          </p>
+        <div
+          className={`tab ${currentRoute === "/communities" || currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" || currentRoute === "/forum" ? "selected-tab" : ""}`}
+          onClick={() => handleTabClick(1)}
+        >
+          <div className="flex flex-col items-center">
+            <Assets.BossupIcon
+              fill={currentRoute === "/communities" || currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" || currentRoute === "/forum" ? primaryColor : strokeColor}
+              style={{ width: "33px", height: "23px" }}
+            />
+            <p
+              className={
+                currentRoute === "/communities" || currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" || currentRoute === "/forum"
+                  ? "text-primary font-semibold text-base"
+                  : "text-[#232324] text-base"
+              }
+            >
+              Boss Up
+            </p>
+          </div>
+        </div>
+        <div className="w-5"></div>
+
+        <div
+          className={`tab ${currentRoute === "/market" ? "selected-tab" : ""}`}
+          onClick={() => handleTabClick(2)}
+        >
+          <div className="flex flex-col items-center">
+            <Assets.MarketPlace
+              fill={currentRoute === "/market" ? primaryColor : strokeColor}
+            />
+            <p
+              className={
+                currentRoute === "/market"
+                  ? "text-primary font-semibold text-base"
+                  : "text-[#232324] text-base"
+              }
+            >
+              Marketplace
+            </p>
+          </div>
+        </div>
+        <div className="w-5"></div>
+
+        <div
+          className={`tab ${currentRoute === "/chats" ? "selected-tab" : ""}`}
+          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            handleButtonClick : () => handleTabClick(3)}
+        >
+          <div className="flex flex-col items-center relative">
+            {currentRoute === "/chats" ? (
+              <Assets.Activemessage
+                stroke={currentRoute === "/chats" ? primaryColor : strokeColor}
+                style={{ width: "24px", height: "24px" }}
+              />
+            ) : (
+              <Assets.Messagenoback
+                stroke={currentRoute === "/chats" ? primaryColor : strokeColor}
+                style={{ width: "24px", height: "24px" }}
+              />
+            )}
+
+            {unseenChat ? (
+              <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
+            ) : null}
+            <p
+              className={
+                currentRoute === "/chats"
+                  ? "text-primary font-semibold text-base"
+                  : "text-[#232324] text-base"
+              }
+            >
+              Messages
+            </p>
+          </div>
+        </div>
+        <div className="w-5"></div>
+
+        <div
+          className={`tab ${currentRoute === "/notifications" ? "selected-tab" : ""}`}
+          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            handleButtonClick : () => handleTabClick(4)}
+        >
+          <div className="flex flex-col items-center relative">
+            {currentRoute === "/notifications" ? (
+              <Assets.ActiveNotification
+                style={{ width: "24px", height: "25px" }}
+              />
+            ) : (
+              <Assets.Notifnoback style={{ width: "24px", height: "25px" }} />
+            )}
+
+            {unseenNotification ? (
+              <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
+            ) : null}
+            <p
+              className={
+                currentRoute === "/notifications"
+                  ? "text-primary font-semibold text-base"
+                  : "text-[#232324] text-base"
+              }
+            >
+              Notifications
+            </p>
+          </div>
         </div>
       </div>
-
-      <div
-        className={`tab ${currentRoute === "/notifications"  ? "selected-tab" : ""}`}
-        onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-        handleButtonClick:() => handleTabClick(4)}
-      >
-        <div className="flex flex-col items-center relative">
-          {currentRoute === "/notifications" ? (
-            <Assets.ActiveNotification
-              style={{ width: "24px", height: "25px" }}
-            />
-          ) : (
-            <Assets.Notifnoback style={{ width: "24px", height: "25px" }} />
-          )}
-
-          {unseenNotification ? (
-            <div className="absolute top-0 right-0 -mt-1.5 -mr-1.5 h-2 w-2 bg-primary rounded-full" />
-          ) : null}
-          <p
-            className={
-              currentRoute === "/notifications" 
-                ? "text-primary font-semibold text-base"
-                : "text-[#232324] text-base"
-            }
-          >
-            Notifications
-          </p>
-        </div>
-      </div>
-      <div className="pb-3">
+      <div className="pb-3 pl-5 mr-5 lg:mr-20 pr-0 mb-0" >
         {renderButton(currentRoute)}
         {isPopupOpen && (
           <div className="overlay">
@@ -335,7 +341,7 @@ const ComputerTopNav = ({
                         {/* Wrapping div */}
                         <button
                           onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                          handleButtonClick:() => closePopup()}
+                            handleButtonClick : () => closePopup()}
                           className="flex items-center mr-5"
                         >
                           <Assets.Backbutton />
@@ -344,9 +350,9 @@ const ComputerTopNav = ({
                       </div>
                       <div />
                     </div>
-                    <CreatePost partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+                    <CreatePost partnerData={partnerData} partnerDatatile={partnerDatatile} />
                   </div>
-                ) : currentRoute === "/communities" ||  currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities"? (
+                ) : currentRoute === "/communities" || currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" ? (
                   currentRoute === "/communities" ? (
                     <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                       <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
@@ -355,7 +361,7 @@ const ComputerTopNav = ({
                           {/* Wrapping div */}
                           <button
                             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                            handleButtonClick:() => closePopup()}
+                              handleButtonClick : () => closePopup()}
                             className="flex items-center mr-5"
                           >
                             <Assets.Backbutton />
@@ -376,7 +382,7 @@ const ComputerTopNav = ({
                           {/* Wrapping div */}
                           <button
                             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                            handleButtonClick:() => closePopup()}
+                              handleButtonClick : () => closePopup()}
                             className="flex items-center mr-5"
                           >
                             <Assets.Backbutton />
@@ -394,7 +400,7 @@ const ComputerTopNav = ({
                           {/* Wrapping div */}
                           <button
                             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                            handleButtonClick:() => closePopup()}
+                              handleButtonClick : () => closePopup()}
                             className="flex items-center mr-5"
                           >
                             <Assets.Backbutton />
@@ -415,7 +421,7 @@ const ComputerTopNav = ({
                         {/* Wrapping div */}
                         <button
                           onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                          handleButtonClick:() => closePopup()}
+                            handleButtonClick : () => closePopup()}
                           className="flex items-center mr-5"
                         >
                           <Assets.Backbutton />
@@ -426,7 +432,7 @@ const ComputerTopNav = ({
                     </div>
                     <CreateListing />
                   </div>
-                ): null}
+                ) : null}
               </div>
             </div>
           </div>

@@ -29,6 +29,7 @@ import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 import ComputerProfileDetails from "./components/ComputerProfiledetailswcr";
 import Computerlefttabsignedoutuser from "./components/Computerlefttabsignedoutuser";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -168,6 +169,9 @@ const EditProfilePage = ({partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
+         <Helmet>
+        <title>Edit Profile - Business Bosses</title>
+      </Helmet>
     <div className="mobile-only min-h-screen h-full bg-white">
       <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, }}>
 

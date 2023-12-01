@@ -6,6 +6,7 @@ import FilledButtonsmall from '../../../common/components/buttons/FilledButtonsm
 import RoutesPath from '../../../constants/Routes';
 import { useNavigate } from 'react-router-dom';
 import OutlinedButtonsmall from '../../../common/components/buttons/OutlinedButtonsmall';
+import { Helmet } from 'react-helmet';
 
 const SubscriptionFailedPage: React.FC = () => {
     const navigate = useNavigate();
@@ -13,6 +14,9 @@ const SubscriptionFailedPage: React.FC = () => {
 
 
     return (
+        <> <Helmet>
+        <title>Payment Confirmation - Business Bosses</title>
+      </Helmet>
         <div className="mobile-only bg-white " style={{ height: "100vh" }} >
             <div
                 className="bg-white top-0 w-full z-50"
@@ -98,6 +102,7 @@ const SubscriptionFailedPage: React.FC = () => {
             </div>
 
         </div>
+        </>
     );
 };
 

@@ -19,6 +19,7 @@ import SharePopUp from "../../../common/components/share/SharePopUp";
 import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsmall";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   coins?: number;
@@ -33,6 +34,9 @@ const InvitePage = ({ coins, partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
+       <Helmet>
+        <title>Invite - Business Bosses</title>
+      </Helmet>
       <SharePopUp
         url={`Check out Business Bosses.\n
         An app to meet entrepreneurs and grow your business. Join now for FREE promotion\n

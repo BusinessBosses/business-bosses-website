@@ -8,6 +8,7 @@ import axios from 'axios';
 import Loader from '../../../common/components/loader/Loader';
 import { PartnerData } from '../../../common/interfaces/partnerdata';
 import { PartnerDatatile } from '../../../common/interfaces/partnerdatatile';
+import { Helmet } from 'react-helmet';
 
 interface Props {
     partnerData: PartnerData | null;
@@ -57,6 +58,9 @@ partnerDatatile: PartnerDatatile | null;
 
     return (
         <div>
+               <Helmet>
+        <title>Invite a Friend Terms & Conditions - Business Bosses</title>
+      </Helmet>
             <div>
                 <div className='mobile-only'>
                     <div className=" top-0 w-full z-50 " style={{

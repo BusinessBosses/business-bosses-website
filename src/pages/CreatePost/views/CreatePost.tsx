@@ -16,6 +16,7 @@ import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
   partnerData: PartnerData | null;
@@ -172,6 +173,9 @@ const CreatePost: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   }, []);
   return (
     <div>
+        <Helmet>
+                <title>Create Post - Business Bosses</title>
+            </Helmet>
       <div className="mobile-only">
         <div className="bg-white" style={{ height: "100vh" }}>
           <div

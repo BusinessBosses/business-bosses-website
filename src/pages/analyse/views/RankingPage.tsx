@@ -13,6 +13,7 @@ import Analyserows from "./components/analyserows";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+import { Helmet } from "react-helmet";
 
 interface Props {
     partnerData: PartnerData | null;
@@ -23,6 +24,9 @@ const RankingPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
     const profile = useAppSelector((state) => state.user);
     return (
         <div>
+              <Helmet>
+                <title>Ranking - Business Bosses</title>
+            </Helmet>
             <div className="mobile-only">
                 <div className=" top-0 w-full z-50 " style={{ position: 'sticky', top: 0, zIndex: 100, }}>
 

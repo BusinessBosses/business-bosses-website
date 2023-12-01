@@ -9,6 +9,7 @@ import { Post } from "../../../common/interfaces/post";
 import PostItem from "../../home/views/components/PostItem";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import Assets from "../../../assets";
+import { Helmet } from "react-helmet";
 
 const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -96,6 +97,9 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
 
   return (
     <div>
+         <Helmet>
+        <title>Search users or posts - Business Bosses</title>
+      </Helmet>
       <div
         className="bg-white top-0 w-full z-50"
         style={{
