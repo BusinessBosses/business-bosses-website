@@ -193,6 +193,30 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
   return (
     <div>
+      <Helmet>
+
+        <title>Home - Business Bosses</title>
+        <meta name="description" content="Social Entrepreneur Community - Grow and Promote your Business." />
+
+
+        <meta itemProp="name" content="Business Bosses" />
+        <meta itemProp="description" content="Social Entrepreneur Community - Grow and Promote your Business." />
+        <meta itemProp="image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+        <meta property="og:url" content="https://businessbosses.co.uk" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Business Bosses" />
+        <meta property="og:description" content="Social Entrepreneur Community - Grow and Promote your Business." />
+        <meta property="og:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Business Bosses" />
+        <meta name="twitter:description" content="Social Entrepreneur Community - Grow and Promote your Business." />
+        <meta name="twitter:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+
+      </Helmet>
 
 
 
