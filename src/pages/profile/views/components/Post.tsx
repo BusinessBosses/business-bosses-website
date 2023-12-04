@@ -1,10 +1,21 @@
 import { AiOutlineMore } from "react-icons/ai";
+import Popup from "reactjs-popup";
+import GeneralPostsController from "../../../../common/controllers/GeneralPostsController";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../../constants/Routes";
+import { Post } from "../../../../common/interfaces/post";
+import { useAppSelector } from "../../../../redux/store/store";
+import { toast } from "react-toastify";
+import { ReactNode } from "react";
 
 interface Props {
   imgUrl?: string;
   title?: string;
+  // data?: Post;
 }
-const Post = ({ imgUrl, title }: Props) => {
+const Postss = ({ imgUrl, title }: Props) => {
+  const navigate = useNavigate();
+  const profile = useAppSelector((state) => state.user.profile);
   return (
     <div className="relative ">
       {imgUrl ? (
@@ -19,10 +30,62 @@ const Post = ({ imgUrl, title }: Props) => {
         </div>
       )}
       <button className="absolute top-2 right-2 bg-white rounded-full p-1">
-       { <AiOutlineMore size={20} />}
+        {
+          <Popup
+            trigger={
+              <div>
+                <AiOutlineMore size={20} />
+              </div>
+            }
+            position="left top"
+            on="click"
+            closeOnDocumentClick
+            contentStyle={{ padding: "0px", border: "none" }}
+       
+          >
+            {
+              (((close: any) =>
+              (
+                <div className=" bg-white shadow-xl rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
+                  <button
+                    onClick={() => {
+                      close();
+                      // navigate(RoutesPath.createPost, { state: data });
+                    }}
+                    className="menu-item border-none outline-none"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => {
+                      // GeneralPostsController.deletepost(data!.postId)
+                      toast.success("Post Deleted Successfully")
+                      close();
+                    }}
+                    className="menu-item border-none outline-none"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    onClick={() => {
+                      close();
+                      // navigate(RoutesPath.promotePost, {
+                      //   state: data!.postId,
+                      // });
+                    }}
+                    className="menu-item border-none outline-none"
+                  >
+                    Boost
+                  </button>
+                </div>
+              )) as unknown) as ReactNode
+            }
+          </Popup>
+        }
+
       </button>
     </div>
   );
 };
 
-export default Post;
+export default Postss;

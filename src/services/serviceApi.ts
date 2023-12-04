@@ -112,6 +112,7 @@ class ServiceApi {
                 data: payload,
                 ...this.setupHeaders(),
             });
+            console.log(response)
 
             return !resolve ? response : { ...response };
         } catch (err) {
