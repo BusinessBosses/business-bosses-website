@@ -36,6 +36,10 @@ class GeneralPostsController {
         return response;
     }
 
+    async deletepost(postId: string){
+        await serviceApi.remove(`/post/delete-post/${postId}`)
+    }
+
 
 
 }

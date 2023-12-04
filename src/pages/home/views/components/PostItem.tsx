@@ -379,6 +379,8 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
                       </button>
                       <button
                         onClick={() => {
+                          GeneralPostsController.deletepost(data.postId)
+                          toast.success("Post Deleted Successfully")
                           close();
                         }}
                         className="menu-item border-none outline-none"
