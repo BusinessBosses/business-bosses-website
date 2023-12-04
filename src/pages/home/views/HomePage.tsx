@@ -245,6 +245,7 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
                 </div> : null}
 
             </div>
+            
             <div className=" pb-3">
               <div className="mt-0" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <div style={{ width: '35%', display: 'flex', justifyContent: 'center' }}>
