@@ -18,7 +18,7 @@ const Tabs = ({ currentIndex, onChangeRoute, uid }: Props) => {
     <div className="mobile-only" style={{ height: "1px", width: "100%", background: "#f4f4f4" }}></div>
     <div className=" top-12 bg-[#f9f9f9] z-50">
 
-      { filteredMarkets.length === 0     ? <div className="grid grid-cols-2 items-center justify-between" >
+      { filteredMarkets.length !== 0     ? <div className="grid grid-cols-2 items-center justify-between" >
         <button
           onClick={() => onChangeRoute(0)}
           className={`${currentIndex === 0
