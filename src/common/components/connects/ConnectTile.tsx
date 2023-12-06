@@ -18,8 +18,8 @@ const ConnectTile = ({ profile, connected, onConnect }: Props) => {
   return (
     <div>
       <div className="flex items-center justify-between my-3 " onClick={() =>
-              navigate(RoutesPath.PublicUserProfile, { state: profile })
-            }>
+        navigate(RoutesPath.PublicUserProfile, { state: profile })
+      }>
         <div className="flex items-start gap-3">
           <div className="flex-grow">
             <UserAvatar imageSize="w-12 h-12" imageURL={profile.photoUrl} />

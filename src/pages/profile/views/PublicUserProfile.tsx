@@ -15,7 +15,6 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
-import Markets from "./components/Markets";
 import { Market } from "../../../common/interfaces/Market";
 import MarketController from "../../marketplace/controller/MarketController";
 import { saveCount } from "../../../redux/slices/ForumSlice";

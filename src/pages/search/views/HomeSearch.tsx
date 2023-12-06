@@ -10,12 +10,13 @@ import PostItem from "../../home/views/components/PostItem";
 import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
 import Assets from "../../../assets";
 import { Helmet } from "react-helmet";
+import { useAppSelector } from "../../../redux/store/store";
 
 const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const navigate = useNavigate();
   const searchRef = useRef<HTMLInputElement>(null);
-
+  const profile = useAppSelector((state) => state.user);
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [recommendedConnections, setRecommendedConnections] = useState<User[]>(
@@ -159,10 +160,8 @@ const HomeSearch = ({ onClosePopup }: { onClosePopup: () => void }) => {
           <People
             loading={loading}
             isSearching={isSearch}
-            recommendedConnections={
-              isSearch ? searchedUsers : recommendedConnections
-            }
-          />
+            recommendedConnections={isSearch ? searchedUsers : recommendedConnections} 
+            bossOfTheWeek={profile.bossup!}          />
         ) : null}
         {currentIndex === 1 ? (
           loading ? (

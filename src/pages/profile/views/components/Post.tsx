@@ -11,9 +11,9 @@ import { ReactNode } from "react";
 interface Props {
   imgUrl?: string;
   title?: string;
-  // data?: Post;
+  data: Post;
 }
-const Postss = ({ imgUrl, title }: Props) => {
+const ProfilePosts = ({ data,imgUrl, title }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   return (
@@ -50,7 +50,7 @@ const Postss = ({ imgUrl, title }: Props) => {
                   <button
                     onClick={() => {
                       close();
-                      // navigate(RoutesPath.createPost, { state: data });
+                      navigate(RoutesPath.createPost, { state: data });
                     }}
                     className="menu-item border-none outline-none"
                   >
@@ -58,7 +58,7 @@ const Postss = ({ imgUrl, title }: Props) => {
                   </button>
                   <button
                     onClick={() => {
-                      // GeneralPostsController.deletepost(data!.postId)
+                      GeneralPostsController.deletepost(data!.postId)
                       toast.success("Post Deleted Successfully")
                       close();
                     }}
@@ -69,9 +69,9 @@ const Postss = ({ imgUrl, title }: Props) => {
                   <button
                     onClick={() => {
                       close();
-                      // navigate(RoutesPath.promotePost, {
-                      //   state: data!.postId,
-                      // });
+                      navigate(RoutesPath.promotePost, {
+                        state: data!.postId,
+                      });
                     }}
                     className="menu-item border-none outline-none"
                   >
@@ -88,4 +88,4 @@ const Postss = ({ imgUrl, title }: Props) => {
   );
 };
 
-export default Postss;
+export default ProfilePosts;
