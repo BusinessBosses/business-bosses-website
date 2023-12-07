@@ -63,7 +63,7 @@ import { PartnerDatatile } from "./common/interfaces/partnerdatatile";
 import Liveevent from "./pages/liveevent/liveevent";
 import { Helmet } from "react-helmet";
 import MarketController from "./pages/marketplace/controller/MarketController";
-import { addMarketsToState, incrementPage, saveCount } from "./redux/slices/MarketSlice";
+import { addMarketsToState, addMembersToState, incrementPage, saveCount, saveuserscount } from "./redux/slices/MarketSlice";
 import { Market } from "./common/interfaces/Market";
 
 const App = () => {
@@ -119,6 +119,8 @@ const App = () => {
         )
       );
       dispatch(saveCount(response.data.count));
+     
+     
     } else {
       setErr(true);
     }
@@ -153,6 +155,13 @@ const App = () => {
       }
     } catch (error) {
       console.error('Error fetching partner data:', error);
+    }
+  };
+
+  const fetchMarketUsers = async () => {
+    const response = await MarketController.fetchMarketUsers();
+    if (response.success) {
+      dispatch(addMembersToState(response.data.rows.map((mp: any) => mp.user)));
     }
   };
 
@@ -197,6 +206,7 @@ const App = () => {
     const response = await serviceApi.fetch("/init");
     fetchBossOfTheWeek();
     fetchMarkets();
+    fetchMarketUsers()
     if (response.success) {
       const processedPosts = HomeController.processData(response);
       socket.emit("handshake", response.data.user.uid);

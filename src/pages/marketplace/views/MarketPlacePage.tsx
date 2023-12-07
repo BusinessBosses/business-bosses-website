@@ -54,7 +54,6 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
     setIsPopupOpen(false);
   };
 
- 
 
   const onLike = (args: LikeStruct, postIndex: number) => {
     let post = market.markets[postIndex];

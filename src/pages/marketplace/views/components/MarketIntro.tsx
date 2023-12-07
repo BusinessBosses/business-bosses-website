@@ -172,7 +172,7 @@ const MarketIntro: React.FC<MarketIntroProps> = ({ partnerData, partnerDatatile 
                 handleButtonClick :showMarketMembersModal}
                 className="text-primary cursor-pointer underline text-sm font-bold"
               >
-                Members: ({market.marketMembers.length})
+                Members: ({market.marketuserscount})
               </p>
             </div>
             <div className="flex gap-2 items-center">

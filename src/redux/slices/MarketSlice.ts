@@ -11,7 +11,8 @@ interface MarketState {
     count: number,
     markets: Market[],
     marketMembers: User[]
-    loading: boolean
+    loading: boolean,
+    marketuserscount: number,
 }
 
 // Define the initial state using that type
@@ -20,7 +21,9 @@ const initialState: MarketState = {
     count: 0,
     markets: [],
     marketMembers: [],
-    loading: false
+    loading: false,
+    marketuserscount: 0
+
 }
 
 export const marketSlice = createSlice({
@@ -32,6 +35,9 @@ export const marketSlice = createSlice({
         },
         saveCount: (state, action: PayloadAction<number>) => {
             state.count = action.payload
+        },
+        saveuserscount: (state, action: PayloadAction<number>) => {
+            state.marketuserscount = action.payload
         },
         changeLoadingState: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload
@@ -52,6 +58,6 @@ export const marketSlice = createSlice({
     },
 })
 
-export const { incrementPage, addMarketsToState, saveCount, changeLoadingState, addNewListing, updateListing, addMembersToState } = marketSlice.actions
+export const { incrementPage, addMarketsToState, saveCount, changeLoadingState, addNewListing, updateListing, saveuserscount, addMembersToState } = marketSlice.actions
 
 export default marketSlice.reducer

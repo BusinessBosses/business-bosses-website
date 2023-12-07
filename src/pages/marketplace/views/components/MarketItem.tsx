@@ -466,7 +466,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
           ) : null}
 
           <div className="mt-5 flex items-center justify-between mb-3">
-            <div className="flex gap-5">
+            <div className="flex">
               <PostAction
                 count={data.likes.length.toString()}
                 icon={

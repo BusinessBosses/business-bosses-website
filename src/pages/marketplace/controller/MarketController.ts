@@ -14,6 +14,11 @@ class MarketController {
         return response
     }
 
+    async fetchMarketUserscount() {
+        const response = await serviceApi.fetch(`/members/marketplace?size=10000`);
+        return response
+    }
+
 
     async createListing(args: MarketStruct) {
         const response = await serviceApi.post('/markets', args);
