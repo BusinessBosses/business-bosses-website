@@ -13,7 +13,7 @@ interface Props {
   title?: string;
   data: Post;
 }
-const ProfilePosts = ({ data,imgUrl, title }: Props) => {
+const ProfilePosts = ({ data, imgUrl, title }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   return (
@@ -29,7 +29,7 @@ const ProfilePosts = ({ data,imgUrl, title }: Props) => {
           <p className="line-clamp-6">{title}</p>
         </div>
       )}
-      <button className="absolute top-2 right-2 bg-white rounded-full p-1">
+      {data.user.uid === profile?.uid ? <button className="absolute top-2 right-2 bg-white rounded-full p-1">
         {
           <Popup
             trigger={
@@ -41,7 +41,7 @@ const ProfilePosts = ({ data,imgUrl, title }: Props) => {
             on="click"
             closeOnDocumentClick
             contentStyle={{ padding: "0px", border: "none" }}
-       
+
           >
             {
               (((close: any) =>
@@ -83,7 +83,7 @@ const ProfilePosts = ({ data,imgUrl, title }: Props) => {
           </Popup>
         }
 
-      </button>
+      </button> : null}
     </div>
   );
 };
