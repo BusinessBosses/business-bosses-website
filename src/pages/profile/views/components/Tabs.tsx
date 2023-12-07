@@ -68,7 +68,7 @@ const Tabs = ({ currentIndex, onChangeRoute, uid }: Props) => {
               : "text-[#A9A9A9] pb-3 pt-3 text-xs lg:text-base"
               }`}
           >
-            Store
+            Shop
           </button>}
         </div>
 

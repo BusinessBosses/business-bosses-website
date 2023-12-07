@@ -25,6 +25,10 @@ class MarketController {
         return response;
     }
 
+    async deletelisting(postId: string){
+        await serviceApi.remove(`/markets/${postId}`)
+    }
+
     validatePostField(post: MarketStruct): boolean {
         if (!!!post.description && !!!post.images?.length) {
             return false;

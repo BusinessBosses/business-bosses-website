@@ -25,6 +25,7 @@ import Lightbox from "react-spring-lightbox";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
 import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
 import TranslucentDiv from "../../../../common/components/buttons/Translucentbutton";
+import MarketController from "../../controller/MarketController";
 interface Props {
   data: Market;
   onLike: Function;
@@ -305,7 +306,9 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                     </button>
                     <button
                       onClick={() => {
-
+                        MarketController.deletelisting(data.marketId)
+                          toast.success("Post Deleted Successfully")
+                          close();
                       }}
                       className="menu-item text-primary"
                     >
