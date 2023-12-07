@@ -21,7 +21,7 @@ import ChatRoomPage from "./pages/chat/views/ChatRoomPage";
 import CreateListing from "./pages/marketplace/views/CreateListing";
 import { useEffect, useState } from "react";
 import serviceApi from "./services/serviceApi";
-import { useAppDispatch } from "./redux/store/store";
+import { useAppDispatch, useAppSelector } from "./redux/store/store";
 import { addPostToState } from "./redux/slices/PostSlice";
 import FetchStatus from "./common/components/fetch_status/FetchStatus";
 import { saveBossupData, saveUserData } from "./redux/slices/UserSlice";
@@ -62,10 +62,14 @@ import axios from "axios";
 import { PartnerDatatile } from "./common/interfaces/partnerdatatile";
 import Liveevent from "./pages/liveevent/liveevent";
 import { Helmet } from "react-helmet";
+import MarketController from "./pages/marketplace/controller/MarketController";
+import { addMarketsToState, incrementPage, saveCount } from "./redux/slices/MarketSlice";
+import { Market } from "./common/interfaces/Market";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
+  const market = useAppSelector((state) => state.market);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [partnerData, setPartnerData] = useState<PartnerData | null>(null);
@@ -98,6 +102,25 @@ const App = () => {
           })
         );
       }
+    }
+  };
+
+  const fetchMarkets = async () => {
+    const response = await serviceApi.fetch(`/markets/all?size=20&page=${market.page}`);
+    if (response.success) {
+      dispatch(incrementPage());
+      dispatch(
+        addMarketsToState(
+          response.data.rows.map((mp: Market) => ({
+            ...mp,
+            coins: mp.coins!.map((cn: any) => cn.userId),
+            likes: mp.likes!.map((lk: any) => lk.userId),
+          }))
+        )
+      );
+      dispatch(saveCount(response.data.count));
+    } else {
+      setErr(true);
     }
   };
 
@@ -173,6 +196,7 @@ const App = () => {
     setErr(false);
     const response = await serviceApi.fetch("/init");
     fetchBossOfTheWeek();
+    fetchMarkets();
     if (response.success) {
       const processedPosts = HomeController.processData(response);
       socket.emit("handshake", response.data.user.uid);
@@ -195,6 +219,7 @@ const App = () => {
     }
     setLoading(false);
   };
+
   useEffect(() => {
     if (
       localStorage.getItem(StorageEnum.UserId) &&

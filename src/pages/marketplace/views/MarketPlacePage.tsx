@@ -54,35 +54,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
     setIsPopupOpen(false);
   };
 
-  const fetchMarketUsers = async () => {
-    const response = await MarketController.fetchMarketUsers();
-    if (response.success) {
-      dispatch(addMembersToState(response.data.rows.map((mp: any) => mp.user)));
-    }
-  };
-
-  const fetchCall = async () => {
-    setLoading(true);
-    setErr(false);
-    const response = await MarketController.fetchMarkets(market.page);
-    if (response.success) {
-      dispatch(incrementPage());
-      dispatch(
-        addMarketsToState(
-          response.data.rows.map((mp: Market) => ({
-            ...mp,
-            coins: mp.coins!.map((cn: any) => cn.userId),
-            likes: mp.likes!.map((lk: any) => lk.userId),
-          }))
-        )
-      );
-      dispatch(saveCount(response.data.count));
-    } else {
-      setErr(true);
-    }
-
-    setLoading(false);
-  };
+ 
 
   const onLike = (args: LikeStruct, postIndex: number) => {
     let post = market.markets[postIndex];
@@ -139,13 +111,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
     dispatch(updateListing({ index: postIndex, post }));
   };
 
-  useEffect(() => {
-    if (!!!market.markets.length) {
-      fetchCall();
-      fetchMarketUsers();
-    }
-  }, []);
-
+ 
   useEffect(() => {
     const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
       if (
@@ -234,7 +200,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
               error={true}
               errorMessage="Something went wrong!!"
               loading={false}
-              onReload={fetchCall}
+              onReload={()=>{}}
             />
           ) : null}
           {market.markets.map((market: Market, index: number) => (
@@ -322,7 +288,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
                   error={true}
                   errorMessage="Something went wrong!!"
                   loading={false}
-                  onReload={fetchCall}
+                  onReload={()=>{}}
                 />
               ) : null}
               {market.markets.map((market: Market, index: number) => (
