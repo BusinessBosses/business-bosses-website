@@ -32,6 +32,7 @@ import Computerlefttabsignedoutuser from "../../profile/views/components/Compute
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
 import { Helmet } from "react-helmet";
+import MarketplaceTab from "./components/Markettab";
 interface Props {
   socket: Socket;
   partnerData: PartnerData | null;
@@ -45,6 +46,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
   const dispatch = useAppDispatch();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -185,7 +187,9 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
           <MobileMarketIntro partnerData={partnerData} partnerDatatile={partnerDatatile} />
         </div>
 
-        <div className="">
+        <MarketplaceTab currentIndex={currentIndex} onChangeRoute={(index: number) => setCurrentIndex(index)} uid={profile.profile!.uid}/>
+
+        {currentIndex === 0 ? <div className="">
           {loading ? (
             <FetchStatus
               error={false}
@@ -234,10 +238,10 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
               key={market.marketId}
             />
           ))}
-        </div>
+        </div> : currentIndex === 1 ? <div>Products</div>:  <div>Services</div> }
         <div className="my-20"></div>
         <MobileBottomNav currentIndex={2} />
-      </div>
+      </div> 
 
       {isPopupOpen && (
         <div className="overlay">
@@ -290,6 +294,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
                   onReload={()=>{}}
                 />
               ) : null}
+              <MarketplaceTab currentIndex={currentIndex} onChangeRoute={(index: number) => setCurrentIndex(index)} uid={profile.profile!.uid}/>
               {market.markets.map((market: Market, index: number) => (
                 <MarketItem
                   onComment={(comment: CommentStruct) => {

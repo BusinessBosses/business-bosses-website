@@ -69,6 +69,7 @@ import { ReactComponent as Inviteicon } from "./icons/invite.svg"
 import { ReactComponent as Membersicon } from "./icons/members.svg"
 import { ReactComponent as Linkicon } from "./icons/link.svg"
 import { ReactComponent as Bolticon } from "./icons/bolt.svg"
+import  dashboardicon from "./icons/dashboard.svg"
 
 
 
@@ -145,6 +146,7 @@ const Assets = {
     ad6,
     Viewsicon,
     Liveeventback,
+    dashboardicon,
 
 };
 export default Assets;
