@@ -239,7 +239,7 @@ const CreateServiceListing = () => {
 
             <FilledSelect
               className=""
-              defaultValue={stateProps?.category}
+              defaultValue={stateProps?.location}
               inputRef={categoryRef}
               data={[
                 "Select Delivery Time",
