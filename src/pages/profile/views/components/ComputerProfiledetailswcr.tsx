@@ -60,7 +60,7 @@ const ComputerProfileDetails = ({ data }: Props) => {
       fetchPosts(profile.profile?.uid!);
     }
   }, [profile.profile?.uid]);
-  
+
 
 
   // Function to handle the click event
@@ -89,61 +89,39 @@ const ComputerProfileDetails = ({ data }: Props) => {
         );
         localStorage.setItem(StorageEnum.UserId, response.data.uid);
         toast.success("You have been signed out");
-        
+
         // Reload the page to navigate to the home
         window.location.reload();
       } else {
         toast.error("Oops, try again! An Error Occurred");
       }
-      
+
       setLoading(false);
     }
   };
-  
+
 
   return (
     <div className=" " style={{ cursor: "pointer", height: "100vh", width: "100vh" }}>
-     
+
       <div className="mt-0 ">
         <div>
           <div className="pb-2"></div>
           <MyProfileHeader />
           <MyProfileDetails data={profile.profile!} />
-           <div className="mt-3">
-          <Tabs
+          <div className="mt-3">
+            <Tabs
               currentIndex={currentTabIndex}
-              onChangeRoute={(index: number) => setCurrentTabIndex(index)} uid={profile.profile?.uid.toString}          />
+              onChangeRoute={(index: number) => setCurrentTabIndex(index)} uid={profile.profile?.uid} />
 
-          {currentTabIndex === 0 ? <About data={profile.profile!} /> : null}
-          {currentTabIndex === 1 ? (
-            loading ? (
-              <FetchStatus
-                error={false}
-                errorMessage="Something went wrong!!"
-                loading={true}
-                onReload={() => { }}
-              />
-            ) : err ? (
-              <FetchStatus
-                error={true}
-                errorMessage="Something went wrong!!"
-                loading={false}
-                onReload={() => {
-                  fetchPosts(profile.profile?.uid!);
-                }}
-              />
-            ) : (
-              <div className="">
-              <Posts posts={profile.posts} /></div>
-            )
-          ) : null}
-           {currentTabIndex === 2 ? (
+            {currentTabIndex === 0 ? <About data={profile.profile!} /> : null}
+            {currentTabIndex === 1 ? (
               loading ? (
                 <FetchStatus
                   error={false}
                   errorMessage="Something went wrong!!"
                   loading={true}
-                  onReload={() => {}}
+                  onReload={() => { }}
                 />
               ) : err ? (
                 <FetchStatus
@@ -151,26 +129,31 @@ const ComputerProfileDetails = ({ data }: Props) => {
                   errorMessage="Something went wrong!!"
                   loading={false}
                   onReload={() => {
-                    // fetchMarketUsers();
+                    fetchPosts(profile.profile?.uid!);
                   }}
                 />
               ) : (
-                <div>
-                  {market.markets
-                    .filter((market) => market.userId === profile.profile?.uid)
-                    .map((market, index) => (
-                      <MarketItem
-                        data={market}
-                        onLike={() => {}}
-                        onCoin={() => {}}
-                        onComment={() => {}}
-                        key={market.marketId}
-                      />
-                    ))}
-                </div>
+                <div className="">
+                  <Posts posts={profile.posts} /></div>
               )
             ) : null}
-        </div>
+            {currentTabIndex === 2 ? (
+
+              <div>
+                {market.markets
+                  .filter((market) => market.userId === profile.profile?.uid)
+                  .map((market, index) => (
+                    <MarketItem
+                      data={market}
+                      onLike={() => { }}
+                      onCoin={() => { }}
+                      onComment={() => { }}
+                      key={market.marketId}
+                    />
+                  ))}
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     </div>

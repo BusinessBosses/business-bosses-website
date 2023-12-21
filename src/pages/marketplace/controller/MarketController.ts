@@ -14,6 +14,11 @@ class MarketController {
         return response
     }
 
+    async fetchMarketUserscount() {
+        const response = await serviceApi.fetch(`/members/marketplace?size=10000`);
+        return response
+    }
+
 
     async createListing(args: MarketStruct) {
         const response = await serviceApi.post('/markets', args);
@@ -23,6 +28,10 @@ class MarketController {
     async updateListing(postId: string, args: MarketStruct) {
         const response = await serviceApi.update(`/markets/${postId}`, args);
         return response;
+    }
+
+    async deletelisting(postId: string){
+        await serviceApi.remove(`/markets/${postId}`)
     }
 
     validatePostField(post: MarketStruct): boolean {

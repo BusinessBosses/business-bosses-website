@@ -5,14 +5,14 @@ interface Props {
 }
 const Posts = ({ posts }: Props) => {
   return (
-    <div className="grid grid-cols-2 gap-3 px-4 pt-4 bg-[#f4f4f4]" style={{}}>
+    <div className="grid grid-cols-2 gap-3 px-4 py-4 bg-[#f4f4f4]" style={{}}>
       {posts.map((post) => {
         return (
           <Post
             key={post.postId}
             title={post.title}
-            imgUrl={post.images ? post.images[0] : undefined}
-          />
+            imgUrl={post.images ? post.images[0] : undefined} 
+            data={post}          />
         );
       })}
     </div>

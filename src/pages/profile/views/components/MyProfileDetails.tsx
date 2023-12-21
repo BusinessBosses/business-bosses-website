@@ -36,9 +36,9 @@ const MyProfileDetails = ({ data }: Props) => {
             <p className="text-sm font-semibold text-[#333333] lg:text-lg">{data.category}</p>
             <p className="font-medium text-xs lg:text-base">{data.companyName}</p>
             <p className="text-xs font-light text-[#A9A9A9] lg:text-sm">{data.location}</p>
-            <div className="mt-2">
+            {!data.isSubscribed && (<div className="mt-2">
               <SubscribeButton />
-            </div>
+            </div>)}
           </div>
         </div>
 
