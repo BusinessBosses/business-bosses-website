@@ -112,7 +112,7 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
     dispatch(updateListing({ index: postIndex, post }));
   };
 
- 
+
   useEffect(() => {
     const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
       if (
@@ -142,16 +142,16 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
       <Helmet>
 
         <title>Marketplace - Business Bosses</title>
-        <meta name="description"  content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />
+        <meta name="description" content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />
 
         <meta itemProp="name" content="Business Bosses" />
-        <meta itemProp="description"  content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />       <meta itemProp="image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
+        <meta itemProp="description" content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />       <meta itemProp="image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
 
 
         <meta property="og:url" content="https://businessbosses.co.uk" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Business Bosses" />
-        <meta property="og:description"  content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />
+        <meta property="og:description" content="Marketplace, sell, products, services, Business, Bosses, Sell your Products,  Find Supplies" />
         <meta property="og:image" content="https://businessbosses.com.ng/appfiles/1699609610_43_1000103762.png" />
 
 
@@ -187,61 +187,63 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
           <MobileMarketIntro partnerData={partnerData} partnerDatatile={partnerDatatile} />
         </div>
 
-        <MarketplaceTab currentIndex={currentIndex} onChangeRoute={(index: number) => setCurrentIndex(index)} uid={profile.profile!.uid}/>
+        <MarketplaceTab currentIndex={currentIndex} onChangeRoute={(index: number) => setCurrentIndex(index)} uid={profile.profile!.uid} />
 
-        {currentIndex === 0 ? <div className="">
-          {loading ? (
+        <div className="">
+          {currentIndex === 0 ? (loading ? (
             <FetchStatus
               error={false}
               errorMessage="Something went wrong!!"
               loading={true}
               onReload={() => { }}
             />
-          ) : null}
-          {err ? (
-            <FetchStatus
-              error={true}
-              errorMessage="Something went wrong!!"
-              loading={false}
-              onReload={()=>{}}
-            />
-          ) : null}
-          {market.markets.map((market: Market, index: number) => (
-            <MarketItem
-              onComment={(comment: CommentStruct) => {
-                onComment(comment, index);
-              }}
-              onLike={(postId: string) => {
-                onLike(
-                  {
-                    postId,
-                    type: "marketplace",
-                    userId: profile.profile!.uid,
-                    receiverUid: market.user!.uid,
-                  },
-                  index
-                );
-              }}
-              onCoin={(postId: string) => {
-                onCoin(
-                  {
-                    postId,
-                    type: "marketplace",
-                    userId: profile.profile!.uid,
-                    receiverUid: market.user!.uid,
-                    timestamp: Date.now(),
-                  },
-                  index
-                );
-              }}
-              data={market}
-              key={market.marketId}
-            />
-          ))}
-        </div> : currentIndex === 1 ? <div>Products</div>:  <div>Services</div> }
+          ) :
+            err ? (
+              <FetchStatus
+                error={true}
+                errorMessage="Something went wrong!!"
+                loading={false}
+                onReload={() => { }}
+              />
+            ) :
+              market.markets.map((market: Market, index: number) => (
+                <MarketItem
+                  onComment={(comment: CommentStruct) => {
+                    onComment(comment, index);
+                  }}
+                  onLike={(postId: string) => {
+                    onLike(
+                      {
+                        postId,
+                        type: "marketplace",
+                        userId: profile.profile!.uid,
+                        receiverUid: market.user!.uid,
+                      },
+                      index
+                    );
+                  }}
+                  onCoin={(postId: string) => {
+                    onCoin(
+                      {
+                        postId,
+                        type: "marketplace",
+                        userId: profile.profile!.uid,
+                        receiverUid: market.user!.uid,
+                        timestamp: Date.now(),
+                      },
+                      index
+                    );
+                  }}
+                  data={market}
+                  key={market.marketId}
+                />
+              ))) : null}
+          {currentIndex === 1 ? <div>Products</div> : null}
+          {currentIndex === 2 ? <div>Services</div> : null}
+        </div>
         <div className="my-20"></div>
         <MobileBottomNav currentIndex={2} />
-      </div> 
+      </div>
 
       {isPopupOpen && (
         <div className="overlay">
@@ -277,56 +279,59 @@ const MarketPlacePage = ({ socket, partnerData, partnerDatatile }: Props) => {
             className="computer-main-content"
             style={{ width: "50%", flexGrow: 0 }}
           >
+             <MarketplaceTab currentIndex={currentIndex} onChangeRoute={(index: number) => setCurrentIndex(index)} uid={profile.profile!.uid} />
+
             <div className="">
-              {loading ? (
+              {currentIndex === 0 ? (loading ? (
                 <FetchStatus
                   error={false}
                   errorMessage="Something went wrong!!"
                   loading={true}
                   onReload={() => { }}
                 />
-              ) : null}
-              {err ? (
-                <FetchStatus
-                  error={true}
-                  errorMessage="Something went wrong!!"
-                  loading={false}
-                  onReload={()=>{}}
-                />
-              ) : null}
-              <MarketplaceTab currentIndex={currentIndex} onChangeRoute={(index: number) => setCurrentIndex(index)} uid={profile.profile!.uid}/>
-              {market.markets.map((market: Market, index: number) => (
-                <MarketItem
-                  onComment={(comment: CommentStruct) => {
-                    onComment(comment, index);
-                  }}
-                  onLike={(postId: string) => {
-                    onLike(
-                      {
-                        postId,
-                        type: "marketplace",
-                        userId: profile.profile!.uid,
-                        receiverUid: market.user!.uid,
-                      },
-                      index
-                    );
-                  }}
-                  onCoin={(postId: string) => {
-                    onCoin(
-                      {
-                        postId,
-                        type: "marketplace",
-                        userId: profile.profile!.uid,
-                        receiverUid: market.user!.uid,
-                        timestamp: Date.now(),
-                      },
-                      index
-                    );
-                  }}
-                  data={market}
-                  key={market.marketId}
-                />
-              ))}
+              ) :
+                err ? (
+                  <FetchStatus
+                    error={true}
+                    errorMessage="Something went wrong!!"
+                    loading={false}
+                    onReload={() => { }}
+                  />
+                ) :
+                  market.markets.map((market: Market, index: number) => (
+                    <MarketItem
+                      onComment={(comment: CommentStruct) => {
+                        onComment(comment, index);
+                      }}
+                      onLike={(postId: string) => {
+                        onLike(
+                          {
+                            postId,
+                            type: "marketplace",
+                            userId: profile.profile!.uid,
+                            receiverUid: market.user!.uid,
+                          },
+                          index
+                        );
+                      }}
+                      onCoin={(postId: string) => {
+                        onCoin(
+                          {
+                            postId,
+                            type: "marketplace",
+                            userId: profile.profile!.uid,
+                            receiverUid: market.user!.uid,
+                            timestamp: Date.now(),
+                          },
+                          index
+                        );
+                      }}
+                      data={market}
+                      key={market.marketId}
+                    />
+                  ))) : null}
+              {currentIndex === 1 ? <div>Products</div> : null}
+              {currentIndex === 2 ? <div>Services</div> : null}
             </div>
             <div className="my-20"></div>
           </div>

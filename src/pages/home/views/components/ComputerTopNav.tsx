@@ -17,6 +17,9 @@ import { profile } from "console";
 import { PartnerData } from "../../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../../common/interfaces/partnerdatatile";
 import { toast } from "react-toastify";
+import Tabs from "../../../profile/views/components/Tabs";
+import SellTabs from "../../../profile/views/components/Selltabs";
+import CreateServiceListing from "../../../marketplace/views/CreateServiceListing";
 
 interface Props {
   // currentIndex: number;
@@ -46,7 +49,7 @@ const ComputerTopNav = ({
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const currentIndex = useAppSelector((state) => state.route.currentIndex);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   useEffect(() => {
     if (isPopupOpen) {
@@ -430,7 +433,11 @@ const ComputerTopNav = ({
                       </div>
                       <div />
                     </div>
-                    <CreateListing />
+                    <SellTabs currentIndex={currentIndex} onChangeRoute={(index: number) => setCurrentIndex(index)}/>
+                    <div className="">
+                      {currentIndex === 0 ? (<CreateListing/>):null}
+                      {currentIndex === 1 ? (<CreateServiceListing/>):null}
+                    </div>
                   </div>
                 ) : null}
               </div>

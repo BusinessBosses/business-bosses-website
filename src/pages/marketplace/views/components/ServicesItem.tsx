@@ -32,7 +32,7 @@ interface Props {
   onCoin: Function;
   onComment: Function;
 }
-const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
+const ServicesItem = ({ data, onCoin, onComment, onLike }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const [comments, setComments] = useState<CommentStruct[]>([]);
@@ -358,7 +358,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             <p className="text-[#4E4B4B] text-xs mb-2">Sponsored</p>
           ) : null}
           <div className="flex">
-            <p className="text-[#232324] font-bold my-1">{data.price}</p>
+            <p className="text-[#232324] font-bold my-1">{data.category} - ${data.price}</p>
             {data.discount !== null && (
               <div className="ml-3 flex items-center rounded-lg px-3 py-1 bg-[#D6F8E6] font-bold text-[#64AB5B]" style={{ fontSize: "12px" }}>
                 {data.discount}% off
@@ -384,6 +384,9 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
             ) : null}
 
 
+          </div>
+          <div className="flex"><img src={Assets.timelapseicon}/>
+          <div className="pl-2 text-xs"> 2 Day Delivery</div>
           </div>
           <div onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
             () => { } : () => navigate(RoutesPath.sellerreview, { state: data.user })} className="flex gap-2">{data.user?.averageRating ? (
@@ -508,7 +511,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                   }}
               />
             
-              {/* <div className="computer-only">
+              <div className="computer-only">
               <div className="w-5"></div>
                 <PostAction
                   count=""
@@ -518,7 +521,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
                       setShowShareDialog(true);
                     }}
                 />
-              </div> */}
+              </div>
             </div>
 
             {data.userId !== profile?.uid ?
@@ -541,7 +544,7 @@ const MarketItem = ({ data, onCoin, onComment, onLike }: Props) => {
   );
 };
 
-export default MarketItem;
+export default ServicesItem;
 
 interface MarketActionProps {
   icon: any;

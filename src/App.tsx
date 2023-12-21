@@ -65,6 +65,7 @@ import { Helmet } from "react-helmet";
 import MarketController from "./pages/marketplace/controller/MarketController";
 import { addMarketsToState, addMembersToState, incrementPage, saveCount, saveuserscount } from "./redux/slices/MarketSlice";
 import { Market } from "./common/interfaces/Market";
+import CreateListingSelectorpage from "./pages/marketplace/views/CreateListingSelectorpage";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -503,6 +504,10 @@ const App = () => {
       <Route
         path={RoutesPath.liveevent}
         element={<Liveevent partnerData={partnerData} partnerDatatile={partnerDatatile} />}
+      />
+      <Route
+        path={RoutesPath.listingselectorpage}
+        element={<CreateListingSelectorpage/>}
       />
 
     </Routes>

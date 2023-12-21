@@ -126,7 +126,7 @@ const MarketIntro: React.FC<MarketIntroProps> = ({ partnerData, partnerDatatile 
             icon={<AiOutlinePlus color="white" size={20} />}
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
             handleButtonClick :() => {
-              navigate(RoutesPath.CreateListing);
+              navigate(RoutesPath.listingselectorpage);
             }}
             text="Sell"
             className="px-7 py-3"

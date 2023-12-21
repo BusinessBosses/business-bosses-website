@@ -44,6 +44,7 @@ const reviewpaymentpage = "/reviewpaymentpage";
 const subscriptionfailedpage = "/subscriptionfailedpage";
 const computerbossupsectionpage = "/computerbossupsectionpage";
 const liveevent = "/liveevent";
+const listingselectorpage = "/listingselectorpage";
 
 const RoutesPath = {
     home,
@@ -92,6 +93,7 @@ const RoutesPath = {
     subscriptionfailedpage,
     computerbossupsectionpage,
     liveevent,
+    listingselectorpage,
 
 
 
