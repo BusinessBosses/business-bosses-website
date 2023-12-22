@@ -15,7 +15,6 @@ import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
-import Markets from "./components/Markets";
 import { Market } from "../../../common/interfaces/Market";
 import MarketController from "../../marketplace/controller/MarketController";
 import { saveCount } from "../../../redux/slices/ForumSlice";
@@ -57,32 +56,6 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
     setLoading(false);
   };
 
-  const fetchMarkets = async (userId: string) => {
-    setLoading(true);
-    setErr(false);
-
-    const responseMarkets = await MarketController.fetchMarkets(market.page);
-
-    if (responseMarkets.success) {
-      dispatch(incrementPage());
-
-      const filteredMarkets = responseMarkets.data.rows
-        .map((mp: Market) => ({
-          ...mp,
-          coins: mp.coins!.map((cn: any) => cn.userId),
-          likes: mp.likes!.map((lk: any) => lk.userId),
-        }))
-        .filter((market: { userId: string | undefined }) => market.userId === userId);
-
-      dispatch(addMarketsToState(filteredMarkets));
-      dispatch(saveCount(responseMarkets.data.count));
-    } else {
-      setErr(true);
-    }
-
-    setLoading(false);
-  };
-
   useEffect(() => {
     const state = location.state;
 
@@ -92,7 +65,6 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
       const publicUserState: User = state;
       setPublicUser(publicUserState);
       fetchPosts(publicUserState.uid);
-      fetchMarkets(publicUserState.uid);
     }
   }, []);
   return (
@@ -126,30 +98,14 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
             <div className="mt-3">
               <Tabs
                     currentIndex={currentTabIndex}
-                    onChangeRoute={(index: number) => setCurrentTabIndex(index)} uid={publicUser?.uid.toString}              />
+                    onChangeRoute={(index: number) => setCurrentTabIndex(index)} uid={publicUser?.uid}              />
 
               {currentTabIndex === 0 && publicUser ? (
                 <About data={publicUser!} />
               ) : null}
               {currentTabIndex === 1 ? <Posts posts={posts} /> : null}
               {currentTabIndex === 2 ? (
-              loading ? (
-                <FetchStatus
-                  error={false}
-                  errorMessage="Something went wrong!!"
-                  loading={true}
-                  onReload={() => {}}
-                />
-              ) : err ? (
-                <FetchStatus
-                  error={true}
-                  errorMessage="Something went wrong!!"
-                  loading={false}
-                  onReload={() => {
-                  fetchMarkets(publicUser?.uid!);
-                  }}
-                />
-              ) : (
+              
                 <div>
                   {market.markets
                     .filter((market) => market.userId === publicUser?.uid)
@@ -163,7 +119,6 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
                       />
                     ))}
                 </div>
-              )
             ) : null}
             </div>
           </div>
@@ -217,7 +172,7 @@ const PublicUserProfile: React.FC<Props> = ({ partnerData, partnerDatatile }) =>
                 <div className="mt-3">
                   <Tabs
                         currentIndex={currentTabIndex}
-                        onChangeRoute={(index: number) => setCurrentTabIndex(index)} uid={publicUser?.uid.toString}                  />
+                        onChangeRoute={(index: number) => setCurrentTabIndex(index)} uid={publicUser?.uid}                  />
 
                   {currentTabIndex === 0 && publicUser ? (
                     <About data={publicUser!} />

@@ -16,8 +16,10 @@ import {
   updateListing,
 } from "../../../redux/slices/MarketSlice";
 import RoutesPath from "../../../constants/Routes";
+import SellTabs from "../../profile/views/components/Selltabs";
+import CreateListing from "./CreateListing";
 
-const CreateListing = () => {
+const CreateServiceListing = () => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const markets = useAppSelector((state) => state.market.markets);
@@ -32,6 +34,7 @@ const CreateListing = () => {
   const categoryRef = useRef<HTMLSelectElement>(null);
   const [country, setCountry] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const removeImage = (name: string) => {
     const newImageSet = images.filter((ft) => ft.name !== name);
@@ -133,7 +136,7 @@ const CreateListing = () => {
         category: categoryRef.current?.value.trim(),
         location: country ?? undefined,
         price: priceRef.current?.value.trim(),
-        discount:discountRef.current?.value.trim(),
+        discount: discountRef.current?.value.trim(),
       }
     );
     if (response.success) {
@@ -181,7 +184,6 @@ const CreateListing = () => {
           </button>
         </div>
         
-        
       </div>
       <div className="pt-20 px-4 bg-white">
         <form
@@ -194,28 +196,38 @@ const CreateListing = () => {
             }
           }}
         >
-          <div className="flex w-full">
-  <div className="flex-1">
-    <FilledInput
-      defaultValue={stateProps?.price}
-      inputRef={priceRef}
-      onchange={() => {}}
-      placeholder="Enter Price in USD (Eg $10)"
-      className="text-sm w-full"
-    />
-  </div>
-  <div className="flex-2 ml-2">
-    <FilledInput
-      defaultValue={stateProps?.discount}
-      inputRef={discountRef}
-      onchange={() => {}}
-      placeholder="Discount %"
-      className="text-sm w-full"
-    />
-  </div>
-</div>
 
-          
+          <div className="bg-[#f1f1f1]">
+
+            <FilledSelect
+              className=""
+              defaultValue={stateProps?.category}
+              inputRef={categoryRef}
+              data={[
+                "Select Service",
+                "Write 1 Page Business Plan",
+                "Build 1 Page Website",
+                "Create Social Media AD",
+                "Monthly Account Book Keeping",
+                "Logo & Branding Guidelines",
+                "Test, review & Feedback",
+                "Other Business Service",
+              ]}
+              onchange={(e) => { }}
+            />
+          </div>
+
+
+          <FilledInput
+            defaultValue={stateProps?.price}
+            inputRef={priceRef}
+            onchange={() => { }}
+            placeholder="Price"
+            className="text-sm w-full"
+          />
+
+
+
           <FilledTextarea
             defaultValue={stateProps?.description}
             inputRef={descriptionRef}
@@ -224,41 +236,35 @@ const CreateListing = () => {
             className="text-sm"
           />
           <div className="bg-[#f1f1f1]">
-            
-          <FilledSelect
-          className=""
-            defaultValue={stateProps?.category}
-            inputRef={categoryRef}
-            data={[
-              "Select Category",
-              "Home, Garden & Outdoors",
-              "Fashion & Beauty",
-              "Sports & Entertainment",
-              "Books & Education",
-              "Jewellery & Timepieces",
-              "Security, Safety & Equipment",
-              "Video Games & Electronics",
-              "Agriculture, Food, Beverage",
-              "Construction & Real Estate",
-              "Vehicle & Transportation",
-              "Business Services & Events",
-              "Other",
-            ]}
-            onchange={(e) => { }}
-          />
-          </div>
-          
 
-          <div className="my-10">
-            <CountryDropdown
-              defaultOptionLabel="Select Location"
-              classes="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-3"
-              value={country ?? stateProps?.location ?? ""}
-              onChange={(val) => {
-                setCountry(val);
-              }}
+            <FilledSelect
+              className=""
+              defaultValue={stateProps?.location}
+              inputRef={categoryRef}
+              data={[
+                "Select Delivery Time",
+                "1 Day Delivery",
+                "2 Day Delivery",
+                "3 Day Delivery",
+                "4 Day Delivery",
+                "5 Day Delivery",
+                "6 Day Delivery",
+                "7 Day Delivery",
+                "8 Day Delivery",
+                "9 Day Delivery",
+                "10 Day Delivery",
+                "11 Day Delivery",
+                "12 Day Delivery",
+                "13 Day Delivery",
+                "14 Day Delivery",
+                "15 Day Delivery",
+              ]}
+              onchange={(e) => { }}
             />
           </div>
+
+
+
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Assets.File />
@@ -345,4 +351,4 @@ const CreateListing = () => {
   );
 };
 
-export default CreateListing;
+export default CreateServiceListing;

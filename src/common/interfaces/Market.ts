@@ -17,4 +17,5 @@ export interface Market {
     comments?: Comment[];
     views?: number;
     discount?: string;
+    isProduct: boolean;
 }
