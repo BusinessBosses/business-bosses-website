@@ -126,7 +126,7 @@ const MarketIntro: React.FC<MarketIntroProps> = ({ partnerData, partnerDatatile 
             icon={<AiOutlinePlus color="white" size={20} />}
             onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
             handleButtonClick :() => {
-              navigate(RoutesPath.CreateListing);
+              navigate(RoutesPath.listingselectorpage);
             }}
             text="Sell"
             className="px-7 py-3"
@@ -172,7 +172,7 @@ const MarketIntro: React.FC<MarketIntroProps> = ({ partnerData, partnerDatatile 
                 handleButtonClick :showMarketMembersModal}
                 className="text-primary cursor-pointer underline text-sm font-bold"
               >
-                Members: ({market.marketMembers.length})
+                Members: ({market.marketuserscount})
               </p>
             </div>
             <div className="flex gap-2 items-center">

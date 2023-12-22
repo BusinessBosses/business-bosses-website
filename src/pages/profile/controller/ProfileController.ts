@@ -7,6 +7,9 @@ class ProfileController {
         return response;
     }
 
+
+    
+
     
 
     validateProfileUpdate(data: User) {

@@ -24,6 +24,16 @@ const Bossuppartnerpage = () => {
     partnerurl: '',
   });
 
+  const handlemessageusButtonClick = () => {
+    const confirmMessage = 'Are you sure you want to leave this page?';
+    if (window.confirm(confirmMessage)) {
+      window.open('https://businessbosses.news/our-partners/', '_blank');
+    } else {
+      // Handle the cancel action
+    }
+  };
+
+
   const fetchPartnerData = async () => {
     try {
       const response = await axios.get('https://orca-app-5dg8w.ondigitalocean.app/api/v1/partner/all');
@@ -97,7 +107,7 @@ const Bossuppartnerpage = () => {
         >
           <div className="font-bold flex-grow">Want to be a Partner?</div>
           <div>
-            <OutlinedButton onClick={() => {}} text={"Message Us"} />
+            <OutlinedButton onClick={() => { handlemessageusButtonClick();}} text={"Message Us"} />
           </div>
         </div>
       </div>

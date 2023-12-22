@@ -11,8 +11,9 @@ interface Props {
   recommendedConnections: User[];
   loading: boolean;
   isSearching: boolean;
+  bossOfTheWeek: User;
 }
-const People = ({ recommendedConnections, loading, isSearching }: Props) => {
+const People = ({ recommendedConnections, loading, isSearching, bossOfTheWeek }: Props) => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.user.profile);
   const dispatch = useAppDispatch();
@@ -46,9 +47,18 @@ const People = ({ recommendedConnections, loading, isSearching }: Props) => {
           onReload={() => {}}
         />
       ) : null}
+      {
+          <div className="px-4" >
+            <ConnectTile
+              connected={!!profile?.connecteds?.includes(bossOfTheWeek.uid!)}
+              onConnect={connection}
+              profile={bossOfTheWeek}
+            />
+          </div>
+      
+      }
       {recommendedConnections.map((connect: User, index: number) => {
         return (
-          
           <div key={index} className="px-4" >
             <ConnectTile
               connected={!!profile?.connecteds?.includes(connect.uid!)}
