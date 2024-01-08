@@ -71,6 +71,7 @@ import { ReactComponent as Linkicon } from "./icons/link.svg"
 import { ReactComponent as Bolticon } from "./icons/bolt.svg"
 import  dashboardicon from "./icons/dashboard.svg"
 import  timelapseicon from "./icons/timelapse.svg"
+import BossUpAvatar from "./icons/bb_avatar.jpg"
 
 
 
@@ -149,6 +150,6 @@ const Assets = {
     Liveeventback,
     dashboardicon,
     timelapseicon,
-
+    BossUpAvatar,
 };
 export default Assets;
