@@ -104,6 +104,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek, partnerData, partnerDatatile }: Pr
   };
 
   const { View } = useLottie(options);
+  const bossUpAvatar = bossOfTheWeek.photoUrl?? Assets.BossUpAvatar;
 
   return (
 
@@ -144,7 +145,7 @@ const MobileBossOfTheWeek = ({ bossOfTheWeek, partnerData, partnerDatatile }: Pr
             <div onClick={() =>
               navigate(RoutesPath.PublicUserProfile, { state: bossOfTheWeek })
             }>
-              <UserAvatar imageSize="h-24 w-24" imageURL={bossOfTheWeek.photoUrl} />
+              <UserAvatar imageSize="h-24 w-24" imageURL={bossUpAvatar} />
             </div>
             <div className="w-3/4 ml-3">
               <p className="text-md text-[#333333] font-semibold">
