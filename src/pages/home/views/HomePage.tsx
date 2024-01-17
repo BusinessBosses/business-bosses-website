@@ -60,9 +60,9 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
 
       const response = await serviceApi.fetch(`/post/get-posts?page=${page}&size=${50}&lastTimestamp=${lastTimestamp}`);
 
-
       if (response && response.data && response.data.posts) {
         const processedPosts = HomeController.processnewData(response); // Pass the entire response to processData
+
         dispatch(addPostToState(processedPosts));
         setPage((prevPage) => prevPage + 1);
       } else {
