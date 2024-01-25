@@ -1,8 +1,9 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import RoutesPath from "./constants/Routes";
 import HomePage from "./pages/home/views/HomePage";
 import MarketPlacePage from "./pages/marketplace/views/MarketPlacePage";
 import Forum from "./pages/forum/views/Forum";
+import ReactGA from 'react-ga';
 import CreatePost from "./pages/CreatePost/views/CreatePost";
 import PromotePage from "./pages/promote/views/PromotePage";
 import MyProfile from "./pages/profile/views/MyProfile";
@@ -70,6 +71,7 @@ import CreateListingSelectorpage from "./pages/marketplace/views/CreateListingSe
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const market = useAppSelector((state) => state.market);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -246,7 +248,8 @@ const App = () => {
       setLoading(false);
       login()
     }
-  }, []);
+    ReactGA.pageview(location.pathname + location.search);
+  }, [location]);
 
   const StartListeners = () => {
     /** Connection / reconnection listeners */
@@ -314,7 +317,7 @@ const App = () => {
 
 
 
-
+  ReactGA.initialize('G-HR9JXVYLJ9');
 
   return loading ? (
     <FetchStatus
@@ -354,7 +357,7 @@ const App = () => {
                   }}
                   className="text-primary outline-none border-none font-semibold"
                 >
-                  Generate New Access Token
+                  Login
                 </button>
               </div>
             </div>

@@ -269,7 +269,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
               <UserAvatar imageURL={data.user?.photoUrl}
                 isRanked={data.user?.isRanked}
               />
-               <div className="w-3"></div>
+              <div className="w-3"></div>
               <div className="flex-grow">
                 <p className="font-semibold flex items-center text-sm md:text-sm lg:text-base capitalize">
                   {data.user?.name}
@@ -379,13 +379,13 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
               {data.description}
             </p>
             {data.industry ? (
-  <div className="text-[#4E4B4B] text-xs my-2 px-3 py-1 rounded-lg" style={{ backgroundColor: '#f1f1f1', display: 'inline-block' }}>
-    {data.industry}
-  </div>
-) : null}
+              <div className="text-[#4E4B4B] text-xs my-2 px-3 py-1 rounded-lg" style={{ backgroundColor: '#f1f1f1', display: 'inline-block' }}>
+                {data.industry}
+              </div>
+            ) : null}
 
 
-            {data.images ? (
+            {data.images && data.images[0] ? (
               <div className="mt-2">
                 <Lightbox className="lg:p-10 p-5" style={{ background: 'rgba(0, 0, 0, 0.98)' }}
                   isOpen={showExpandedImages}
@@ -426,13 +426,13 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                     config: { mass: 1, tension: 320, friction: 32 }
                   }}
                 />
-                <img
+                {data.images[0] && (<img
                   onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                     () => { } : () => { handleExpanded(); }}
                   src={data.images[0]}
                   alt=""
                   className="rounded-lg w-full h-64 object-cover"
-                />
+                />)}
                 <div className="flex overflow-x-hidden mt-2 hide-scroll-bar">
                   <div className="flex flex-nowrap gap-2">
                     {data.images.map((img, index) => (
@@ -469,7 +469,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                       }
                     }}
                 />
-                 <div className="w-5"></div>
+                <div className="w-5"></div>
                 <PostAction
                   count={data.comments!.length.toString()}
                   icon={Assets.Comment}
@@ -479,7 +479,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                       setOpen(true);
                     }}
                 />
-                 <div className="w-5"></div>
+                <div className="w-5"></div>
                 <PostAction
                   count={data.coins!.length.toString()}
                   icon={Assets.Coin}
@@ -490,7 +490,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                       }
                     }}
                 />
-                 <div className="w-5"></div>
+                <div className="w-5"></div>
                 <VisibilitySensor onChange={handleOnVisibilityChange}>
                   <PostAction
                     count={data.views!.toString()}
