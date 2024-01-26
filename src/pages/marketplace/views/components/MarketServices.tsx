@@ -372,7 +372,7 @@ const MarketServices = ({ data, onCoin, onComment, onLike }: Props) => {
           <div className="my-1 flex items-center gap-3">
             {data.location ? (
               <div className="flex text-[#878787] gap-1">
-                <MdLocationPin />
+                <img src={Assets.timelapseicon} width={10} />
                 <small>{data.location}</small>
               </div>
             ) : null}
