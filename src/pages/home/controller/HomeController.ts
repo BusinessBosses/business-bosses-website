@@ -87,13 +87,19 @@ class HomeController {
             coins: mp.coins!.map((cn: any) => cn.userId),
             likes: mp.likes!.map((lk: any) => lk.userId),
         }));
-        const promotedPosts = response.data.posts.promotedPosts.rows.map((mp: Post) => ({
-            ...mp,
-            coins: mp.coins.map((cn: any) => cn.userId),
-            likes: mp.likes.map((lk: any) => lk.userId),
-        }));
-        
-        
+
+       if (response.data.posts.promotedPosts) {
+            const promotedPosts = response.data.posts.promotedPosts.rows.map((mp: Post) => ({
+                ...mp,
+                coins: mp.coins.map((cn: any) => cn.userId),
+                likes: mp.likes.map((lk: any) => lk.userId),
+            }));
+
+            for (let index = 0; index < promotedPosts.length; index++) {
+                promotedpsts.push({ isForum: false, data: promotedPosts[index] });
+            }
+        }
+
 
         for (let index = 0; index < posts.length; index++) {
             psts.push({ isForum: false, data: posts[index] });
@@ -103,9 +109,9 @@ class HomeController {
             frms.push({ isForum: true, data: forums[index] });
         }
 
-        for (let index = 0; index < promotedPosts.length; index++) {
-            promotedpsts.push({ isForum: false, data: promotedPosts[index] });
-        }
+        // for (let index = 0; index < promotedPosts.length; index++) {
+        //     promotedpsts.push({ isForum: false, data: promotedPosts[index] });
+        // }
 
         const mixedData: MixedPostState[] = [...promotedpsts,...frms, ...psts].sort(
             (a, b) => b.data.timestamp - a.data.timestamp
