@@ -87,7 +87,7 @@ class HomeController {
             coins: mp.coins!.map((cn: any) => cn.userId),
             likes: mp.likes!.map((lk: any) => lk.userId),
         }));
-        const promotedPosts = response.data.posts.promotedPosts.rows.map((mp: Post) => ({
+        const promotedPosts = response.data.promotedPosts.rows.map((mp: Post) => ({
             ...mp,
             coins: mp.coins.map((cn: any) => cn.userId),
             likes: mp.likes.map((lk: any) => lk.userId),
