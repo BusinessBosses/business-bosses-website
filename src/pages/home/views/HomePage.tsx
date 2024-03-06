@@ -55,25 +55,26 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
   const fetchMorePosts = async () => {
     try {
       setLoading(true);
-      const lastTimestamp = posts.length > 0 ? posts[posts.length - 1]?.data.timestamp : 0;
-  
-      const response = await serviceApi.fetch(`/post/get-posts?page=${page + 1}&size=${50}&lastTimestamp=${lastTimestamp}`);
-  
+      const lastTimestamp = page > 0 ? posts[posts.length - 1]?.data.timestamp || 0 : 0;
+
+
+      const response = await serviceApi.fetch(`/post/get-posts?page=${page}&size=${50}&lastTimestamp=${lastTimestamp}`);
+
       if (response && response.data && response.data.posts) {
-        const processedPosts = HomeController.processnewData(response); 
-  
+        const processedPosts = HomeController.processnewData(response); // Pass the entire response to processData
+
         dispatch(addPostToState(processedPosts));
         setPage((prevPage) => prevPage + 1);
       } else {
         console.error("Invalid response format:", response);
       }
-  
+
     } catch (error) {
       console.error("Error fetching more posts:", error);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
 
 
