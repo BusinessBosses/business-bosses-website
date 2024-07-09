@@ -59,7 +59,7 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
     }
   };
 
-  const images: ImagesListItem[] = (data.images || []).map((imageUrl, index) => ({
+  const images: ImagesListItem[] = ((data.images) || []).map((imageUrl, index) => ({
     src: imageUrl,
     loading: 'lazy',
     alt: `Image ${index + 1}`,
@@ -433,7 +433,7 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
           <p className="text-sm text-[#303133] lg:text-base break-words">
             {data.title}
           </p>
-          {data.images ? (
+          {data.images && data.images[0] !== "" ? (
             <div className="mt-2">
               <Lightbox className="lg:p-10 p-5" style={{ background: 'rgba(0, 0, 0, 0.98)' }}
                 isOpen={showExpandedImages}
@@ -460,13 +460,15 @@ const PostItem = ({ data, onCoin, onLike, onComment, onView }: Props) => {
                   config: { mass: 1, tension: 320, friction: 32 }
                 }}
               />
-              <img
-                onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                  () => { } : () => { handleExpanded(); }}
-                src={data.images[0]}
-                alt=""
-                className="rounded-lg w-full h-64 object-cover"
-              />
+              {data.images[0] && (
+                <img
+                  onClick={profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                    () => { } : () => { handleExpanded(); }}
+                  src={data.images[0]}
+                  alt=""
+                  className="rounded-lg w-full h-64 object-cover"
+                />
+              )}
               <div className="flex overflow-x-hidden mt-2 hide-scroll-bar">
                 <div className="flex flex-nowrap gap-2">
                   {data.images.map((img, index) => (
