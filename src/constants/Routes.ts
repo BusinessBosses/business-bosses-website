@@ -1,4 +1,5 @@
-const home = "/";
+const index = "/";
+const home = "/home";
 const marketPlace = "/market";
 const communities = "/communities/*";
 const opportunities = "/opportunities";
@@ -51,6 +52,7 @@ const becomeapartner =  "/becomeapartner";
 
 const RoutesPath = {
     home,
+    index,
     marketPlace,
     communities,
     opportunities,

@@ -261,7 +261,7 @@ const App = () => {
       SendHandshake();
     } else {
       setLoading(false);
-      navigate(RoutesPath.landingpage);
+      navigate(RoutesPath.login);
     }
 
     ReactGA.pageview(location.pathname + location.search);
@@ -317,24 +317,24 @@ const App = () => {
             const isFirstLogin = !localStorage.getItem("hasLoggedInBefore");
             if (isFirstLogin) {
               localStorage.setItem("hasLoggedInBefore", "true");
-              navigate(RoutesPath.landingpage);
+              navigate(RoutesPath.index);
             } else {
               navigate(RoutesPath.home);
             }
           } else {
-            navigate(RoutesPath.landingpage);
+            navigate(RoutesPath.index);
           }
         })
         .catch((error) => {
           console.error("An error occurred during login:", error);
-          navigate(RoutesPath.landingpage);
+          navigate(RoutesPath.index);
         })
         .finally(() => {
           setLoading(false);
         });
     } catch (error) {
       console.error("An error occurred during login:", error);
-      navigate(RoutesPath.landingpage);
+      navigate(RoutesPath.index);
       setLoading(false);
     }
   };
@@ -755,6 +755,7 @@ const App = () => {
           path={RoutesPath.listingselectorpage}
           element={<CreateListingSelectorpage />}
         />
+        <Route path={RoutesPath.index} element={<LandingPage />} />
         <Route path={RoutesPath.landingpage} element={<LandingPage />} />
         <Route path={RoutesPath.landingpageforpartners} element={<LandingPageforPartners />} />
         <Route path={RoutesPath.becomeapartner} element={<BecomeAPartnerPage />} />

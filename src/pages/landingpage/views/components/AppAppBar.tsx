@@ -177,12 +177,16 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   Business Tools
                 </MenuItem>
                 <MenuItem>
-                  <Button color="primary" variant="contained" fullWidth>
+                  <Button color="primary" variant="contained" fullWidth               
+                  onClick={() => navigate(RoutesPath.register)}
+                  >
                     Join Now
                   </Button>
                 </MenuItem>
                 <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
+                  <Button color="primary" variant="outlined" fullWidth               
+                  onClick={() => navigate(RoutesPath.login)}
+                  >
                     Log in
                   </Button>
                 </MenuItem>

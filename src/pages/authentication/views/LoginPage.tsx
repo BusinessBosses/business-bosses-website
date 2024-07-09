@@ -50,6 +50,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
               response.data.accessToken
             );
             localStorage.setItem(StorageEnum.UserId, response.data.uid);
+            localStorage.setItem("hasLoggedInBefore", "true");
             onLoginSuccess();
             navigate(RoutesPath.home);
           }
@@ -88,6 +89,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
               response.data.accessToken
             );
             localStorage.setItem(StorageEnum.UserId, response.data.uid);
+            localStorage.setItem("hasLoggedInBefore", "true");
             onLoginSuccess();
             navigate(RoutesPath.home);
           }
@@ -121,6 +123,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           response.data.accessToken
         );
         localStorage.setItem(StorageEnum.UserId, response.data.uid);
+        localStorage.setItem("hasLoggedInBefore", "true");
         onLoginSuccess();
         navigate(RoutesPath.home);
       }
@@ -148,6 +151,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
           response.data.accessToken
         );
         localStorage.setItem(StorageEnum.UserId, response.data.uid);
+        localStorage.setItem("hasLoggedInBefore", "true");
         onLoginSuccess();
         navigate(RoutesPath.home);
       }
