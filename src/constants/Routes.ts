@@ -1,4 +1,5 @@
-const home = "/";
+const index = "/";
+const home = "/home";
 const marketPlace = "/market";
 const communities = "/communities/*";
 const opportunities = "/opportunities";
@@ -45,9 +46,14 @@ const subscriptionfailedpage = "/subscriptionfailedpage";
 const computerbossupsectionpage = "/computerbossupsectionpage";
 const liveevent = "/liveevent";
 const listingselectorpage = "/listingselectorpage";
+const landingpage =  "/landingpage";
+const landingpageforpartners =  "/landingpageforpartners";
+const becomeapartner =  "/becomeapartner";
+const businesstools =  "/businesstools";
 
 const RoutesPath = {
     home,
+    index,
     marketPlace,
     communities,
     opportunities,
@@ -94,8 +100,10 @@ const RoutesPath = {
     computerbossupsectionpage,
     liveevent,
     listingselectorpage,
-
-
+    landingpage,
+    landingpageforpartners,
+    businesstools,
+    becomeapartner,
 
 }
 
