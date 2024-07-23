@@ -52,7 +52,7 @@ const PartnerCard = ({
               <Assets.Upicon style={{ height: 10, width: 10 }} />
             </div>
 
-            <p className="text-[#383838] text-xs lg:text-xs font-light ">
+            <p className="text-[#383838] text-xs lg:text-sm font-light ">
               Learn more
             </p>
           </div>
