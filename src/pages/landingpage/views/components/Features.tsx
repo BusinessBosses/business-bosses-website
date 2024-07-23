@@ -15,17 +15,17 @@ const items = [
     title: "Boss Up Challenge",
     subtext:
       "Win challenges to boost your business, increasing awareness and visibility",
-    image: Assets.bbchallenge,
+    image: Assets.landing0,
   },
   {
     title: "Business Referrals",
     subtext: "Reach wider audience and organically grow your business globally",
-    image: Assets.bbchallenge,
+    image: Assets.landing1,
   },
   {
     title: "Peer to Peer Resources",
     subtext: "Access to peer to peer donations and start up resources",
-    image: Assets.bbchallenge,
+    image: Assets.landing2,
   },
 ];
 

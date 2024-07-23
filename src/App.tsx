@@ -76,6 +76,7 @@ import CreateListingSelectorpage from "./pages/marketplace/views/CreateListingSe
 import LandingPage from "./pages/landingpage/LandingPage";
 import LandingPageforPartners from "./pages/landingpage/LandingPageforPartners";
 import BecomeAPartnerPage from "./pages/landingpage/BecomeAPartnerPage";
+import BusinessToolsPage from "./pages/landingpage/BusinessToolsPage";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -759,6 +760,7 @@ const App = () => {
         <Route path={RoutesPath.landingpage} element={<LandingPage />} />
         <Route path={RoutesPath.landingpageforpartners} element={<LandingPageforPartners />} />
         <Route path={RoutesPath.becomeapartner} element={<BecomeAPartnerPage />} />
+        <Route path={RoutesPath.businesstools} element={<BusinessToolsPage />} />
       </Routes>
     </>
   );

@@ -21,6 +21,8 @@ import PartnersHighlights from "./views/components/PartnersHighlights";
 import PartnersHero from "./views/components/PartnersHero";
 import LogoCollection from "./views/components/LogoCollection";
 import HowItWorks from "./views/components/HowItWorks";
+import { useInView } from "react-intersection-observer";
+import "../../assets/animations.css"; // Import your animations CSS file
 
 interface ToggleCustomThemeProps {
   showCustomTheme: Boolean;
@@ -79,27 +81,56 @@ export default function LandingPageforPartners() {
     setShowCustomTheme((prev) => !prev);
   };
 
+  // Custom hook for intersection observer
+  const { ref: partnersHeroRef, inView: partnersHeroInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const { ref: partnersHighlightsRef, inView: partnersHighlightsInView } =
+    useInView({
+      triggerOnce: true,
+      threshold: 0.1,
+    });
+
+  const { ref: howItWorksRef, inView: howItWorksInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const { ref: logoCollectionRef, inView: logoCollectionInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
   return (
     <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
       <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
+      <div
+        ref={partnersHeroRef}
+        className={`fade-in ${partnersHeroInView ? "visible" : ""}`}
+      ></div>
       <PartnersHero />
       <Box sx={{ bgcolor: "background.default" }}>
-        {/* <Features /> */}
-        {/* <Divider /> */}
-        {/* <Features /> */}
-        {/* <Divider /> */}
-        <PartnersHighlights />
-        
-        <HowItWorks/>
-        <LogoCollection />
-        {/* <Loginsection />
-        <Reviews/> */}
-        {/* <Divider /> */}
-        {/* <Pricing /> */}
-        {/* <Divider /> */}
-        {/* <FAQ /> */}
-        {/* <Divider /> */}
+        <div
+          ref={partnersHighlightsRef}
+          className={`slide-up ${partnersHighlightsInView ? "visible" : ""}`}
+        >
+          <PartnersHighlights />
+        </div>
+        <div
+          ref={howItWorksRef}
+          className={`slide-up ${howItWorksInView ? "visible" : ""}`}
+        >
+          <HowItWorks />
+        </div>
+        <div
+          ref={logoCollectionRef}
+          className={`slide-up ${logoCollectionInView ? "visible" : ""}`}
+        >
+          <LogoCollection />
+        </div>
         <Footer />
       </Box>
     </ThemeProvider>

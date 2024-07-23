@@ -16,6 +16,9 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 import SitemarkIcon from "./SitemarkIcon";
 import Assets from "../../../../assets";
+import TwitterIcon from "react-share/lib/TwitterIcon";
+import { useNavigate } from "react-router-dom";
+import RoutesPath from "../../../../constants/Routes";
 
 function Copyright() {
   return (
@@ -28,6 +31,7 @@ function Copyright() {
 }
 
 export default function Footer() {
+  const navigate = useNavigate();
   return (
     <Box
       id="hero"
@@ -35,10 +39,6 @@ export default function Footer() {
         width: "100%",
         backgroundColor: "#232324",
         backgroundRepeat: "no-repeat",
-        // ...theme.applyStyles('dark', {
-        //   backgroundImage:
-        //     'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)',
-        // }),
       })}
     >
       <Container
@@ -72,10 +72,6 @@ export default function Footer() {
                 <img
                   src={Assets.Logo}
                   alt="Business Bosses Logo"
-                  onClick={() => {
-                    // dispatch(onChangeRoute(0));
-                    // navigate(RoutesPath.home);
-                  }}
                   style={{
                     width: "2.5rem",
                     height: "2.5rem",
@@ -90,51 +86,36 @@ export default function Footer() {
                   Business Bosses
                 </Typography>
               </Box>
-
-              <Typography
-                variant="body2"
-                gutterBottom
-                sx={{ fontWeight: 600, mt: 2, color: "white" }}
-              >
-                Join the newsletter
-              </Typography>
-              <Typography variant="body2" sx={{ color: "white", mb: 2 }}>
-                Subscribe for weekly updates. No spams ever!
-              </Typography>
-              <Stack direction="row" spacing={1} useFlexGap>
-                <InputLabel htmlFor="email-newsletter" sx={visuallyHidden}>
-                  Email
-                </InputLabel>
-                <TextField
-                  id="email-newsletter"
-                  hiddenLabel
-                  size="small"
-                  variant="outlined"
-                  fullWidth
-                  aria-label="Enter your email address"
-                  placeholder="Your email address"
-                  // slotProps={{
-                  //   htmlInput: {
-                  //     autoComplete: 'off',
-                  //     'aria-label': 'Enter your email address',
-                  //   },
-                  // }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ flexShrink: 0 }}
+              <div className="mt-5">
+                <Link color="white" variant="body2" href="#">
+                  Privacy Policy
+                </Link>
+                <Typography
+                  sx={{
+                    display: "inline",
+                    color: "white",
+                    mx: 0.5,
+                    opacity: 0.5,
+                  }}
                 >
-                  Subscribe
-                </Button>
-              </Stack>
+                  &nbsp;•&nbsp;
+                </Typography>
+                <Link color="white" variant="body2" href="#">
+                  Terms of Service
+                </Link>
+                <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                  <Copyright />
+                </Box>
+              </div>
             </Box>
           </Box>
           <Box
             sx={{
-              display: { xs: "none", sm: "flex" },
+              display: { xs: "flex", sm: "flex" },
               flexDirection: "column",
               gap: 1,
+              width: { xs: "100%", sm: "auto" },
+              mt: { xs: 4, sm: 0 },
             }}
           >
             <Typography
@@ -154,7 +135,7 @@ export default function Footer() {
             <Link
               color="white"
               variant="body2"
-              href="#"
+              onClick={() => navigate(RoutesPath.landingpageforpartners)}
               style={{ opacity: 0.5 }}
             >
               Partners
@@ -162,26 +143,19 @@ export default function Footer() {
             <Link
               color="white"
               variant="body2"
-              href="#"
+              onClick={() => navigate(RoutesPath.businesstools)}
               style={{ opacity: 0.5 }}
             >
               Business Tools
             </Link>
-
-            <Link
-              color="white"
-              variant="body2"
-              href="#"
-              style={{ opacity: 0.5 }}
-            >
-              FAQs
-            </Link>
           </Box>
           <Box
             sx={{
-              display: { xs: "none", sm: "flex" },
+              display: { xs: "flex", sm: "flex" },
               flexDirection: "column",
               gap: 1,
+              width: { xs: "100%", sm: "auto" },
+              mt: { xs: 4, sm: 0 },
             }}
           >
             <Typography
@@ -193,33 +167,19 @@ export default function Footer() {
             <Link
               color="white"
               variant="body2"
-              href="#"
-              style={{ opacity: 0.5 }}
-            >
-              About us
-            </Link>
-            <Link
-              color="white"
-              variant="body2"
-              href="#"
-              style={{ opacity: 0.5 }}
-            >
-              Careers
-            </Link>
-            <Link
-              color="white"
-              variant="body2"
-              href="#"
+              href="mailto:support@businessbosses.co.uk"
               style={{ opacity: 0.5 }}
             >
               Contact
             </Link>
           </Box>
-          <Box
+          {/* <Box
             sx={{
-              display: { xs: "none", sm: "flex" },
+              display: { xs: "flex", sm: "flex" },
               flexDirection: "column",
               gap: 1,
+              width: { xs: "100%", sm: "auto" },
+              mt: { xs: 4, sm: 0 },
             }}
           >
             <Typography
@@ -244,63 +204,11 @@ export default function Footer() {
             >
               Privacy
             </Link>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            pt: { xs: 4, sm: 8 },
-            width: "100%",
-            // borderTop: "1px solid",
-            // borderColor: "divider",
-          }}
-        >
-          <div>
-            <Link color="white" variant="body2" href="#">
-              Privacy Policy
-            </Link>
-            <Typography
-              sx={{ display: "inline", color: "white", mx: 0.5, opacity: 0.5 }}
-            >
-              &nbsp;•&nbsp;
-            </Typography>
-            <Link color="white" variant="body2" href="#">
-              Terms of Service
-            </Link>
+          </Box> */}
+
+          <Box sx={{ marginTop: 5, display: { xs: "block", sm: "none" } }}>
             <Copyright />
-          </div>
-          {/* <Stack
-            direction="row"
-            spacing={1}
-            useFlexGap
-            sx={{ justifyContent: "left", color: "white" }}
-          > */}
-          {/* <IconButton
-            color="inherit"
-            href="https://github.com/mui"
-            aria-label="GitHub"
-            sx={{ alignSelf: "center" }}
-          >
-            <FacebookIcon />
-          </IconButton> */}
-          {/* <IconButton
-            color="inherit"
-            href="https://x.com/MaterialUI"
-            aria-label="X"
-            sx={{ alignSelf: "center" }}
-          >
-            {/* <TwitterIcon /> */}
-          {/* </IconButton> */}
-          {/* <IconButton
-            color="inherit"
-            href="https://www.linkedin.com/company/mui/"
-            aria-label="LinkedIn"
-            sx={{ alignSelf: "center" }}
-          >
-            <LinkedInIcon />
-          </IconButton> */}
-          {/* </Stack> */}
+          </Box>
         </Box>
       </Container>
     </Box>

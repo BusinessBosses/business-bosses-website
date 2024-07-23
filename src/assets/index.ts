@@ -87,6 +87,15 @@ import hiwone from "./icons/hiwone.png"
 import hiwtwo from "./icons/hiwtwo.png"
 import hiwthree from "./icons/hiwthree.png"
 import partner3 from "./icons/partner3.png"
+import logo1 from "./icons/logo1.png"
+import logo2 from "./icons/logo2.png"
+import logo3 from "./icons/logo3.png"
+import logo4 from "./icons/logo4.png"
+import logo5 from "./icons/logo5.png"
+import landing0 from "./icons/landing0.png"
+import landing1 from "./icons/landing1.png"
+import landing2 from "./icons/landing2.png"
+import comingsoon from "./icons/comingsoon.png"
 
 
 const Assets = {
@@ -179,5 +188,14 @@ const Assets = {
     hiwtwo,
     hiwthree,
     partner3,
+    landing0,
+    landing1,
+    landing2,
+    comingsoon,
+    logo1,
+    logo2,
+    logo3,
+    logo4,
+    logo5,
 };
 export default Assets;

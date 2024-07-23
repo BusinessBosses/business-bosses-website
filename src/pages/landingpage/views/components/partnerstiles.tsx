@@ -69,42 +69,45 @@ const PartnersField: React.FC<PartnersFieldProps> = ({
   };
 
   return (
-    <div className="flex overflow-x-auto">
-      <div className="min-w-[50px] bg-[#fff] rounded-2xl p-3 mx-2">
-        {partnerData ? (
-          <PartnerCard
-            partnerlogo={partnerData.partnerlogo}
-            adtitle={partnerData.adtitle}
-            addescription={partnerData.addescription}
-            partnerurl={partnerData.partnerurl}
-          />
-        ) : (
-          <p>Loading partner data...</p>
-        )}
-      </div>
-      <div className="min-w-[50px] bg-[#fff] rounded-2xl p-3 mx-2">
-        {partnerData ? (
-          <PartnerCard
-            partnerlogo={partnerData.partnerlogo}
-            adtitle={partnerData.adtitle}
-            addescription={partnerData.addescription}
-            partnerurl={partnerData.partnerurl}
-          />
-        ) : (
-          <p>Loading partner data...</p>
-        )}
-      </div>
-      <div className="min-w-[50px] bg-[#fff] rounded-2xl p-3 mx-2">
-        {partnerData ? (
-          <PartnerCard
-            partnerlogo={partnerData.partnerlogo}
-            adtitle={partnerData.adtitle}
-            addescription={partnerData.addescription}
-            partnerurl={partnerData.partnerurl}
-          />
-        ) : (
-          <p>Loading partner data...</p>
-        )}
+    <div>
+      {/* <div className="mb-5">Partner Deals</div> */}
+      <div className="flex overflow-x-auto">
+        <div className="min-w-[50px] bg-[#fff] rounded-2xl p-3 mx-2">
+          {partnerData ? (
+            <PartnerCard
+              partnerlogo={partnerData.partnerlogo}
+              adtitle={partnerData.adtitle}
+              addescription={partnerData.addescription}
+              partnerurl={partnerData.partnerurl}
+            />
+          ) : (
+            <p>Loading partner data...</p>
+          )}
+        </div>
+        <div className="min-w-[50px] bg-[#fff] rounded-2xl p-3 mx-2">
+          {partnerData ? (
+            <PartnerCard
+              partnerlogo={partnerData.partnerlogo}
+              adtitle={partnerData.adtitle}
+              addescription={partnerData.addescription}
+              partnerurl={partnerData.partnerurl}
+            />
+          ) : (
+            <p>Loading partner data...</p>
+          )}
+        </div>
+        <div className="min-w-[50px] bg-[#fff] rounded-2xl p-3 mx-2">
+          {partnerData ? (
+            <PartnerCard
+              partnerlogo={partnerData.partnerlogo}
+              adtitle={partnerData.adtitle}
+              addescription={partnerData.addescription}
+              partnerurl={partnerData.partnerurl}
+            />
+          ) : (
+            <p>Loading partner data...</p>
+          )}
+        </div>
       </div>
     </div>
   );

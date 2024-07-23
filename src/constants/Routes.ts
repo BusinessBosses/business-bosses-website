@@ -49,6 +49,7 @@ const listingselectorpage = "/listingselectorpage";
 const landingpage =  "/landingpage";
 const landingpageforpartners =  "/landingpageforpartners";
 const becomeapartner =  "/becomeapartner";
+const businesstools =  "/businesstools";
 
 const RoutesPath = {
     home,
@@ -101,6 +102,7 @@ const RoutesPath = {
     listingselectorpage,
     landingpage,
     landingpageforpartners,
+    businesstools,
     becomeapartner,
 
 }

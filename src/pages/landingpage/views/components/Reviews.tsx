@@ -106,13 +106,11 @@ export default function Reviews() {
                 },
               }}
             >
-              Lorem ipsum dolor sit amet consectetur. Cras viverra porta eget
-              congue massa eget pellentesque. Lorem ipsum dolor sit amet
-              consectetur. Cras viverra porta eget congue massa eget
-              pellentesque. Lorem ipsum dolor sit amet consectetur. Cras viverra
-              porta eget congue massa eget pellentesque. Lorem ipsum dolor sit
-              amet consectetur. Cras viverra porta eget congue massa eget
-              pellentesque.
+              Business Bosses has revolutionized the way I network and
+              collaborate with fellow entrepreneurs. As a fashion designer and
+              startup owner, I've always been on the lookout for a platform that
+              caters specifically to the unique needs of entrepreneurs, and
+              Business Bosses has exceeded my expectations in every way.
             </Typography>
           </div>
           <Assets.Quoteicon

@@ -116,7 +116,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 color="info"
                 size="medium"
-                onClick={() => scrollToSection("highlights")}
+                onClick={() => navigate(RoutesPath.businesstools)}
               >
                 Business Tools
               </Button>
@@ -150,7 +150,13 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
             <IconButton
               aria-label="Menu button"
               onClick={toggleDrawer(true)}
-              style={{ color: "#1976d2" }} // Use your custom color here
+              sx={{
+                color: "#232324", // default icon color
+                backgroundColor: 'transparent', // default background color
+                '&:hover': {
+                  backgroundColor: "#f0f0f0", // hover background color
+                },
+              }}// Use your custom color here
             >
               <MenuIcon />
             </IconButton>
@@ -167,25 +173,31 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     <CloseRoundedIcon color="info" />
                   </IconButton>
                 </Box>
-                <MenuItem onClick={() => scrollToSection("features")}>
+                <MenuItem onClick={() => navigate(RoutesPath.landingpage)}>
                   About
                 </MenuItem>
-                <MenuItem onClick={() => scrollToSection("testimonials")}>
+                <MenuItem onClick={() => navigate(RoutesPath.landingpageforpartners)}>
                   Partners
                 </MenuItem>
-                <MenuItem onClick={() => scrollToSection("highlights")}>
+                <MenuItem onClick={() => navigate(RoutesPath.businesstools)}>
                   Business Tools
                 </MenuItem>
                 <MenuItem>
-                  <Button color="primary" variant="contained" fullWidth               
-                  onClick={() => navigate(RoutesPath.register)}
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    fullWidth
+                    onClick={() => navigate(RoutesPath.register)}
                   >
                     Join Now
                   </Button>
                 </MenuItem>
                 <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth               
-                  onClick={() => navigate(RoutesPath.login)}
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => navigate(RoutesPath.login)}
                   >
                     Log in
                   </Button>

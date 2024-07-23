@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { PaletteMode } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -18,8 +18,7 @@ import Pricing from "./views/components/Pricing";
 import Features from "./views/components/Features";
 import Loginsection from "./views/components/Loginsection";
 import Reviews from "./views/components/Reviews";
-import { useInView } from "react-intersection-observer";
-import "../../assets/animations.css"; 
+import Assets from "../../assets";
 
 interface ToggleCustomThemeProps {
   showCustomTheme: Boolean;
@@ -64,7 +63,7 @@ function ToggleCustomTheme({
   );
 }
 
-export default function LandingPage() {
+export default function BusinessToolsPage() {
   const [mode, setMode] = React.useState<PaletteMode>("light");
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const LPtheme = createTheme(getLPTheme(mode));
@@ -78,66 +77,12 @@ export default function LandingPage() {
     setShowCustomTheme((prev) => !prev);
   };
 
-  // Custom hook for intersection observer
-  const { ref: heroRef, inView: heroInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const { ref: featuresRef, inView: featuresInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const { ref: highlightsRef, inView: highlightsInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const { ref: loginRef, inView: loginInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const { ref: reviewsRef, inView: reviewsInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
   return (
     <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
       <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
-      <Hero />
+      <img src={Assets.comingsoon} alt="Coming Soon" style={{display: "block", margin: "auto" }}/>
       <Box sx={{ bgcolor: "background.default" }}>
-        <div ref={heroRef} className={`fade-in ${heroInView ? "visible" : ""}`}>
-          <LogoCollection />
-        </div>
-        <div
-          ref={featuresRef}
-          className={`slide-up ${featuresInView ? "visible" : ""}`}
-        >
-          <Features />
-        </div>
-        <div
-          ref={highlightsRef}
-          className={`slide-up ${highlightsInView ? "visible" : ""}`}
-        >
-          <Highlights />
-        </div>
-        <div
-          ref={loginRef}
-          className={`slide-up ${loginInView ? "visible" : ""}`}
-        >
-          <Loginsection />
-        </div>
-        <div
-          ref={reviewsRef}
-          className={`slide-up ${reviewsInView ? "visible" : ""}`}
-        >
-          <Reviews />
-        </div>
-        <FAQ />
         <Footer />
       </Box>
     </ThemeProvider>

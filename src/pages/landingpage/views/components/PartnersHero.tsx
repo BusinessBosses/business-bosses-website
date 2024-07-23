@@ -113,8 +113,11 @@ export default function PartnersHero() {
                 }}
               >
                 <button
-                  onClick={() => navigate(RoutesPath.becomeapartner)}
-                  className={`bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold p-2 px-20`}
+                  onClick={() =>
+                    (window.location.href =
+                      "mailto:support@businessbosses.co.uk")
+                  }
+                  className="bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold p-2 px-20"
                 >
                   Become A Partner
                 </button>
