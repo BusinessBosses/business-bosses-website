@@ -73,16 +73,19 @@ export default function Hero() {
                 justifyContent: "center",
                 textAlign: "center",
                 width: { sm: "100%", md: "100%" },
+                padding: { xs: "0 20px", sm: "0 30px" },
               }}
             >
               Empowering Entrepreneurs to Succeed
             </Typography>
+
             <Typography
               sx={{
                 textAlign: "center",
                 color: "text.secondary",
                 width: { sm: "100%", md: "100%" },
                 pb: { xs: 2, sm: 2 },
+                padding: { xs: "0 20px", sm: "0 30px" } 
               }}
             >
               Business Bosses is a social commerce platform that empowers
@@ -134,8 +137,8 @@ export default function Hero() {
           >
             <Container
               sx={{
-                width: { xs: "400px", md: "600px" },
-                height: { xs: "300px", md: "500px" },
+                width: { xs: "300px", md: "600px" },
+                height: { xs: "230px", md: "500px" },
               }}
             >
               <img

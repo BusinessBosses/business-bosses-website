@@ -68,14 +68,15 @@ export default function Loginsection() {
           </Typography>
           <div className="flex justify-center items-center pt-20">
             <button
-              // onClick={onClick}
-              className={`bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold p-2 px-20`}
+              onClick={() => navigate(RoutesPath.register)}
+              className={`bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold px-10 md:px-20`}
             >
               Join Now
             </button>
           </div>
+
           <div className="flex gap-2 justify-center pt-5">
-            <Typography variant="body2" sx={{ color: "grey.400" }}>
+            <Typography variant="body2" sx={{ color: "grey" }}>
               Already have an account?
             </Typography>
             <div

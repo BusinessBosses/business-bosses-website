@@ -64,7 +64,7 @@ export default function Reviews() {
           <Typography
             variant="body1"
             sx={{
-              color: "grey.400",
+              color: "grey",
               justifyContent: "center",
               textAlign: "center",
             }}
@@ -97,7 +97,7 @@ export default function Reviews() {
             <Typography
               variant="body2"
               sx={{
-                color: "grey.400",
+                color: "grey",
                 px: {
                   xs: 4,
                   sm: 4,
