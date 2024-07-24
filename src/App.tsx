@@ -517,7 +517,7 @@ const App = () => {
         element={<CreateListingSelectorpage/>}
       />
         <Route path={RoutesPath.index} element={<LandingPage />} />
-        {/* <Route path={RoutesPath.landingpage} element={<LandingPage />} /> */}
+        <Route path={RoutesPath.landingpage} element={<LandingPage />} />
         <Route path={RoutesPath.landingpageforpartners} element={<LandingPageforPartners />} />
         <Route path={RoutesPath.becomeapartner} element={<BecomeAPartnerPage />} />
         <Route path={RoutesPath.businesstools} element={<BusinessToolsPage />} />
