@@ -126,14 +126,14 @@ export default function PartnersHero() {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <Container>
             <PartnersField
               initialPartnerData={null}
               initialPartnerDatatile={null}
             />
           </Container>
-        </div>
+        </div> */}
       </Container>
     </Box>
   );

@@ -94,7 +94,7 @@ const HowItWorks: React.FC = () => {
                   >
                     {item.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "grey.400" }}>
+                  <Typography variant="body2" sx={{ color: "grey" }}>
                     {item.description}
                   </Typography>
                 </div>

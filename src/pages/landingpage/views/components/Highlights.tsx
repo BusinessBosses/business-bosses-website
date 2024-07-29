@@ -94,7 +94,7 @@ export default function Highlights() {
           <Typography
             variant="body1"
             sx={{
-              color: "grey.400",
+              color: "grey",
               justifyContent: "center",
               textAlign: "center",
             }}
@@ -130,7 +130,7 @@ export default function Highlights() {
                   >
                     {item.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "grey.400" }}>
+                  <Typography variant="body2" sx={{ color: "grey" }}>
                     {item.description}
                   </Typography>
                 </div>
