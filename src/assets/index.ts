@@ -96,6 +96,7 @@ import landing0 from "./icons/landing0.png"
 import landing1 from "./icons/landing1.png"
 import landing2 from "./icons/landing2.png"
 import comingsoon from "./icons/comingsoon.png"
+import bbboost from "./icons/bbboost.png"
 
 
 const Assets = {
@@ -197,5 +198,6 @@ const Assets = {
     logo3,
     logo4,
     logo5,
+    bbboost,
 };
 export default Assets;

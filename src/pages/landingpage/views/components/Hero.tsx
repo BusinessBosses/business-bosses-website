@@ -85,7 +85,7 @@ export default function Hero() {
                 color: "text.secondary",
                 width: { sm: "100%", md: "100%" },
                 pb: { xs: 2, sm: 2 },
-                padding: { xs: "0 20px", sm: "0 30px" } 
+                padding: { xs: "0 20px", sm: "0 30px" },
               }}
             >
               Business Bosses is a social commerce platform that empowers
@@ -139,12 +139,13 @@ export default function Hero() {
               sx={{
                 width: { xs: "300px", md: "600px" },
                 height: { xs: "230px", md: "500px" },
+                borderRadius: "16px",
               }}
             >
               <img
-                src={Assets.homeimage}
-                style={{ width: "100%", height: "100%" }}
-                className="my-3 cursor-pointer"
+                src={Assets.bbboost}
+                style={{ width: "100%", height: "100%", borderRadius: "16px" }}
+                className="mb-3 cursor-pointer"
                 alt=""
               />
             </Container>
