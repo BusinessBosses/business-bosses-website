@@ -115,7 +115,7 @@ export default function PartnersHero() {
                 <button
                   onClick={() =>
                     (window.location.href =
-                      "mailto:support@businessbosses.co.uk")
+                      "https://docs.google.com/forms/d/e/1FAIpQLSchyI0y0kevJ797vYFqbTT4mBzelOXwhvsUtC2dQqqr69FlmA/viewform?usp=sf_link")
                   }
                   className="bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold p-2 px-20"
                 >
