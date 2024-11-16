@@ -68,9 +68,8 @@ import { ReactComponent as Topicsicon } from "./icons/topics.svg"
 import { ReactComponent as Inviteicon } from "./icons/invite.svg"
 import { ReactComponent as Membersicon } from "./icons/members.svg"
 import { ReactComponent as Linkicon } from "./icons/link.svg"
-import { ReactComponent as Bolticon } from "./icons/bolt.svg"
-import  dashboardicon from "./icons/dashboard.svg"
-import  timelapseicon from "./icons/timelapse.svg"
+import dashboardicon from "./icons/dashboard.svg"
+import timelapseicon from "./icons/timelapse.svg"
 import BossUpAvatar from "./icons/bb_avatar.jpg"
 import appmockup from "./icons/appmockup.png"
 import marketplacelanding from "./icons/onlinestoreicon.png"
@@ -97,6 +96,14 @@ import landing1 from "./icons/landing1.png"
 import landing2 from "./icons/landing2.png"
 import comingsoon from "./icons/comingsoon.png"
 import bbboost from "./icons/bbboost.png"
+import { ReactComponent as Bolticon } from "./icons/bolt.svg"
+
+import pwu1 from "./icons/pwu1.png"
+import pwu2 from "./icons/pwu2.png"
+import pwu3 from "./icons/pwu3.png"
+import pwu4 from "./icons/pwu4.png"
+import pwu5 from "./icons/pwu5.png"
+import pwu6 from "./icons/pwu6.png"
 
 
 const Assets = {
@@ -199,5 +206,12 @@ const Assets = {
     logo4,
     logo5,
     bbboost,
+    pwu1,
+    pwu2,
+    pwu3,
+    pwu4,
+    pwu5,       
+    pwu6
+
 };
 export default Assets;

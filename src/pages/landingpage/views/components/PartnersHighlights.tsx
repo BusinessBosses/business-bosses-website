@@ -15,37 +15,37 @@ import Assets from "../../../../assets";
 
 const items = [
   {
-    icon: Assets.monetisation,
+    icon: Assets.pwu1,
     title: "Get More Customers",
     description:
       "We showcase your product promotions, and deals, driving revenue growth and expanding your customer base",
   },
   {
-    icon: Assets.monetisation,
+    icon: Assets.pwu2,
     title: "Selected Referrals",
     description:
       "We can refer potential customers to your brand, fostering new leads generation, new customer relationships and loyalty",
   },
   {
-    icon: Assets.monetisation,
+    icon: Assets.pwu3,
     title: "Exclusive Brand Positioning",
     description:
       "We help position your brand as a supporter of entrepreneurship within the business community to attract potential leads",
   },
   {
-    icon: Assets.monetisation,
+    icon: Assets.pwu4,
     title: "Entrepreneurial Support",
     description:
       "We can provide resources, encourage innovation, technology adoption, and regulatory guidance to entrepreneurs.",
   },
   {
-    icon: Assets.monetisation,
+    icon: Assets.pwu5,
     title: "Economic Development",
     description:
       "We can help support local economic growth by promoting entrepreneurship, job creation within a given region",
   },
   {
-    icon: Assets.monetisation,
+    icon: Assets.pwu6,
     title: "Community Engagement",
     description:
       "We can help engage with businesses seeking feedback and support, to build stronger relationships within communities.",
