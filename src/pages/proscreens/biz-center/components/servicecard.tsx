@@ -1,6 +1,6 @@
 import React from "react";
 
-interface ProductCardProps {
+interface ServiceCardProps {
   imageUrl: string;
   title: string;
   price: number;
@@ -11,7 +11,7 @@ interface ProductCardProps {
   currencySymbol?: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({
+const ServiceCard: React.FC<ServiceCardProps> = ({
   imageUrl,
   title,
   price,
@@ -64,11 +64,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
             onOrderClick();
           }}
         >
-          Order
+          Book
         </button>
       </div>
     </div>
   );
 };
 
-export default ProductCard;
+export default ServiceCard;

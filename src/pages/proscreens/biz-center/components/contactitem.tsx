@@ -13,12 +13,12 @@ const ContactItem: FC<AddressProps> = ({
   subtext,
   onClick,
 }) => (
-  <div className="flex items-start mb-4 flex-col" onClick={onClick}>
+  <div className="flex items-start my-3 flex-col" onClick={onClick}>
     <div className="flex items-center gap-1 flex-row">
-      <Icon height={20} width={20} />
-      <p className="font-medium">{title}</p>
+      <Icon height={12} width={12} />
+      <p className="text-xs">{title}</p>
     </div>
-    <p>{subtext}</p>
+    <p className="text-sm">{subtext}</p>
   </div>
 );
 

@@ -1,16 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 const defaultColors = require("tailwindcss/colors");
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontsize: {
+        base: "1px",
+      },
+    },
     colors: {
       ...defaultColors,
-      "primary": "#F21C29",
-
+      primary: "#F21C29",
     },
+
     container: {
       // padding: "",
 
@@ -45,7 +47,5 @@ module.exports = {
       xl: "1200px",
     },
   },
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-  ],
-}
+  plugins: [require("@tailwindcss/line-clamp")],
+};

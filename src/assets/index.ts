@@ -112,6 +112,9 @@ import { ReactComponent as fbsl } from "./icons/fbsl.svg";
 import { ReactComponent as xsl } from "./icons/xsl.svg";
 import { ReactComponent as lsl } from "./icons/lsl.svg";
 import { ReactComponent as isl } from "./icons/insta.svg";
+import { ReactComponent as website } from "./icons/website.svg";
+import { ReactComponent as email } from "./icons/email.svg";
+import { ReactComponent as phone } from "./icons/phone.svg";
 
 const Assets = {
   MessageIcon,
@@ -228,5 +231,8 @@ const Assets = {
   fbsl,
   lsl,
   isl,
+  website,
+  email,
+  phone,
 };
 export default Assets;
