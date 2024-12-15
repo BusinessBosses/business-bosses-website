@@ -18,7 +18,7 @@ const Shop = () => {
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 rounded-full">
+    <div className="flex flex-col bg-white items-center justify-center p-4 ">
       {/* Logo Section */}
       <img
         src="/logo192.png"
