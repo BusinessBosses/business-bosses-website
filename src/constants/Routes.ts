@@ -51,6 +51,7 @@ const landingpageforpartners = "/landingpageforpartners";
 const becomeapartner = "/becomeapartner";
 const businesstools = "/businesstools";
 const shop = "/shop";
+const expandedshop = "/expandedshop";
 
 const RoutesPath = {
   home,
@@ -106,6 +107,7 @@ const RoutesPath = {
   businesstools,
   becomeapartner,
   shop,
+  expandedshop,
 };
 
 export default RoutesPath;

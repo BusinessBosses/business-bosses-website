@@ -12,13 +12,16 @@ import {
   StaggeredGridItemFunctional,
   StaggeredItemSpan,
 } from "react-staggered-grid";
+import { useNavigate } from "react-router";
+import RoutesPath from "../../../../constants/Routes";
 
 const Shop = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [showMore, setShowMore] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col bg-white items-center justify-center p-4 ">
+    <div className="flex flex-col bg-white h-screen items-center justify-start p-4 ">
       {/* Logo Section */}
       <img
         src="/logo192.png"
@@ -144,9 +147,9 @@ const Shop = () => {
                       price={0}
                       imageUrl={""}
                       currencySymbol="USD"
-                      description={`Description for product ${index + 1}`} // Example description
+                      description={`Description for product ${index + 1}`}
                       onCardClick={() => {
-                        console.log(`Card ${index + 1} clicked`);
+                        navigate(RoutesPath.expandedshop);
                       }}
                       onOrderClick={() => {
                         console.log(

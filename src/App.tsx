@@ -78,6 +78,7 @@ import BusinessToolsPage from "./pages/landingpage/BusinessToolsPage";
 import LandingPage from "./pages/landingpage/LandingPage";
 import LandingPageforPartners from "./pages/landingpage/LandingPageforPartners";
 import Shop from "./pages/proscreens/biz-center/views/shop";
+import Expandedshop from "./pages/proscreens/biz-center/views/expandedshop";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -750,6 +751,10 @@ const App = () => {
         />
         <Route path={RoutesPath.boostpost} element={<BoostPost />} />
         <Route path={RoutesPath.shop} element={<Shop />} />
+        <Route
+          path={RoutesPath.expandedshop}
+          element={<Expandedshop data={undefined} />}
+        />
         <Route
           path={RoutesPath.listingselectorpage}
           element={<CreateListingSelectorpage />}

@@ -6,36 +6,42 @@ import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
 import { Post } from "../../../../common/interfaces/post";
 
 interface Props {
-  data: Post;
+  data?: Post;
 }
 
-const expandedshop = ({ data }: Props) => {
+const Expandedshop = ({ data }: Props) => {
   const [showExpandedImages, setShowExpandedImages] = useState<boolean>(false);
   const handleExpanded = () => {
     setShowExpandedImages(true);
   };
 
-  const images: ImagesListItem[] = (data.images || []).map(
-    (imageUrl, index) => ({
-      src: imageUrl,
-      loading: "lazy",
-      alt: `Image ${index + 1}`,
-    })
-  );
+  // const images: ImagesListItem[] = (data!.images || []).map(
+  //   (imageUrl, index) => ({
+  //     src: imageUrl,
+  //     loading: "lazy",
+  //     alt: `Image ${index + 1}`,
+  //   })
+  // );
 
   const [currentImageIndex, setCurrentIndex] = useState(0);
 
-  const gotoPrevious = () =>
-    currentImageIndex > 0 && setCurrentIndex(currentImageIndex - 1);
+  // const gotoPrevious = () =>
+  //   currentImageIndex > 0 && setCurrentIndex(currentImageIndex - 1);
 
-  const gotoNext = () =>
-    currentImageIndex + 1 < images?.length! &&
-    setCurrentIndex(currentImageIndex + 1);
+  // const gotoNext = () =>
+  //   currentImageIndex + 1 < images?.length! &&
+  //   setCurrentIndex(currentImageIndex + 1);
 
   return (
-    <div>
-      <div className="flex flex-col gap-4 items-start py-2">
-        <Lightbox
+    <div className="flex flex-col bg-white h-screen items-center justify-start p-4 ">
+      {/* Logo Section */}
+      <img
+        src="/logo192.png"
+        alt="shop logo"
+        className="w-full max-w-xs h-28 object-contain mb-4"
+      />
+
+      {/* <Lightbox
           className="lg:p-10 p-5"
           style={{ background: "rgba(0, 0, 0, 0.98)" }}
           isOpen={showExpandedImages}
@@ -74,7 +80,7 @@ const expandedshop = ({ data }: Props) => {
             config: { mass: 1, tension: 320, friction: 32 },
           }}
         />
-        {/* {data.images[0] && (
+        {data && data.images && data.images[0] && (
           <img
             onClick={() => {
               handleExpanded();
@@ -84,15 +90,70 @@ const expandedshop = ({ data }: Props) => {
             className="rounded-lg w-full h-64 object-cover"
           />
         )} */}
-        <div> Title</div>
-        <div>Product Description</div>
-        <div>Description Text</div>
+      <div className="flex flex-col items-start justify-center mt-4 w-full max-w-xs">
+        <div className="font-bold text-md">Title</div>
+        <div className="flex items-center space-x-2">
+          {/* {data?.discount && data.discount > 0 ? (
+            <>
+              <div className="font-bold text-lg text-red-500">
+                {data.currency}
+                {(
+                  (data.price * (1 - data.discount / 100)) *
+                  100
+                ).toFixed(2)}
+              </div>
+              <div className="text-gray-500 line-through">
+                {data.currency}
+                {data.price.toFixed(2)}
+              </div>
+            </>
+          ) : (
+            <div className="font-bold text-lg">
+              {data?.currency}
+              {data?.price.toFixed(2)}
+            </div>
+          )} */}
+        </div>
+        <div className="font-[600] text-sm">Product Description</div>
+        <div className="text-gray-700 text-sm">Description</div>
+      </div>
+
+      <div className="relative w-full max-w-xs overflow-hidden rounded-2xl mt-5">
+        <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
+        <div className="absolute inset-0 z-0 bg-gradient-to-r from-white via-transparent to-white opacity-50"></div>
+        <img
+          src={Assets.orderonapp}
+          alt="Appstorelogo"
+          className="w-full relative z-0"
+        />
+        <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-end pb-3 items-center z-20 gap-2">
+          <div className="px-5 text-center text-white text-sm font-bold">
+            Continue to Order this product on the Business Bosses App
+          </div>
+          <div className="px-5 w-full">
+            <div className="mt-3 flex justify-center items-center gap-2">
+              <div className="w-1/3 flex justify-center">
+                <Assets.Appstorelogo
+                  onClick={() =>
+                    (window.location.href =
+                      "https://apps.apple.com/gh/app/business-bosses-networking/id1569332982")
+                  }
+                />
+              </div>
+              <div className="w-1/3 flex justify-center">
+                <Assets.Playstorelogo
+                  onClick={() =>
+                    (window.location.href =
+                      "https://play.google.com/store/search?q=Business%20bosses&c=apps")
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default expandedshop;
-function setShowExpandedImages(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
+export default Expandedshop;
