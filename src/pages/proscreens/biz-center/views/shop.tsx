@@ -113,7 +113,7 @@ const ShopView = () => {
           className="text-black font-bold text-xs"
           onClick={() => setShowMore(!showMore)}
         >
-          {showMore ? "See less" : "Read more"}
+          {shop?.description ? (showMore ? "See less" : "Read more") : null}
         </button>
       </div>
 
