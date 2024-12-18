@@ -14,6 +14,7 @@ import { Product } from "../../../../common/interfaces/Product";
 import { Service } from "../../../../common/interfaces/Service";
 import ServiceCard from "../components/servicecard";
 import ShopController from "../controllers/ShopController";
+import UserAvatarbig from "../../../../common/components/avatars/UserAvatarbig";
 
 const ShopView = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -104,13 +105,9 @@ const ShopView = () => {
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
   return (
-    <div className="flex flex-col bg-white items-center justify-start p-4">
+    <div className="flex flex-col bg-white items-center justify-start p-4 h-screen overflow-y-auto">
       {/* Shop Logo */}
-      <img
-        src={"/logo192.png"}
-        alt="Shop Logo"
-        className="w-full max-w-xs h-28 object-contain mb-4"
-      />
+      <UserAvatarbig imageSize="h-20 w-20" imageURL={shop?.image} />
 
       {/* Shop Info */}
       <div className="text-sm font-bold truncate mb-2">{shop?.name}</div>
@@ -127,11 +124,12 @@ const ShopView = () => {
       </div>
 
       {/* Shop Location and Reviews */}
-      <div className="flex justify-between w-full max-w-md mt-2">
+      <div className="flex items-center justify-center w-full max-w-md mt-2">
         <div className="text-xs flex items-center gap-1">
           <Assets.location height={16} width={16} />
           {shop?.location}
         </div>
+        <div className="px-2"> • </div>
         <div className="text-xs flex items-center gap-1">
           <AiFillStar size={16} color="#FFA500" />
           {shop?.user?.averageRating} Reviews
@@ -139,19 +137,19 @@ const ShopView = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-row items-center justify-center gap-4 mb-4">
+      <div className="flex flex-row pt-5 items-center justify-center gap-4 mb-4">
         <div className="flex flex-col items-center">
           <button className="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
             <Assets.shopchat height={16} width={16} />
           </button>
           <div className="text-xs text-gray-500 mt-1">Chat</div>
         </div>
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           <button className="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
             <Assets.shopcall height={16} width={16} />
           </button>
           <div className="text-xs text-gray-500 mt-1">Call</div>
-        </div>
+        </div> */}
         <div className="flex flex-col items-center">
           <button className="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
             <Assets.shopshare height={16} width={16} />
@@ -169,7 +167,7 @@ const ShopView = () => {
       {/* Tabs */}
       <div className="w-full max-w-md">
         <div className="flex justify-around border-b">
-          {["Listings", "Reviews", "About"].map((tab, idx) => (
+          {["Listings", "Reviews", "Contact"].map((tab, idx) => (
             <div
               key={idx}
               className={`p-2 cursor-pointer ${
@@ -203,7 +201,7 @@ const ShopView = () => {
                     <ProductCard
                       title={item.name}
                       price={item.price}
-                      imageUrl=""
+                      imageUrl={item.images![0]}
                       currencySymbol={item.shop?.currency}
                       description={item.description}
                       onCardClick={() =>
@@ -228,7 +226,7 @@ const ShopView = () => {
                           state: { data: item },
                         })
                       }
-                      imageUrl={""}
+                      imageUrl={item.images![0]}
                       onOrderClick={function (): void {
                         throw new Error("Function not implemented.");
                       }}

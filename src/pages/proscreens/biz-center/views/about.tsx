@@ -16,7 +16,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({ shop }) => {
     <div className="flex flex-col gap-4 items-start py-2">
       {/* Contact Information Section */}
       <div>
-        <div className="text-md font-semibold mb-2">Contact Information</div>
+        {/* <div className="text-md font-semibold mb-2">Contact Information</div> */}
         {/* Address */}
         <ContactItem
           icon={Assets.website}
