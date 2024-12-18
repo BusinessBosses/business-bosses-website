@@ -1,68 +1,96 @@
 import React from "react";
 import Assets from "../../../../assets";
 import ContactItem from "../components/contactitem";
+import { Shop } from "../../../../common/interfaces/Shop";
 
-const ContactInformation = () => {
+interface ContactInformationProps {
+  shop: Shop; // Define the prop type
+}
+
+const ContactInformation: React.FC<ContactInformationProps> = ({ shop }) => {
+  // Helper functions to construct social media URLs
+  const buildSocialLink = (base: string, path: string | undefined) =>
+    path ? `${base}${path}` : "#";
+
   return (
     <div className="flex flex-col gap-4 items-start py-2">
       {/* Contact Information Section */}
-
       <div>
         <div className="text-md font-semibold mb-2">Contact Information</div>
         {/* Address */}
         <ContactItem
           icon={Assets.website}
           title="Virtual Address"
-          subtext="#111, Biz-Centre, Business Bosses, United Kingdom"
+          subtext={`#${shop?.appId}, Biz-Centre, Business Bosses, United Kingdom`}
         />
         <hr />
         <ContactItem
           icon={Assets.email}
           title="Email"
-          subtext="Email here"
-          onClick={() => window.open("mailto:Email here")}
+          subtext={shop?.email!}
+          onClick={() => window.open(`mailto:${shop.email}`)}
         />
         <hr />
         <ContactItem
           icon={Assets.phone}
           title="Phone"
-          subtext="Phone here"
-          onClick={() => window.open("tel:Phone here")}
+          subtext={shop?.phone!}
+          onClick={() => window.open(`tel:${shop.phone}`)}
         />
       </div>
 
       {/* Social Links Section */}
       <div>
-        <h2 className="text-lg mb-3 font-semibold ">Social Links</h2>
+        <h2 className="text-lg mb-3 font-semibold">Social Links</h2>
         <div className="flex gap-4">
           {/* Facebook */}
-          <a
-            href="#"
-            className="p-3 bg-gray-200 rounded-full hover:bg-gray-200/75 transition"
-          >
-            <Assets.fbsl height={18} width={18} />
-          </a>
+          {shop?.facebook && (
+            <a
+              href={buildSocialLink("https://facebook.com/", shop.facebook)}
+              aria-label="Facebook"
+              className="p-3 bg-gray-200 rounded-full hover:bg-gray-200/75 transition"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Assets.fbsl height={18} width={18} />
+            </a>
+          )}
           {/* X (formerly Twitter) */}
-          <a
-            href="#"
-            className="p-3 bg-gray-200 rounded-full hover:bg-gray-200/75 transition"
-          >
-            <Assets.xsl height={18} width={18} />
-          </a>
+          {shop?.twitter && (
+            <a
+              href={buildSocialLink("https://twitter.com/", shop.twitter)}
+              aria-label="Twitter"
+              className="p-3 bg-gray-200 rounded-full hover:bg-gray-200/75 transition"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Assets.xsl height={18} width={18} />
+            </a>
+          )}
           {/* Instagram */}
-          <a
-            href="#"
-            className="p-3 bg-gray-200 rounded-full hover:bg-gray-200/75 transition"
-          >
-            <Assets.isl height={18} width={18} />
-          </a>
+          {shop?.instagram && (
+            <a
+              href={buildSocialLink("https://instagram.com/", shop.instagram)}
+              aria-label="Instagram"
+              className="p-3 bg-gray-200 rounded-full hover:bg-gray-200/75 transition"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Assets.isl height={18} width={18} />
+            </a>
+          )}
           {/* LinkedIn */}
-          <a
-            href="#"
-            className="p-3 bg-gray-200 rounded-full hover:bg-gray-200/75 transition"
-          >
-            <Assets.lsl height={18} width={18} />
-          </a>
+          {shop?.linkedin && (
+            <a
+              href={buildSocialLink("https://linkedin.com/in/", shop.linkedin)}
+              aria-label="LinkedIn"
+              className="p-3 bg-gray-200 rounded-full hover:bg-gray-200/75 transition"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Assets.lsl height={18} width={18} />
+            </a>
+          )}
         </div>
       </div>
     </div>

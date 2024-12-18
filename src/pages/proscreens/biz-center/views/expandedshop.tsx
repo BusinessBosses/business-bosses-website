@@ -4,12 +4,15 @@ import Lightbox from "react-spring-lightbox";
 import Assets from "../../../../assets";
 import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
 import { Post } from "../../../../common/interfaces/post";
+import { useLocation } from "react-router-dom";
+import { Product } from "../../../../common/interfaces/Product";
+import { Service } from "../../../../common/interfaces/Service";
 
-interface Props {
-  data?: Post;
-}
 
-const Expandedshop = ({ data }: Props) => {
+
+const Expandedshop = () => {
+  const location = useLocation();
+  const data = location.state?.data as Product | Service;
   const [showExpandedImages, setShowExpandedImages] = useState<boolean>(false);
   const handleExpanded = () => {
     setShowExpandedImages(true);
@@ -31,6 +34,16 @@ const Expandedshop = ({ data }: Props) => {
   // const gotoNext = () =>
   //   currentImageIndex + 1 < images?.length! &&
   //   setCurrentIndex(currentImageIndex + 1);
+  console.log(data);
+  
+  if (!data) {
+    return <div>No item details available.</div>;
+  }
+
+  // Check if the item is a Product or Service
+  const isProduct = (item: Product | Service): item is Product => 'price' in item;  // Assuming Product has a price property, adjust as needed
+  const isService = (item: Product | Service): item is Service => 'serviceType' in item; // Assuming Service has serviceType property
+
 
   return (
     <div className="flex flex-col bg-white h-screen items-center justify-start p-4 ">
@@ -91,28 +104,28 @@ const Expandedshop = ({ data }: Props) => {
           />
         )} */}
       <div className="flex flex-col items-start justify-center mt-4 w-full max-w-xs">
-        <div className="font-bold text-md">Title</div>
+        <div className="font-bold text-md">{data.name}</div>
         <div className="flex items-center space-x-2">
-          {/* {data?.discount && data.discount > 0 ? (
+          {data?.discount && data.discount > 0 ? (
             <>
               <div className="font-bold text-lg text-red-500">
-                {data.currency}
+                {data.shop?.currency}
                 {(
                   (data.price * (1 - data.discount / 100)) *
                   100
                 ).toFixed(2)}
               </div>
               <div className="text-gray-500 line-through">
-                {data.currency}
+                {data.shop?.currency}
                 {data.price.toFixed(2)}
               </div>
             </>
           ) : (
             <div className="font-bold text-lg">
-              {data?.currency}
+              {data?.shop?.currency}
               {data?.price.toFixed(2)}
             </div>
-          )} */}
+          )}
         </div>
         <div className="font-[600] text-sm">Product Description</div>
         <div className="text-gray-700 text-sm">Description</div>

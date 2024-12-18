@@ -751,10 +751,7 @@ const App = () => {
         />
         <Route path={RoutesPath.boostpost} element={<BoostPost />} />
         <Route path={RoutesPath.shop} element={<Shop />} />
-        <Route
-          path={RoutesPath.expandedshop}
-          element={<Expandedshop data={undefined} />}
-        />
+        <Route path={RoutesPath.expandedshop} element={<Expandedshop />} />
         <Route
           path={RoutesPath.listingselectorpage}
           element={<CreateListingSelectorpage />}
