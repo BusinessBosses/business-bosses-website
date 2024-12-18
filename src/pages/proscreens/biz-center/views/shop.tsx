@@ -6,7 +6,6 @@ import { AiFillStar } from "react-icons/ai";
 import ShopSellerReview from "./shopsellerreview";
 import { StaggeredGrid, StaggeredGridItem } from "react-staggered-grid";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch } from "../../../../redux/store/store";
 import { Shop } from "../../../../common/interfaces/Shop";
 import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
 import RoutesPath from "../../../../constants/Routes";
@@ -34,15 +33,11 @@ const ShopView = () => {
     setErr(false);
     try {
       const response = await ShopController.fetchShop(shopValue);
-      console.log(response);
-
       if (response.success && response.data) {
         setShop(response.data);
         const responseProducts = await ShopController.fetchProducts(
           response.data.userId
         );
-        console.log(responseProducts);
-
         if (responseProducts.success && responseProducts.data) {
           setProducts(
             responseProducts.data.rows.map((mp: Product) => ({ ...mp }))
@@ -50,8 +45,6 @@ const ShopView = () => {
           const responseServices = await ShopController.fetchServices(
             response.data.userId
           );
-          console.log(responseServices);
-
           if (responseServices.success && responseServices.data) {
             setServices(
               responseServices.data.rows.map((mp: Service) => ({ ...mp }))
@@ -65,19 +58,18 @@ const ShopView = () => {
       } else {
         setErr(true);
       }
-    } catch {
+    } catch (error) {
+      console.error("Error fetching shop data:", error);
       setErr(true);
     } finally {
       setLoading(false);
     }
-    console.log(loading);
-
-    console.log(err);
-    console.log(products);
   };
 
   useEffect(() => {
-    if (value) fetchData(value);
+    if (value) {
+      fetchData(value);
+    }
   }, [value]);
 
   if (loading) {
@@ -101,9 +93,11 @@ const ShopView = () => {
       />
     );
   }
+
   const combinedItems = [...products, ...services].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
+
   return (
     <div className="flex flex-col bg-white items-center justify-start p-4 h-screen overflow-y-auto">
       {/* Shop Logo */}
@@ -144,12 +138,6 @@ const ShopView = () => {
           </button>
           <div className="text-xs text-gray-500 mt-1">Chat</div>
         </div>
-        {/* <div className="flex flex-col items-center">
-          <button className="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
-            <Assets.shopcall height={16} width={16} />
-          </button>
-          <div className="text-xs text-gray-500 mt-1">Call</div>
-        </div> */}
         <div className="flex flex-col items-center">
           <button className="bg-gray-200 rounded-full p-2 hover:bg-gray-300">
             <Assets.shopshare height={16} width={16} />
