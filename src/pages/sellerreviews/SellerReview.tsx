@@ -33,7 +33,7 @@ interface Review {
 
 interface Props {
   partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
+  partnerDatatile: PartnerDatatile | null;
 }
 
 const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
@@ -56,7 +56,6 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
     setLoading(true);
     const response = await serviceApi.fetch(`/reviews/user/${userId}`);
     if (response.success) {
-      
       const revs = response.data.rows;
       if (!revs.length) {
         setReviews(null);
@@ -94,11 +93,10 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
 
   return (
     <div>
-       <Helmet>
+      <Helmet>
         ( <title>{`${seller?.username}'s Reviews - Business Bosses`}</title> )
-            </Helmet>
-       
-      
+      </Helmet>
+
       <div className="mobile-only">
         <div
           className=" top-0 w-full z-50 mobile-only "
@@ -111,7 +109,7 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
             error={false}
             loading={true}
             errorMessage=""
-            onReload={() => { }}
+            onReload={() => {}}
           />
         ) : (
           <div
@@ -194,7 +192,7 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                     <FilledTextarea
                       placeholder={"Write your Review here"}
                       inputRef={reviewInputRef}
-                      onchange={() => { }}
+                      onchange={() => {}}
                       label=""
                     />
                   </div>
@@ -281,15 +279,22 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                 </div>
               </div>
             </div>
-            {reviews != null ? reviews!.map((post) => (
-                    <SellerreviewItem data={post} />
-                  )) : <div>No Review For Seller!</div>}
+            {reviews != null ? (
+              reviews!.map((post) => <SellerreviewItem data={post} />)
+            ) : (
+              <div className="flex justify-center items-center">
+                No Review For Seller!
+              </div>
+            )}
           </div>
         )}
       </div>
 
       <div className="computer-only bg-[#fff]">
-        <ComputerHeader partnerData={partnerData}   partnerDatatile={partnerDatatile}  />
+        <ComputerHeader
+          partnerData={partnerData}
+          partnerDatatile={partnerDatatile}
+        />
 
         <div className="computer-content">
           <div
@@ -305,7 +310,9 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
           >
             <div className="">
               <div className=" flex items-center gap-3">
-                {seller ? <ComputerProfileDetails data={profile.profile!} /> : null}
+                {seller ? (
+                  <ComputerProfileDetails data={profile.profile!} />
+                ) : null}
               </div>
             </div>
           </div>
@@ -314,15 +321,19 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
             className="computer-main-content"
             style={{ width: "50%", flexGrow: 0 }}
           >
-
             <div className="">
               <div className="computer-only bg-white pb-5 pt-5 px-4">
                 <div className="flex items-center ">
                   <div className="flex items-center">
-                    <button onClick={() => navigate(-1)} className="flex items-center mr-5">
+                    <button
+                      onClick={() => navigate(-1)}
+                      className="flex items-center mr-5"
+                    >
                       <Assets.Backbutton />
                     </button>
-                    <div className="text-center"> {/* Centered title */}
+                    <div className="text-center">
+                      {" "}
+                      {/* Centered title */}
                       <p className="text-xl font-bold">Seller Review</p>
                     </div>
                   </div>
@@ -333,7 +344,7 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                   error={false}
                   loading={true}
                   errorMessage=""
-                  onReload={() => { }}
+                  onReload={() => {}}
                 />
               ) : (
                 <div
@@ -345,7 +356,9 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                 >
                   <div className="flex-row justify-center">
                     <div className="pt-5">
-                      {seller ? <PublicProfileDetailsonly data={seller!} /> : null}
+                      {seller ? (
+                        <PublicProfileDetailsonly data={seller!} />
+                      ) : null}
                     </div>
 
                     <div className="flex justify-center pt-5">
@@ -416,7 +429,7 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                           <FilledTextarea
                             placeholder={"Write your Review here"}
                             inputRef={reviewInputRef}
-                            onchange={() => { }}
+                            onchange={() => {}}
                             label=""
                           />
                         </div>
@@ -468,50 +481,54 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                             progress={
                               reviews === null
                                 ? 0
-                                : (getReviewBasedOfCount(5) / reviews.length) * 100
+                                : (getReviewBasedOfCount(5) / reviews.length) *
+                                  100
                             }
                           />
                           <Ratingbar
                             progress={
                               reviews === null
                                 ? 0
-                                : (getReviewBasedOfCount(4) / reviews.length) * 100
+                                : (getReviewBasedOfCount(4) / reviews.length) *
+                                  100
                             }
                           />
                           <Ratingbar
                             progress={
                               reviews === null
                                 ? 0
-                                : (getReviewBasedOfCount(3) / reviews.length) * 100
+                                : (getReviewBasedOfCount(3) / reviews.length) *
+                                  100
                             }
                           />
                           <Ratingbar
                             progress={
                               reviews === null
                                 ? 0
-                                : (getReviewBasedOfCount(2) / reviews.length) * 100
+                                : (getReviewBasedOfCount(2) / reviews.length) *
+                                  100
                             }
                           />
                           <Ratingbar
                             progress={
                               reviews === null
                                 ? 0
-                                : (getReviewBasedOfCount(1) / reviews.length) * 100
+                                : (getReviewBasedOfCount(1) / reviews.length) *
+                                  100
                             }
                           />
                         </div>
                       </div>
                     </div>
                   </div>
-                  {reviews != null ? reviews!.map((post) => (
-                    <SellerreviewItem data={post} />
-                  )) : <div>No Review For Seller!</div>}
+                  {reviews != null ? (
+                    reviews!.map((post) => <SellerreviewItem data={post} />)
+                  ) : (
+                    <div>No Review For Seller!</div>
+                  )}
                 </div>
               )}
             </div>
-
-
-
           </div>
           <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
           <div
@@ -527,7 +544,11 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
           >
             <div className="rounded-xl overflow-hidden" style={{}}>
               {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
+                <MobileBossOfTheWeek
+                  bossOfTheWeek={profile.bossup!}
+                  partnerData={partnerData}
+                  partnerDatatile={partnerDatatile}
+                />
               ) : null}
             </div>
           </div>
