@@ -1,19 +1,14 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Rating from "@mui/material/Rating/Rating";
 import { BottomSheet } from "react-spring-bottom-sheet";
-import { useLocation, useNavigate } from "react-router-dom";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { Helmet } from "react-helmet";
-import CommonPageHeader from "../../../../common/components/headers/CommonPageHeader";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
-import PublicProfileDetailsonly from "../../../profile/views/components/PublicProfileDetailsonly";
 import { User } from "../../../../common/interfaces/user";
-import { useAppSelector } from "../../../../redux/store/store";
 import serviceApi from "../../../../services/serviceApi";
 import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
 import FilledTextarea from "../../../../common/components/inputs/FilledTextarea";
-import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
 import Ratingbar from "../../../sellerreviews/components/Ratingbar";
 import SellerreviewItem from "../../../sellerreviews/components/SellerreviewItem";
 
@@ -32,14 +27,11 @@ interface Props {
 }
 
 const ShopSellerReview: React.FC<Props> = ({ user }) => {
-  const [seller, setSeller] = useState<User | null>(null);
+  // const [seller, setSeller] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<boolean>(false);
   const [currentRate, setCurrentRate] = useState<number>(0);
   const [reviews, setReviews] = useState<Review[]>([]);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const profile = useAppSelector((state) => state.user);
   const [open, setOpen] = useState<boolean>(false);
   const reviewInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -73,7 +65,7 @@ const ShopSellerReview: React.FC<Props> = ({ user }) => {
   };
 
   useEffect(() => {
-      setSeller(user);
+      // setSeller(user);
       getUserReviews(user!.uid);
   }, []);
 
@@ -139,7 +131,6 @@ const ShopSellerReview: React.FC<Props> = ({ user }) => {
                       inputRef={reviewInputRef}
                       label=""
                       onchange={function (
-                        event: ChangeEvent<HTMLTextAreaElement>
                       ): void {
                         throw new Error("Function not implemented.");
                       }}

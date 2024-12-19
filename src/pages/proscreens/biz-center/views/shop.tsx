@@ -205,9 +205,9 @@ const ShopView = () => {
                         })
                       }
                       onOrderClick={() =>
-                        console.log(
-                          `Order button for card ${index + 1} clicked`
-                        )
+                        navigate(RoutesPath.expandedshop, {
+                          state: { data: item },
+                        })
                       }
                     />
                   ) : item.isActive ? (
@@ -222,9 +222,11 @@ const ShopView = () => {
                         })
                       }
                       imageUrl={item.images![0]}
-                      onOrderClick={function (): void {
-                        throw new Error("Function not implemented.");
-                      }}
+                      onOrderClick={() =>
+                        navigate(RoutesPath.expandedshop, {
+                          state: { data: item },
+                        })
+                      }
                     />
                   ) : null}
                 </StaggeredGridItem>

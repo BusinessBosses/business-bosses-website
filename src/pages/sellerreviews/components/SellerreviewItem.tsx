@@ -1,21 +1,10 @@
-import { ReactNode, useRef, useState } from "react";
-import Popup from "reactjs-popup";
-import { v4 } from "uuid";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { IoIosMore } from "react-icons/io";
-import { BottomSheet } from "react-spring-bottom-sheet";
 import Assets from "../../../assets";
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import GreyButton from "../../../common/components/buttons/Greybutton";
-import FetchStatus from "../../../common/components/fetch_status/FetchStatus";
-import SharePopUp from "../../../common/components/share/SharePopUp";
-import GeneralPostsController from "../../../common/controllers/GeneralPostsController";
-import formatDate from "../../../common/functions/formatDate";
 import trimText from "../../../common/functions/trimText";
-import { Post } from "../../../common/interfaces/post";
 import RoutesPath from "../../../constants/Routes";
-import { useAppSelector } from "../../../redux/store/store";
+// import { useAppSelector } from "../../../redux/store/store";
 import { User } from "../../../common/interfaces/user";
 
 interface Review {
@@ -33,7 +22,7 @@ interface Props {
 }
 const SellerreviewItem = ({ data }: Props) => {
   const navigate = useNavigate();
-  const profile = useAppSelector((state) => state.user.profile);
+  // const profile = useAppSelector((state) => state.user.profile);
 
   return (
     <div>
