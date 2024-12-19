@@ -273,12 +273,10 @@ const App = () => {
   const StartListeners = () => {
     /** Connection / reconnection listeners */
     socket.io.on("reconnect", (attempt) => {
-      // console.info("Reconnected on attempt: " + attempt);
       SendHandshake();
     });
 
     socket.on("handshake", (data) => {
-      // console.log(data);
     });
 
     socket.io.on("reconnect_attempt", (attempt) => {
