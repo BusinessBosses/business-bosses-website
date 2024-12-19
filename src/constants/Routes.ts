@@ -50,7 +50,7 @@ const landingpage = "/landingpage";
 const landingpageforpartners = "/landingpageforpartners";
 const becomeapartner = "/becomeapartner";
 const businesstools = "/businesstools";
-const shop = "/shop";
+const shop = "/biz-center";
 const expandedshop = "/expandedshop";
 
 const RoutesPath = {
