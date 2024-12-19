@@ -65,14 +65,16 @@ const ShopSellerReview: React.FC<Props> = ({ user }) => {
   };
 
   useEffect(() => {
-      // setSeller(user);
-      getUserReviews(user!.uid);
+    // setSeller(user);
+    getUserReviews(user!.uid);
   }, []);
 
   return (
     <div>
       <Helmet>
-        <title>{`${user?.name ?? user?.username}'s Reviews - Business Bosses`}</title>
+        <title>{`${
+          user?.name ?? user?.username
+        }'s Reviews - Business Bosses`}</title>
       </Helmet>
 
       <div>
@@ -88,18 +90,8 @@ const ShopSellerReview: React.FC<Props> = ({ user }) => {
             onReload={() => {}}
           />
         ) : (
-          <div
-            className="bg-white"
-            style={{
-              borderTop: "15px solid rgba(244, 244, 244, 1)",
-              height: "100vh",
-            }}
-          >
+          <div className="bg-white">
             <div className="flex-row justify-center">
-              {/* <div className="pt-5">
-                {user ? <PublicProfileDetailsonly data={user} /> : null}
-              </div> */}
-
               <BottomSheet
                 onDismiss={() => setOpen(false)}
                 open={open}
@@ -130,8 +122,7 @@ const ShopSellerReview: React.FC<Props> = ({ user }) => {
                       placeholder={"Write your Review here"}
                       inputRef={reviewInputRef}
                       label=""
-                      onchange={function (
-                      ): void {
+                      onchange={function (): void {
                         throw new Error("Function not implemented.");
                       }}
                     />
@@ -182,35 +173,35 @@ const ShopSellerReview: React.FC<Props> = ({ user }) => {
                   >
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(5) / reviews.length) * 100
                       }
                     />
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(4) / reviews.length) * 100
                       }
                     />
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(3) / reviews.length) * 100
                       }
                     />
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(2) / reviews.length) * 100
                       }
                     />
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(1) / reviews.length) * 100
                       }
@@ -219,9 +210,13 @@ const ShopSellerReview: React.FC<Props> = ({ user }) => {
                 </div>
               </div>
             </div>
-            {reviews.length !== 0 ? reviews.map((post) => (
-                    <SellerreviewItem data={post} />
-                  )) : <div>No Review For Seller!</div>}
+            {reviews.length !== 0 ? (
+              reviews.map((post) => <SellerreviewItem data={post} />)
+            ) : (
+              <div className="flex justify-center items-center">
+                No Review For Seller!
+              </div>
+            )}
           </div>
         )}
       </div>
