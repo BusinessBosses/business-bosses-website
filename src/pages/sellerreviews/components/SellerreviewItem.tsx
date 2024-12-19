@@ -16,9 +16,20 @@ import trimText from "../../../common/functions/trimText";
 import { Post } from "../../../common/interfaces/post";
 import RoutesPath from "../../../constants/Routes";
 import { useAppSelector } from "../../../redux/store/store";
+import { User } from "../../../common/interfaces/user";
+
+interface Review {
+  id: number;
+  sellerId: string;
+  rating: number;
+  userId: string;
+  reviewText?: string;
+  rater: User;
+  createdAt: string;
+}
 
 interface Props {
-  data: Post | undefined;
+  data: Review | undefined;
 }
 const SellerreviewItem = ({ data }: Props) => {
   const navigate = useNavigate();
@@ -30,15 +41,15 @@ const SellerreviewItem = ({ data }: Props) => {
         <div className="flex items-start justify-between">
           <div
             onClick={() =>
-              navigate(RoutesPath.PublicUserProfile, { state: data?.user })
+              navigate(RoutesPath.PublicUserProfile, { state: data?.rater })
             }
             className="flex items-center gap-3"
           >
-            <UserAvatar imageURL={data?.user.photoUrl} />
+            <UserAvatar imageURL={data?.rater.photoUrl} />
             <div className="flex-grow">
               <p className=" font-semibold flex items-center text-xs md:text-sm lg:text-base capitalize">
-                {data?.user?.username}
-                {data?.user?.isSubscribed && (
+                {data?.rater?.username}
+                {data?.rater?.isSubscribed && (
                   <div className="ml-1">
                     <Assets.Checkmark width={9} />
                   </div>
@@ -46,16 +57,16 @@ const SellerreviewItem = ({ data }: Props) => {
               </p>
 
               <p className="text-xs text-[#777777]">
-                {trimText(data?.user.bio ?? "", 20)}
+                {trimText(data?.rater.bio ?? "", 20)}
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-5">
-            {data?.user?.isSubscribed && (
+            {data?.rater?.isSubscribed && (
               <GreyButton onClick={() => {}} text={"Connect"} />
             )}
-            {data?.user.uid === profile?.uid ? (
+            {/* {data?.rater.uid === profile?.uid ? (
               <Popup
                 trigger={
                   <div>
@@ -69,7 +80,7 @@ const SellerreviewItem = ({ data }: Props) => {
               >
                 {
                   (((close: any) =>
-                    data?.user.uid === profile?.uid ? (
+                    data?.rater.uid === profile?.uid ? (
                       <div className=" bg-white shadow rounded-lg p-5 space-y-3 items-start justify-start flex flex-col">
                         <button
                           onClick={() => {
@@ -92,15 +103,15 @@ const SellerreviewItem = ({ data }: Props) => {
                     ) : null) as unknown) as ReactNode
                 }
               </Popup>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
         <div className="mt-2">
-          <p className="text-sm text-[#303133] break-words">{data?.title}</p>
+          <p className="text-sm text-[#303133] break-words">{data?.reviewText}</p>
         </div>
 
         <small className="text-[#B4B4B4]">
-          {formatDate(data?.timestamp ?? Date.now())}
+          {(data?.createdAt ?? Date.now())}
         </small>
       </div>
     </div>

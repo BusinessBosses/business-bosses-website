@@ -56,6 +56,7 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
     setLoading(true);
     const response = await serviceApi.fetch(`/reviews/user/${userId}`);
     if (response.success) {
+      
       const revs = response.data.rows;
       if (!revs.length) {
         setReviews(null);
@@ -280,9 +281,9 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                 </div>
               </div>
             </div>
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
-              <SellerreviewItem data={undefined} />
-            ))}
+            {reviews != null ? reviews!.map((post) => (
+                    <SellerreviewItem data={post} />
+                  )) : <div>No Review For Seller!</div>}
           </div>
         )}
       </div>
@@ -502,9 +503,9 @@ const SellerReview: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
                       </div>
                     </div>
                   </div>
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map((post) => (
-                    <SellerreviewItem data={undefined} />
-                  ))}
+                  {reviews != null ? reviews!.map((post) => (
+                    <SellerreviewItem data={post} />
+                  )) : <div>No Review For Seller!</div>}
                 </div>
               )}
             </div>

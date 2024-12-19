@@ -749,7 +749,6 @@ const App = () => {
           }
         />
         <Route path={RoutesPath.boostpost} element={<BoostPost />} />
-        <Route path={RoutesPath.shop+"/:value"} element={<ShopView />} />
         <Route path={RoutesPath.expandedshop} element={<Expandedshop />} />
         <Route
           path={RoutesPath.listingselectorpage}
@@ -769,6 +768,7 @@ const App = () => {
           path={RoutesPath.businesstools}
           element={<BusinessToolsPage />}
         />
+        <Route path={"/:value"} element={<ShopView />} />
       </Routes>
     </>
   );
