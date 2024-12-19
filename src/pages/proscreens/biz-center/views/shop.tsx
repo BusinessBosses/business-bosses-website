@@ -133,26 +133,42 @@ const ShopView = () => {
       {/* Action Buttons */}
       <div className="flex flex-row pt-5 items-center justify-center gap-4 mb-4">
         <div className="flex flex-col items-center">
-          <button className="bg-gray-200 rounded-full p-2 hover:bg-gray-300" 
-          onClick={() => navigate(RoutesPath.ChatRoom, { state: { user: shop?.user } })}>
+          <button
+            className="bg-gray-200 rounded-full p-2 hover:bg-gray-300"
+            onClick={() =>
+              navigate(RoutesPath.ChatRoom, { state: { user: shop?.user } })
+            }
+          >
             <Assets.shopchat height={16} width={16} />
           </button>
           <div className="text-xs text-gray-500 mt-1">Chat</div>
         </div>
         <div className="flex flex-col items-center">
-          <button className="bg-gray-200 rounded-full p-2 hover:bg-gray-300"
-          onClick={async () => await navigator.share({
-            title: `Check this out!`,
-            text: `Have a look at ${shop?.user?.name ?? shop?.user?.username}'s biz-center on Business Bosses`,
-            url: `https://my-biz.io/${shop?.name!.toLowerCase().replace(/\s+/g, '-')}`,
-          })}>
+          <button
+            className="bg-gray-200 rounded-full p-2 hover:bg-gray-300"
+            onClick={async () =>
+              await navigator.share({
+                title: `Check this out!`,
+                text: `Have a look at ${
+                  shop?.user?.name ?? shop?.user?.username
+                }'s biz-center on Business Bosses`,
+                url: `https://my-biz.io/${shop
+                  ?.name!.toLowerCase()
+                  .replace(/\s+/g, "-")}`,
+              })
+            }
+          >
             <Assets.shopshare height={16} width={16} />
           </button>
           <div className="text-xs text-gray-500 mt-1">Share</div>
         </div>
         <div className="flex flex-col items-center">
-          <button className="bg-gray-200 rounded-full p-2 hover:bg-gray-300"
-          onClick={() => navigate(RoutesPath.sellerreview, { state: shop?.user! })}>
+          <button
+            className="bg-gray-200 rounded-full p-2 hover:bg-gray-300"
+            onClick={() =>
+              navigate(RoutesPath.sellerreview, { state: shop?.user! })
+            }
+          >
             <Assets.shopreview height={16} width={16} />
           </button>
           <div className="text-xs text-gray-500 mt-1">Review</div>
@@ -161,12 +177,14 @@ const ShopView = () => {
 
       {/* Tabs */}
       <div className="w-full max-w-md">
-        <div className="flex justify-around border-b">
+        <div className="flex text-sm justify-around border-b">
           {["Listings", "Reviews", "Contact"].map((tab, idx) => (
             <div
               key={idx}
               className={`p-2 cursor-pointer ${
-                activeTab === idx + 1 ? "border-b-2 font-bold" : "text-gray-500"
+                activeTab === idx + 1
+                  ? "border-b-2 border-black font-bold"
+                  : "text-gray-500"
               }`}
               onClick={() => setActiveTab(idx + 1)}
             >
