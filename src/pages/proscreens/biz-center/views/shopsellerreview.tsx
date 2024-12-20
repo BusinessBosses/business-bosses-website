@@ -161,11 +161,11 @@ const ShopSellerReview: React.FC<Props> = ({ user }) => {
                   }}
                 >
                   <div style={{ flexBasis: "50%" }}>
-                    <div>5 stars</div>
-                    <div>4 stars</div>
-                    <div>3 stars</div>
-                    <div>2 stars</div>
-                    <div>1 star</div>
+                    <div>5 </div>
+                    <div>4 </div>
+                    <div>3 </div>
+                    <div>2 </div>
+                    <div>1 </div>
                   </div>
                   <div
                     className="space-y-1.5 pt-1.5"
