@@ -126,7 +126,7 @@ const ShopView = () => {
         <div className="px-2"> • </div>
         <div className="text-xs flex items-center gap-1">
           <AiFillStar size={16} color="#FFA500" />
-          {shop?.user?.averageRating} Reviews
+          {shop?.user?.averageRating ?? 0} Reviews
         </div>
       </div>
 
