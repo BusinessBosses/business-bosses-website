@@ -1,19 +1,14 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Rating from "@mui/material/Rating/Rating";
 import { BottomSheet } from "react-spring-bottom-sheet";
-import { useLocation, useNavigate } from "react-router-dom";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { Helmet } from "react-helmet";
-import CommonPageHeader from "../../../../common/components/headers/CommonPageHeader";
 import FilledButton from "../../../../common/components/buttons/FilledButton";
-import PublicProfileDetailsonly from "../../../profile/views/components/PublicProfileDetailsonly";
 import { User } from "../../../../common/interfaces/user";
-import { useAppSelector } from "../../../../redux/store/store";
 import serviceApi from "../../../../services/serviceApi";
 import FetchStatus from "../../../../common/components/fetch_status/FetchStatus";
 import FilledTextarea from "../../../../common/components/inputs/FilledTextarea";
-import FilledButtonsmall from "../../../../common/components/buttons/FilledButtonsmall";
 import Ratingbar from "../../../sellerreviews/components/Ratingbar";
 import SellerreviewItem from "../../../sellerreviews/components/SellerreviewItem";
 
@@ -27,15 +22,16 @@ interface Review {
   createdAt: string;
 }
 
-const ShopSellerReview: React.FC = () => {
-  const [seller, setSeller] = useState<User | null>(null);
+interface Props {
+  user: User;
+}
+
+const ShopSellerReview: React.FC<Props> = ({ user }) => {
+  // const [seller, setSeller] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<boolean>(false);
   const [currentRate, setCurrentRate] = useState<number>(0);
-  const [reviews, setReviews] = useState<Review[] | null>(null);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const profile = useAppSelector((state) => state.user);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const reviewInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -57,37 +53,33 @@ const ShopSellerReview: React.FC = () => {
     if (rating) return;
     setRating(true);
     const response = await serviceApi.post("/reviews", {
-      sellerId: seller?.uid,
+      sellerId: user?.uid,
       rating: currentRate,
       reviewText: reviewInputRef.current?.value.trim() ?? "",
     });
     if (response.success) {
-      getUserReviews(seller!.uid);
+      getUserReviews(user!.uid);
       setOpen(false);
       setRating(false);
     }
   };
 
   useEffect(() => {
-    const state = location.state;
-    if (!!!state) {
-      //   navigate(-1);
-      return;
-    } else {
-      setSeller(state);
-      getUserReviews(state.uid);
-    }
+    // setSeller(user);
+    getUserReviews(user!.uid);
   }, []);
 
   return (
     <div>
       <Helmet>
-        <title>{`${seller?.username}'s Reviews - Business Bosses`}</title>
+        <title>{`${
+          user?.name ?? user?.username
+        }'s Reviews - Business Bosses`}</title>
       </Helmet>
 
-      <div className="mobile-only">
+      <div>
         <div
-          className=" top-0 w-full z-50 mobile-only "
+          className=" top-0 w-full z-50"
           style={{ position: "sticky", top: 0, zIndex: 100 }}
         ></div>
         {loading ? (
@@ -98,34 +90,8 @@ const ShopSellerReview: React.FC = () => {
             onReload={() => {}}
           />
         ) : (
-          <div
-            className="bg-white"
-            style={{
-              borderTop: "15px solid rgba(244, 244, 244, 1)",
-              height: "100vh",
-            }}
-          >
+          <div className="bg-white">
             <div className="flex-row justify-center">
-              <div className="pt-5">
-                {seller ? <PublicProfileDetailsonly data={seller} /> : null}
-              </div>
-
-              <div className="flex justify-center pt-5">
-                {(reviews === null ||
-                  !!!reviews.filter(
-                    (ft) => ft.rater.uid === profile.profile?.uid
-                  ).length) &&
-                  seller?.uid !== profile.profile?.uid && (
-                    <FilledButtonsmall
-                      className="py-3 px-8"
-                      onClick={() => {
-                        setOpen(true);
-                      }}
-                      text={"Rate Seller"}
-                    />
-                  )}
-              </div>
-
               <BottomSheet
                 onDismiss={() => setOpen(false)}
                 open={open}
@@ -156,9 +122,7 @@ const ShopSellerReview: React.FC = () => {
                       placeholder={"Write your Review here"}
                       inputRef={reviewInputRef}
                       label=""
-                      onchange={function (
-                        event: ChangeEvent<HTMLTextAreaElement>
-                      ): void {
+                      onchange={function (): void {
                         throw new Error("Function not implemented.");
                       }}
                     />
@@ -172,7 +136,7 @@ const ShopSellerReview: React.FC = () => {
                 <div className="text-primary font-bold">Rating</div>
                 <div className="text-sm font-bold">
                   <span style={{ fontWeight: "bold", fontSize: "20px" }}>
-                    {seller?.averageRating?.toFixed(1) ?? 0.0}
+                    {user?.averageRating?.toFixed(1) ?? 0.0}
                   </span>{" "}
                   out of 5
                 </div>
@@ -181,7 +145,7 @@ const ShopSellerReview: React.FC = () => {
                 </div>
                 <Rating
                   name="half-rating-read"
-                  defaultValue={seller?.averageRating ?? 0}
+                  defaultValue={user?.averageRating ?? 0}
                   precision={0.5}
                   readOnly
                   size="large"
@@ -209,35 +173,35 @@ const ShopSellerReview: React.FC = () => {
                   >
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(5) / reviews.length) * 100
                       }
                     />
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(4) / reviews.length) * 100
                       }
                     />
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(3) / reviews.length) * 100
                       }
                     />
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(2) / reviews.length) * 100
                       }
                     />
                     <Ratingbar
                       progress={
-                        reviews === null
+                        reviews.length === 0
                           ? 0
                           : (getReviewBasedOfCount(1) / reviews.length) * 100
                       }
@@ -246,9 +210,13 @@ const ShopSellerReview: React.FC = () => {
                 </div>
               </div>
             </div>
-            {/* {reviews?.map((review) => (
-              <SellerreviewItem key={review.id} data={review} />
-            ))} */}
+            {reviews.length !== 0 ? (
+              reviews.map((post) => <SellerreviewItem data={post} />)
+            ) : (
+              <div className="flex justify-center items-center">
+                No Review For Seller!
+              </div>
+            )}
           </div>
         )}
       </div>

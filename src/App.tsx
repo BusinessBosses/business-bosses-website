@@ -69,7 +69,6 @@ import {
   addMembersToState,
   incrementPage,
   saveCount,
-  saveuserscount,
 } from "./redux/slices/MarketSlice";
 import { Market } from "./common/interfaces/Market";
 import CreateListingSelectorpage from "./pages/marketplace/views/CreateListingSelectorpage";
@@ -77,7 +76,6 @@ import BecomeAPartnerPage from "./pages/landingpage/BecomeAPartnerPage";
 import BusinessToolsPage from "./pages/landingpage/BusinessToolsPage";
 import LandingPage from "./pages/landingpage/LandingPage";
 import LandingPageforPartners from "./pages/landingpage/LandingPageforPartners";
-import Shop from "./pages/proscreens/biz-center/views/shop";
 import Expandedshop from "./pages/proscreens/biz-center/views/expandedshop";
 import ShopView from "./pages/proscreens/biz-center/views/shop";
 
@@ -749,7 +747,6 @@ const App = () => {
           }
         />
         <Route path={RoutesPath.boostpost} element={<BoostPost />} />
-        <Route path={RoutesPath.shop+"/:value"} element={<ShopView />} />
         <Route path={RoutesPath.expandedshop} element={<Expandedshop />} />
         <Route
           path={RoutesPath.listingselectorpage}
@@ -769,6 +766,7 @@ const App = () => {
           path={RoutesPath.businesstools}
           element={<BusinessToolsPage />}
         />
+        <Route path={"/:value"} element={<ShopView />} />
       </Routes>
     </>
   );

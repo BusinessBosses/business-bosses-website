@@ -35,23 +35,24 @@ const ProductCard: React.FC<ProductCardProps> = ({
         />
       )}
       <div className="text-xs font-semibold ">{title}</div>
-      <div className="flex items-baseline">
-        {discountedPrice !== null && (
-          <p className="text-blue-500 font-medium text-xs mb-2 mr-2">
+      <div className="flex items-center space-x-2">
+        {discount && discount > 0 ? (
+          <>
+            <div className="font-bold text-sm text-red-500">
+              {currencySymbol}
+              {(price * (1 - discount / 100) * 100).toFixed(2)}
+            </div>
+            <div className="text-gray-500 line-through">
+              {currencySymbol}
+              {price.toFixed(2)}
+            </div>
+          </>
+        ) : (
+          <div className="font-bold text-sm">
             {currencySymbol}
-            {discountedPrice.toFixed(2)}
-          </p>
+            {price?.toFixed(2)}
+          </div>
         )}
-        <p
-          className={`text-sm  mb-2 ${
-            discountedPrice !== null
-              ? "text-gray-500 line-through"
-              : "text-blue-500 font-medium"
-          }`}
-        >
-          {currencySymbol}
-          {price.toFixed(2)}
-        </p>
       </div>
 
       <div>
