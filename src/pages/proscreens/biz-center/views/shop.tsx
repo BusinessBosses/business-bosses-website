@@ -100,6 +100,28 @@ const ShopView = () => {
 
   return (
     <div className="flex flex-col bg-white items-center justify-start p-4 h-screen overflow-y-auto">
+      <header className="w-full pb-4 flex justify-between items-center">
+        <img
+          src={Assets.Logo}
+          height={40}
+          width={40}
+          onClick={() => navigate(RoutesPath.home)}
+        />
+        <div className="flex">
+          <button
+            onClick={() => navigate(RoutesPath.register)}
+            className="text-black hover:text-gray-700 font-bold py-2 px-4 rounded"
+          >
+            Sign Up
+          </button>
+          <button
+            onClick={() => navigate(RoutesPath.login)}
+            className="text-black hover:text-gray-700 font-bold py-2 px-4 rounded"
+          >
+            Sign In
+          </button>
+        </div>
+      </header>
       {/* Shop Logo */}
       <UserAvatarbig imageSize="h-20 w-20" imageURL={shop?.image} />
 
@@ -254,6 +276,12 @@ const ShopView = () => {
           {activeTab === 2 && <ShopSellerReview user={shop?.user!} />}
           {activeTab === 3 && <ContactInformation shop={shop!} />}
         </div>
+      </div>
+      <div
+        className="mt-4 text-center text-xs cursor-pointer"
+        onClick={() => navigate(RoutesPath.home)}
+      >
+        Powered by Business Bosses
       </div>
     </div>
   );
