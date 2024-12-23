@@ -126,8 +126,9 @@ const ShopView = () => {
       <UserAvatarbig imageSize="h-20 w-20" imageURL={shop?.image} />
 
       {/* Shop Info */}
-      <div className="text-sm font-bold truncate mb-2">{shop?.name}</div>
+
       <div className="text-xs text-gray-700 mb-2 text-center">
+        <div className="text-sm font-bold truncate mb-2">{shop?.name}</div>
         <p className={`overflow-hidden ${!showMore ? "line-clamp-1" : ""}`}>
           {shop?.description}
         </p>
