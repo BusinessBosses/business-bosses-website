@@ -137,6 +137,7 @@ const Expandedshop = () => {
             <div className="absolute inset-0 bg-gray-500 opacity-100 z-10"></div>
           </div>
           <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-end pb-3 items-center z-20 gap-2">
+            <Assets.order height={40} width={40} />
             <div className="px-5 text-center text-white text-sm font-bold">
               Continue to Order this product on the Business Bosses App
             </div>

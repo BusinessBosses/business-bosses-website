@@ -116,6 +116,7 @@ import { ReactComponent as website } from "./icons/website.svg";
 import { ReactComponent as email } from "./icons/email.svg";
 import { ReactComponent as phone } from "./icons/phone.svg";
 import orderonapp from "./icons/orderonapp.jpeg";
+import { ReactComponent as order } from "./icons/order.svg";
 
 const Assets = {
   MessageIcon,
@@ -236,5 +237,6 @@ const Assets = {
   email,
   phone,
   orderonapp,
+  order,
 };
 export default Assets;
