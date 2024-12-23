@@ -128,11 +128,14 @@ const Expandedshop = () => {
         <div className="relative w-full max-w-xs overflow-hidden rounded-2xl mt-5">
           <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
           <div className="absolute inset-0 z-0 bg-gradient-to-r from-white via-transparent to-white opacity-50"></div>
-          <img
-            src={Assets.orderonapp}
-            alt="Appstorelogo"
-            className="w-full relative z-0"
-          />
+          <div className="relative w-full">
+            <img
+              src={Assets.orderonapp}
+              alt="Appstorelogo"
+              className="w-full"
+            />
+            <div className="absolute inset-0 bg-gray-500 opacity-100 z-10"></div>
+          </div>
           <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-end pb-3 items-center z-20 gap-2">
             <div className="px-5 text-center text-white text-sm font-bold">
               Continue to Order this product on the Business Bosses App
