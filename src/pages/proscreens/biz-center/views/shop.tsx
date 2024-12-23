@@ -101,12 +101,7 @@ const ShopView = () => {
   return (
     <div className="flex flex-col bg-white items-center justify-start p-4 h-screen overflow-y-auto">
       <header className="w-full pb-4 flex justify-between items-center">
-        <img
-          src={Assets.Logo}
-          height={40}
-          width={40}
-          onClick={() => navigate(RoutesPath.home)}
-        />
+        <div></div>
         <div className="flex">
           <button
             onClick={() => navigate(RoutesPath.register)}
@@ -278,7 +273,7 @@ const ShopView = () => {
         </div>
       </div>
       <div
-        className="mt-4 text-center text-xs cursor-pointer"
+        className="mt-4 text-center text-xs cursor-pointer underline"
         onClick={() => navigate(RoutesPath.home)}
       >
         Powered by Business Bosses
