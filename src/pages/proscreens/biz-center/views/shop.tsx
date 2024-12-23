@@ -113,7 +113,7 @@ const ShopView = () => {
             onClick={() => navigate(RoutesPath.login)}
             className="text-black hover:text-gray-700 font-bold py-2 px-4 rounded"
           >
-            Sign In
+            Log In
           </button>
         </div>
       </header>
@@ -121,8 +121,9 @@ const ShopView = () => {
       <UserAvatarbig imageSize="h-20 w-20" imageURL={shop?.image} />
 
       {/* Shop Info */}
-      <div className="text-sm font-bold truncate mb-2">{shop?.name}</div>
+
       <div className="text-xs text-gray-700 mb-2 text-center">
+        <p className="text-sm font-bold truncate mb-2">{shop?.name}</p>
         <p className={`overflow-hidden ${!showMore ? "line-clamp-1" : ""}`}>
           {shop?.description}
         </p>
