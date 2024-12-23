@@ -123,7 +123,7 @@ const ShopView = () => {
       {/* Shop Info */}
 
       <div className="text-xs text-gray-700 mb-2 text-center">
-        <p className="text-sm font-bold truncate mb-2">{shop?.name}</p>
+        <p className="text-sm font-bold truncate mt-2">{shop?.name}</p>
         <p className={`overflow-hidden ${!showMore ? "line-clamp-1" : ""}`}>
           {shop?.description}
         </p>
