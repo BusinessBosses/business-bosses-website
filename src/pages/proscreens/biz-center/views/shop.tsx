@@ -274,10 +274,11 @@ const ShopView = () => {
         </div>
       </div>
       <div
-        className="mt-4 text-center text-xs cursor-pointer underline"
+        className="mt-4 text-center text-xs cursor-pointer flex flex-row gap-1"
         onClick={() => navigate(RoutesPath.home)}
       >
-        Powered by Business Bosses
+        <p>Powered by</p>
+        <p className="underline">Business Bosses</p>
       </div>
     </div>
   );
