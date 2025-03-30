@@ -48,6 +48,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
 
   return (
     <AppBar
+    className="hidden md:block"
       position="relative"
       sx={{
         boxShadow: 0,

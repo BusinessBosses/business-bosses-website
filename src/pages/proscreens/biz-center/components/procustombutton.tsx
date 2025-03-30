@@ -17,8 +17,8 @@ const ProCustomButton: React.FC<ProCustomButtonProps> = ({
   onPressed,
   back = false,
   loading = false,
-  color = "bg-blue-600", // Default color - adjust to match your theme
-  padding = "15px",
+  color = "bg-blue-600", 
+  padding = "0px",
   disabled = false,
 }) => {
   const isDisabled = disabled || loading;

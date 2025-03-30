@@ -26,6 +26,7 @@ import CustomTextWidget from "../proscreens/biz-center/components/customtextwidg
 import CustomCard from "../proscreens/biz-center/components/customcard";
 import ProSubscribeSection from "../proscreens/biz-center/components/prosubscribesection";
 import { Shop } from "../../common/interfaces/Shop";
+import SetupShop from "../proscreens/setup/views/setup";
 
 interface ToggleCustomThemeProps {
   showCustomTheme: Boolean;
@@ -95,9 +96,34 @@ export default function BusinessToolsPage({ shop }: SetupShopProps) {
   const [isSubmit, setIsSubmit] = React.useState(false);
 
   const handleSubmit = () => {
-    console.log("Form submitted");
+    console.log("Form submitted with:", {
+      name,
+      description,
+      phone,
+      email,
+      category,
+      imageType,
+      bankValue,
+      socialLinks: {
+        instagram: igslValue,
+        facebook: fbslValue,
+        linkedIn: lslValue,
+        x: xslValue,
+        custom: cslValue,
+      },
+    });
+    setIsSubmit(true);
+    // Add your form submission logic here
   };
-  const defaultTheme = createTheme({ palette: { mode } });
+
+  const defaultTheme = createTheme({
+    palette: {
+      mode,
+      background: {
+        default: "#ffffff", // Using hex instead of "white"
+      },
+    },
+  });
 
   const toggleColorMode = () => {
     setMode((prev) => (prev === "dark" ? "light" : "dark"));
@@ -127,120 +153,9 @@ export default function BusinessToolsPage({ shop }: SetupShopProps) {
       <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
       <div>
-        <div className=" bg-backgroundcolor items-center justify-center ">
-          <Container maxWidth="lg">
-            <div className="flex flex-col md:flex-row items-center justify-center w-full h-[calc(100vh-80px)] md:px-5 px-0">
-              <div className="w-full pt-5 space-y items-start justify-start md:text-left text-center">
-                <div className="text-lg font-bold">
-                  Set Up Your Biz-Centre & Start Selling
-                </div>
-                <div className="text-sm">
-                  Smart way to Sell & Manage your Business, All in One Place.
-                </div>
-                <div className="text-sm">Free and Easy to Setup</div>
-
-                <div className="hidden md:flex">
-                  <ProSubscribeSection />
-                </div>
-              </div>
-
-              <div className="flex-col w-full h-full py-5  space-y-4 overflow-scroll">
-                <CustomCard
-                  caption={"Customise your Biz-Center"}
-                  subText={"Add a photo for your biz-center"}
-                  buttonText={"Choose Photo"}
-                  onPressed={function (): void {
-                    throw new Error("Function not implemented.");
-                  }}
-                  imagePath={Assets.shopplaceholder}
-                />
-                <CustomDropdown
-                  caption="Image Type"
-                  hintText="Choose an image type"
-                  items={["Circle", "Banner"]}
-                  onChanged={(newValue) => setImageType(newValue ?? "")}
-                />
-                <CustomEditText
-                  caption="Biz-Center Name *"
-                  hintText={"Enter biz-center name here"}
-                  value={""}
-                  onChange={setName}
-                />
-                <CustomEditText
-                  maxLength={300}
-                  caption="Biz-Center Message * (Description)"
-                  hintText={"Enter biz-center description here"}
-                  value={""}
-                  onChange={setDescription}
-                />
-                <CustomEditText
-                  caption="Phone Number (Optional)"
-                  hintText={"+448908654321"}
-                  value={""}
-                  onChange={setPhone}
-                />
-                <CustomEditText
-                  caption="Business Email Address (Optional)"
-                  hintText={"example@business.com"}
-                  value={""}
-                  onChange={setEmail}
-                />
-
-                <CustomDropdown
-                  initialValue={"category"}
-                  caption="Select Category *"
-                  hintText="Choose a category"
-                  items={categories}
-                  onChanged={(newValue) => setCategory(newValue ?? "")}
-                />
-                <CustomTextWidget
-                  caption={"Location"}
-                  iconName={"Assets.phone"}
-                />
-                <CustomDropdown
-                  caption={"Select Payment Method"}
-                  iconName={""}
-                  items={[]}
-                />
-                <CustomEditText
-                  maxLength={300}
-                  isPaymentField={true}
-                  isSL={true}
-                  caption="Social Links"
-                  hintText=""
-                  value={bankValue}
-                  onChange={setBankValue}
-                  pm1Hint="Enter Instagram URL"
-                  pm2Hint="Enter Facebook URL"
-                  pm3Hint="Enter LinkedIn URL"
-                  pm4Hint="Enter X URL"
-                  pm5Hint="Enter Custom URL"
-                  pm1Value={igslValue}
-                  pm1OnChange={setIgslValue}
-                  pm2Value={fbslValue}
-                  pm2OnChange={setFbslValue}
-                  pm3Value={lslValue}
-                  pm3OnChange={setLslValue}
-                  pm4Value={xslValue}
-                  pm4OnChange={setXslValue}
-                  pm5Value={cslValue}
-                  pm5OnChange={setCslValue}
-                />
-
-                <ProCustomButton
-                  color="bg-primary"
-                  text={shop ? "Save Changes" : "Complete Setup"}
-                  loading={isSubmit}
-                  onPressed={handleSubmit}
-                />
-              </div>
-            </div>
-          </Container>
-        </div>
+       <SetupShop partnerData={null} partnerDatatile={null}/>
       </div>
-      <Box sx={{ bgcolor: "background.default" }}>
-        <Footer />
-      </Box>
+     
     </ThemeProvider>
   );
 }

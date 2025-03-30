@@ -257,7 +257,9 @@ const CustomEditText: React.FC<CustomEditTextProps> = ({
             {(caption || optionalText) && (
               <div className="flex items-center gap-2">
                 {caption && <p className="text-sm font-semibold">{caption}</p>}
-                {optionalText}
+                {optionalText && (
+                  <p className="text-sm text-gray-500 font-normal">{optionalText}</p>
+                )}
               </div>
             )}
             {isPaymentField ? renderPaymentFields() : renderInputField()}

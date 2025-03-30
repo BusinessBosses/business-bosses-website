@@ -78,6 +78,7 @@ import LandingPage from "./pages/landingpage/LandingPage";
 import LandingPageforPartners from "./pages/landingpage/LandingPageforPartners";
 import Expandedshop from "./pages/proscreens/biz-center/views/expandedshop";
 import ShopView from "./pages/proscreens/biz-center/views/shop";
+import SetupShop from "./pages/proscreens/setup/views/setup";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -274,8 +275,7 @@ const App = () => {
       SendHandshake();
     });
 
-    socket.on("handshake", (data) => {
-    });
+    socket.on("handshake", (data) => {});
 
     socket.io.on("reconnect_attempt", (attempt) => {
       // console.info("Reconnection Attempt: " + attempt);
@@ -767,6 +767,15 @@ const App = () => {
           element={<BusinessToolsPage />}
         />
         <Route path={"/:value"} element={<ShopView />} />
+        <Route
+          path={"/setupshop"}
+          element={
+            <SetupShop
+              partnerData={partnerData}
+              partnerDatatile={partnerDatatile}
+            />
+          }
+        />
       </Routes>
     </>
   );

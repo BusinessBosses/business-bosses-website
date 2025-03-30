@@ -1,4 +1,5 @@
 import React from "react";
+import Assets from "../../../../assets";
 
 interface CustomTextWidgetProps {
   caption: string;
@@ -61,9 +62,9 @@ const CustomTextWidget: React.FC<CustomTextWidgetProps> = ({
               </button>
             ) : (
               <img
-                src={iconName}
+                src={Assets.Nexticonblack}
                 alt="icon"
-                className="w-5 h-5"
+                className=""
                 style={iconColor ? { color: iconColor } : {}}
               />
             )}

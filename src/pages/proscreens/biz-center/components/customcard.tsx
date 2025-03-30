@@ -5,7 +5,7 @@ interface CustomCardProps {
   subText: string;
   buttonText: string;
   onPressed: () => void;
-  imagePath: string;
+  imagePath: string | { default: string };
   iconPath?: string;
   buttonVisible?: boolean;
 }
@@ -21,7 +21,22 @@ const CustomCard: React.FC<CustomCardProps> = ({
 }) => {
   // Determine the image component based on the imagePath
   const renderImage = () => {
-    if (imagePath.startsWith("http")) {
+    if (!imagePath) {
+      return (
+        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+          <span className="text-gray-500">No Image</span>
+        </div>
+      );
+    }
+
+    // Handle blob URLs (from file selection) and regular URLs
+    if (
+      typeof imagePath === "string" &&
+      (imagePath.startsWith("blob:") ||
+        imagePath.startsWith("http") ||
+        imagePath.startsWith("/") ||
+        imagePath.startsWith("./"))
+    ) {
       return (
         <img
           src={imagePath}
@@ -29,27 +44,29 @@ const CustomCard: React.FC<CustomCardProps> = ({
           className="w-full h-full object-cover"
           onError={(e) => {
             (e.target as HTMLImageElement).onerror = null;
-            (e.target as HTMLImageElement).src = "placeholder-image-url"; // Add your placeholder image URL
+            (e.target as HTMLImageElement).src = "placeholder-image-url";
           }}
         />
       );
-    } else if (imagePath.startsWith("/") || imagePath.startsWith("./")) {
-      // For local images (assuming they're in the public folder or imported)
+    }
+
+    // Handle imported assets (like Assets.shopplaceholder)
+    if (typeof imagePath === "object" && "default" in imagePath) {
       return (
         <img
-          src={imagePath}
+          src={imagePath.default}
           alt={caption}
           className="w-full h-full object-cover"
         />
       );
-    } else {
-      // For file paths (this would need additional handling in React)
-      return (
-        <div className="w-full h-full flex items-center justify-center bg-gray-100">
-          <span className="text-gray-500">Image</span>
-        </div>
-      );
     }
+
+    // Fallback for other cases
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-100">
+        <span className="text-gray-500">Image</span>
+      </div>
+    );
   };
 
   return (

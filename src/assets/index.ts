@@ -1,14 +1,14 @@
 import MessageIcon from "./icons/message.svg";
 import { ReactComponent as ProfileIcon } from "./icons/person.svg";
-import { ReactComponent as Messagenoback } from "./icons/message.svg";
+import { ReactComponent as Messagenoback } from "./icons/bottombarchat.svg";
 import { ReactComponent as Notifnoback } from "./icons/notifications.svg";
 import NotificationIcon from "./icons/notifications.svg";
-import { ReactComponent as BossupIcon } from "./icons/bossupicon.svg";
+import { ReactComponent as BossupIcon } from "./icons/bossupu.svg";
 import Badge from "./icons/badge.svg";
 import Logo from "./icons/logo.png";
-import { ReactComponent as Home } from "./icons/home.svg";
+import { ReactComponent as Home } from "./icons/homeu.svg";
 import { ReactComponent as User } from "./icons/person.svg";
-import { ReactComponent as MarketPlace } from "./icons/marketplace.svg";
+import { ReactComponent as MarketPlace } from "./icons/cartu.svg";
 import { ReactComponent as Private } from "./icons/private.svg";
 import { ReactComponent as Visible } from "./icons/eye.svg";
 import { ReactComponent as Google } from "./icons/g.svg";
@@ -122,6 +122,7 @@ import dropdown  from "./icons/dropdown.svg";
 import uploadicon  from "./icons/uploadicon.svg";
 import checkfilled  from "./icons/checkfilled.svg";
 import shopplaceholder  from "./icons/shopplaceholder.png";
+import Nexticonblack  from "./icons/nexticon_black.svg";
 
 const Assets = {
   MessageIcon,
@@ -248,5 +249,6 @@ const Assets = {
   uploadicon,
   checkfilled,
   shopplaceholder,
+  Nexticonblack,
 };
 export default Assets;
