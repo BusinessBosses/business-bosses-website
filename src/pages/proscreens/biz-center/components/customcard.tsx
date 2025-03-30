@@ -53,29 +53,27 @@ const CustomCard: React.FC<CustomCardProps> = ({
   };
 
   return (
-    <div className="px-4">
-      <div className="p-4 bg-white rounded-xl border border-grey-100 border-opacity-50">
-        <div className="flex items-start">
-          <div className="flex-1 mr-4">
-            <h3 className="text-sm font-semibold">{caption}</h3>
-            <p className="text-xs text-gray-500 mt-1">{subText}</p>
+    <div className="p-4 bg-white rounded-xl border border-grey-100 border-opacity-50">
+      <div className="flex items-start">
+        <div className="flex-1 mr-4">
+          <h3 className="text-sm font-semibold">{caption}</h3>
+          <p className="text-xs text-gray-500 mt-1">{subText}</p>
 
-            {buttonVisible && (
-              <button
-                onClick={onPressed}
-                className="mt-3 flex shadow-md items-center bg-white px-4 py-3 rounded-md text-primary"
-              >
-                {iconPath && (
-                  <img src={iconPath} alt="" className="w-4 h-4 mr-2" />
-                )}
-                <span>{buttonText}</span>
-              </button>
-            )}
-          </div>
+          {buttonVisible && (
+            <button
+              onClick={onPressed}
+              className="mt-3 flex shadow-md items-center bg-white px-4 py-3 rounded-md text-primary"
+            >
+              {iconPath && (
+                <img src={iconPath} alt="" className="w-4 h-4 mr-2" />
+              )}
+              <span>{buttonText}</span>
+            </button>
+          )}
+        </div>
 
-          <div className="w-24 h-24 rounded-lg border border-grey-100 border-opacity-50 overflow-hidden">
-            {renderImage()}
-          </div>
+        <div className="w-24 h-24 rounded-lg border border-grey-100 border-opacity-50 overflow-hidden">
+          {renderImage()}
         </div>
       </div>
     </div>

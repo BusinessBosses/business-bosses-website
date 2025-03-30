@@ -21,7 +21,7 @@ const CustomTextWidget: React.FC<CustomTextWidgetProps> = ({
   text = "",
   hasHint = false,
   backgroundColor = "bg-white",
-  padding = "10px",
+  padding = "0px",
   textPadding = "5px",
   isSupplier = false,
   buttonText,

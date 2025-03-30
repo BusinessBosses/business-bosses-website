@@ -56,7 +56,7 @@ const CustomEditText: React.FC<CustomEditTextProps> = ({
   isCurrencyField = false,
   currencyFieldColor = "bg-gray-100",
   validator,
-  padding = "15px",
+  padding = "0px",
   isPaymentField = false,
   isOrder = false,
   isSL = false,

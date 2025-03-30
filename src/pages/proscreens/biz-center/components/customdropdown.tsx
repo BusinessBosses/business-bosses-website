@@ -24,7 +24,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   hintText,
   validator,
   secondarySection,
-  padding = "15px",
+  padding = "0px",
   isOrder = false,
   iconColor,
 }) => {
@@ -45,7 +45,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 
   return (
     <div
-      className={`${isOrder ? "" : "px-4"}`}
+      className={`${isOrder ? "" : "px-0"}`}
       style={{ paddingLeft: padding, paddingRight: padding }}
     >
       <div className="bg-white rounded-lg p-4">
