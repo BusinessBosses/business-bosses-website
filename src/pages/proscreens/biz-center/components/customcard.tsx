@@ -63,7 +63,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
             {buttonVisible && (
               <button
                 onClick={onPressed}
-                className="mt-3 flex shadow-md items-center bg-white px-4 py-3 rounded-md text-blue-600"
+                className="mt-3 flex shadow-md items-center bg-white px-4 py-3 rounded-md text-primary"
               >
                 {iconPath && (
                   <img src={iconPath} alt="" className="w-4 h-4 mr-2" />

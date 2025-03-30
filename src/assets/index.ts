@@ -117,12 +117,11 @@ import { ReactComponent as website } from "./icons/website.svg";
 import { ReactComponent as email } from "./icons/email.svg";
 import { ReactComponent as phone } from "./icons/phone.svg";
 import orderonapp from "./icons/orderonapp.jpeg";
-<<<<<<< Updated upstream
-=======
-import { ReactComponent as order } from "./icons/order.svg";
+import { ReactComponent as order } from "./icons/ordersinvoices.svg";
 import dropdown  from "./icons/dropdown.svg";
 import uploadicon  from "./icons/uploadicon.svg";
->>>>>>> Stashed changes
+import checkfilled  from "./icons/checkfilled.svg";
+import shopplaceholder  from "./icons/shopplaceholder.png";
 
 const Assets = {
   MessageIcon,
@@ -243,12 +242,11 @@ const Assets = {
   email,
   phone,
   orderonapp,
-<<<<<<< Updated upstream
-=======
   order,
   igsl,
   dropdown,
   uploadicon,
->>>>>>> Stashed changes
+  checkfilled,
+  shopplaceholder,
 };
 export default Assets;

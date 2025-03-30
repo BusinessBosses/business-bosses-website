@@ -116,7 +116,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 color="info"
                 size="medium"
-                onClick={() => navigate(RoutesPath.setup)}
+                onClick={() => navigate(RoutesPath.businesstools)}
               >
                 Business Tools
               </Button>

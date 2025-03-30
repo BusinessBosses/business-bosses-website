@@ -24,6 +24,8 @@ import CustomDropdown from "../proscreens/biz-center/components/customdropdown";
 import ProCustomButton from "../proscreens/biz-center/components/procustombutton";
 import CustomTextWidget from "../proscreens/biz-center/components/customtextwidget";
 import CustomCard from "../proscreens/biz-center/components/customcard";
+import ProSubscribeSection from "../proscreens/biz-center/components/prosubscribesection";
+import { Shop } from "../../common/interfaces/Shop";
 
 interface ToggleCustomThemeProps {
   showCustomTheme: Boolean;
@@ -68,18 +70,33 @@ function ToggleCustomTheme({
   );
 }
 
-export default function BusinessToolsPage() {
+interface SetupShopProps {
+  shop?: Shop;
+  backToHome?: boolean;
+}
+
+export default function BusinessToolsPage({ shop }: SetupShopProps) {
   const [mode, setMode] = React.useState<PaletteMode>("light");
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
 
   const [bankValue, setBankValue] = React.useState("");
+  const [name, setName] = React.useState("");
   const [igslValue, setIgslValue] = React.useState("");
   const [fbslValue, setFbslValue] = React.useState("");
   const [lslValue, setLslValue] = React.useState("");
   const [xslValue, setXslValue] = React.useState("");
   const [cslValue, setCslValue] = React.useState("");
   const [category, setCategory] = React.useState("");
+  const [imageType, setImageType] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const LPtheme = createTheme(getLPTheme(mode));
+  const [isSubmit, setIsSubmit] = React.useState(false);
+
+  const handleSubmit = () => {
+    console.log("Form submitted");
+  };
   const defaultTheme = createTheme({ palette: { mode } });
 
   const toggleColorMode = () => {
@@ -90,6 +107,21 @@ export default function BusinessToolsPage() {
     setShowCustomTheme((prev) => !prev);
   };
 
+  const categories = [
+    "Agriculture, Food & Beverage",
+    "Books & Education",
+    "Construction & Real Estate",
+    "Fashion & Beauty",
+    "Finance & Legal",
+    "Healthcare & Wellness",
+    "Home, Gardens & Outdoors",
+    "Jewellery & Timepieces",
+    "Media & Entertainment",
+    "Security, Safety & Equipment",
+    "Technology, Games & Electronic",
+    "Vehicle & Transportation",
+  ];
+
   return (
     <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
       <CssBaseline />
@@ -97,8 +129,8 @@ export default function BusinessToolsPage() {
       <div>
         <div className=" bg-backgroundcolor items-center justify-center ">
           <Container maxWidth="lg">
-            <div className="flex flex-col md:flex-row items-center justify-center w-full h-[calc(100vh-80px)] px-5">
-              <div className="w-full pt-5 space-y items-start justify-start text-left">
+            <div className="flex flex-col md:flex-row items-center justify-center w-full h-[calc(100vh-80px)] md:px-5 px-0">
+              <div className="w-full pt-5 space-y items-start justify-start md:text-left text-center">
                 <div className="text-lg font-bold">
                   Set Up Your Biz-Centre & Start Selling
                 </div>
@@ -106,6 +138,10 @@ export default function BusinessToolsPage() {
                   Smart way to Sell & Manage your Business, All in One Place.
                 </div>
                 <div className="text-sm">Free and Easy to Setup</div>
+
+                <div className="hidden md:flex">
+                  <ProSubscribeSection />
+                </div>
               </div>
 
               <div className="flex-col w-full h-full py-5  space-y-4 overflow-scroll">
@@ -116,56 +152,51 @@ export default function BusinessToolsPage() {
                   onPressed={function (): void {
                     throw new Error("Function not implemented.");
                   }}
-                  imagePath={""}
+                  imagePath={Assets.shopplaceholder}
                 />
                 <CustomDropdown
-                  caption={"Image Type"}
-                  iconName={""}
-                  items={[]}
+                  caption="Image Type"
+                  hintText="Choose an image type"
+                  items={["Circle", "Banner"]}
+                  onChanged={(newValue) => setImageType(newValue ?? "")}
                 />
                 <CustomEditText
                   caption="Biz-Center Name *"
                   hintText={"Enter biz-center name here"}
                   value={""}
-                  onChange={function (value: string): void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  onChange={setName}
                 />
                 <CustomEditText
                   maxLength={300}
                   caption="Biz-Center Message * (Description)"
                   hintText={"Enter biz-center description here"}
                   value={""}
-                  onChange={function (value: string): void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  onChange={setDescription}
                 />
                 <CustomEditText
                   caption="Phone Number (Optional)"
                   hintText={"+448908654321"}
                   value={""}
-                  onChange={function (value: string): void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  onChange={setPhone}
                 />
                 <CustomEditText
                   caption="Business Email Address (Optional)"
                   hintText={"example@business.com"}
                   value={""}
-                  onChange={function (value: string): void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  onChange={setEmail}
                 />
 
                 <CustomDropdown
                   initialValue={"category"}
                   caption="Select Category *"
                   hintText="Choose a category"
-                  items={[]}
-                  iconName="/src/assets/icons/dropdown.svg"
-                  onChanged={(newValue) => setCategory("newValue")}
+                  items={categories}
+                  onChanged={(newValue) => setCategory(newValue ?? "")}
                 />
-                <CustomTextWidget caption={"Location"} iconName={""} />
+                <CustomTextWidget
+                  caption={"Location"}
+                  iconName={"Assets.phone"}
+                />
                 <CustomDropdown
                   caption={"Select Payment Method"}
                   iconName={""}
@@ -195,12 +226,12 @@ export default function BusinessToolsPage() {
                   pm5Value={cslValue}
                   pm5OnChange={setCslValue}
                 />
+
                 <ProCustomButton
                   color="bg-primary"
-                  text={"Complete Setup"}
-                  onPressed={function (): void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  text={shop ? "Save Changes" : "Complete Setup"}
+                  loading={isSubmit}
+                  onPressed={handleSubmit}
                 />
               </div>
             </div>

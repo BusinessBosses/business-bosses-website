@@ -3,7 +3,7 @@ import Assets from "../../../../assets"; // Adjust path as needed
 
 type CustomDropdownProps = {
   caption: string;
-  iconName: string;
+  iconName?: string;
   items: string[];
   initialValue?: string;
   onChanged?: (value: string | null) => void;
