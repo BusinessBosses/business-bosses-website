@@ -299,12 +299,12 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                     setWalletDetails(details.walletDetails);
                   }}
                 />
-                <CustomDropdown
+                {/* <CustomDropdown
                   caption={"Select Payment Method"}
                   iconName={""}
                   items={["Bank Transfer", "Credit Card", "PayPal"]}
                   onChanged={(newValue) => setBankValue(newValue ?? "")}
-                />
+                /> */}
                 <CustomEditText
                   maxLength={300}
                   isPaymentField={true}

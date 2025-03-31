@@ -63,15 +63,19 @@ const PaymentMethodSelector: React.FC<PaymentMethodProps> = ({
     Object.entries(selections)
       .filter(([_, value]) => value)
       .map(([key]) => key)
-      .join(", ") || "Select Payment Method *";
+      .join(", ") || "Select Payment Method";
 
   return (
     <div className="w-full space-y-4">
       <div
-        className="w-full p-4 bg-white rounded-lg flex justify-between items-center cursor-pointer"
+        className="w-full p-4 bg-white rounded-lg flex  justify-between items-end cursor-pointer"
         onClick={toggleDropdown}
       >
-        <span>{selectedOptionsText}</span>
+        <div className="flex flex-col items-start justify-end">
+          <span className="text-sm font-semibold">Payment Method *</span>
+          <span className="text-sm font-normal pt-2">{selectedOptionsText}</span>
+        </div>
+
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`h-5 w-5 transition-transform ${
@@ -91,7 +95,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodProps> = ({
       {isOpen && (
         <div className="space-y-4 bg-white p-4 border rounded-lg">
           <div className="space-y-2">
-            <h3 className="text-lg font-medium">Select Payment Methods</h3>
+            <h3 className="text-sm font-medium">Select Payment Methods</h3>
 
             <div className="grid grid-cols-2 gap-4">
               {["Bank", "Paypal", "Wallet", "Cash"].map((option) => (
@@ -101,7 +105,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodProps> = ({
                     id={option}
                     checked={selections[option] || false}
                     onChange={() => handleSelectionChange(option)}
-                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-sm text-black focus:black border-gray-300 rounded"
                   />
                   <label
                     htmlFor={option}
