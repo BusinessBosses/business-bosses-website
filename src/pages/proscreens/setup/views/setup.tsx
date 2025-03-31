@@ -23,6 +23,7 @@ import { PartnerData } from "../../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../../common/interfaces/partnerdatatile";
 import ComputerHeader from "../../../home/views/components/ComputerHeader";
 import { CountryDropdown } from "react-country-region-selector";
+import PaymentMethodSelector from "../../biz-center/components/paymentmethod";
 
 interface SetupShopProps {
   shop?: Shop;
@@ -93,7 +94,11 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
     Assets.shopplaceholder
   );
   const [country, setCountry] = React.useState("");
+  const [paymentSelections, setPaymentSelections] = React.useState<Record<string, boolean>>({});
   const [isSubmit, setIsSubmit] = React.useState(false);
+  const [walletDetails, setWalletDetails] = React.useState<Record<string, string>>({});
+  const [paypalDetails, setPaypalDetails] = React.useState<Record<string, string>>({});
+  const [bankDetails, setBankDetails] = React.useState<Record<string, string>>({});
 
   const LPtheme = createTheme(getLPTheme(mode));
 
@@ -282,6 +287,16 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                   value={country ?? ""}
                   onChange={(val) => {
                     setCountry(val);
+                  }}
+                />
+                <PaymentMethodSelector
+                  onSelectionChange={(newSelections) => {
+                    setPaymentSelections(newSelections);
+                  }}
+                  onComplete={(details) => {
+                    setBankDetails(details.bankDetails);
+                    setPaypalDetails(details.paypalDetails);
+                    setWalletDetails(details.walletDetails);
                   }}
                 />
                 <CustomDropdown
