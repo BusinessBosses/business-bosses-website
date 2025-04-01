@@ -94,11 +94,19 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
     Assets.shopplaceholder
   );
   const [country, setCountry] = React.useState("");
-  const [paymentSelections, setPaymentSelections] = React.useState<Record<string, boolean>>({});
+  const [paymentSelections, setPaymentSelections] = React.useState<
+    Record<string, boolean>
+  >({});
   const [isSubmit, setIsSubmit] = React.useState(false);
-  const [walletDetails, setWalletDetails] = React.useState<Record<string, string>>({});
-  const [paypalDetails, setPaypalDetails] = React.useState<Record<string, string>>({});
-  const [bankDetails, setBankDetails] = React.useState<Record<string, string>>({});
+  const [walletDetails, setWalletDetails] = React.useState<
+    Record<string, string>
+  >({});
+  const [paypalDetails, setPaypalDetails] = React.useState<
+    Record<string, string>
+  >({});
+  const [bankDetails, setBankDetails] = React.useState<Record<string, string>>(
+    {}
+  );
 
   const LPtheme = createTheme(getLPTheme(mode));
 
@@ -278,12 +286,9 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                   items={categories}
                   onChanged={(newValue) => setCategory(newValue ?? "")}
                 />
-                <CustomTextWidget
-                  caption={"Location"}
-                  iconName={"Assets.phone"}
-                />
+
                 <CountryDropdown
-                  classes="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-3"
+                  classes="bg-white outline-none border-none rounded-lg text-sm font-semibold block w-full p-3"
                   value={country ?? ""}
                   onChange={(val) => {
                     setCountry(val);
@@ -299,12 +304,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                     setWalletDetails(details.walletDetails);
                   }}
                 />
-                {/* <CustomDropdown
-                  caption={"Select Payment Method"}
-                  iconName={""}
-                  items={["Bank Transfer", "Credit Card", "PayPal"]}
-                  onChanged={(newValue) => setBankValue(newValue ?? "")}
-                /> */}
+
                 <CustomEditText
                   maxLength={300}
                   isPaymentField={true}
