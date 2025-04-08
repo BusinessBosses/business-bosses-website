@@ -30,7 +30,6 @@ interface Props {
   onTapButton?: () => void;
   partnerData: PartnerData | null;
   partnerDatatile: PartnerDatatile | null;
-
 }
 
 const ComputerTopNav = ({
@@ -88,24 +87,25 @@ const ComputerTopNav = ({
     }
   };
 
-
   const handleButtonClick = () => {
-    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    const confirmMessage =
+      "You need to sign in or create an account to be able to use this feature";
     if (window.confirm(confirmMessage)) {
-      navigate(RoutesPath.login)
+      navigate(RoutesPath.login);
     } else {
-
     }
   };
-
 
   const renderButton = (index: string) => {
     switch (index) {
       case "/":
         return (
           <button
-            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-              handleButtonClick : () => navigate(RoutesPath.createPost)}
+            onClick={
+              profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}`
+                ? handleButtonClick
+                : () => navigate(RoutesPath.createPost)
+            }
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -122,22 +122,23 @@ const ComputerTopNav = ({
       case "/communities":
         return (
           <button
-            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-              handleButtonClick : () => {
-                if (onTapButton) {
-                  if (currentRoute === "/communities") {
-                    navigate(RoutesPath.CreateBossup);
-                  } else if (currentRoute === "/communities/learning") {
-                    toast.error("You need to choose a category first ")
-
-                  } else if (currentRoute === "/communities/opportunities") {
-                    toast.error("You need to choose a category first ")
-
-                  } else if (currentRoute === "/forum") {
-
+            onClick={
+              profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}`
+                ? handleButtonClick
+                : () => {
+                    if (onTapButton) {
+                      if (currentRoute === "/communities") {
+                        navigate(RoutesPath.CreateBossup);
+                      } else if (currentRoute === "/communities/learning") {
+                        toast.error("You need to choose a category first ");
+                      } else if (
+                        currentRoute === "/communities/opportunities"
+                      ) {
+                        toast.error("You need to choose a category first ");
+                      } else if (currentRoute === "/forum") {
+                      }
+                    }
                   }
-                }
-              }
             }
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
@@ -147,8 +148,8 @@ const ComputerTopNav = ({
               {currentRoute === "/communities"
                 ? "Enter Challenge"
                 : currentRoute === "/communities/learning"
-                  ? "Start A Topic"
-                  : "Share opportunities"}
+                ? "Start A Topic"
+                : "Share opportunities"}
             </p>
 
             <BsPlusLg
@@ -162,8 +163,11 @@ const ComputerTopNav = ({
       case "/market":
         return (
           <button
-            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-              handleButtonClick : openPopup}
+            onClick={
+              profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}`
+                ? handleButtonClick
+                : openPopup
+            }
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -181,8 +185,11 @@ const ComputerTopNav = ({
       default:
         return (
           <button
-            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-              handleButtonClick : () => navigate(RoutesPath.createPost)}
+            onClick={
+              profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}`
+                ? handleButtonClick
+                : () => navigate(RoutesPath.createPost)
+            }
             className={`p-3 ${"bg-primary"} rounded-xl text-white flex items-center`}
             style={{ marginLeft: 100 }}
             key={index}
@@ -201,7 +208,10 @@ const ComputerTopNav = ({
 
   return (
     <div className="flex flex-grow justify-between computer-content">
-      <div className="flex justify-center" style={{ width: "58%", flexGrow: 0 }} >
+      <div
+        className="flex justify-center"
+        style={{ width: "58%", flexGrow: 0 }}
+      >
         <div
           className={`tab ${currentRoute === "/" ? "selected-tab" : ""}`}
           onClick={() => handleTabClick(0)}
@@ -209,13 +219,12 @@ const ComputerTopNav = ({
           <div className="flex flex-col items-center">
             <Assets.Home
               stroke={currentRoute === "/" ? primaryColor : strokeColor}
-              style={{ width: "25px", height: "22px" }}
             />
             <p
               className={
                 currentRoute === "/"
-                  ? "text-primary font-semibold text-base"
-                  : "text-[#232324] text-base"
+                  ? "text-primary font-semibold text-sm"
+                  : "text-[#232324] text-sm"
               }
             >
               Home
@@ -225,19 +234,35 @@ const ComputerTopNav = ({
         <div className="w-5"></div>
 
         <div
-          className={`tab ${currentRoute === "/communities" || currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" || currentRoute === "/forum" ? "selected-tab" : ""}`}
+          className={`tab ${
+            currentRoute === "/communities" ||
+            currentRoute === "/communities/learning" ||
+            currentRoute === "/communities/opportunities" ||
+            currentRoute === "/forum"
+              ? "selected-tab"
+              : ""
+          }`}
           onClick={() => handleTabClick(1)}
         >
           <div className="flex flex-col items-center">
             <Assets.BossupIcon
-              fill={currentRoute === "/communities" || currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" || currentRoute === "/forum" ? primaryColor : strokeColor}
-              style={{ width: "33px", height: "23px" }}
+              fill={
+                currentRoute === "/communities" ||
+                currentRoute === "/communities/learning" ||
+                currentRoute === "/communities/opportunities" ||
+                currentRoute === "/forum"
+                  ? primaryColor
+                  : strokeColor
+              }
             />
             <p
               className={
-                currentRoute === "/communities" || currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" || currentRoute === "/forum"
-                  ? "text-primary font-semibold text-base"
-                  : "text-[#232324] text-base"
+                currentRoute === "/communities" ||
+                currentRoute === "/communities/learning" ||
+                currentRoute === "/communities/opportunities" ||
+                currentRoute === "/forum"
+                  ? "text-primary font-semibold text-sm"
+                  : "text-[#232324] text-sm"
               }
             >
               Boss Up
@@ -257,8 +282,8 @@ const ComputerTopNav = ({
             <p
               className={
                 currentRoute === "/market"
-                  ? "text-primary font-semibold text-base"
-                  : "text-[#232324] text-base"
+                  ? "text-primary font-semibold text-sm"
+                  : "text-[#232324] text-sm"
               }
             >
               Marketplace
@@ -269,19 +294,20 @@ const ComputerTopNav = ({
 
         <div
           className={`tab ${currentRoute === "/chats" ? "selected-tab" : ""}`}
-          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            handleButtonClick : () => handleTabClick(3)}
+          onClick={
+            profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}`
+              ? handleButtonClick
+              : () => handleTabClick(3)
+          }
         >
           <div className="flex flex-col items-center relative">
             {currentRoute === "/chats" ? (
               <Assets.Activemessage
                 stroke={currentRoute === "/chats" ? primaryColor : strokeColor}
-                style={{ width: "24px", height: "24px" }}
               />
             ) : (
               <Assets.Messagenoback
                 stroke={currentRoute === "/chats" ? primaryColor : strokeColor}
-                style={{ width: "24px", height: "24px" }}
               />
             )}
 
@@ -291,8 +317,8 @@ const ComputerTopNav = ({
             <p
               className={
                 currentRoute === "/chats"
-                  ? "text-primary font-semibold text-base"
-                  : "text-[#232324] text-base"
+                  ? "text-primary font-semibold text-sm"
+                  : "text-[#232324] text-sm"
               }
             >
               Messages
@@ -302,9 +328,14 @@ const ComputerTopNav = ({
         <div className="w-5"></div>
 
         <div
-          className={`tab ${currentRoute === "/notifications" ? "selected-tab" : ""}`}
-          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-            handleButtonClick : () => handleTabClick(4)}
+          className={`tab ${
+            currentRoute === "/notifications" ? "selected-tab" : ""
+          }`}
+          onClick={
+            profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}`
+              ? handleButtonClick
+              : () => handleTabClick(4)
+          }
         >
           <div className="flex flex-col items-center relative">
             {currentRoute === "/notifications" ? (
@@ -321,8 +352,8 @@ const ComputerTopNav = ({
             <p
               className={
                 currentRoute === "/notifications"
-                  ? "text-primary font-semibold text-base"
-                  : "text-[#232324] text-base"
+                  ? "text-primary font-semibold text-sm"
+                  : "text-[#232324] text-sm"
               }
             >
               Notifications
@@ -330,7 +361,7 @@ const ComputerTopNav = ({
           </div>
         </div>
       </div>
-      <div className="pb-3 pl-5 mr-5 lg:mr-20 pr-0 mb-0" >
+      <div className="pb-3">
         {renderButton(currentRoute)}
         {isPopupOpen && (
           <div className="overlay">
@@ -343,8 +374,12 @@ const ComputerTopNav = ({
                         {" "}
                         {/* Wrapping div */}
                         <button
-                          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                            handleButtonClick : () => closePopup()}
+                          onClick={
+                            profile?.email ==
+                            `${process.env.REACT_APP_DUMMY_EMAIL}`
+                              ? handleButtonClick
+                              : () => closePopup()
+                          }
                           className="flex items-center mr-5"
                         >
                           <Assets.Backbutton />
@@ -353,9 +388,14 @@ const ComputerTopNav = ({
                       </div>
                       <div />
                     </div>
-                    <CreatePost partnerData={partnerData} partnerDatatile={partnerDatatile} />
+                    <CreatePost
+                      partnerData={partnerData}
+                      partnerDatatile={partnerDatatile}
+                    />
                   </div>
-                ) : currentRoute === "/communities" || currentRoute === "/communities/learning" || currentRoute === "/communities/opportunities" ? (
+                ) : currentRoute === "/communities" ||
+                  currentRoute === "/communities/learning" ||
+                  currentRoute === "/communities/opportunities" ? (
                   currentRoute === "/communities" ? (
                     <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
                       <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
@@ -363,8 +403,12 @@ const ComputerTopNav = ({
                           {" "}
                           {/* Wrapping div */}
                           <button
-                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                              handleButtonClick : () => closePopup()}
+                            onClick={
+                              profile?.email ==
+                              `${process.env.REACT_APP_DUMMY_EMAIL}`
+                                ? handleButtonClick
+                                : () => closePopup()
+                            }
                             className="flex items-center mr-5"
                           >
                             <Assets.Backbutton />
@@ -375,7 +419,10 @@ const ComputerTopNav = ({
                         </div>
                         <div />
                       </div>
-                      <CreateBossup partnerData={partnerData} partnerDatatile={partnerDatatile} />
+                      <CreateBossup
+                        partnerData={partnerData}
+                        partnerDatatile={partnerDatatile}
+                      />
                     </div>
                   ) : currentRoute === "/communities/learning" ? (
                     <div className="computer-only bg-white pb-5 px-4 mt-10 flex items-center justify-between">
@@ -384,8 +431,12 @@ const ComputerTopNav = ({
                           {" "}
                           {/* Wrapping div */}
                           <button
-                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                              handleButtonClick : () => closePopup()}
+                            onClick={
+                              profile?.email ==
+                              `${process.env.REACT_APP_DUMMY_EMAIL}`
+                                ? handleButtonClick
+                                : () => closePopup()
+                            }
                             className="flex items-center mr-5"
                           >
                             <Assets.Backbutton />
@@ -402,8 +453,12 @@ const ComputerTopNav = ({
                           {" "}
                           {/* Wrapping div */}
                           <button
-                            onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                              handleButtonClick : () => closePopup()}
+                            onClick={
+                              profile?.email ==
+                              `${process.env.REACT_APP_DUMMY_EMAIL}`
+                                ? handleButtonClick
+                                : () => closePopup()
+                            }
                             className="flex items-center mr-5"
                           >
                             <Assets.Backbutton />
@@ -423,8 +478,12 @@ const ComputerTopNav = ({
                         {" "}
                         {/* Wrapping div */}
                         <button
-                          onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                            handleButtonClick : () => closePopup()}
+                          onClick={
+                            profile?.email ==
+                            `${process.env.REACT_APP_DUMMY_EMAIL}`
+                              ? handleButtonClick
+                              : () => closePopup()
+                          }
                           className="flex items-center mr-5"
                         >
                           <Assets.Backbutton />
@@ -433,10 +492,13 @@ const ComputerTopNav = ({
                       </div>
                       <div />
                     </div>
-                    <SellTabs currentIndex={currentIndex} onChangeRoute={(index: number) => setCurrentIndex(index)}/>
+                    <SellTabs
+                      currentIndex={currentIndex}
+                      onChangeRoute={(index: number) => setCurrentIndex(index)}
+                    />
                     <div className="">
-                      {currentIndex === 0 ? (<CreateListing/>):null}
-                      {currentIndex === 1 ? (<CreateServiceListing/>):null}
+                      {currentIndex === 0 ? <CreateListing /> : null}
+                      {currentIndex === 1 ? <CreateServiceListing /> : null}
                     </div>
                   </div>
                 ) : null}
