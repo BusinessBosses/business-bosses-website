@@ -79,6 +79,12 @@ import LandingPageforPartners from "./pages/landingpage/LandingPageforPartners";
 import Expandedshop from "./pages/proscreens/biz-center/views/expandedshop";
 import ShopView from "./pages/proscreens/biz-center/views/shop";
 import SetupShop from "./pages/proscreens/setup/views/setup";
+import Dashboard from "./pages/proscreens/dashboard/dashboard";
+import Layout from "./pages/proscreens/biz-center/views/prolayout";
+import Setup from "./pages/proscreens/setup/views/setup";
+import Tasks from "./pages/proscreens/tasks/tasks";
+import Orders from "./pages/proscreens/orders/orders";
+import Customers from "./pages/proscreens/customers/customers";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -776,6 +782,17 @@ const App = () => {
             />
           }
         />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="tasks" element={<Tasks />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="customers" element={<Customers />} />
+          <Route
+            path="setup"
+            element={<Setup partnerData={null} partnerDatatile={null} />}
+          />
+        </Route>
       </Routes>
     </>
   );

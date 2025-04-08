@@ -123,6 +123,15 @@ import uploadicon  from "./icons/uploadicon.svg";
 import checkfilled  from "./icons/checkfilled.svg";
 import shopplaceholder  from "./icons/shopplaceholder.png";
 import Nexticonblack  from "./icons/nexticon_black.svg";
+import setupshop  from "./icons/setupshop.svg";
+import clients  from "./icons/clients.svg";
+import ordersinvoices  from "./icons/ordersinvoices.svg";
+import projects  from "./icons/projects.svg";
+import dashboard  from "./icons/dashboard.svg";
+import filterprosections  from "./icons/filterprosections.svg";
+
+
+
 
 const Assets = {
   MessageIcon,
@@ -250,5 +259,13 @@ const Assets = {
   checkfilled,
   shopplaceholder,
   Nexticonblack,
+  setupshop,
+  clients,
+  ordersinvoices,
+  projects,
+  dashboard,
+  filterprosections,
+
+
 };
 export default Assets;
