@@ -32,7 +32,6 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
   //   projectCount: 7,
   // };
 
-
   const orderStats = {
     pending: 5,
     paid: 10,
@@ -71,7 +70,6 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
     else if (filter === "Last 30 Days") dateFilter = "last_30_days";
 
     setSelectedDateFilter(dateFilter);
-   
   };
 
   if (loadingData) {
@@ -84,10 +82,8 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
 
   return (
     <div className="bg-white rounded-xl min-h-screen">
-      
-
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-4 gap-5 flex flex-col">
+      <div className="mx-auto px-4 py-4 gap-5 flex flex-col md:container">
         {/* Back Button (conditionally rendered) */}
         {!noBack && (
           <button
@@ -143,12 +139,20 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
           </div>
         </div>
 
-        {/* Dashboard Widgets */}
-        <OrdersWidget orderStats={orderStats} />
-        <FinancialAnalysisWidget shop={{ currency: "USD" }} shopStats={shopStats} />
+        <div className="flex flex-col md:flex-row gap-4 w-full h-full">
+          <div className="flex-1 h-full">
+            <OrdersWidget orderStats={orderStats} />
+          </div>
+          <div className="flex-1 h-full">
+            <FinancialAnalysisWidget
+              shop={{ currency: "USD" }}
+              shopStats={shopStats}
+            />
+          </div>
+        </div>
 
         {/* Info Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {titles.map((title, index) => (
             <InfoCard
               key={title}
@@ -169,7 +173,7 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
         </div>
 
         {/* Quick Actions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 px-2">
+        <div className="flex flex-row justify-between overflow-x-auto gap-2 px-2 mt-4 no-scrollbar">
           {quickActions.map((action, index) => (
             <QuickActionCard
               key={action}
@@ -177,17 +181,12 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
               value={index === 0 ? "42" : "0"} // Mock data
               color={index === 0 ? "black" : index === 1 ? "orange" : "purple"}
               assetLocation={
-                  index === 0
-                    ? Assets.plusIcon
-                    : index === 1
-                    ? Assets.addOrderIcon
-                    : Assets.addClientIcon
-                }
-                // onClick={() => {
-                //   if (index === 0) navigate("/add-listing");
-                //   else if (index === 1) navigate("/create-order");
-                //   else if (index === 2) navigate("/add-client");
-                // }}
+                index === 0
+                  ? Assets.plusIcon
+                  : index === 1
+                  ? Assets.addOrderIcon
+                  : Assets.addClientIcon
+              }
             />
           ))}
         </div>
