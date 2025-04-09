@@ -66,10 +66,7 @@ const AppSidebar: React.FC = () => {
         if (nav.subItems) {
           nav.subItems.forEach((subItem) => {
             if (isActive(subItem.path)) {
-              setOpenSubmenu({
-                type: menuType as "main" | "others",
-                index,
-              });
+              setOpenSubmenu({ type: menuType as "main" | "others", index });
               submenuMatched = true;
             }
           });
@@ -116,7 +113,7 @@ const AppSidebar: React.FC = () => {
               onClick={() => handleSubmenuToggle(index, menuType)}
               className={`flex items-center w-full px-3 py-2 rounded-lg group ${
                 openSubmenu?.type === menuType && openSubmenu?.index === index
-                  ? "bg-gray-100 text-gray-900"
+                  ? "bg-blue-200 text-blue-600 text-sm font-bold"
                   : "text-gray-600 hover:bg-gray-50"
               } ${
                 !isExpanded && !isHovered ? "justify-center" : "justify-between"
@@ -127,7 +124,7 @@ const AppSidebar: React.FC = () => {
                   className={`flex items-center justify-center w-6 h-6 ${
                     openSubmenu?.type === menuType &&
                     openSubmenu?.index === index
-                      ? "text-brand-500"
+                      ? "text-blue-600"
                       : "text-gray-500"
                   }`}
                 >
@@ -137,7 +134,6 @@ const AppSidebar: React.FC = () => {
                   <span className="ml-3 text-sm font-medium">{nav.name}</span>
                 )}
               </div>
-             
             </button>
           ) : (
             nav.path && (
@@ -145,7 +141,7 @@ const AppSidebar: React.FC = () => {
                 to={nav.path}
                 className={`flex items-center w-full px-3 py-2 rounded-lg group ${
                   isActive(nav.path)
-                    ? "bg-gray-100 text-gray-900"
+                    ? "bg-gray-800 text-white text-lg font-bold"
                     : "text-gray-600 hover:bg-gray-50"
                 } ${
                   !isExpanded && !isHovered ? "justify-center" : "justify-start"
@@ -153,7 +149,7 @@ const AppSidebar: React.FC = () => {
               >
                 <span
                   className={`flex items-center justify-center w-6 h-6 ${
-                    isActive(nav.path) ? "text-brand-500" : "text-gray-500"
+                    isActive(nav.path) ? "text-blue-600" : "text-gray-500"
                   }`}
                 >
                   {nav.icon}
@@ -184,7 +180,7 @@ const AppSidebar: React.FC = () => {
                       to={subItem.path}
                       className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg ${
                         isActive(subItem.path)
-                          ? "bg-brand-50 text-brand-600"
+                          ? "bg-blue-200 text-blue-600"
                           : "text-gray-600 hover:bg-gray-50"
                       }`}
                     >
@@ -240,11 +236,7 @@ const AppSidebar: React.FC = () => {
                     : "justify-start"
                 }`}
               >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
-                ) : (
-                  null
-                )}
+                {isExpanded || isHovered || isMobileOpen ? "Menu" : null}
               </h2>
               {renderMenuItems(navItems, "main")}
             </div>
