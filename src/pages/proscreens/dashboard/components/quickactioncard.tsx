@@ -28,7 +28,7 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
       : {};
 
   return (
-    <div className="flex flex-col items-center">
+    <button className="flex flex-col items-center">
       <div
         className={`w-16 h-16 rounded-full flex items-center justify-center ${
           colorClasses[color] || ""
@@ -48,7 +48,7 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
         />
       </div>
       <p className="mt-2 text-xs font-bold text-center">{cardName}</p>
-    </div>
+    </button>
   );
 };
 

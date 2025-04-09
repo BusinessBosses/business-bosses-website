@@ -198,12 +198,6 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
   return (
     <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
       <CssBaseline />
-      <div className="hidden md:block">
-        <ComputerHeader
-          partnerData={partnerData}
-          partnerDatatile={partnerDatatile}
-        />
-      </div>
 
       <div>
         <div className="bg-backgroundcolor items-center justify-center">
@@ -341,9 +335,6 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
           </Container>
         </div>
       </div>
-      <Box sx={{ bgcolor: "background.default" }}>
-        <Footer />
-      </Box>
     </ThemeProvider>
   );
 };

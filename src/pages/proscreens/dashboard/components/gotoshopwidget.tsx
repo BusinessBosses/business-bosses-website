@@ -27,7 +27,7 @@ const GotoshopWidget: React.FC<GotoshopWidgetProps> = () => {
       >
         <div className="flex items-center flex-1">
           {/* Shop Image */}
-          <div className="relative h-9 w-9 rounded-lg overflow-hidden">
+          <div className="relative h-10 w-10 rounded-lg overflow-hidden">
             {shop?.image ? (
               <img
                 src={shop.image}

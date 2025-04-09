@@ -129,6 +129,9 @@ import ordersinvoices  from "./icons/ordersinvoices.svg";
 import projects  from "./icons/projects.svg";
 import dashboard  from "./icons/dashboard.svg";
 import filterprosections  from "./icons/filterprosections.svg";
+import plusIcon  from "./icons/plus.svg";
+import addOrderIcon  from "./icons/addorder.svg";
+import addClientIcon  from "./icons/addclient.svg";
 
 
 
@@ -265,6 +268,11 @@ const Assets = {
   projects,
   dashboard,
   filterprosections,
+  plusIcon,
+  addOrderIcon,
+  addClientIcon,
+
+
 
 
 };
