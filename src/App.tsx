@@ -272,6 +272,10 @@ const App = () => {
       setLoading(false);
       login();
     }
+  }, []);
+
+  // Runs on route changes
+  useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
   }, [location]);
 

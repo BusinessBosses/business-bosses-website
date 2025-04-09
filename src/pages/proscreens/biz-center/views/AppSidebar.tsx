@@ -14,29 +14,29 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <Assets.Activemessage />,
+    icon: <Assets.dashboardicon />,
     name: "Dashboard",
-    path: "/calendar",
+    path: "/dashboard",
   },
   {
-    icon: <Assets.Activemessage />,
+    icon: <Assets.projects />,
     name: "Tasks",
-    path: "/calendar",
+    path: "/tasks",
   },
   {
-    icon: <Assets.Activemessage />,
+    icon: <Assets.ordersinvoices />,
     name: "Orders",
-    path: "/calendar",
+    path: "/orders",
   },
   {
-    icon: <Assets.Activemessage />,
+    icon: <Assets.clients />,
     name: "Customers",
-    path: "/calendar",
+    path: "/customers",
   },
   {
-    icon: <Assets.Activemessage />,
+    icon: <Assets.setupshop />,
     name: "Setup",
-    path: "/calendar",
+    path: "/setup",
   },
 ];
 
