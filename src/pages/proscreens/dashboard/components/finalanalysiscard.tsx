@@ -31,9 +31,9 @@ const FinancialAnalysisWidget: React.FC<FinancialAnalysisProps> = ({
   }
 
   return (
-    <div className="pb-4">
-      <div className="w-full p-4 bg-white rounded-2xl border-2 border-backgroundcolor cursor-pointer">
-        <div className="flex flex-col">
+    <div className="h-full">
+      <div className="w-full h-full p-4 bg-white rounded-2xl border-2 border-backgroundcolor cursor-pointer">
+        <div className="flex flex-col h-full">
           <div className="flex justify-between items-center">
             <h2 className="text-base font-bold">Financial Analysis</h2>
           </div>

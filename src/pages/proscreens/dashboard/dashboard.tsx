@@ -139,11 +139,11 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 w-full h-full">
-          <div className="flex-1 h-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full">
+          <div className="h-full">
             <OrdersWidget orderStats={orderStats} />
           </div>
-          <div className="flex-1 h-full">
+          <div className="h-full">
             <FinancialAnalysisWidget
               shop={{ currency: "USD" }}
               shopStats={shopStats}

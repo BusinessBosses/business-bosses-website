@@ -28,7 +28,7 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
       : {};
 
   return (
-    <button className="flex flex-col items-center">
+    <button className="flex flex-col items-center sm:flex-row sm:items-center sm:space-x-4">
       <div
         className={`w-16 h-16 rounded-full flex items-center justify-center ${
           colorClasses[color] || ""
