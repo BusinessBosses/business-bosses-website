@@ -3,6 +3,8 @@ import { useSidebar } from "../../../../context/SidebarContext";
 import { Link } from "react-router-dom";
 import UserDropdown from "./UserDropdown";
 import GotoshopWidget from "../../dashboard/components/gotoshopwidget";
+import NotificationDropdown from "./NotificationDropdown";
+import MessagesButton from "./MessagesDropdown";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -107,6 +109,11 @@ const AppHeader: React.FC = () => {
             isApplicationMenuOpen ? "flex" : "hidden"
           } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
         >
+          <div className="flex gap-1">
+            <MessagesButton hasUnreadMessages={false} />
+            <NotificationDropdown />
+          </div>
+
           <UserDropdown />
         </div>
       </div>

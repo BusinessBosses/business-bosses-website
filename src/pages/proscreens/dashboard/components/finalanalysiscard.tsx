@@ -42,14 +42,14 @@ const FinancialAnalysisWidget: React.FC<FinancialAnalysisProps> = ({
             <div className="border rounded-lg overflow-hidden">
               <table className="w-full rounded-lg ">
                 <thead>
-                  <tr className="bg-backgroundcolor border-b border-backgroundcolor">
+                    <tr className="bg-backgroundcolor border-b border-backgroundcolor text-gray-700">
                     <th className="p-2 text-sm text-center font-bold border-r border-backgroundcolor">
                       Sales from All Orders
                     </th>
                     <th className="p-2 text-sm text-center font-bold">
                       Expenses from Tasks
                     </th>
-                  </tr>
+                    </tr>
                 </thead>
                 <tbody>
                   <tr>

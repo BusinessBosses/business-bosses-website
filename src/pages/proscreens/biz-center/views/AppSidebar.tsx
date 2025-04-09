@@ -137,16 +137,7 @@ const AppSidebar: React.FC = () => {
                   <span className="ml-3 text-sm font-medium">{nav.name}</span>
                 )}
               </div>
-              {(isExpanded || isHovered || isMobileOpen) && (
-                <Assets.Activemessage
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    openSubmenu?.type === menuType &&
-                    openSubmenu?.index === index
-                      ? "rotate-180 text-brand-500"
-                      : "text-gray-400"
-                  }`}
-                />
-              )}
+             
             </button>
           ) : (
             nav.path && (
@@ -238,12 +229,12 @@ const AppSidebar: React.FC = () => {
       onMouseEnter={() => !isExpanded && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex flex-col overflow-y-auto pt-5 duration-300 ease-linear no-scrollbar">
-        <nav className="mb-6">
+      <div className="flex flex-col w-full overflow-y-auto pt-5 duration-300 ease-linear no-scrollbar">
+        <nav className="mb-6 w-full">
           <div className="flex flex-row gap-4">
-            <div>
+            <div className="w-full">
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
+                className={`mb-4 w-full text-xs uppercase flex leading-[20px] text-gray-400 ${
                   !isExpanded && !isHovered
                     ? "lg:justify-center"
                     : "justify-start"
@@ -252,7 +243,7 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Menu"
                 ) : (
-                  <Assets.Activemessage />
+                  null
                 )}
               </h2>
               {renderMenuItems(navItems, "main")}

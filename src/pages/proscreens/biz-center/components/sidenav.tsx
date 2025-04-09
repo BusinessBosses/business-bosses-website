@@ -63,13 +63,22 @@ export default function Sidenav({ isOpen, onClose }: SidenavProps) {
             onClick={onClose}
             >
             {item.icon && (
-              <img
-                src={item.icon}
-                alt={`${item.label} icon`}
-                width={20}
-                height={20}
-                className="flex-shrink-0"
-              />
+              typeof item.icon === "string" ? (
+                <img
+                  src={item.icon}
+                  alt={`${item.label} icon`}
+                  width={20}
+                  height={20}
+                  className="flex-shrink-0"
+                />
+              ) : (
+                <item.icon
+                  width={20}
+                  height={20}
+                  className="flex-shrink-0"
+                  aria-label={`${item.label} icon`}
+                />
+              )
             )}
             <span className="ml-3 text-sm font-medium">{item.label}</span>
             </NavLink>

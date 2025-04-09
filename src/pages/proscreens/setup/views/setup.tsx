@@ -200,7 +200,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
       <CssBaseline />
 
       <div>
-        <div className="bg-backgroundcolor items-center justify-center">
+        <div className="bg-white rounded-xl items-center justify-center">
           <Container maxWidth="lg">
             <div className="flex flex-col md:flex-row items-center justify-center w-full h-[calc(100vh-80px)]">
               <div className="w-full pt-5 space-y items-start justify-start md:text-left text-center">
@@ -217,7 +217,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                 </div>
               </div>
 
-              <div className="flex-col w-full h-full py-5 space-y-4 overflow-scroll">
+              <div className="flex-col w-full h-full py-5 space-y-4 overflow-scroll no-scrollbar">
                 <input
                   type="file"
                   id="image-upload"
