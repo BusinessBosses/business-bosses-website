@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Shop } from "../../../common/interfaces/Shop";
 import Assets from "../../../assets";
 import OrdersWidget from "./components/orderscard";
-import FinancialAnalysisWidget from "./components/finalanalysiscard";
 import GotoshopWidget from "./components/gotoshopwidget";
 import NotificationButton from "./components/notificationbutton";
 import InfoCard from "./components/infocard";
 import QuickActionCard from "./components/quickactioncard";
+import serviceApi from "../../../services/serviceApi";
+import ShopController from "../biz-center/controllers/ShopController";
+import { useAppSelector } from "../../../redux/store/store";
 
 const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
   const navigate = useNavigate();
@@ -15,22 +16,10 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
   const [selectedDateFilter, setSelectedDateFilter] = useState("all_time");
   const [loadingData, setLoadingData] = useState(true);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
-
-  // Mock data - replace with your actual data fetching logic
-  const orderStats: OrderStats = {
-    pending: 5,
-    paid: 10,
-    cancelled: 2,
-    totalOrders: 17,
-  };
-
-  const shopStats: ShopStats = {
-    totalAmount: 5000,
-    totalExpenses: 2000,
-    clientCount: 42,
-    views: 128,
-    projectCount: 7,
-  };
+  const [orderStats, setOrderStats] = useState({pending: 0, paid: 0, cancelled: 0, totalOrders: 0});
+  const [shopStats, setShopStats] = useState({totalAmount: 0, totalExpenses: 0, clientCount: 0, views: 0, projectCount: 0});
+  const profile = useAppSelector((state) => state.user);
+  const shop = useAppSelector((state) => state.shop.shopInfo);
 
   // const currentShop: Shop = { currency: "USD" || "USD" };
 
@@ -38,12 +27,37 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
   const quickActions = ["Add Listing", "Create Orders", "Add Customers"];
 
   useEffect(() => {
-    // Simulate data loading
-    const timer = setTimeout(() => {
-      setLoadingData(false);
-    }, 1000);
+    // Define an async function to simulate fetching stats data
+    const loadData = async () => {
+      // Simulate an API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      const statistics = await ShopController.loadStatistics(shop!.id, profile.profile!.uid);
+      console.log(statistics);
+      
 
-    return () => clearTimeout(timer);
+      // Simulated fetched data for order and shop statistics
+      const fetchedOrderStats = {
+        pending: Number(statistics.orderData.data.pending),
+        paid: Number(statistics.orderData.data.paid),
+        cancelled: Number(statistics.orderData.data.cancelled),
+        totalOrders: Number(statistics.orderData.data.totalOrders),
+      };
+      const fetchedShopStats = {
+        totalAmount: Number(statistics.shopData.data.totalAmount),
+        totalExpenses: Number(statistics.shopData.data.totalExpenses),
+        clientCount: Number(statistics.shopData.data.clientCount),
+        views: Number(statistics.shopData.data.views),
+        projectCount: Number(statistics.shopData.data.projectCount),
+      };
+
+      // Set the state values with the fetched data
+      setOrderStats(fetchedOrderStats);
+      setShopStats(fetchedShopStats);
+      setLoadingData(false);
+    };
+
+    loadData();
   }, []);
 
   const handleFilterSelect = (filter: string) => {

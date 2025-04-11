@@ -13,27 +13,27 @@ export default function Sidenav({ isOpen, onClose }: SidenavProps) {
     {
       label: "Dashboard",
       icon: Assets.dashboard,
-      href: "/dashboard",
+      href: "/pro/dashboard",
     },
     {
       label: "Tasks",
       icon: Assets.projects,
-      href: "/tasks",
+      href: "/pro/tasks",
     },
     {
       label: "Orders",
       icon: Assets.ordersinvoices,
-      href: "/orders",
+      href: "/pro/orders",
     },
     {
       label: "Customers",
       icon: Assets.clients,
-      href: "/customers",
+      href: "/pro/customers",
     },
     {
       label: "Setup",
       icon: Assets.setupshop,
-      href: "/setup",
+      href: "/setupshop",
     },
   ];
 

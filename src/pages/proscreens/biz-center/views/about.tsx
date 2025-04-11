@@ -80,9 +80,9 @@ const ContactInformation: React.FC<ContactInformationProps> = ({ shop }) => {
             </a>
           )}
           {/* LinkedIn */}
-          {shop?.linkedin && (
+          {shop?.linkedIn && (
             <a
-              href={buildSocialLink("https://linkedin.com/in/", shop.linkedin)}
+              href={buildSocialLink("https://linkedin.com/in/", shop.linkedIn)}
               aria-label="LinkedIn"
               className="p-3 bg-gray-200 rounded-full hover:bg-gray-200/75 transition"
               target="_blank"
