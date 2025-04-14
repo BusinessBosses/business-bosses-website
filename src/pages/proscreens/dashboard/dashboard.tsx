@@ -208,7 +208,7 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
                 //   else if (index === 2) navigate("/add-client");
                 // }}
             />
-          ))}
+          ))} 
         </div>
       </div>
     </div>
