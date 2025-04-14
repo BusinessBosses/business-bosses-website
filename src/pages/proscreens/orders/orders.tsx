@@ -7,6 +7,7 @@ import QuickActionCard from "../dashboard/components/quickactioncard";
 import GotoshopWidget from "../dashboard/components/gotoshopwidget";
 import NotificationButton from "../dashboard/components/notificationbutton";
 import Assets from "../../../assets";
+import { useAppSelector } from "../../../redux/store/store";
 
 type OrderStats = {
   pending: number;
@@ -54,6 +55,7 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
 
   const titles = ["Customers", "Visitors", "To-do tasks"];
   const quickActions = ["Add Listing", "Create Orders", "Add Customers"];
+    const shop = useAppSelector((state) => state.shop.shopInfo);
 
   useEffect(() => {
     // Simulate data loading
@@ -91,7 +93,7 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
       {/* App Bar */}
       <div className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <GotoshopWidget />
+          <GotoshopWidget shop={shop!} />
           <div className="flex items-center space-x-3">
             <button
               onClick={() => navigate("/chat")}

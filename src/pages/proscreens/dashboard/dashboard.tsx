@@ -87,7 +87,7 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
       {/* App Bar */}
       <div className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <GotoshopWidget />
+          <GotoshopWidget shop={shop!} />
           <div className="flex items-center space-x-3">
             <button
               onClick={() => navigate("/chat")}

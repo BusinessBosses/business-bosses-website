@@ -87,6 +87,7 @@ import Orders from "./pages/proscreens/orders/orders";
 import Customers from "./pages/proscreens/customers/customers";
 import ShopController from "./pages/proscreens/biz-center/controllers/ShopController";
 import { setShopInfo } from "./redux/slices/ShopSlice";
+import MyShop from "./pages/proscreens/biz-center/views/myShop";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -798,6 +799,7 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="tasks" element={<Tasks />} />
+          <Route path="my-shop" element={<MyShop />} />
           <Route path="orders" element={<Orders />} />
           <Route path="customers" element={<Customers />} />
           <Route
