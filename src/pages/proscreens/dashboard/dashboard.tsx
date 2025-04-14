@@ -194,18 +194,19 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
               cardName={action}
               value={index === 0 ? "42" : "0"} // Mock data
               color={index === 0 ? "black" : index === 1 ? "orange" : "purple"}
-              assetLocation={""} //   assetLocation={
+              assetLocation={""}    
+              // assetLocation={
               //     index === 0
               //       ? Assets.plusIcon
               //       : index === 1
               //       ? Assets.addOrderIcon
               //       : Assets.addClientIcon
               //   }
-              //   onClick={() => {
-              //     if (index === 0) navigate("/add-listing");
-              //     else if (index === 1) navigate("/create-order");
-              //     else if (index === 2) navigate("/add-client");
-              //   }}
+                // onClick={() => {
+                //   if (index === 0) navigate("/add-listing");
+                //   else if (index === 1) navigate("/create-order");
+                //   else if (index === 2) navigate("/add-client");
+                // }}
             />
           ))}
         </div>
