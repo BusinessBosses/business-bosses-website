@@ -4,6 +4,7 @@ import SidebarWidget from "./SidebarWidget";
 import { useSidebar } from "../../../../context/SidebarContext";
 import Assets from "../../../../assets";
 import { Link } from "react-router-dom";
+import { FiCheckSquare, FiGrid, FiSettings, FiShoppingBag, FiUsers } from "react-icons/fi";
 
 type NavItem = {
   name: string;
@@ -14,27 +15,27 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <Assets.dashboardicon />,
+    icon: <FiGrid size={20} />,
     name: "Dashboard",
     path: "/dashboard",
   },
   {
-    icon: <Assets.projects />,
+    icon: <FiCheckSquare size={20} />,
     name: "Tasks",
     path: "/tasks",
   },
   {
-    icon: <Assets.ordersinvoices />,
+    icon: <FiShoppingBag size={20} />,
     name: "Orders",
     path: "/orders",
   },
   {
-    icon: <Assets.clients />,
+    icon: <FiUsers size={20} />,
     name: "Customers",
     path: "/customers",
   },
   {
-    icon: <Assets.setupshop />,
+    icon: <FiSettings size={20} />,
     name: "Setup",
     path: "/setup",
   },
@@ -113,7 +114,7 @@ const AppSidebar: React.FC = () => {
               onClick={() => handleSubmenuToggle(index, menuType)}
               className={`flex items-center w-full px-3 py-2 rounded-lg group ${
                 openSubmenu?.type === menuType && openSubmenu?.index === index
-                  ? "bg-blue-200 text-blue-600 text-sm font-bold"
+                  ? "bg-blue-200 text-white text-sm font-bold"
                   : "text-gray-600 hover:bg-gray-50"
               } ${
                 !isExpanded && !isHovered ? "justify-center" : "justify-between"
@@ -124,7 +125,7 @@ const AppSidebar: React.FC = () => {
                   className={`flex items-center justify-center w-6 h-6 ${
                     openSubmenu?.type === menuType &&
                     openSubmenu?.index === index
-                      ? "text-blue-600"
+                      ? "text-white"
                       : "text-gray-500"
                   }`}
                 >
@@ -149,7 +150,7 @@ const AppSidebar: React.FC = () => {
               >
                 <span
                   className={`flex items-center justify-center w-6 h-6 ${
-                    isActive(nav.path) ? "text-blue-600" : "text-gray-500"
+                    isActive(nav.path) ? "text-white" : "text-gray-500"
                   }`}
                 >
                   {nav.icon}
