@@ -41,6 +41,8 @@ type CustomEditTextProps = {
   // Currency field
   currencyValue?: string;
   currencyOnChange?: (value: string) => void;
+  // New border prop
+  border?: string;
 };
 
 const CustomEditText: React.FC<CustomEditTextProps> = ({
@@ -81,6 +83,8 @@ const CustomEditText: React.FC<CustomEditTextProps> = ({
   // Currency
   currencyValue = "USD",
   currencyOnChange,
+  // New border prop
+  border = "border-none",
 }) => {
   const [error, setError] = useState<string | undefined>();
 
@@ -210,7 +214,10 @@ const CustomEditText: React.FC<CustomEditTextProps> = ({
     : { paddingLeft: padding, paddingRight: padding };
 
   return (
-    <div className={`${isPS ? "" : "px-4"}`} style={paddingStyle}>
+    <div
+      className={`${isPS ? "" : "px-4"} ${border}`}
+      style={paddingStyle}
+    >
       <div className={`rounded-lg ${backgroundColor} p-4`}>
         {isOrder ? (
           <div className="flex items-center justify-between">
