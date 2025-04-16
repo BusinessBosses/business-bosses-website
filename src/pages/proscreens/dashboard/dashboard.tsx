@@ -9,6 +9,7 @@ import QuickActionCard from "./components/quickactioncard";
 import serviceApi from "../../../services/serviceApi";
 import ShopController from "../biz-center/controllers/ShopController";
 import { useAppSelector } from "../../../redux/store/store";
+import FinancialAnalysisWidget from "./components/finalanalysiscard";
 
 const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
   const navigate = useNavigate();
@@ -20,8 +21,6 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
   const [shopStats, setShopStats] = useState({totalAmount: 0, totalExpenses: 0, clientCount: 0, views: 0, projectCount: 0});
   const profile = useAppSelector((state) => state.user);
   const shop = useAppSelector((state) => state.shop.shopInfo);
-
-  // const currentShop: Shop = { currency: "USD" || "USD" };
 
   const titles = ["Customers", "Visitors", "To-do tasks"];
   const quickActions = ["Add Listing", "Create Orders", "Add Customers"];
@@ -71,7 +70,6 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
     else if (filter === "Last 30 Days") dateFilter = "last_30_days";
 
     setSelectedDateFilter(dateFilter);
-    // Here you would typically call your data filtering function
   };
 
   if (loadingData) {
@@ -105,7 +103,7 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-4">
+      <div className="mx-auto px-4 py-4 gap-5 flex flex-col md:container">
         {/* Back Button (conditionally rendered) */}
         {!noBack && (
           <button
@@ -121,23 +119,23 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
           <div className="relative">
             <button
               onClick={() => setShowFilterMenu(!showFilterMenu)}
-              className="bg-white px-4 py-2 rounded-lg flex items-center shadow-sm"
+              className="bg-white border-backgroundcolor border px-4 py-2 rounded-lg flex items-center shadow-sm"
             >
               <img
                 src={Assets.filterprosections}
                 alt="Filter"
-                className="w-5 h-5 mr-2"
+                className="w-4 h-4 mr-2"
               />
               <span className="text-sm">{selectedFilterItem}</span>
               <img
                 src={Assets.dropdown}
                 alt="Dropdown"
-                className="w-5 h-5 ml-2"
+                className="w-2.5 h-2.5 ml-2"
               />
             </button>
 
             {showFilterMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10 py-1">
+              <div className="absolute right-0 mt-2 w-48 bg-white  rounded-lg shadow-lg z-0 py-1">
                 <div className="px-4 py-2 font-bold border-b">
                   Filter Data By
                 </div>
@@ -161,12 +159,20 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
           </div>
         </div>
 
-        {/* Dashboard Widgets */}
-        <OrdersWidget orderStats={orderStats} />
-        {/* <FinancialAnalysisWidget shop={currentShop} shopStats={shopStats} /> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full">
+          <div className="h-full">
+            <OrdersWidget orderStats={orderStats} />
+          </div>
+          <div className="h-full">
+            <FinancialAnalysisWidget
+              shop={{ currency: "USD" }}
+              shopStats={shopStats}
+            />
+          </div>
+        </div>
 
         {/* Info Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 px-2">
+        <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {titles.map((title, index) => (
             <InfoCard
               key={title}
@@ -187,26 +193,20 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
         </div>
 
         {/* Quick Actions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 px-2">
+        <div className="flex flex-row justify-between overflow-x-auto gap-2 px-2 mt-4 no-scrollbar">
           {quickActions.map((action, index) => (
             <QuickActionCard
               key={action}
               cardName={action}
               value={index === 0 ? "42" : "0"} // Mock data
               color={index === 0 ? "black" : index === 1 ? "orange" : "purple"}
-              assetLocation={""}    
-              // assetLocation={
-              //     index === 0
-              //       ? Assets.plusIcon
-              //       : index === 1
-              //       ? Assets.addOrderIcon
-              //       : Assets.addClientIcon
-              //   }
-                // onClick={() => {
-                //   if (index === 0) navigate("/add-listing");
-                //   else if (index === 1) navigate("/create-order");
-                //   else if (index === 2) navigate("/add-client");
-                // }}
+              assetLocation={
+                index === 0
+                  ? Assets.plusIcon
+                  : index === 1
+                  ? Assets.addOrderIcon
+                  : Assets.addClientIcon
+              }
             />
           ))} 
         </div>

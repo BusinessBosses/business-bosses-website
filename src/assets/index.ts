@@ -68,7 +68,7 @@ import { ReactComponent as Topicsicon } from "./icons/topics.svg";
 import { ReactComponent as Inviteicon } from "./icons/invite.svg";
 import { ReactComponent as Membersicon } from "./icons/members.svg";
 import { ReactComponent as Linkicon } from "./icons/link.svg";
-import dashboardicon from "./icons/dashboard.svg";
+import { ReactComponent as dashboardicon } from "./icons/dashboard.svg";
 import timelapseicon from "./icons/timelapse.svg";
 import BossUpAvatar from "./icons/bb_avatar.jpg";
 import appmockup from "./icons/appmockup.png";
@@ -123,12 +123,15 @@ import uploadicon  from "./icons/uploadicon.svg";
 import checkfilled  from "./icons/checkfilled.svg";
 import shopplaceholder  from "./icons/shopplaceholder.png";
 import Nexticonblack  from "./icons/nexticon_black.svg";
-import setupshop  from "./icons/setupshop.svg";
-import clients  from "./icons/clients.svg";
-import ordersinvoices  from "./icons/ordersinvoices.svg";
-import projects  from "./icons/projects.svg";
+import { ReactComponent as setupshop } from "./icons/setupshop.svg";
+import { ReactComponent as clients } from "./icons/clients.svg";
+import { ReactComponent as ordersinvoices } from "./icons/ordersinvoices.svg";
+import { ReactComponent as projects } from "./icons/projects.svg";
 import dashboard  from "./icons/dashboard.svg";
 import filterprosections  from "./icons/filterprosections.svg";
+import plusIcon  from "./icons/plus.svg";
+import addOrderIcon  from "./icons/addorder.svg";
+import addClientIcon  from "./icons/addclient.svg";
 
 
 
@@ -265,6 +268,12 @@ const Assets = {
   projects,
   dashboard,
   filterprosections,
+  plusIcon,
+  addOrderIcon,
+  addClientIcon,
+
+
+
 
 
 };

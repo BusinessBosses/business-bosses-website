@@ -27,7 +27,7 @@ const OrdersWidget = ({ orderStats }: { orderStats: OrderStats }) => {
 
   return (
     <div
-      className="p-4 mx-4 my-4 bg-white rounded-2xl shadow-sm cursor-pointer"
+      className="p-4 bg-white rounded-2xl border-2 border-backgroundcolor cursor-pointer"
       onClick={navigateToOrders}
     >
       <div className="flex flex-col">
@@ -49,7 +49,7 @@ const OrdersWidget = ({ orderStats }: { orderStats: OrderStats }) => {
             <span className="text-xs font-bold text-gray-600 mr-1">
               View All Orders {orderStats?.totalOrders || 0}
             </span>
-            <Assets.Nexticon className="w-1 h-1 text-gray-600" />
+            <Assets.Nexticon className="w-2 h-2 text-gray-600" />
           </div>
         </div>
 
