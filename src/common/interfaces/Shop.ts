@@ -14,6 +14,7 @@ export interface Shop {
   likes?: string[]; // no equivalent field in the Dart class
   coins?: string[]; // no equivalent field in the Dart class
   views: number; // maps to views
+  imageType?: string;
   discount?: string; // no equivalent field in the Dart class
   isProduct: boolean; // inferred from the use case; no explicit mapping
   name?: string; // maps to name
@@ -25,7 +26,7 @@ export interface Shop {
   plan?: string; // maps to plan
   facebook?: string; // maps to facebook
   twitter?: string; // maps to twitter
-  linkedin?: string; // maps to linkedin
+  linkedIn?: string; // maps to linkedin
   instagram?: string; // maps to instagram
   url?: string; // maps to url
   createdAt?: number; // maps to createdAt (DateTime converted to a timestamp)

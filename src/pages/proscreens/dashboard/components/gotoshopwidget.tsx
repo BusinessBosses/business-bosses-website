@@ -1,21 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Shop } from "../../../../common/interfaces/Shop";
 
 
 interface GotoshopWidgetProps {
-  // Add any props if needed
+  shop: Shop,
 }
 
-const GotoshopWidget: React.FC<GotoshopWidgetProps> = () => {
-  const shop = {
-    image: null, // Replace with actual image URL or null if no image
-    name: "Default Shop Name", // Replace with actual shop name
-  };
+const GotoshopWidget: React.FC<GotoshopWidgetProps> = ({ shop }) => {
   const navigate = useNavigate();
- 
 
   const handleShopClick = () => {
-    navigate("/shop"); 
+    navigate("/pro/my-shop"); 
   };
 
   return (

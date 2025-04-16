@@ -85,12 +85,16 @@ import Setup from "./pages/proscreens/setup/views/setup";
 import Tasks from "./pages/proscreens/tasks/tasks";
 import Orders from "./pages/proscreens/orders/orders";
 import Customers from "./pages/proscreens/customers/customers";
+import ShopController from "./pages/proscreens/biz-center/controllers/ShopController";
+import { setShopInfo } from "./redux/slices/ShopSlice";
+import MyShop from "./pages/proscreens/biz-center/views/myShop";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
   const market = useAppSelector((state) => state.market);
+  const user = useAppSelector((state) => state.user);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [partnerData, setPartnerData] = useState<PartnerData | null>(null);
@@ -189,6 +193,14 @@ const App = () => {
     }
   };
 
+  const fetchUserShop = async (userId: string) => {
+    const response = await ShopController.fetchUserShop(userId);
+    console.log(response);
+    if (response.success && response.data.rows && response.data.rows.length > 0) {
+      dispatch(setShopInfo(response.data.rows[0]));
+    }
+  };
+
   const fetchPartnerDatatile = async () => {
     try {
       const response = await axios.get(
@@ -247,6 +259,7 @@ const App = () => {
           interests: response.data.interests,
         })
       );
+      fetchUserShop(response.data.user.uid);
       dispatch(saveChatsToState(response.data.chats));
       dispatch(addPostToState(processedPosts));
     } else {
@@ -786,10 +799,11 @@ const App = () => {
             />
           }
         />
-        <Route path="/" element={<Layout />}>
+        <Route path="/pro" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="tasks" element={<Tasks />} />
+          <Route path="my-shop" element={<MyShop />} />
           <Route path="orders" element={<Orders />} />
           <Route path="customers" element={<Customers />} />
           <Route

@@ -17,22 +17,22 @@ const navItems: NavItem[] = [
   {
     icon: <FiGrid size={20} />,
     name: "Dashboard",
-    path: "/dashboard",
+    path: "/pro/dashboard",
   },
   {
     icon: <FiCheckSquare size={20} />,
     name: "Tasks",
-    path: "/tasks",
+    path: "/pro/tasks",
   },
   {
     icon: <FiShoppingBag size={20} />,
     name: "Orders",
-    path: "/orders",
+    path: "/pro/orders",
   },
   {
     icon: <FiUsers size={20} />,
     name: "Customers",
-    path: "/customers",
+    path: "/pro/customers",
   },
   {
     icon: <FiSettings size={20} />,

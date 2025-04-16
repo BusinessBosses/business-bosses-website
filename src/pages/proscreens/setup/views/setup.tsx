@@ -24,6 +24,11 @@ import { PartnerDatatile } from "../../../../common/interfaces/partnerdatatile";
 import ComputerHeader from "../../../home/views/components/ComputerHeader";
 import { CountryDropdown } from "react-country-region-selector";
 import PaymentMethodSelector from "../../biz-center/components/paymentmethod";
+import ShopController from "../../biz-center/controllers/ShopController";
+import { useAppSelector } from "../../../../redux/store/store";
+import serviceApi from "../../../../services/serviceApi";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface SetupShopProps {
   shop?: Shop;
@@ -87,13 +92,16 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
   const [cslValue, setCslValue] = React.useState("");
   const [category, setCategory] = React.useState("");
   const [imageType, setImageType] = React.useState("");
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
   const [description, setDescription] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const profile = useAppSelector((state) => state.user);
   const [selectedImage, setSelectedImage] = React.useState(
     Assets.shopplaceholder
   );
-  const [country, setCountry] = React.useState("");
+  const shopRedux = useAppSelector((state) => state.shop.shopInfo);
+  const [location, setLocation] = React.useState("");
   const [paymentSelections, setPaymentSelections] = React.useState<
     Record<string, boolean>
   >({});
@@ -110,23 +118,59 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
 
   const LPtheme = createTheme(getLPTheme(mode));
 
+  const navigate = useNavigate();
+
+  // Redirect: If shop prop is null and shop Redux slice has data, redirect.
+  React.useEffect(() => {
+    if (!shop && shopRedux) {
+      navigate("/pro/dashboard", { replace: true });
+    }
+  }, [shop, shopRedux, navigate]);
+
+  // Pre-fill form fields if "shop" exists (edit mode)
+  React.useEffect(() => {
+    if (shop) {
+      setName(shop.name || "");
+      setEmail(shop.email || "");
+      setPhone(shop.phone || "");
+      setDescription(shop.description || "");
+      setLocation(shop.location || "");
+      setCategory(shop.category || "");
+      setImageType(shop.imageType || "");
+      setIgslValue(shop.instagram || "");
+      setFbslValue(shop.facebook || "");
+      setLslValue(shop.linkedIn || "");
+      setXslValue(shop.twitter || ""); // if shop.twitter exists in your schema
+      setCslValue(shop.url || "");
+      if (shop.image) {
+        setSelectedImage(shop.image);
+        // Not setting selectedFile as the image is already on your server.
+      }
+      // If your shop has payment methods, you can load them into your selectors.
+      // For example:
+      // setPaymentSelections({ Bank: shopHasBank, Paypal: shopHasPaypal, ... });
+      // And similarly populate bankDetails, paypalDetails, walletDetails.
+    }
+  }, [shop]);
+
+  // Modified file upload handler: store both preview and file.
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Validate file type
+      // Validate file type (ensure it's an image)
       if (!file.type.match("image.*")) {
-        alert("Please select an image file");
+        toast.error("Please select an image file", { autoClose: 3000 });
         return;
       }
-
       // Validate file size (5MB max)
       if (file.size > 5 * 1024 * 1024) {
-        alert("Image must be less than 5MB");
+        toast.error("Image must be less than 5MB", { autoClose: 3000 });
         return;
       }
-
+      // Set file for upload and preview URL for display.
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
+      setSelectedFile(file);
     }
   };
 
@@ -139,29 +183,396 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
     };
   }, [selectedImage]);
 
-  const handleSubmit = () => {
-    console.log("Form submitted with:", {
-      name,
-      description,
-      phone,
-      email,
-      category,
-      imageType,
-      bankValue,
-      socialLinks: {
-        instagram: igslValue,
-        facebook: fbslValue,
-        linkedIn: lslValue,
-        x: xslValue,
-        custom: cslValue,
-      },
-      image:
-        selectedImage !== Assets.shopplaceholder
-          ? "custom-image"
-          : "default-image",
-    });
-    setIsSubmit(true);
+  // A helper function to upload the file to your backend.
+  const uploadFile = async (file: File): Promise<{ success: boolean; fileUrl?: string }> => {
+    const response = await serviceApi.uploadFile(file);
+                    if (response) {
+                        return response;
+                    } else {
+                        return { success: false };
+                    }
   };
+
+  // Define the currency mapping based on your Flutter code.
+const currencyValues: Record<string, string> = {
+  Afghanistan: "AFN",
+  Albania: "ALL",
+  Algeria: "DZD",
+  AmericanSamoa: "USD",
+  Andorra: "EUR",
+  Angola: "AOA",
+  Anguilla: "XCD",
+  Antarctica: "",
+  "Antigua and Barbuda": "XCD",
+  Argentina: "ARS",
+  Armenia: "AMD",
+  Aruba: "AWG",
+  Australia: "AUD",
+  Austria: "EUR",
+  Azerbaijan: "AZN",
+  "Bahamas (The)": "BSD",
+  Bahrain: "BHD",
+  Bangladesh: "BDT",
+  Barbados: "BBD",
+  Belarus: "BYN",
+  Belgium: "EUR",
+  Belize: "BZD",
+  Benin: "XOF",
+  Bermuda: "BMD",
+  Bhutan: "BTN",
+  "Bhutan (Indian Rupee)": "INR",
+  "Bolivia, Plurinational State of": "BOB",
+  "Bolivia (Plurinational State of) (Mvdol)": "BOV",
+  "Bonaire, Sint Eustatius and Saba": "USD",
+  "Bosnia and Herzegovina": "BAM",
+  Botswana: "BWP",
+  "Bouvet Island": "NOK",
+  Brazil: "BRL",
+  "British Indian Ocean Territory": "USD",
+  "Brunei Darussalam": "BND",
+  Bulgaria: "BGN",
+  "Burkina Faso": "XOF",
+  Burundi: "BIF",
+  "Cabo Verde": "CVE",
+  Cambodia: "KHR",
+  Cameroon: "XAF",
+  Canada: "CAD",
+  "Cayman Islands (The)": "KYD",
+  "Central African Republic": "XAF",
+  Chad: "XAF",
+  "Chile (Unidad de Fomento)": "CLF",
+  "Chile (Chilean Peso)": "CLP",
+  China: "CNY",
+  "Christmas Island": "AUD",
+  "Cocos (Keeling) Islands": "AUD",
+  Colombia: "COP",
+  Comoros: "KMF",
+  "Congo, The Democratic Republic of the Congo": "CDF",
+  Congo: "XAF",
+  "Cook Islands": "NZD",
+  "Costa Rica": "CRC",
+  Croatia: "EUR",
+  Cuba: "CUP",
+  Curaçao: "ANG",
+  Cyprus: "EUR",
+  "Czech Republic": "CZK",
+  "Cote d'Ivoire": "XOF",
+  Denmark: "DKK",
+  Djibouti: "DJF",
+  Dominica: "XCD",
+  "Dominican Republic (The)": "DOP",
+  Ecuador: "USD",
+  Egypt: "EGP",
+  "El Salvador": "USD",
+  "Equatorial Guinea": "XAF",
+  Eritrea: "ERN",
+  Estonia: "EUR",
+  Ethiopia: "ETB",
+  "European Union": "EUR",
+  "Falkland Islands (Malvinas)": "FKP",
+  "Faroe Islands": "DKK",
+  Fiji: "FJD",
+  Finland: "EUR",
+  France: "EUR",
+  "French Guiana": "EUR",
+  "French Polynesia": "XPF",
+  "French Southern Territories": "EUR",
+  Gabon: "XAF",
+  "Gambia (The)": "GMD",
+  Georgia: "GEL",
+  Germany: "EUR",
+  Ghana: "GHS",
+  Gibraltar: "GIP",
+  Greece: "EUR",
+  Greenland: "DKK",
+  Grenada: "XCD",
+  Guadeloupe: "EUR",
+  Guam: "USD",
+  Guatemala: "GTQ",
+  Guernsey: "GBP",
+  Guinea: "GNF",
+  "Guinea-Bissau": "XOF",
+  Guyana: "GYD",
+  Haiti: "HTG",
+  "Heard Island and McDonald Islands": "AUD",
+  "Holy See (Vatican City State)": "EUR",
+  Honduras: "HNL",
+  "Hong Kong": "HKD",
+  Hungary: "HUF",
+  Iceland: "ISK",
+  India: "INR",
+  Indonesia: "IDR",
+  "Iran, Islamic Republic of Persian Gulf": "IRR",
+  Iraq: "IQD",
+  Ireland: "EUR",
+  "Isle of Man": "GBP",
+  Israel: "ILS",
+  Italy: "EUR",
+  Jamaica: "JMD",
+  Japan: "JPY",
+  Jersey: "GBP",
+  Jordan: "JOD",
+  Kazakhstan: "KZT",
+  Kenya: "KES",
+  Kiribati: "AUD",
+  "Korea, Democratic People’s Republic of Korea)": "KPW",
+  "Korea, Republic of South Korea": "KRW",
+  Kuwait: "KWD",
+  Kyrgyzstan: "KGS",
+  Laos: "LAK",
+  Latvia: "EUR",
+  Lebanon: "LBP",
+  "Lesotho (Loti)": "LSL",
+  "Lesotho (Rand)": "ZAR",
+  Liberia: "LRD",
+  "Libyan Arab Jamahiriya": "LYD",
+  Liechtenstein: "CHF",
+  Lithuania: "EUR",
+  Luxembourg: "EUR",
+  Macao: "MOP",
+  Madagascar: "MGA",
+  Malawi: "MWK",
+  Malaysia: "MYR",
+  Maldives: "MVR",
+  Mali: "XOF",
+  Malta: "EUR",
+  "Marshall Islands (The)": "USD",
+  Martinique: "EUR",
+  Mauritania: "MRU",
+  Mauritius: "MUR",
+  Mayotte: "EUR",
+  "Member Countries of the African Development Bank Group": "XUA",
+  "Mexico (Mexican Peso)": "MXN",
+  "Mexico (Mexican Unidad de Inversion - UDI)": "MXV",
+  "Micronesia, Federated States of Micronesia": "USD",
+  Moldova: "MDL",
+  Monaco: "EUR",
+  Mongolia: "MNT",
+  Montenegro: "EUR",
+  Montserrat: "XCD",
+  Morocco: "MAD",
+  Mozambique: "MZN",
+  Myanmar: "MMK",
+  Namibia: "NAD",
+  Nauru: "AUD",
+  Nepal: "NPR",
+  "Netherlands (The)": "EUR",
+  "New Caledonia": "XPF",
+  "New Zealand": "NZD",
+  Nicaragua: "NIO",
+  "Niger (The)": "XOF",
+  Nigeria: "NGN",
+  Niue: "NZD",
+  "Norfolk Island": "AUD",
+  "Northern Mariana Islands (The)": "USD",
+  Norway: "NOK",
+  Oman: "OMR",
+  Pakistan: "PKR",
+  Palau: "USD",
+  "Palestinian Territory, Occupied, State of": "",
+  Panama: "PAB",
+  "Papua New Guinea": "PGK",
+  Paraguay: "PYG",
+  Peru: "PEN",
+  "Philippines (The)": "PHP",
+  Pitcairn: "NZD",
+  Poland: "PLN",
+  Portugal: "EUR",
+  "Puerto Rico": "USD",
+  Qatar: "QAR",
+  "Republic of North Macedonia": "MKD",
+  Romania: "RON",
+  "Russian Federation (The)": "RUB",
+  Rwanda: "RWF",
+  Réunion: "EUR",
+  "Saint Barthélemy": "EUR",
+  "Saint Helena, Ascension and Tristan da Cunha": "SHP",
+  "Saint Kitts and Nevis": "XCD",
+  "Saint Lucia": "XCD",
+  "Saint Martin (French Part)": "EUR",
+  "Saint Pierre and Miquelon": "EUR",
+  "Saint Vincent and the Grenadines": "XCD",
+  Samoa: "WST",
+  "San Marino": "EUR",
+  "Sao Tome and Principe": "STN",
+  "Saudi Arabia": "SAR",
+  Senegal: "XOF",
+  Serbia: "RSD",
+  Seychelles: "SCR",
+  "Sierra Leone": "SLE",
+  Singapore: "SGD",
+  "Sint Maarten (Dutch Part)": "ANG",
+  'Sistema Unitario de Compensacion Regional de Pagos "Sucre"': "XSU",
+  Slovakia: "EUR",
+  Slovenia: "EUR",
+  "Solomon Islands": "SBD",
+  Somalia: "SOS",
+  "South Africa": "ZAR",
+  "South Georgia and the South Sandwich Islands": "",
+  "South Sudan": "SSP",
+  Spain: "EUR",
+  "Sri Lanka": "LKR",
+  "Sudan (The)": "SDG",
+  Suriname: "SRD",
+  "Svalbard and Jan Mayen": "NOK",
+  Swaziland: "SZL",
+  Sweden: "SEK",
+  "Switzerland (WIR Euro)": "CHE",
+  "Switzerland (Swiss Franc)": "CHF",
+  "Switzerland (WIR Franc)": "CHW",
+  "Syrian Arab Republic": "SYP",
+  "Taiwan (Province of China)": "TWD",
+  Tajikistan: "TJS",
+  "Tanzania, United Republic of Tanzania": "TZS",
+  Thailand: "THB",
+  "Timor-Leste": "USD",
+  Togo: "XOF",
+  Tokelau: "NZD",
+  Tonga: "TOP",
+  "Trinidad and Tobago": "TTD",
+  Tunisia: "TND",
+  Turkey: "TRY",
+  Turkmenistan: "TMT",
+  "Turks and Caicos Islands": "USD",
+  Tuvalu: "AUD",
+  Uganda: "UGX",
+  Ukraine: "UAH",
+  "United Arab Emirates (The)": "AED",
+  "United Kingdom": "GBP",
+  "United States": "USD",
+  "United States of America (The)": "USD",
+  "United States of America (The) (US Dollar Next day)": "USN",
+  "Uruguay (Uruguay Peso en Unidades Indexadas - URUIURUI)": "UYI",
+  "Uruguay (Peso Uruguayo)": "UYU",
+  Uzbekistan: "UZS",
+  Vanuatu: "VUV",
+  "Venezuela, Bolivarian Republic of Venezuela": "VEF",
+  "Venezuela (Bolivarian Republic of)": "VED",
+  Vietnam: "VND",
+  "Virgin Islands, British": "USD",
+  "Virgin Islands, U.S.": "USD",
+  "Wallis and Futuna": "XPF",
+  "Western Sahara": "MAD",
+  Yemen: "YER",
+  Zambia: "ZMW",
+  Zimbabwe: "ZWL",
+  "Aland Islands": "EUR",
+};
+
+// Validate required fields. Mimics the Flutter validations.
+const validateForm = (): boolean => {
+  if (!name.trim()) {
+    toast.error("Shop name is required", { autoClose: 3000 });
+    return false;
+  }
+  if (!location.trim()) {
+    toast.error("Location is required", { autoClose: 3000 });
+    return false;
+  }
+  if (!category.trim()) {
+    toast.error("Select a category", { autoClose: 3000 });
+    return false;
+  }
+  if (paymentSelections["Bank"] && Object.keys(bankDetails).length === 0) {
+    toast.error("Bank payment details are required", { autoClose: 3000 });
+    return false;
+  }
+  if (paymentSelections["Paypal"] && Object.keys(paypalDetails).length === 0) {
+    toast.error("Paypal payment details are required", { autoClose: 3000 });
+    return false;
+  }
+  if (paymentSelections["Wallet"] && Object.keys(walletDetails).length === 0) {
+    toast.error("Wallet payment details are required", { autoClose: 3000 });
+    return false;
+  }
+  return true;
+};
+
+
+const handleSubmit = async () => {
+  // Stop if validations fail.
+  if (!validateForm()) {
+    return;
+  }
+  setIsSubmit(true);
+  // Build an array of payment methods similar to the Flutter code.
+  const paymentMethods = [];
+  if (paymentSelections["Bank"] && Object.keys(bankDetails).length > 0) {
+    paymentMethods.push({
+      paymentMethod: "Bank",
+      details: JSON.stringify(bankDetails),
+    });
+  }
+  if (paymentSelections["Paypal"] && Object.keys(paypalDetails).length > 0) {
+    paymentMethods.push({
+      paymentMethod: "Paypal",
+      details: JSON.stringify(paypalDetails),
+    });
+  }
+  if (paymentSelections["Wallet"] && Object.keys(walletDetails).length > 0) {
+    paymentMethods.push({
+      paymentMethod: "Wallet",
+      details: JSON.stringify(walletDetails),
+    });
+  }
+  if (paymentSelections["Cash"]) {
+    paymentMethods.push({
+      paymentMethod: "Cash",
+      details: "some details",
+    });
+  }
+
+  // Use the currencyValues mapping to determine the correct currency.
+  const currency = location && currencyValues[location] ? currencyValues[location] : "USD";
+
+  let imageUrl = selectedImage !== Assets.shopplaceholder ? "custom-image" : "default-image";
+
+  // If a file was selected, upload it and get the URL.
+  if (selectedFile) {
+    console.log(selectedFile);
+    const uploadResponse = await uploadFile(selectedFile);
+    if (uploadResponse.success && uploadResponse.fileUrl) {
+      imageUrl = uploadResponse.fileUrl;
+    } else {
+      toast.error("Error while uploading image!", { autoClose: 3000 });
+      setIsSubmit(false);
+      return;
+    }
+  }
+
+  // Create the payload, mirroring the Flutter code structure.
+  const payload = {
+    userId: profile.profile?.uid,
+    name,
+    email,
+    phone,
+    description,
+    image: imageUrl,
+    location,
+    paymentMethods,
+    currency,
+    details: "Some additional details about the shop",
+    instagram: igslValue,
+    twitter: xslValue,
+    facebook: fbslValue,
+    linkedIn: lslValue,
+    url: cslValue,
+    imageType: imageType ? imageType.toLowerCase() : "",
+    category,
+  };
+
+  console.log("Payload to send:", payload);
+  // Update shop if it exists; otherwise, add a new shop.
+  let response;
+  if (shop) {
+    response = await ShopController.updateShop(shop.id, payload);
+  } else {
+    response = await ShopController.addShop(payload);
+  }
+  console.log(response);
+  setIsSubmit(false);
+};
+
 
   const defaultTheme = createTheme({
     palette: {
@@ -283,9 +694,9 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
 
                 <CountryDropdown
                   classes="bg-white outline-none border-none rounded-lg text-sm font-semibold block w-full p-3"
-                  value={country ?? ""}
+                  value={location ?? ""}
                   onChange={(val) => {
-                    setCountry(val);
+                    setLocation(val);
                   }}
                 />
                 <PaymentMethodSelector
