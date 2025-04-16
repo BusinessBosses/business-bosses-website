@@ -5,10 +5,12 @@ import UserDropdown from "./UserDropdown";
 import GotoshopWidget from "../../dashboard/components/gotoshopwidget";
 import NotificationDropdown from "./NotificationDropdown";
 import MessagesButton from "./MessagesDropdown";
+import { useAppSelector } from "../../../../redux/store/store";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
+  const shop = useAppSelector((state) => state.shop.shopInfo);
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -78,7 +80,7 @@ const AppHeader: React.FC = () => {
             )}
           </button>
 
-          <GotoshopWidget />
+          <GotoshopWidget shop={shop!} />
 
           <Link to="/" className="lg:hidden">
             <img src="./images/logo/logo.svg" alt="Logo" />
