@@ -50,7 +50,7 @@ const CustomTabBarWidget = <T,>({
   return (
     <div className="relative w-full">
       <div className="w-full px-4 py-2.5 bg-white border border-backgroundcolor rounded-xl">
-        <div className="flex overflow-x-auto scrollbar-hide w-full">
+        <div className="flex overflow-x-auto scrollbar-hidden w-full">
           {listofitems.map((item, index) => (
             <div key={index} className="flex-shrink-0 mr-2 last:mr-0">
               <button

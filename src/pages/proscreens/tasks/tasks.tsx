@@ -15,6 +15,7 @@ import CustomTextWidget from "../biz-center/components/customtextwidget";
 import { FiMessageSquare, FiX, FiSearch } from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import AddProjectModal from "./components/addproject";
+import Spinner from "./components/spinner";
 
 type ProjectStatus = "all" | "todo" | "inprogress" | "completed";
 
@@ -197,55 +198,54 @@ const Tasks = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-     <div className="bg-white rounded-2xl min-h-screen w-full flex flex-col items-center">
-      {/* Header */}
-      <header className="container">
-        <div className="flex justify-between items-center py-4">
-          <h1 className="text-xl font-bold text-gray-900">Tasks</h1>
-          <div className="flex items-center space-x-4">
-            <ProCustomButton
-              text="Add Tasks"
-              // icon={<FiPlus className="mr-2" />}
-              onPressed={() => setShowModal(true)}
+      <div className="bg-white rounded-2xl min-h-screen w-full flex flex-col items-center">
+        {/* Header */}
+        <header className="container">
+          <div className="flex justify-between items-center py-4">
+            <h1 className="text-xl font-bold text-gray-900">Tasks</h1>
+            <div className="flex items-center space-x-4">
+              <ProCustomButton
+                text="Add Tasks"
+                // icon={<FiPlus className="mr-2" />}
+                onPressed={() => setShowModal(true)}
+              />
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <div className="container flex flex-col items-center">
+          <div className="w-full">
+            {/* Ensure full width */}
+            <CustomTabBarWidget<ProjectStatus>
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              scrollToSection={scrollToSection}
+              proprimaryColor="#000000"
+              backgroundColor={[
+                "#6b7280", // all
+                "#000000", // todo
+                "#f59e0b", // inprogress
+                "#10b981", // completed
+              ]}
+              listofitems={["all", "todo", "inprogress", "completed"]}
+              itemToString={(status) =>
+                `${statusDisplayTitles[status]} (${
+                  status === "all"
+                    ? projects.length
+                    : statusProjects[status].length
+                })`
+              }
+              filterOptions={["Newest first", "Highest Budget", "None"]}
+              onFilterSelected={(option) => {
+                if (option) setSelectedFilterOption(option);
+              }}
             />
           </div>
-        </div>
-      </header>
 
-      {/* Main Content */}
-      <div className="container flex flex-col items-center">
-        <div className="w-full">
-          
-          {/* Ensure full width */}
-          <CustomTabBarWidget<ProjectStatus>
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            scrollToSection={scrollToSection}
-            proprimaryColor="#000000"
-            backgroundColor={[
-              "#6b7280", // all
-              "#000000", // todo
-              "#f59e0b", // inprogress
-              "#10b981", // completed
-            ]}
-            listofitems={["all", "todo", "inprogress", "completed"]}
-            itemToString={(status) =>
-              `${statusDisplayTitles[status]} (${
-                status === "all"
-                  ? projects.length
-                  : statusProjects[status].length
-              })`
-            }
-            filterOptions={["Newest first", "Highest Budget", "None"]}
-            onFilterSelected={(option) => {
-              if (option) setSelectedFilterOption(option);
-            }}
-          />
-        </div>
-      
           {loading ? (
-            <div className="flex justify-center items-center h-64 ">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+            <div className="h-64 pt-52">
+              <Spinner color="black" />
             </div>
           ) : projects.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-64 bg-white rounded-lg ">
@@ -286,10 +286,11 @@ const Tasks = () => {
 
         {/* Add Task Modal */}
         <Modal open={showModal} onClose={() => setShowModal(false)}>
-          <AddProjectModal onClose={function (): void {
-            throw new Error("Function not implemented.");
-
-          } } />
+          <AddProjectModal
+            onClose={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
         </Modal>
       </div>
     </DndProvider>

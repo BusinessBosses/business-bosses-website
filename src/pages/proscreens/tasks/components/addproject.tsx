@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { FiX } from "react-icons/fi";
 import CustomEditText from "../../biz-center/components/customedittext";
 import ProCustomButton from "../../biz-center/components/procustombutton";
-
 
 // Temporary snackbar function for displaying messages
 const showSnackbar = (message: string, isError: boolean) => {
   alert(`${isError ? "Error: " : ""}${message}`);
 };
-
 
 interface Project {
   id?: string;
@@ -22,13 +22,13 @@ interface Project {
 interface AddProjectModalProps {
   project?: Project;
   onClose: () => void;
-//   onSave: (projectData: Project, projectId?: string) => Promise<void>;
+  //   onSave: (projectData: Project, projectId?: string) => Promise<void>;
 }
 
 const AddProjectModal: React.FC<AddProjectModalProps> = ({
   project,
   onClose,
-//   onSave,
+  //   onSave,
 }) => {
   const [name, setName] = useState(project?.name || "");
   const [description, setDescription] = useState(project?.description || "");
@@ -127,7 +127,7 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
 
         <div className="space-y-4">
           <CustomEditText
-         
+            backgroundColor="bg-backgroundcolor"
             maxLength={30}
             caption="Task Name"
             hintText="Enter Task name here"
@@ -136,6 +136,7 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
           />
 
           <CustomEditText
+            backgroundColor="bg-backgroundcolor"
             caption="Task Description"
             hintText="Enter Task goals"
             value={description}
@@ -144,6 +145,7 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
           />
 
           <CustomEditText
+            backgroundColor="bg-backgroundcolor"
             isCurrencyField={true}
             caption="Task Budget"
             maxLength={15}
@@ -158,7 +160,7 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Start Date
               </label>
-              {/* <DatePicker
+              <DatePicker
                 selected={startDate}
                 onChange={(date: Date | null) => setStartDate(date)}
                 selectsStart
@@ -166,23 +168,23 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
                 endDate={endDate}
                 placeholderText="Select start date"
                 className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              /> */}
+              />
             </div>
 
             <div className="flex-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 End Date
               </label>
-              {/* <DatePicker
+              <DatePicker
                 selected={endDate}
                 onChange={(date: Date | null) => setEndDate(date)}
                 selectsEnd
                 startDate={startDate}
                 endDate={endDate}
-                minDate={startDate}
+                minDate={startDate || undefined}
                 placeholderText="Select end date"
                 className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              /> */}
+              />
             </div>
           </div>
 
