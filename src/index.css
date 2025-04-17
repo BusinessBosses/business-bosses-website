@@ -59,6 +59,17 @@
 
 }
 
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  /* For Internet Explorer */
+  scrollbar-width: none;
+  /* For Firefox */
+}
+
 .computer-main-content {
   width: 50%;
   overflow-y: auto;

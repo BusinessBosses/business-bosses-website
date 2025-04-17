@@ -17,8 +17,19 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
   const [selectedDateFilter, setSelectedDateFilter] = useState("all_time");
   const [loadingData, setLoadingData] = useState(true);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
-  const [orderStats, setOrderStats] = useState({pending: 0, paid: 0, cancelled: 0, totalOrders: 0});
-  const [shopStats, setShopStats] = useState({totalAmount: 0, totalExpenses: 0, clientCount: 0, views: 0, projectCount: 0});
+  const [orderStats, setOrderStats] = useState({
+    pending: 0,
+    paid: 0,
+    cancelled: 0,
+    totalOrders: 0,
+  });
+  const [shopStats, setShopStats] = useState({
+    totalAmount: 0,
+    totalExpenses: 0,
+    clientCount: 0,
+    views: 0,
+    projectCount: 0,
+  });
   const profile = useAppSelector((state) => state.user);
   const shop = useAppSelector((state) => state.shop.shopInfo);
 
@@ -30,10 +41,12 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
     const loadData = async () => {
       // Simulate an API call delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      const statistics = await ShopController.loadStatistics(shop!.id, profile.profile!.uid);
+
+      const statistics = await ShopController.loadStatistics(
+        shop!.id,
+        profile.profile!.uid
+      );
       console.log(statistics);
-      
 
       // Simulated fetched data for order and shop statistics
       const fetchedOrderStats = {
@@ -208,7 +221,7 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
                   : Assets.addClientIcon
               }
             />
-          ))} 
+          ))}
         </div>
       </div>
     </div>
