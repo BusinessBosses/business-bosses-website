@@ -111,9 +111,6 @@ const Tasks = () => {
                         backgroundColor="bg-gray-50"
                         caption={"Start Date"}
                         iconName={""}
-                        onButtonClick={() => {
-                          console.log("Start Date Clicked");
-                        }}
                       />
                     </div>
                     <div className="flex-1">
