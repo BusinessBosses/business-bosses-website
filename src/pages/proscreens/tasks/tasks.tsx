@@ -12,12 +12,16 @@ import ProCustomButton from "../biz-center/components/procustombutton";
 import { Modal } from "@mui/material";
 import CustomEditText from "../biz-center/components/customedittext";
 import CustomTextWidget from "../biz-center/components/customtextwidget";
-import { FiMessageSquare, FiX, FiSearch } from "react-icons/fi";
+import { FiMessageSquare, FiX, FiSearch, FiCheckSquare, FiPlus } from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import AddProjectModal from "./components/addproject";
 import Spinner from "./components/spinner";
+import OptionsButton from "./components/optionsbutton";
+import { ProjectStatusChanger } from "./components/statusbutton";
+import { ProjectStatus } from "./models/projectsmodel";
 
-type ProjectStatus = "all" | "todo" | "inprogress" | "completed";
+
+
 
 interface Project {
   id: string;
@@ -33,17 +37,17 @@ interface Project {
 }
 
 const statusColors: Record<ProjectStatus, string> = {
-  all: "bg-gray-100",
-  todo: "bg-black",
-  inprogress: "bg-amber-500",
-  completed: "bg-green-500",
+  [ProjectStatus.ALL]: "bg-gray-100",
+  [ProjectStatus.TODO]: "bg-black",
+  [ProjectStatus.INPROGRESS]: "bg-amber-500",
+  [ProjectStatus.COMPLETED]: "bg-green-500",
 };
 
 const statusDisplayTitles: Record<ProjectStatus, string> = {
-  all: "All Tasks",
-  todo: "To Do",
-  inprogress: "In-Progress",
-  completed: "Completed",
+  [ProjectStatus.ALL]: "All Tasks",
+  [ProjectStatus.TODO]: "To Do",
+  [ProjectStatus.INPROGRESS]: "In-Progress",
+  [ProjectStatus.COMPLETED]: "Completed",
 };
 
 const Tasks = () => {
@@ -68,7 +72,7 @@ const Tasks = () => {
         userId: "user1",
         name: "Website Redesign",
         amount: 5000,
-        status: "todo",
+        status: ProjectStatus.TODO,
         createdAt: new Date(2023, 5, 15),
         startAt: new Date(2023, 6, 1),
         endAt: new Date(2023, 6, 30),
@@ -80,7 +84,7 @@ const Tasks = () => {
         userId: "user1",
         name: "Mobile App Development",
         amount: 15000,
-        status: "inprogress",
+        status: ProjectStatus.INPROGRESS,
         createdAt: new Date(2023, 4, 10),
         startAt: new Date(2023, 4, 15),
         endAt: new Date(2023, 7, 15),
@@ -92,7 +96,7 @@ const Tasks = () => {
         userId: "user1",
         name: "Marketing Campaign",
         amount: 8000,
-        status: "completed",
+        status: ProjectStatus.COMPLETED,
         createdAt: new Date(2023, 3, 1),
         startAt: new Date(2023, 3, 5),
         endAt: new Date(2023, 5, 5),
@@ -206,7 +210,7 @@ const Tasks = () => {
             <div className="flex items-center space-x-4">
               <ProCustomButton
                 text="Add Tasks"
-                // icon={<FiPlus className="mr-2" />}
+                icon={<FiPlus className="mr-2" />}
                 onPressed={() => setShowModal(true)}
               />
             </div>
@@ -228,7 +232,7 @@ const Tasks = () => {
                 "#f59e0b", // inprogress
                 "#10b981", // completed
               ]}
-              listofitems={["all", "todo", "inprogress", "completed"]}
+              listofitems={Object.values(ProjectStatus)}
               itemToString={(status) =>
                 `${statusDisplayTitles[status]} (${
                   status === "all"
@@ -482,7 +486,7 @@ const TaskCard = ({
 }) => {
   return (
     <div
-      className={`p-4 rounded-lg border border-l-4 my-4 ${
+      className={`p-2 rounded-lg border border-l-4 my-4 ${
         status === "todo"
           ? "border-black"
           : status === "inprogress"
@@ -493,22 +497,37 @@ const TaskCard = ({
       } bg-white`}
     >
       <div className="flex justify-between items-start">
-        <div>
-          <h4 className="font-medium text-gray-900">{project.name}</h4>
-          <p className="text-sm text-gray-500 mt-1">{project.description}</p>
+        <div className="w-full">
+          <div className="flex justify-between w-full items-center justify-center">
+            <div className="bg-backgroundcolor w-fit  px-2 py-1 rounded-md flex items-center justify-center">
+              <FiCheckSquare size={15} />
+              <h4 className="font-medium text-sm pl-2 text-gray-900">
+                {project.name}
+              </h4>
+            </div>
+            <OptionsButton
+              item={undefined}
+              isBoost={undefined}
+              onEdit={undefined}
+              onDelete={undefined}
+              onView={undefined}
+              onBoost={undefined}
+            />
+          </div>
         </div>
-        <span className="text-sm font-medium text-gray-900">
-          ${project.amount.toLocaleString()}
-        </span>
       </div>
-      <div className="mt-3 flex justify-between items-center">
-        <span className="text-xs text-gray-500">
-          {project.startAt.toLocaleDateString()} -{" "}
-          {project.endAt.toLocaleDateString()}
-        </span>
-        <span className="text-xs px-2 py-1 bg-gray-100 rounded-full text-gray-700">
-          {project.duration}
-        </span>
+      <p className="text-sm text-gray-500 mt-1">
+        <span className="font-bold">Expenses:</span> $
+        {project.amount.toLocaleString()}
+      </p>
+      <p className="text-sm text-gray-500 mt-1">
+        <span className="font-bold">Duration:</span> {project.duration}
+      </p>
+      <p className="text-sm text-gray-500 mt-1">
+        <span className="font-bold">Description:</span> {project.description}
+      </p>
+      <div className="mt-3 flex justify-end items-end">
+        <ProjectStatusChanger project={project} />
       </div>
     </div>
   );
