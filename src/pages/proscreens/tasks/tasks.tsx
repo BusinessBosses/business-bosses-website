@@ -324,7 +324,7 @@ const StatusColumn = ({
 }) => {
   return (
     <div
-      className="flex-shrink-0 w-11/12 sm:w-96 bg-white rounded-xl border mr-4 p-4"
+      className="flex-shrink-0 w-11/12 sm:w-96 bg-[#f9f9f9] rounded-xl border mr-4 p-4"
       style={{ scrollSnapAlign: "start" }}
     >
       <div className="flex justify-between items-center mb-4">
