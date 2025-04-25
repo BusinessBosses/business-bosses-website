@@ -1,6 +1,7 @@
 import { Modal } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { FiX, FiCalendar, FiChevronDown } from "react-icons/fi";
+import { Shop } from "../../../../common/interfaces/Shop";
 
 interface OrderItem {
   id: string;
@@ -40,9 +41,7 @@ interface Service {
   price: number;
 }
 
-interface Shop {
-  currency: string;
-}
+
 
 interface CreateOrderModalProps {
   open: boolean;

@@ -1,7 +1,6 @@
-import { FiPackage } from "react-icons/fi";
 import { Order, OrderStatus } from "../model/order";
 import OptionsButton from "../../tasks/components/optionsbutton";
-
+import { FiPackage } from "react-icons/fi";
 
 interface OrderWidgetProps {
   order: Order;
@@ -18,14 +17,21 @@ const OrderWidget = ({
   onDelete,
   onView,
 }: OrderWidgetProps) => {
+  const calculateTotal = () => {
+    if (!order.items || order.items.length === 0) return 0;
+    return order.items.reduce((sum, item) => sum + (item.amount || 0), 0);
+  };
+
+  const totalAmount = calculateTotal();
+
   return (
     <div
       className={`p-3 rounded-lg border border-l-4 my-3 ${
-        status === "pending"
+        status === OrderStatus.PENDING
           ? "border-amber-500"
-          : status === "paid"
+          : status === OrderStatus.PAID
           ? "border-blue-500"
-          : status === "completed"
+          : status === OrderStatus.CANCELLED
           ? "border-green-500"
           : "border-gray-300"
       } bg-white`}
@@ -55,7 +61,7 @@ const OrderWidget = ({
         </p>
         <p className="text-sm text-gray-500">
           <span className="font-bold">Total:</span> $
-          {order.totalAmount?.toLocaleString() || "0"}
+          {totalAmount.toLocaleString()}
         </p>
         <p className="text-sm text-gray-500">
           <span className="font-bold">Items:</span> {order.items?.length || 0}
@@ -63,6 +69,9 @@ const OrderWidget = ({
         <p className="text-sm text-gray-500">
           <span className="font-bold">Delivery:</span>{" "}
           {order.deliveryMethod === "online" ? "Online" : "In-Person"}
+        </p>
+        <p className="text-sm text-gray-500">
+          <span className="font-bold">Payment:</span> {order.paymentMethod}
         </p>
         {order.notes && (
           <p className="text-sm text-gray-500">
@@ -75,7 +84,6 @@ const OrderWidget = ({
         <span className="text-xs text-gray-400">
           {new Date(order.createdAt).toLocaleDateString()}
         </span>
-        {/* <OrderStatusChanger order={order} /> */}
       </div>
     </div>
   );

@@ -1,46 +1,35 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import {  FiMessageSquare, FiX, FiSearch, FiBell, FiPlusSquare } from "react-icons/fi";
+import {
+  FiMessageSquare,
+  FiX,
+  FiSearch,
+  FiBell,
+  FiPlusSquare,
+} from "react-icons/fi";
 import { Modal } from "@mui/material";
 import CustomTabBarWidget from "../tasks/components/customtabbar";
 import Spinner from "../tasks/components/spinner";
 import CreateOrderModal from "./components/ordermodal";
-
-
-enum OrderStatus {
-  ALL_ORDERS = "allorders",
-  PENDING = "pending",
-  PAID = "paid",
-  COMPLETED = "completed",
-}
-
-interface Order {
-  id: string;
-  userId: string;
-  shopId: string;
-  clientId: string;
-  status: OrderStatus;
-  createdAt: Date;
-  deliveryDate: Date;
-  client?: {
-    name: string;
-  };
-  // Add other order properties as needed
-}
+import OrderWidget from "./components/orderwidget";
+import { Order, OrderStatus } from "./model/order";
+import { ClientType } from "../customers/models/client";
+import { Shop } from "@mui/icons-material";
+import ProCustomButton from "../biz-center/components/procustombutton";
 
 const statusColors: Record<OrderStatus, string> = {
   [OrderStatus.ALL_ORDERS]: "bg-gray-100",
   [OrderStatus.PENDING]: "bg-amber-500",
   [OrderStatus.PAID]: "bg-blue-500",
-  [OrderStatus.COMPLETED]: "bg-green-500",
+  [OrderStatus.CANCELLED]: "bg-green-500",
 };
 
 const statusDisplayTitles: Record<OrderStatus, string> = {
   [OrderStatus.ALL_ORDERS]: "All Orders",
   [OrderStatus.PENDING]: "Pending",
   [OrderStatus.PAID]: "Paid",
-  [OrderStatus.COMPLETED]: "Completed",
+  [OrderStatus.CANCELLED]: "Cancelled",
 };
 
 const Orders = () => {
@@ -53,9 +42,7 @@ const Orders = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const lastMoveRightRef = useRef<boolean | null>(null);
 
-  // Mock data initialization
   useEffect(() => {
     const mockOrders: Order[] = [
       {
@@ -66,7 +53,39 @@ const Orders = () => {
         status: OrderStatus.PENDING,
         createdAt: new Date(2023, 5, 15),
         deliveryDate: new Date(2023, 6, 30),
-        client: { name: "Client A" },
+        deliveryMethod: "online",
+        paymentMethod: "credit",
+        invoiceOption: "email",
+        items: [
+          { type: "product", id: 1, name: "Product A", amount: 100 },
+          { type: "service", id: 2, name: "Service B", amount: 50 },
+        ],
+        client: {
+          id: "client1",
+          name: "Client A",
+          email: "clientA@example.com",
+          phone: "1234567890",
+          userId: "",
+          type: ClientType.ALL_CLIENTS,
+          createdAt: new Date(2023, 0, 1),
+          image: [],
+          orderCount: 0,
+          totalAmountSpent: 0,
+        },
+        shop: {
+          id: "shop1",
+          name: "Shop 1",
+          userId: "",
+          location: "",
+          description: "",
+          promote: false,
+          views: 0,
+          isProduct: false,
+        },
+        notes: "Handle with care",
+        products: [],
+        services: [],
+        customItems: [],
       },
       {
         id: "2",
@@ -76,17 +95,36 @@ const Orders = () => {
         status: OrderStatus.PAID,
         createdAt: new Date(2023, 4, 10),
         deliveryDate: new Date(2023, 7, 15),
-        client: { name: "Client B" },
-      },
-      {
-        id: "3",
-        userId: "user1",
-        shopId: "shop1",
-        clientId: "client3",
-        status: OrderStatus.COMPLETED,
-        createdAt: new Date(2023, 3, 1),
-        deliveryDate: new Date(2023, 5, 5),
-        client: { name: "Client C" },
+        deliveryMethod: "in-person",
+        paymentMethod: "cash",
+        invoiceOption: "print",
+        items: [{ type: "product", id: 3, name: "Product C", amount: 75 }],
+        client: {
+          id: "client2",
+          name: "Client B",
+          email: "clientB@example.com",
+          phone: "0987654321",
+          userId: "",
+          type: ClientType.ALL_CLIENTS,
+          createdAt: new Date(2023, 1, 1),
+          image: [],
+          orderCount: 0,
+          totalAmountSpent: 0,
+        },
+        shop: {
+          id: "shop1",
+          name: "Shop 1",
+          userId: "",
+          location: "",
+          description: "",
+          promote: false,
+          views: 0,
+          isProduct: false,
+        },
+        notes: "Urgent delivery",
+        products: [],
+        services: [],
+        customItems: [],
       },
     ];
 
@@ -163,45 +201,27 @@ const Orders = () => {
     [OrderStatus.PAID]: filteredOrders.filter(
       (o) => o.status === OrderStatus.PAID
     ),
-    [OrderStatus.COMPLETED]: filteredOrders.filter(
-      (o) => o.status === OrderStatus.COMPLETED
+    [OrderStatus.CANCELLED]: filteredOrders.filter(
+      (o) => o.status === OrderStatus.CANCELLED
     ),
   };
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="bg-gray-50 min-h-screen w-full flex flex-col">
-        {/* Header */}
+      <div className="bg-white min-h-screen w-full flex flex-col rounded-2xl">
         <header className="container mx-auto px-4">
           <div className="flex justify-between items-center py-4">
             <h1 className="text-xl font-bold text-gray-900">Orders</h1>
             <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowModal(true)}
-                className="flex items-center bg-black text-white px-4 py-2 rounded-full"
-              >
-                <FiPlusSquare className="h-6 w-6" />
-                <span>Create Order</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  /* Navigate to chat */
-                }}
-                className="p-2 rounded-full bg-gray-200 text-gray-700"
-              >
-                <FiMessageSquare className="h-5 w-5" />
-              </button>
-
-              <button className="p-2 rounded-full bg-gray-200 text-gray-700 relative">
-                <FiBell className="h-5 w-5" />
-                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-              </button>
+              <ProCustomButton
+                text="Create Order"
+                icon={<FiPlusSquare className="h-6 w-6" />}
+                onPressed={() => setShowModal(true)}
+              />
             </div>
           </div>
         </header>
 
-        {/* Main Content */}
         <div className="container mx-auto px-4 flex flex-col flex-1">
           <CustomTabBarWidget<OrderStatus>
             activeTab={activeTab}
@@ -240,7 +260,6 @@ const Orders = () => {
             >
               {Object.values(OrderStatus).map((status) => (
                 <StatusColumn
-                  key={status}
                   status={status}
                   orders={
                     status === OrderStatus.ALL_ORDERS
@@ -260,13 +279,34 @@ const Orders = () => {
           )}
         </div>
 
-        {/* Create Order Modal */}
         <Modal open={showModal} onClose={() => setShowModal(false)}>
-          <CreateOrderModal onClose={() => setShowModal(false)} open={false} shop={{ id: "shop1", name: "Shop 1" }} clients={[]} products={[]} services={[]} paymentMethods={[]} onCreateOrder={function (orderData: any): Promise<boolean> {
-            throw new Error("Function not implemented.");
-          } } onUpdateOrder={function (orderId: string, orderData: any): Promise<boolean> {
-            throw new Error("Function not implemented.");
-          } } />
+          <CreateOrderModal
+            onClose={() => setShowModal(false)}
+            open={false}
+            clients={[]}
+            products={[]}
+            services={[]}
+            paymentMethods={[]}
+            onCreateOrder={function (orderData: any): Promise<boolean> {
+              throw new Error("Function not implemented.");
+            }}
+            onUpdateOrder={function (
+              orderId: string,
+              orderData: any
+            ): Promise<boolean> {
+              throw new Error("Function not implemented.");
+            }}
+            shop={{
+              id: "shop1",
+              name: "Shop 1",
+              userId: "",
+              location: "",
+              description: "",
+              promote: false,
+              views: 0,
+              isProduct: false,
+            }}
+          />
         </Modal>
       </div>
     </DndProvider>
@@ -352,7 +392,9 @@ const StatusColumn = ({
           style={{ maxHeight: "calc(100vh - 250px)" }}
         >
           {orders.length > 0 ? (
-            orders.map((order) => <OrderWidget key={order.id} order={order} />)
+            orders.map((order) => (
+              <OrderWidget key={order.id} order={order} status={order.status} />
+            ))
           ) : (
             <div className="text-center py-8 text-gray-500">
               No orders found matching your search
@@ -442,7 +484,7 @@ const DraggableOrder = ({
       onDrag={handleDrag}
       className={`mb-3 ${isDragging ? "opacity-30" : "opacity-100"}`}
     >
-      <OrderWidget order={order} />
+      <OrderWidget order={order} status={order.status} />
     </div>
   );
 };
