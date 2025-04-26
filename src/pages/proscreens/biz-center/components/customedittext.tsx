@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useState } from "react";
-import { IconType } from "react-icons";
 import {} from "react-icons/fi";
 import Assets from "../../../../assets";
+import { useAppSelector } from "../../../../redux/store/store";
 
 type CustomEditTextProps = {
   caption?: string;
@@ -87,6 +88,7 @@ const CustomEditText: React.FC<CustomEditTextProps> = ({
   border = "border-none",
 }) => {
   const [error, setError] = useState<string | undefined>();
+  const shop = useAppSelector((state) => state.shop.shopInfo);
 
   const updateQuantity = (newValue: number) => {
     if (newValue >= 1) {
@@ -113,7 +115,7 @@ const CustomEditText: React.FC<CustomEditTextProps> = ({
           <div className="h-8 w-12">
             <input
               type="text"
-              value={currencyValue}
+              value={shop?.currency}
               onChange={(e) => currencyOnChange?.(e.target.value)}
               className={`w-full h-full px-1 text-xs rounded ${currencyFieldColor}`}
               maxLength={3}

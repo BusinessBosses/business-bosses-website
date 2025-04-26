@@ -12,36 +12,16 @@ import ProCustomButton from "../biz-center/components/procustombutton";
 import { Modal } from "@mui/material";
 import CustomEditText from "../biz-center/components/customedittext";
 import CustomTextWidget from "../biz-center/components/customtextwidget";
-import {
-  FiMessageSquare,
-  FiX,
-  FiSearch,
-  FiCheckSquare,
-  FiPlusSquare,
-  FiVolume,
-  FiFilePlus,
-  FiSun,
-} from "react-icons/fi";
+import { FiMessageSquare, FiX, FiSearch, FiCheckSquare, FiPlus } from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import AddProjectModal from "./components/addproject";
 import Spinner from "./components/spinner";
 import OptionsButton from "./components/optionsbutton";
 import { ProjectStatusChanger } from "./components/statusbutton";
-import { ProjectStatus } from "./models/projectsmodel";
-import TaskCard from "./components/taskcard";
+import { Project, ProjectStatus } from "./models/projectsmodel";
+import ShopController from "../biz-center/controllers/ShopController";
+import { useAppSelector } from "../../../redux/store/store";
 
-interface Project {
-  id: string;
-  userId: string;
-  name: string;
-  amount: number;
-  status: ProjectStatus;
-  createdAt: Date;
-  startAt: Date;
-  endAt: Date;
-  description: string;
-  duration: string;
-}
 
 const statusColors: Record<ProjectStatus, string> = {
   [ProjectStatus.ALL]: "bg-gray-100",
@@ -57,154 +37,116 @@ const statusDisplayTitles: Record<ProjectStatus, string> = {
   [ProjectStatus.COMPLETED]: "Completed",
 };
 
-const Tasks = () => {
+
+const Tasks: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editTask, setEditTask] = useState<Project | undefined>(undefined);
   const [projects, setProjects] = useState<Project[]>([]);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [selectedFilterOption, setSelectedFilterOption] =
-    useState<string>("None");
-  const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const [selectedFilterOption, setSelectedFilterOption] = useState("None");
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const lastMoveRightRef = useRef<boolean | null>(null);
+  const shop = useAppSelector((state) => state.shop.shopInfo);
 
-  // Mock data initialization
+  // ← Fetch real projects on mount (or when userId changes)
   useEffect(() => {
-    const mockProjects: Project[] = [
-      {
-        id: "1",
-        userId: "user1",
-        name: "Website Redesign",
-        amount: 5000,
-        status: ProjectStatus.TODO,
-        createdAt: new Date(2023, 5, 15),
-        startAt: new Date(2023, 6, 1),
-        endAt: new Date(2023, 6, 30),
-        description: "Redesign company website with modern look",
-        duration: "4 weeks",
-      },
-      {
-        id: "2",
-        userId: "user1",
-        name: "Mobile App Development",
-        amount: 15000,
-        status: ProjectStatus.INPROGRESS,
-        createdAt: new Date(2023, 4, 10),
-        startAt: new Date(2023, 4, 15),
-        endAt: new Date(2023, 7, 15),
-        description: "Develop cross-platform mobile application",
-        duration: "3 months",
-      },
-      {
-        id: "3",
-        userId: "user1",
-        name: "Marketing Campaign",
-        amount: 8000,
-        status: ProjectStatus.COMPLETED,
-        createdAt: new Date(2023, 3, 1),
-        startAt: new Date(2023, 3, 5),
-        endAt: new Date(2023, 5, 5),
-        description: "Summer marketing campaign",
-        duration: "2 months",
-      },
-    ];
-
-    setTimeout(() => {
-      setProjects(mockProjects);
-      setFilteredProjects(mockProjects);
-      setLoading(false);
-    }, 1000);
+    if (shop!.user) loadProjects();
   }, []);
 
-  const scrollToSection = (index: number) => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = index * window.innerWidth * 0.9;
-      scrollContainerRef.current.scrollTo({
-        left: scrollAmount,
-        behavior: "smooth",
-      });
+  const loadProjects = async () => {
+    setLoading(true);
+    try {
+      const { projects: fetched } = await ShopController.initProjects(shop!.user!.uid);
+      console.log(fetched);
+      
+      setProjects(fetched);
+      setFilteredProjects(fetched);
+    } catch (err) {
+      console.error("Failed to load projects", err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const moveMainList = (isRight: boolean) => {
-    if (scrollTimerRef.current) {
-      clearTimeout(scrollTimerRef.current);
-    }
-
-    scrollTimerRef.current = setTimeout(() => {
-      if (!scrollContainerRef.current) return;
-
-      const currentScroll = scrollContainerRef.current.scrollLeft;
-      const maxScroll =
-        scrollContainerRef.current.scrollWidth -
-        scrollContainerRef.current.clientWidth;
-
-      if (
-        (currentScroll <= 20 && !isRight) ||
-        (currentScroll >= maxScroll - 20 && isRight)
-      ) {
-        return;
-      }
-
-      scrollContainerRef.current.scrollTo({
-        left: currentScroll + (isRight ? 50 : -50),
-        behavior: "smooth",
-      });
-
-      moveMainList(isRight);
-    }, 100);
-  };
-
-  const filterProjects = () => {
-    let filtered = [...projects];
-
+  // Filter & sort logic (unchanged)
+  useEffect(() => {
+    let items = [...projects];
     switch (selectedFilterOption) {
       case "Newest first":
-        filtered.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        items.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
         break;
       case "Highest Budget":
-        filtered.sort((a, b) => b.amount - a.amount);
+        items.sort((a, b) => b.amount - a.amount);
         break;
-      case "None":
       default:
-        // No sorting needed
         break;
     }
-
-    setFilteredProjects(filtered);
-  };
-
-  useEffect(() => {
-    filterProjects();
+    setFilteredProjects(items);
   }, [selectedFilterOption, projects]);
 
+  const handleEdit = (task: Project) => {
+    setEditTask(task);
+    setShowEditModal(true);
+  };
+  
   useEffect(() => {
-    if (searchQuery.trim() === "") {
+    if (!searchQuery.trim()) {
       setFilteredProjects(projects);
     } else {
-      const filtered = projects.filter((project) =>
-        project.name.toLowerCase().includes(searchQuery.toLowerCase())
+      setFilteredProjects(
+        projects.filter((p) =>
+          p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
       );
-      setFilteredProjects(filtered);
     }
   }, [searchQuery, projects]);
 
   const handleStatusChange = (projectId: string, newStatus: ProjectStatus) => {
-    setProjects((prevProjects) =>
-      prevProjects.map((project) =>
-        project.id === projectId ? { ...project, status: newStatus } : project
+    setProjects((prev) =>
+      prev.map((p) =>
+        p.id === projectId ? { ...p, status: newStatus } : p
       )
     );
+    ShopController.updateProject(projectId, {'status': newStatus});
   };
 
-  const statusProjects = {
+  // derive per-status lists from the filtered set
+  const statusProjects: Record<ProjectStatus, Project[]> = {
     all: filteredProjects,
-    todo: filteredProjects.filter((p) => p.status === "todo"),
-    inprogress: filteredProjects.filter((p) => p.status === "inprogress"),
-    completed: filteredProjects.filter((p) => p.status === "completed"),
+    [ProjectStatus.TODO]: filteredProjects.filter((p) => p.status === ProjectStatus.TODO),
+    pending: filteredProjects.filter(
+      (p) => p.status === ProjectStatus.INPROGRESS
+    ),
+    completed: filteredProjects.filter(
+      (p) => p.status === ProjectStatus.COMPLETED
+    ),
+  };
+
+  // scrolling helpers (unchanged)
+  const scrollToSection = (index: number) => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        left: index * window.innerWidth * 0.9,
+        behavior: "smooth",
+      });
+    }
+  };
+  const moveMainList = (isRight: boolean) => {
+    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    scrollTimerRef.current = setTimeout(() => {
+      const el = scrollContainerRef.current;
+      if (!el) return;
+      const max = el.scrollWidth - el.clientWidth;
+      const left = el.scrollLeft;
+      if ((left <= 20 && !isRight) || (left >= max - 20 && isRight)) return;
+      el.scrollTo({ left: left + (isRight ? 50 : -50), behavior: "smooth" });
+      moveMainList(isRight);
+    }, 100);
   };
 
   return (
@@ -214,89 +156,87 @@ const Tasks = () => {
         <header className="container">
           <div className="flex justify-between items-center py-4">
             <h1 className="text-xl font-bold text-gray-900">Tasks</h1>
-            <div className="flex items-center space-x-4">
-              <ProCustomButton
-                text="Add Tasks"
-                icon={<FiPlusSquare className="h-6 w-6" />}
-                onPressed={() => setShowModal(true)}
-              />
-            </div>
+            <ProCustomButton
+              text="Add Task"
+              icon={<FiPlus className="mr-2" />}
+              onPressed={() => setShowModal(true)}
+            />
           </div>
         </header>
 
-        {/* Main Content */}
-        <div className="container flex flex-col items-center">
-          <div className="w-full">
-            {/* Ensure full width */}
-            <CustomTabBarWidget<ProjectStatus>
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              scrollToSection={scrollToSection}
-              proprimaryColor="#000000"
-              backgroundColor={["#6b7280", "#000000", "#f59e0b", "#10b981"]}
-              listofitems={Object.values(ProjectStatus)}
-              itemToString={(status) =>
-                `${statusDisplayTitles[status]} (${
-                  status === "all"
-                    ? projects.length
-                    : statusProjects[status].length
-                })`
-              }
-              filterOptions={["Newest first", "Highest Budget", "None"]}
-              onFilterSelected={(option) => {
-                if (option) setSelectedFilterOption(option);
-              }}
-            />
-          </div>
-
-          {loading ? (
-            <div className="h-64 pt-52">
-              <Spinner color="black" />
-            </div>
-          ) : projects.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 bg-white rounded-lg ">
-              <h3 className="text-lg font-medium text-gray-900">
-                No Tasks Found!
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Create your first task to get started
-              </p>
-            </div>
-          ) : (
-            <div
-              ref={scrollContainerRef}
-              className="flex overflow-x-auto pb-4 mt-4 scrollbar-hidden w-full container"
-              style={{ scrollSnapType: "x mandatory" }}
-            >
-              {(
-                ["all", "todo", "inprogress", "completed"] as ProjectStatus[]
-              ).map((status) => (
-                <StatusColumn
-                  key={status}
-                  status={status}
-                  projects={
-                    status === "all" ? filteredProjects : statusProjects[status]
-                  }
-                  allProjects={filteredProjects}
-                  onStatusChange={handleStatusChange}
-                  onDrag={moveMainList}
-                  showSearchBar={showSearchBar}
-                  setShowSearchBar={setShowSearchBar}
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                />
-              ))}
-            </div>
-          )}
+        {/* Tabs & Filters */}
+        <div className="container w-full">
+          <CustomTabBarWidget<ProjectStatus>
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            scrollToSection={scrollToSection}
+            proprimaryColor="#000"
+            backgroundColor={[
+              "#6b7280", "#000", "#f59e0b", "#10b981",
+            ]}
+            listofitems={Object.values(ProjectStatus)}
+            itemToString={(status) =>
+              `${statusDisplayTitles[status]} (${
+                status === ProjectStatus.ALL
+                  ? projects.length
+                  : statusProjects[status].length
+              })`
+            }
+            filterOptions={["Newest first", "Highest Budget", "None"]}
+            onFilterSelected={(opt) => opt && setSelectedFilterOption(opt)}
+          />
         </div>
 
+        {/* Content */}
+        {loading ? (
+          <div className="h-64 pt-52">
+            <Spinner color="black" />
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-64">
+            <h3 className="text-lg font-medium text-gray-900">
+              No Tasks Found!
+            </h3>
+            <p className="mt-1 text-sm text-gray-500">
+              Create your first task to get started
+            </p>
+          </div>
+        ) : (
+          <div
+            ref={scrollContainerRef}
+            className="flex overflow-x-auto pb-4 mt-4 scrollbar-hidden w-full container"
+            style={{ scrollSnapType: "x mandatory" }}
+          >
+            {Object.values(ProjectStatus).map((status) => (
+              <StatusColumn
+                key={status}
+                status={status}
+                projects={
+                  status === ProjectStatus.ALL
+                    ? filteredProjects
+                    : statusProjects[status]
+                }
+                allProjects={[]}
+                onEdit={handleEdit}
+                onStatusChange={handleStatusChange}
+                onDrag={moveMainList}
+                showSearchBar={showSearchBar}
+                setShowSearchBar={setShowSearchBar}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
+            ))}
+          </div>
+        )}
+
         {/* Add Task Modal */}
-        <Modal open={showModal} onClose={() => setShowModal(false)}>
-          <AddProjectModal
-            onClose={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-          />
+        <Modal open={showModal} onClose={() => {setShowModal(false); loadProjects();}}>
+          <AddProjectModal onClose={() => {setShowModal(false); loadProjects();}} />
+        </Modal>
+
+        {/* Edit Task Modal */}
+        <Modal open={showEditModal} onClose={() => {setShowEditModal(false); loadProjects();}}>
+          <AddProjectModal project={editTask} onClose={() => {setShowEditModal(false); loadProjects();}} />
         </Modal>
       </div>
     </DndProvider>
@@ -313,6 +253,7 @@ const StatusColumn = ({
   setShowSearchBar,
   searchQuery,
   setSearchQuery,
+  onEdit,
 }: {
   status: ProjectStatus;
   projects: Project[];
@@ -323,6 +264,7 @@ const StatusColumn = ({
   setShowSearchBar: (show: boolean) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  onEdit: (task: Project) => void;
 }) => {
   return (
     <div
@@ -383,7 +325,7 @@ const StatusColumn = ({
         >
           {projects.length > 0 ? (
             projects.map((project) => (
-              <TaskCard key={project.id} project={project} status={status} />
+              <TaskCard key={project.id} project={project} status={status} onEdit={onEdit} />
             ))
           ) : (
             <div className="text-center py-8 text-gray-500">
@@ -397,6 +339,7 @@ const StatusColumn = ({
           projects={projects}
           onStatusChange={onStatusChange}
           onDrag={onDrag}
+          onEdit={onEdit}
         />
       )}
     </div>
@@ -408,11 +351,13 @@ const DropColumn = ({
   projects,
   onStatusChange,
   onDrag,
+  onEdit,
 }: {
   status: ProjectStatus;
   projects: Project[];
   onStatusChange: (id: string, newStatus: ProjectStatus) => void;
   onDrag: (isRight: boolean) => void;
+  onEdit: (task: Project) => void;
 }) => {
   const [{ isOver }, drop] = useDrop({
     accept: "task",
@@ -432,7 +377,7 @@ const DropColumn = ({
     >
       {projects.length > 0 ? (
         projects.map((project) => (
-          <DraggableTask key={project.id} project={project} onDrag={onDrag} />
+          <DraggableTask key={project.id} project={project} onDrag={onDrag} onEdit={onEdit} />
         ))
       ) : (
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center text-gray-500">
@@ -446,9 +391,11 @@ const DropColumn = ({
 const DraggableTask = ({
   project,
   onDrag,
+  onEdit,
 }: {
   project: Project;
   onDrag: (isRight: boolean) => void;
+  onEdit: (task: Project) => void;
 }) => {
   const [{ isDragging }, drag] = useDrag({
     type: "task",
@@ -474,7 +421,67 @@ const DraggableTask = ({
       onDrag={handleDrag}
       className={`mb-3 ${isDragging ? "opacity-30" : "opacity-100"}`}
     >
-      <TaskCard project={project} status={project.status} />
+      <TaskCard project={project} status={project.status} onEdit={onEdit} />
+    </div>
+  );
+};
+
+const TaskCard = ({
+  project,
+  status,
+  onEdit,
+}: {
+  project: Project;
+  status: ProjectStatus;
+  onEdit: (task: Project) => void;
+}) => {
+  
+  const shop = useAppSelector((state) => state.shop.shopInfo);
+  return (
+    <div
+      className={`p-2 rounded-lg border border-l-4 my-4 ${
+        status === "to-do"
+          ? "border-black"
+          : status === "pending"
+          ? "border-amber-500"
+          : status === "completed"
+          ? "border-green-500"
+          : "border-gray-300"
+      } bg-white`}
+    >
+      <div className="flex justify-between items-start">
+        <div className="w-full">
+          <div className="flex justify-between w-full items-center justify-center">
+            <div className="bg-backgroundcolor w-fit  px-2 py-1 rounded-md flex items-center justify-center">
+              <FiCheckSquare size={15} />
+              <h4 className="font-medium text-sm pl-2 text-gray-900">
+                {project.name}
+              </h4>
+            </div>
+            <OptionsButton
+              item={undefined}
+              isBoost={undefined}
+              onEdit={() => onEdit(project)} 
+              onDelete={undefined}
+              onView={undefined}
+              onBoost={undefined}
+            />
+          </div>
+        </div>
+      </div>
+      <p className="text-sm text-gray-500 mt-1">
+        <span className="font-bold">Expenses:</span> {shop!.currency}
+        {project.amount.toLocaleString()}
+      </p>
+      <p className="text-sm text-gray-500 mt-1">
+        <span className="font-bold">Duration:</span> {project.duration}
+      </p>
+      <p className="text-sm text-gray-500 mt-1">
+        <span className="font-bold">Description:</span> {project.description}
+      </p>
+      <div className="mt-3 flex justify-end items-end">
+        <ProjectStatusChanger project={project} />
+      </div>
     </div>
   );
 };
