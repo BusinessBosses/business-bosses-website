@@ -1,8 +1,10 @@
+import { Shop } from "../../../../common/interfaces/Shop";
+
 // src/pages/proscreens/tasks/models/projectsmodel.ts
 export enum ProjectStatus {
   ALL = 'all',
-  TODO = 'todo',
-  INPROGRESS = 'inprogress',
+  TODO = 'to-do',
+  INPROGRESS = 'pending',
   COMPLETED = 'completed',
 }
 
@@ -17,6 +19,7 @@ export interface Project {
   endAt: Date;
   description: string;
   duration: string;
+  shop: Shop;
 }
 
 // Add any helper functions you need here

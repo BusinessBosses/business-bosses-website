@@ -4,20 +4,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FiX } from "react-icons/fi";
 import CustomEditText from "../../biz-center/components/customedittext";
 import ProCustomButton from "../../biz-center/components/procustombutton";
+import { toast } from "react-toastify";
+import { useAppSelector } from "../../../../redux/store/store";
+import ShopController from "../../biz-center/controllers/ShopController";
+import { Project } from "../models/projectsmodel";
 
 // Temporary snackbar function for displaying messages
 const showSnackbar = (message: string, isError: boolean) => {
   alert(`${isError ? "Error: " : ""}${message}`);
 };
-
-interface Project {
-  id?: string;
-  name?: string;
-  description?: string;
-  amount?: number;
-  startAt?: string;
-  endAt?: string;
-}
 
 interface AddProjectModalProps {
   project?: Project;
@@ -41,6 +36,8 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
     project?.endAt ? new Date(project.endAt) : null
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const profile = useAppSelector((state) => state.user);
+  const shop = useAppSelector((state) => state.shop.shopInfo);
 
   // Initialize currency from shop if available
   useEffect(() => {
@@ -56,19 +53,19 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
 
   const handleSubmit = async () => {
     if (!name) {
-      showSnackbar("Name is mandatory!", true);
+      toast.error("Name is mandatory!", { autoClose: 3000 });
       return;
     }
     if (!budget) {
-      showSnackbar("Budget is mandatory!", true);
+      toast.error("Budget is mandatory!", { autoClose: 3000 });
       return;
     }
     if (!endDate || !startDate) {
-      showSnackbar("You have to select task duration!", true);
+      toast.error("You have to select task duration!", { autoClose: 3000 });
       return;
     }
     if (endDate < startDate) {
-      showSnackbar("End date cannot be before start date!", true);
+      toast.error("End date cannot be before start date!", { autoClose: 3000 });
       return;
     }
 
@@ -78,29 +75,48 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
       (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
     );
 
-    const projectData = {
+    const payload = {
+      userId: profile.profile!.uid,
       name,
       amount: parseFloat(budget),
       description,
       duration: `${durationInDays} day(s)`,
       startAt: startDate.toISOString().split("T")[0],
       endAt: endDate.toISOString().split("T")[0],
-      currency,
-    };
+    } as const;
 
-    // try {
-    //   await onSave(projectData, project?.id);
-    //   console.log(
-    //     project ? "Task Updated Successfully!" : "Task Added Successfully!"
-    //   );
-    //   onClose();
-    // } catch (error) {
-    //   console.error(
-    //     project ? "Error While Editing Task!" : "Error While Adding Task"
-    //   );
-    // } finally {
-    //   setIsSubmitting(false);
-    // }
+    try {
+      if (project) {
+        // —— EDIT MODE ——
+        const res = await ShopController.updateProject(project.id, payload);
+        if (res.success) {
+          toast.success("Task updated successfully!", { autoClose: 3000 });
+          onClose();
+        } else {
+          toast.error(res.message || "Failed to update task", { autoClose: 3000 });
+        }
+      } else {
+        // —— CREATE MODE ——
+        const createData = {
+          ...payload,
+          userId: profile.profile!.uid,
+        };
+        const res = await ShopController.addProject(createData);
+        if (res.success) {
+          toast.success("Task added successfully!", { autoClose: 3000 });
+          onClose();
+        } else {
+          toast.error(res.message || "Failed to add task", { autoClose: 3000 });
+        }
+      }
+    } catch (err) {
+      toast.error(
+        project ? "Error while updating task!" : "Error while adding task!",
+        { autoClose: 3000 }
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
