@@ -13,11 +13,11 @@ const TaskCard = ({
   return (
     <div
       className={`p-2 rounded-lg border border-l-4 my-4 ${
-        status === "todo"
+        status === ProjectStatus.TODO
           ? "border-black"
-          : status === "inprogress"
+          : status === ProjectStatus.INPROGRESS
           ? "border-amber-500"
-          : status === "completed"
+          : status === ProjectStatus.COMPLETED
           ? "border-green-500"
           : "border-gray-300"
       } bg-white`}
