@@ -14,7 +14,7 @@ import Spinner from "../tasks/components/spinner";
 import CreateOrderModal from "./components/ordermodal";
 import OrderWidget from "./components/orderwidget";
 import { Order, OrderStatus } from "./model/order";
-import { ClientType } from "../customers/models/client";
+import { Client, ClientType } from "../customers/models/client";
 import { Shop } from "@mui/icons-material";
 import ProCustomButton from "../biz-center/components/procustombutton";
 
@@ -22,14 +22,14 @@ const statusColors: Record<OrderStatus, string> = {
   [OrderStatus.ALL_ORDERS]: "bg-gray-100",
   [OrderStatus.PENDING]: "bg-amber-500",
   [OrderStatus.PAID]: "bg-blue-500",
-  [OrderStatus.CANCELLED]: "bg-green-500",
+  [OrderStatus.COMPLETED]: "bg-green-500",
 };
 
 const statusDisplayTitles: Record<OrderStatus, string> = {
   [OrderStatus.ALL_ORDERS]: "All Orders",
   [OrderStatus.PENDING]: "Pending",
   [OrderStatus.PAID]: "Paid",
-  [OrderStatus.CANCELLED]: "Cancelled",
+  [OrderStatus.COMPLETED]: "Completed",
 };
 
 const Orders = () => {
@@ -135,6 +135,53 @@ const Orders = () => {
     }, 1000);
   }, []);
 
+  const mockClients = [
+    { id: "client1", name: "John Doe", type: "Individual" },
+    { id: "client2", name: "Acme Corp", type: "Business" },
+    { id: "client3", name: "Jane Smith", type: "Individual" },
+  ];
+
+  const mockProducts = [
+    {
+      id: "product1",
+      name: "Website Design",
+      price: 1200,
+      images: ["/api/placeholder/50/50"],
+    },
+    {
+      id: "product2",
+      name: "Logo Design",
+      price: 500,
+      images: ["/api/placeholder/50/50"],
+    },
+    {
+      id: "product3",
+      name: "Business Cards",
+      price: 150,
+      images: ["/api/placeholder/50/50"],
+    },
+  ];
+
+  const mockServices = [
+    { id: "service1", name: "Consultation", price: 100 },
+    { id: "service2", name: "SEO Optimization", price: 300 },
+    { id: "service3", name: "Social Media Setup", price: 250 },
+  ];
+
+  const mockPaymentMethods = ["Credit Card", "Cash", "Bank Transfer", "PayPal"];
+
+  const mockShop = {
+    id: "shop1",
+    name: "Design Studio",
+    userId: "user1",
+    location: "New York",
+    description: "Professional design services",
+    promote: false,
+    views: 120,
+    isProduct: false,
+    currency: "$",
+  };
+
   const scrollToSection = (index: number) => {
     if (scrollContainerRef.current) {
       const scrollAmount = index * window.innerWidth * 0.9;
@@ -193,7 +240,7 @@ const Orders = () => {
     );
   };
 
-  const statusOrders = {
+  const statusOrders: Record<OrderStatus, Order[]> = {
     [OrderStatus.ALL_ORDERS]: filteredOrders,
     [OrderStatus.PENDING]: filteredOrders.filter(
       (o) => o.status === OrderStatus.PENDING
@@ -201,8 +248,8 @@ const Orders = () => {
     [OrderStatus.PAID]: filteredOrders.filter(
       (o) => o.status === OrderStatus.PAID
     ),
-    [OrderStatus.CANCELLED]: filteredOrders.filter(
-      (o) => o.status === OrderStatus.CANCELLED
+    [OrderStatus.COMPLETED]: filteredOrders.filter(
+      (o) => o.status === OrderStatus.COMPLETED
     ),
   };
 
@@ -279,35 +326,178 @@ const Orders = () => {
           )}
         </div>
 
-        <Modal open={showModal} onClose={() => setShowModal(false)}>
+        {showModal && (
           <CreateOrderModal
             onClose={() => setShowModal(false)}
-            open={false}
-            clients={[]}
-            products={[]}
-            services={[]}
-            paymentMethods={[]}
-            onCreateOrder={function (orderData: any): Promise<boolean> {
-              throw new Error("Function not implemented.");
+            shop={mockShop}
+            clients={mockClients}
+            products={mockProducts}
+            services={mockServices}
+            paymentMethods={mockPaymentMethods}
+            onCreateOrder={async (orderData) => {
+              console.log("Creating order:", orderData);
+              // Simulate API call
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  // Add the new order to the state
+                  const newOrder = {
+                    id: `order-${Date.now()}`,
+                    userId: "user1",
+                    shopId: "shop1",
+                    clientId: orderData.clientId,
+                    status: OrderStatus.PENDING,
+                    createdAt: new Date(),
+                    deliveryDate: new Date(orderData.deliveryDate),
+                    deliveryMethod: orderData.deliveryMethod,
+                    paymentMethod: orderData.paymentMethod,
+                    invoiceOption: orderData.invoiceOption,
+                    items: orderData.items.map(
+                      (item: {
+                        type: string;
+                        id: string;
+                        name: string;
+                        price: string | number;
+                      }) => ({
+                        type: item.type,
+                        id:
+                          parseInt(item.id.split("-")[1]) || parseInt(item.id),
+                        name: item.name,
+                        amount: parseFloat(item.price.toString()),
+                      })
+                    ),
+                    client: mockClients.find(
+                      (c) => c.id === orderData.clientId
+                    ) as Client,
+                    shop: mockShop,
+                    notes: orderData.notes,
+                    products: [],
+                    services: [],
+                    customItems: [],
+                  };
+
+                  setOrders((prev) => [...prev, newOrder]);
+                  setFilteredOrders((prev) => [...prev, newOrder]);
+
+                  resolve(true);
+                }, 1000);
+              });
             }}
-            onUpdateOrder={function (
-              orderId: string,
-              orderData: any
-            ): Promise<boolean> {
-              throw new Error("Function not implemented.");
-            }}
-            shop={{
-              id: "shop1",
-              name: "Shop 1",
-              userId: "",
-              location: "",
-              description: "",
-              promote: false,
-              views: 0,
-              isProduct: false,
+            onUpdateOrder={async (orderId, orderData) => {
+              console.log("Updating order:", orderId, orderData);
+              // Simulate API call
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  // Update the order in the state
+                  setOrders((prev) =>
+                    prev.map((order) =>
+                      order.id === orderId
+                        ? {
+                            ...order,
+                            clientId: orderData.clientId,
+                            deliveryDate: new Date(orderData.deliveryDate),
+                            deliveryMethod: orderData.deliveryMethod,
+                            paymentMethod: orderData.paymentMethod,
+                            invoiceOption: orderData.invoiceOption,
+                            items: orderData.items.map(
+                              (item: {
+                                type: string;
+                                id: string;
+                                name: string;
+                                price: string | number;
+                              }) => ({
+                                type: item.type,
+                                id:
+                                  typeof item.id === "string" &&
+                                  item.id.includes("-")
+                                    ? parseInt(item.id.split("-")[1])
+                                    : typeof item.id === "string"
+                                    ? parseInt(item.id)
+                                    : item.id,
+                                name: item.name,
+                                amount: parseFloat(
+                                  typeof item.price === "string"
+                                    ? item.price
+                                    : item.price.toString()
+                                ),
+                              })
+                            ),
+                            client: mockClients.find(
+                              (c) => c.id === orderData.clientId
+                            ) as Client,
+                            notes: orderData.notes,
+                          }
+                        : order
+                    )
+                  );
+
+                  setFilteredOrders((prev: Order[]) =>
+                    prev.map((order) => {
+                      if (order.id !== orderId) return order;
+
+                      const foundClient = mockClients.find(
+                        (c) => c.id === orderData.clientId
+                      );
+
+                      if (!foundClient) {
+                        throw new Error("Client not found");
+                      }
+
+                      // You must ensure 'foundClient' has all the fields required by 'Client'
+                      const client: Client = {
+                        id: foundClient.id,
+                        name: foundClient.name,
+                        type: foundClient.type as ClientType,
+                        userId: (foundClient as any).userId,
+                        email: (foundClient as any).email || "",
+                        phone: (foundClient as any).phone || "",
+                        createdAt:
+                          (foundClient as any).createdAt ||
+                          new Date().toISOString(),
+                        image: (foundClient as any).image || "",
+                        orderCount: 0,
+                        totalAmountSpent: 0,
+                      };
+
+                      return {
+                        ...order,
+                        clientId: orderData.clientId,
+                        deliveryDate: new Date(orderData.deliveryDate),
+                        deliveryMethod: orderData.deliveryMethod,
+                        paymentMethod: orderData.paymentMethod,
+                        invoiceOption: orderData.invoiceOption,
+                        items: orderData.items.map(
+                          (item: {
+                            type: any;
+                            id: string;
+                            name: any;
+                            price: { toString: () => string };
+                          }) => ({
+                            type: item.type,
+                            id:
+                              typeof item.id === "string"
+                                ? parseInt(
+                                    item.id.includes("-")
+                                      ? item.id.split("-")[1]
+                                      : item.id
+                                  )
+                                : item.id,
+                            name: item.name,
+                            amount: parseFloat(item.price.toString()),
+                            price: parseFloat(item.price.toString()),
+                          })
+                        ),
+                        client, // now properly typed
+                        notes: orderData.notes,
+                      };
+                    })
+                  );
+
+                  resolve(true);
+                }, 1000);
+              });
             }}
           />
-        </Modal>
+        )}
       </div>
     </DndProvider>
   );

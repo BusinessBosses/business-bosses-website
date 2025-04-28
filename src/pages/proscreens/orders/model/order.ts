@@ -10,7 +10,7 @@ export enum OrderStatus {
   ALL_ORDERS = 'allorders',
   PENDING = 'pending',
   PAID = 'paid',
-  CANCELLED = 'cancelled',
+  COMPLETED = 'completed',
 }
 
 export interface OrderItem {
@@ -54,8 +54,8 @@ export const orderStatusFromString = (status: string): OrderStatus => {
       return OrderStatus.PENDING;
     case 'paid':
       return OrderStatus.PAID;
-    case 'cancelled':
-      return OrderStatus.CANCELLED;
+    case 'completed':
+      return OrderStatus.COMPLETED;
     default:
       throw new Error(`Unknown status: ${status}`);
   }
@@ -69,7 +69,7 @@ export const getOrderStatusDisplayTitle = (status: OrderStatus): string => {
       return 'Pending';
     case OrderStatus.PAID:
       return 'Paid';
-    case OrderStatus.CANCELLED:
+    case OrderStatus.COMPLETED:
       return 'Completed';
   }
 };
@@ -77,12 +77,12 @@ export const getOrderStatusDisplayTitle = (status: OrderStatus): string => {
 export const getOrderStatusBackgroundColor = (status: OrderStatus): string => {
   switch (status) {
     case OrderStatus.ALL_ORDERS:
-      return 'bg-white';
+      return 'bg-gray-100';
     case OrderStatus.PENDING:
       return 'bg-amber-100';
     case OrderStatus.PAID:
       return 'bg-blue-100';
-    case OrderStatus.CANCELLED:
+    case OrderStatus.COMPLETED:
       return 'bg-green-100';
   }
 };
@@ -95,8 +95,8 @@ export const orderStatusToString = (status: OrderStatus): string => {
       return 'pending';
     case OrderStatus.PAID:
       return 'paid';
-    case OrderStatus.CANCELLED:
-      return 'cancelled';
+    case OrderStatus.COMPLETED:
+      return 'COMPLETED';
   }
 };
 

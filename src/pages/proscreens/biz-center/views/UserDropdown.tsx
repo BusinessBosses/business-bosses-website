@@ -22,7 +22,7 @@ export default function UserDropdown() {
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dropdown-toggle"
       >
-        <span className="block mr-1 font-medium text-theme-sm">{ shop!.user!.username }</span>
+        {/* <span className="block mr-1 font-medium text-theme-sm">{ shop!.user!.username }</span> */}
         <svg
           className={`stroke-gray-500 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
