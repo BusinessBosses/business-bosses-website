@@ -54,7 +54,7 @@ export const orderStatusFromString = (status: string): OrderStatus => {
       return OrderStatus.PENDING;
     case 'paid':
       return OrderStatus.PAID;
-    case 'completed':
+    case 'cancelled':
       return OrderStatus.COMPLETED;
     default:
       throw new Error(`Unknown status: ${status}`);

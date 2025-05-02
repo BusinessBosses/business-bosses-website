@@ -18,12 +18,23 @@ const OrderWidget = ({
   onDelete,
   onView,
 }: OrderWidgetProps) => {
-  const calculateTotal = () => {
-    if (!order.items || order.items.length === 0) return 0;
-    return order.items.reduce((sum, item) => sum + (item.amount || 0), 0);
+  const calculateTotalPrice = (): number => {
+    const productsSum =
+      order.products?.reduce((sum, p) => sum + (p.price ?? 0), 0) || 0;
+    const servicesSum =
+      order.services?.reduce((sum, s) => sum + (s.price ?? 0), 0) || 0;
+    return productsSum + servicesSum;
   };
 
-  const totalAmount = calculateTotal();
+  // Count products + services
+  const calculateTotalItems = (): number => {
+    const productCount = order.products?.length || 0;
+    const serviceCount = order.services?.length || 0;
+    return productCount + serviceCount;
+  };
+
+  const totalAmount = calculateTotalPrice();
+  const totalItems = calculateTotalItems();
 
   return (
     <div
@@ -43,7 +54,7 @@ const OrderWidget = ({
             <div className="bg-gray-100 w-fit px-2 py-1 rounded-md flex items-center">
               <FiPackage className="h-4 w-4" />
               <h4 className="font-medium text-sm pl-2 text-gray-900">
-                {order.items?.length || 0} item(s) - $
+                {totalItems || 0} item(s) - N
                 {totalAmount.toLocaleString()}
               </h4>
             </div>

@@ -27,7 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { setShopInfo } from "../../../../redux/slices/ShopSlice";
 
 interface SetupShopProps {
-  shop?: Shop;
+  shop?: Shop | null;
   backToHome?: boolean;
   partnerData: PartnerData | null;
   partnerDatatile: PartnerDatatile | null;
@@ -666,6 +666,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                 />
 
                 <CustomDropdown
+                  initialValue={imageType}
                   caption="Image Type"
                   hintText="Choose an image type"
                   items={["Circle", "Banner"]}
@@ -702,7 +703,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                 />
 
                 <CustomDropdown
-                  initialValue={"category"}
+                  initialValue={category}
                   caption="Select Category *"
                   hintText="Choose a category"
                   items={categories}

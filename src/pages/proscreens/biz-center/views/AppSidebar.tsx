@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import SidebarWidget from "./SidebarWidget";
 import { useSidebar } from "../../../../context/SidebarContext";
 import Assets from "../../../../assets";
 import { Link } from "react-router-dom";
 import { FiCheckSquare, FiGrid, FiSettings, FiShoppingBag, FiUsers } from "react-icons/fi";
+import { useAppSelector } from "../../../../redux/store/store";
+import { toast } from "react-toastify";
 
 type NavItem = {
   name: string;
@@ -36,8 +38,8 @@ const navItems: NavItem[] = [
   },
   {
     icon: <FiSettings size={20} />,
-    name: "Setup",
-    path: "/setup",
+    name: "Edit Shop",
+    path: "/pro/edit-shop",
   },
 ];
 
@@ -53,6 +55,9 @@ const AppSidebar: React.FC = () => {
     {}
   );
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const shopRedux = useAppSelector((state) => state.shop.shopInfo);
+
+ const navigate = useNavigate();
 
   const isActive = useCallback(
     (path: string) => location.pathname === path,
@@ -79,6 +84,13 @@ const AppSidebar: React.FC = () => {
       setOpenSubmenu(null);
     }
   }, [location, isActive]);
+
+  useEffect(() => {
+    if (!shopRedux) {
+      toast.error('You don\'t have a shop!', {'autoClose': 3000});
+      navigate("/setupshop", { replace: true });
+    }
+  }, [shopRedux, navigate]);
 
   useEffect(() => {
     if (openSubmenu !== null) {

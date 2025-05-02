@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Assets from "../../../../assets"; // Adjust path as needed
 
 type CustomDropdownProps = {
@@ -28,9 +28,14 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   isOrder = false,
   iconColor,
 }) => {
-  const [selectedItem, setSelectedItem] = useState<string | null>(
-    initialValue && items.includes(initialValue) ? initialValue : null
-  );
+   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+ // whenever initialValue changes, re-sync it into state
+ useEffect(() => {
+   if (initialValue && items.includes(initialValue)) {
+     setSelectedItem(initialValue);
+  }
+ }, [initialValue, items]);
   const [error, setError] = useState<string | undefined>();
 
   const handleChange = (value: string | null) => {

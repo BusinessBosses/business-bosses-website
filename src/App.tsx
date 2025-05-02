@@ -95,6 +95,7 @@ const App = () => {
   const location = useLocation();
   const market = useAppSelector((state) => state.market);
   const user = useAppSelector((state) => state.user);
+  const shop = useAppSelector((state) => state.shop.shopInfo);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [partnerData, setPartnerData] = useState<PartnerData | null>(null);
@@ -807,8 +808,8 @@ const App = () => {
           <Route path="orders" element={<Orders />} />
           <Route path="customers" element={<Customers />} />
           <Route
-            path="setup"
-            element={<Setup partnerData={null} partnerDatatile={null} />}
+            path="edit-shop"
+            element={<Setup shop={shop!} partnerData={partnerData} partnerDatatile={partnerDatatile} />}
           />
         </Route>
       </Routes>
