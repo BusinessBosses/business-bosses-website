@@ -1,219 +1,363 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import OrdersWidget from "../dashboard/components/orderscard";
-import FinancialAnalysisWidget from "../dashboard/components/finalanalysiscard";
-import InfoCard from "../dashboard/components/infocard";
-import QuickActionCard from "../dashboard/components/quickactioncard";
-import GotoshopWidget from "../dashboard/components/gotoshopwidget";
-import NotificationButton from "../dashboard/components/notificationbutton";
-import Assets from "../../../assets";
+import React, { useState, useEffect, useRef } from "react";
+import { useDrag, useDrop, DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { FiSearch, FiX, FiPlusSquare } from "react-icons/fi";
+import CustomTabBarWidget from "../tasks/components/customtabbar";
+import Spinner from "../tasks/components/spinner";
+import CreateOrderModal from "./components/ordermodal";
+import OrderWidget from "./components/orderwidget";
+import { Order, OrderStatus } from "./model/order";
+import { Client, ClientType } from "../customers/models/client";
+import ProCustomButton from "../biz-center/components/procustombutton";
+import ShopController from "../biz-center/controllers/ShopController";
 import { useAppSelector } from "../../../redux/store/store";
 
-type OrderStats = {
-  pending: number;
-  paid: number;
-  cancelled: number;
-  totalOrders: number;
+const statusColors: Record<OrderStatus, string> = {
+  [OrderStatus.ALL_ORDERS]: "bg-gray-100",
+  [OrderStatus.PENDING]: "bg-amber-500",
+  [OrderStatus.PAID]: "bg-blue-500",
+  [OrderStatus.COMPLETED]: "bg-green-500",
 };
 
-type ShopStats = {
-  totalAmount: number;
-  totalExpenses: number;
-  clientCount: number;
-  views: number;
-  projectCount: number;
+const statusDisplayTitles: Record<OrderStatus, string> = {
+  [OrderStatus.ALL_ORDERS]: "All Orders",
+  [OrderStatus.PENDING]: "Pending",
+  [OrderStatus.PAID]: "Paid",
+  [OrderStatus.COMPLETED]: "Completed",
 };
 
-type Shop = {
-  currency: string;
-};
+const Orders: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<number>(0);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
-  const navigate = useNavigate();
-  const [selectedFilterItem, setSelectedFilterItem] = useState("All Time");
-  const [selectedDateFilter, setSelectedDateFilter] = useState("all_time");
-  const [loadingData, setLoadingData] = useState(true);
-  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  // raw + filtered lists
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
 
-  // Mock data - replace with your actual data fetching logic
-  const orderStats: OrderStats = {
-    pending: 5,
-    paid: 10,
-    cancelled: 2,
-    totalOrders: 17,
-  };
+  // grouped by status
+  const [statusOrders, setStatusOrders] = useState<Record<OrderStatus, Order[]>>({
+    [OrderStatus.ALL_ORDERS]: [],
+    [OrderStatus.PENDING]: [],
+    [OrderStatus.PAID]: [],
+    [OrderStatus.COMPLETED]: [],
+  });
+  const [allOrders, setAllOrders] = useState<Order[]>([]);
 
-  const shopStats: ShopStats = {
-    totalAmount: 5000,
-    totalExpenses: 2000,
-    clientCount: 42,
-    views: 128,
-    projectCount: 7,
-  };
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const currentShop: Shop = { currency: "USD" };
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const titles = ["Customers", "Visitors", "To-do tasks"];
-  const quickActions = ["Add Listing", "Create Orders", "Add Customers"];
-    const shop = useAppSelector((state) => state.shop.shopInfo);
+  const shop = useAppSelector((state) => state.shop.shopInfo);
 
+  // 1️⃣ Fetch & group on mount (or when shop changes)
   useEffect(() => {
-    // Simulate data loading
-    const timer = setTimeout(() => {
-      setLoadingData(false);
-    }, 1000);
+    const fetchOrders = async () => {
+      if (!shop?.id) return;
+      setLoading(true);
+      try {
+        const {
+          orders: fetched,
+          statusOrders: buckets,
+          allOrders: flatList,
+        } = await ShopController.initOrders(shop.id);
 
-    return () => clearTimeout(timer);
-  }, []);
+        setOrders(fetched);
+        setFilteredOrders(fetched);
+        setStatusOrders(buckets);
+        setAllOrders(flatList);
+      } catch (err) {
+        console.error("Failed to load orders:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, [shop?.id]);
 
-  const handleFilterSelect = (filter: string) => {
-    setSelectedFilterItem(filter);
-    setShowFilterMenu(false);
+  // 2️⃣ Apply search only on “All Orders”
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredOrders(orders);
+    } else {
+      const q = searchQuery.toLowerCase();
+      setFilteredOrders(
+        orders.filter((o) => o.client?.name.toLowerCase().includes(q))
+      );
+    }
+  }, [searchQuery, orders]);
 
-    // Map filter to date filter value
-    let dateFilter = "all_time";
-    if (filter === "Today") dateFilter = "today";
-    else if (filter === "Last 7 Days") dateFilter = "last_7_days";
-    else if (filter === "Last 30 Days") dateFilter = "last_30_days";
-
-    setSelectedDateFilter(dateFilter);
-    // Here you would typically call your data filtering function
+  // 3️⃣ Build the render‐time buckets: use search on ALL, controller buckets on others
+  const statusOrdersToRender: Record<OrderStatus, Order[]> = {
+    [OrderStatus.ALL_ORDERS]: filteredOrders,
+    [OrderStatus.PENDING]: statusOrders[OrderStatus.PENDING],
+    [OrderStatus.PAID]: statusOrders[OrderStatus.PAID],
+    [OrderStatus.COMPLETED]: statusOrders[OrderStatus.COMPLETED],
   };
 
-  if (loadingData) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div>Loading Statistics...</div>
-      </div>
+  // helpers for scrolling tabs
+  const scrollToSection = (index: number) => {
+    if (!scrollContainerRef.current) return;
+    const left = index * window.innerWidth * 0.9;
+    scrollContainerRef.current.scrollTo({ left, behavior: "smooth" });
+  };
+  const moveMainList = (isRight: boolean) => {
+    if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+    scrollTimerRef.current = setTimeout(() => {
+      const el = scrollContainerRef.current;
+      if (!el) return;
+      const cur = el.scrollLeft;
+      const max = el.scrollWidth - el.clientWidth;
+      if ((cur <= 20 && !isRight) || (cur >= max - 20 && isRight)) return;
+      el.scrollTo({ left: cur + (isRight ? 50 : -50), behavior: "smooth" });
+      moveMainList(isRight);
+    }, 100);
+  };
+
+  // when you drop an order into a new status column
+  const handleStatusChange = (orderId: string, newStatus: OrderStatus) => {
+    setOrders((prev) =>
+      prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
     );
-  }
+  };
+
+  // mock data for CreateOrderModal
+  const mockClients: Client[] = [
+    { id: "client1", name: "John Doe", email: "", phone: "", userId: "", type: ClientType.ALL_CLIENTS, createdAt: new Date(), image: [], orderCount: 0, totalAmountSpent: 0 },
+    { id: "client2", name: "Acme Corp", email: "", phone: "", userId: "", type: ClientType.ALL_CLIENTS, createdAt: new Date(), image: [], orderCount: 0, totalAmountSpent: 0 },
+    { id: "client3", name: "Jane Smith", email: "", phone: "", userId: "", type: ClientType.ALL_CLIENTS, createdAt: new Date(), image: [], orderCount: 0, totalAmountSpent: 0 },
+  ];
+  const mockProducts = [
+    { id: "product1", name: "Website Design", price: 1200, images: ["/api/placeholder/50/50"] },
+    { id: "product2", name: "Logo Design", price: 500, images: ["/api/placeholder/50/50"] },
+    { id: "product3", name: "Business Cards", price: 150, images: ["/api/placeholder/50/50"] },
+  ];
+  const mockServices = [
+    { id: "service1", name: "Consultation", price: 100 },
+    { id: "service2", name: "SEO Optimization", price: 300 },
+    { id: "service3", name: "Social Media Setup", price: 250 },
+  ];
+  const mockPaymentMethods = ["Credit Card", "Cash", "Bank Transfer", "PayPal"];
 
   return (
-    <div className="bg-blue-50 min-h-screen">
-      {/* App Bar */}
-      <div className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <GotoshopWidget shop={shop!} />
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => navigate("/chat")}
-              className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center"
-            >
-              <img
-                src={Assets.NotificationIcon}
-                alt="Chat"
-                className="w-5 h-5"
-              />
-            </button>
-            <NotificationButton hasUnreadNotification={true} />
-          </div>
-        </div>
-      </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className="bg-white min-h-screen w-full flex flex-col rounded-2xl">
+        <header className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <h1 className="text-xl font-bold">Orders</h1>
+          <ProCustomButton
+            text="Create Order"
+            icon={<FiPlusSquare className="h-6 w-6" />}
+            onPressed={() => setShowModal(true)}
+          />
+        </header>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-4">
-        {/* Back Button (conditionally rendered) */}
-        {!noBack && (
-          <button
-            onClick={() => navigate("/home")}
-            className="mt-2 ml-2 px-3 py-1 bg-blue-100 rounded-full flex items-center text-blue-600"
-          >
-            <span className="mr-1">←</span>
-            
-          </button>
+        <div className="container mx-auto px-4 flex-1 flex flex-col">
+          <CustomTabBarWidget<OrderStatus>
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            scrollToSection={scrollToSection}
+            proprimaryColor="#000000"
+            backgroundColor={["#6b7280", "#000000", "#f59e0b", "#10b981"]}
+            listofitems={Object.values(OrderStatus)}
+            itemToString={(status) =>
+              `${statusDisplayTitles[status]} (${
+                status === OrderStatus.ALL_ORDERS
+                  ? filteredOrders.length
+                  : statusOrdersToRender[status]?.length ?? 0
+              })`
+            }
+          />
+
+          {loading ? (
+            <div className="h-64 flex justify-center items-center">
+              <Spinner color="black" />
+            </div>
+          ) : orders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-64">
+              <h3 className="text-lg font-medium">No Orders Found!</h3>
+              <p className="text-sm text-gray-500">
+                Create your first order to get started
+              </p>
+            </div>
+          ) : (
+            <div
+              ref={scrollContainerRef}
+              className="flex overflow-x-auto pb-4 mt-4 scrollbar-hidden"
+              style={{ scrollSnapType: "x mandatory" }}
+            >
+              {Object.values(OrderStatus).map((status) => (
+                <StatusColumn
+                  key={status}
+                  status={status}
+                  orders={statusOrdersToRender[status]}
+                  allOrders={allOrders}
+                  onStatusChange={handleStatusChange}
+                  onDrag={moveMainList}
+                  showSearchBar={showSearchBar}
+                  setShowSearchBar={setShowSearchBar}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {showModal && (
+          <CreateOrderModal
+            onClose={() => setShowModal(false)}
+            shop={shop!}
+            clients={mockClients}
+            products={mockProducts}
+            services={mockServices}
+            paymentMethods={mockPaymentMethods}
+            onCreateOrder={async (orderData) => {
+              // …your existing create logic…
+              return true;
+            }}
+            onUpdateOrder={async (orderId, orderData) => {
+              // …your existing update logic…
+              return true;
+            }}
+          />
         )}
-
-        {/* Filter Button */}
-        <div className="mt-2 flex justify-end">
-          <div className="relative">
-            <button
-              onClick={() => setShowFilterMenu(!showFilterMenu)}
-              className="bg-white px-4 py-2 rounded-lg flex items-center shadow-sm"
-            >
-              <img
-                src={Assets.filterprosections}
-                alt="Filter"
-                className="w-5 h-5 mr-2"
-              />
-              <span className="text-sm">{selectedFilterItem}</span>
-              <img src={Assets.dropdown} alt="Dropdown" className="w-5 h-5 ml-2" />
-            </button>
-
-            {showFilterMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10 py-1">
-                <div className="px-4 py-2 font-bold border-b">
-                  Filter Data By
-                </div>
-                {["Today", "Last 7 Days", "Last 30 Days", "All Time"].map(
-                  (option) => (
-                    <button
-                      key={option}
-                      onClick={() => handleFilterSelect(option)}
-                      className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
-                        selectedFilterItem === option
-                          ? "bg-blue-50 text-blue-600"
-                          : ""
-                      }`}
-                    >
-                      {option}
-                    </button>
-                  )
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Dashboard Widgets */}
-        <OrdersWidget orderStats={orderStats} />
-        <FinancialAnalysisWidget shop={currentShop} shopStats={shopStats} />
-
-        {/* Info Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 px-2">
-          {titles.map((title, index) => (
-            <InfoCard
-              key={title}
-              cardName={title}
-              value={
-                index === 0
-                  ? shopStats.clientCount.toString()
-                  : index === 1
-                  ? shopStats.views.toString()
-                  : shopStats.projectCount.toString()
-              }
-              //   onClick={() => {
-              //     if (index === 0) navigate("/clients");
-              //     else if (index === 2) navigate("/tasks");
-              //   }}
-            />
-          ))}
-        </div>
-
-        {/* Quick Actions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 px-2">
-          {quickActions.map((action, index) => (
-            <QuickActionCard
-                  key={action}
-                  cardName={action}
-                  value={index === 0 ? "42" : "0"} // Mock data
-                  color={index === 0 ? "black" : index === 1 ? "orange" : "purple"} assetLocation={""}            //   assetLocation={
-            //     index === 0
-            //       ? Assets.plusIcon
-            //       : index === 1
-            //       ? Assets.addOrderIcon
-            //       : Assets.addClientIcon
-            //   }
-              //   onClick={() => {
-              //     if (index === 0) navigate("/add-listing");
-              //     else if (index === 1) navigate("/create-order");
-              //     else if (index === 2) navigate("/add-client");
-              //   }}
-            />
-          ))}
-        </div>
       </div>
+    </DndProvider>
+  );
+};
+
+export default Orders;
+
+// ----------------------
+// StatusColumn & Draggable
+// ----------------------
+
+const StatusColumn: React.FC<{
+  status: OrderStatus;
+  orders: Order[];
+  allOrders: Order[];
+  onStatusChange(id: string, s: OrderStatus): void;
+  onDrag(isRight: boolean): void;
+  showSearchBar: boolean;
+  setShowSearchBar(show: boolean): void;
+  searchQuery: string;
+  setSearchQuery(q: string): void;
+}> = ({
+  status,
+  orders,
+  onStatusChange,
+  onDrag,
+  showSearchBar,
+  setShowSearchBar,
+  searchQuery,
+  setSearchQuery,
+}) => {
+  const [{ isOver }, drop] = useDrop({
+    accept: "order",
+     drop: (item: { order: Order }, monitor) => {
+       // only trigger on the shallowest drop target:
+       if (monitor.isOver({ shallow: true })) {
+         onStatusChange(item.order.id, status);
+       }
+     },
+     collect: (monitor) => ({
+       isOver: monitor.isOver({ shallow: true }),
+       canDrop: monitor.canDrop(),
+     }),
+  });
+
+  return (
+    <div
+           ref={drop}
+           style={{
+             backgroundColor:
+               status !== OrderStatus.ALL_ORDERS && isOver
+                 ? "#f3f4f6"
+                 : "white",
+             borderRadius: 8,
+             padding: 16,
+             marginRight: 16,
+             minHeight: 150,
+           }}
+         >
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center">
+          {status !== OrderStatus.ALL_ORDERS && (
+            <div
+              className={`w-2 h-2 rounded-full ${statusColors[status]} mr-2`}
+            />
+          )}
+          <h3 className="text-sm font-bold">{statusDisplayTitles[status]}</h3>
+        </div>
+        {status === OrderStatus.ALL_ORDERS && (
+          showSearchBar ? (
+            <div className="flex items-center">
+              <input
+                className="border rounded px-2 py-1 text-sm"
+                placeholder="Search…"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button onClick={() => { setShowSearchBar(false); setSearchQuery(""); }}>
+                <FiX />
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setShowSearchBar(true)}>
+              <FiSearch />
+            </button>
+          )
+        )}
+      </div>
+      <div className="border-t border-gray-200 mb-2" />
+      {orders.length > 0 ? (
+        <div className="overflow-y-auto" style={{ maxHeight: "calc(100vh-250px)" }}>
+          {orders.map((order) => (
+            <DraggableOrder key={order.id} order={order} onDrag={onDrag} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-gray-500 py-8">
+          {status === OrderStatus.ALL_ORDERS
+            ? "No orders found."
+            : "Drag orders here"}
+        </div>
+      )}
     </div>
   );
 };
 
-export default Dashboard;
+const DraggableOrder: React.FC<{ order: Order; onDrag(isRight: boolean): void }> = ({
+  order,
+  onDrag,
+}) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+         type: "order",
+         item: { order },
+         collect: (monitor) => ({
+           isDragging: monitor.isDragging(),
+         }),
+       }));
+
+  const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
+    const w = window.innerWidth;
+    if (e.clientX > w * 0.8) onDrag(true);
+    else if (e.clientX < w * 0.2) onDrag(false);
+  };
+
+  return (
+    <div
+       ref={drag}
+       onDrag={handleDrag}            // keep your auto-scroll logic
+       style={{
+         opacity: isDragging ? 0.3 : 1,
+         marginBottom: 12,
+         cursor: "move",
+       }}
+     >
+      <OrderWidget order={order} status={order.status} />
+    </div>
+  );
+};

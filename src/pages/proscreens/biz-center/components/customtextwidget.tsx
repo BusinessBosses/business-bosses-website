@@ -14,6 +14,7 @@ interface CustomTextWidgetProps {
   selectedArea?: React.ReactNode;
   iconColor?: string;
   onButtonClick?: () => void;
+  border?: string;
 }
 
 const CustomTextWidget: React.FC<CustomTextWidgetProps> = ({
@@ -29,6 +30,7 @@ const CustomTextWidget: React.FC<CustomTextWidgetProps> = ({
   selectedArea,
   iconColor,
   onButtonClick,
+  border = "border-none",
 }) => {
   return (
     <div

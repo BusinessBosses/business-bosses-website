@@ -7,6 +7,7 @@ interface ProCustomButtonProps {
   back?: boolean;
   loading?: boolean;
   color?: string;
+  textColor?: string; // Added textColor prop
   padding?: string;
   disabled?: boolean;
 }
@@ -18,6 +19,7 @@ const ProCustomButton: React.FC<ProCustomButtonProps> = ({
   back = false,
   loading = false,
   color = "bg-blue-600", 
+  textColor = "text-white", // Default text color
   padding = "0px",
   disabled = false,
 }) => {
@@ -34,7 +36,7 @@ const ProCustomButton: React.FC<ProCustomButtonProps> = ({
         className={`
           w-full h-12 flex items-center justify-center
           ${color} hover:${color.replace(/-\d+$/, "-700")} 
-          text-white font-bold py-3 px-6 rounded-lg
+          ${textColor} font-bold py-3 px-6 rounded-lg
           transition-colors duration-200
           ${isDisabled ? "opacity-70 cursor-not-allowed" : "hover:shadow-md"}
         `}

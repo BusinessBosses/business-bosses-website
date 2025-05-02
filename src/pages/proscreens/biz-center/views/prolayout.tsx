@@ -1,19 +1,42 @@
-// components/layout.tsx
-import { Outlet } from "react-router-dom";
-import { useState } from "react";
-import Sidenav from "../components/sidenav";
 
-export default function Layout() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+import { Outlet } from "react-router";
+import AppSidebar from "./AppSidebar";
+import Backdrop from "./Backdrop";
+import { SidebarProvider, useSidebar } from "../../../../context/SidebarContext";
+import AppHeader from "./AppHeader";
+
+
+
+
+const LayoutContent: React.FC = () => {
+  const { isExpanded, isHovered, isMobileOpen } = useSidebar();
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidenav isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-
-      {/* Main content area */}
-      <div className="flex-1 overflow-auto bg-white">
-        <Outlet />
+    <div className="min-h-screen xl:flex">
+      <div>
+        <AppSidebar />
+        <Backdrop />
+      </div>
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isExpanded || isHovered ? "lg:ml-[290px]" : "lg:ml-[90px]"
+        } ${isMobileOpen ? "ml-0" : ""}`}
+      >
+        <AppHeader />
+        <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
-}
+};
+
+const AppLayout: React.FC = () => {
+  return (
+    <SidebarProvider>
+      <LayoutContent />
+    </SidebarProvider>
+  );
+};
+
+export default AppLayout;

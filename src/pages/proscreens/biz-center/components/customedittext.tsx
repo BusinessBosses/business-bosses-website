@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useState } from "react";
-import { IconType } from "react-icons";
 import {} from "react-icons/fi";
 import Assets from "../../../../assets";
+import { useAppSelector } from "../../../../redux/store/store";
 
 type CustomEditTextProps = {
   caption?: string;
@@ -41,6 +42,8 @@ type CustomEditTextProps = {
   // Currency field
   currencyValue?: string;
   currencyOnChange?: (value: string) => void;
+  // New border prop
+  border?: string;
 };
 
 const CustomEditText: React.FC<CustomEditTextProps> = ({
@@ -81,8 +84,11 @@ const CustomEditText: React.FC<CustomEditTextProps> = ({
   // Currency
   currencyValue = "USD",
   currencyOnChange,
+  // New border prop
+  border = "border-none",
 }) => {
   const [error, setError] = useState<string | undefined>();
+  const shop = useAppSelector((state) => state.shop.shopInfo);
 
   const updateQuantity = (newValue: number) => {
     if (newValue >= 1) {
@@ -109,7 +115,7 @@ const CustomEditText: React.FC<CustomEditTextProps> = ({
           <div className="h-8 w-12">
             <input
               type="text"
-              value={currencyValue}
+              value={shop?.currency}
               onChange={(e) => currencyOnChange?.(e.target.value)}
               className={`w-full h-full px-1 text-xs rounded ${currencyFieldColor}`}
               maxLength={3}
@@ -210,7 +216,10 @@ const CustomEditText: React.FC<CustomEditTextProps> = ({
     : { paddingLeft: padding, paddingRight: padding };
 
   return (
-    <div className={`${isPS ? "" : "px-4"}`} style={paddingStyle}>
+    <div
+      className={`${isPS ? "" : "px-4"} ${border}`}
+      style={paddingStyle}
+    >
       <div className={`rounded-lg ${backgroundColor} p-4`}>
         {isOrder ? (
           <div className="flex items-center justify-between">

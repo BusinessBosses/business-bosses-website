@@ -1,4 +1,6 @@
 import serviceApi from "../../../../services/serviceApi";
+import { Order, orderFromJson, OrderStatus } from "../../orders/model/order";
+import { Project, ProjectStatus } from "../../tasks/models/projectsmodel";
 
 class ShopController {
   // Existing methods
@@ -83,6 +85,85 @@ class ShopController {
       suppliers: suppliersResp.success ? suppliersResp.data.rows : [],
       items: items,
     };
+  }
+
+  /**
+   * Fetches all projects for a user, groups them by status (including an "ALL" bucket),
+   * and returns both the raw list and the grouped lists.
+   */
+  async initProjects(user: string): Promise<{
+    projects: Project[];
+    statusProjects: Record<ProjectStatus, Project[]>;
+    allProjects: Project[];
+  }> {
+    const response = await serviceApi.fetch(`/projects/user-projects/${user}`);
+
+    // Prepare defaults
+    let projects: Project[] = [];
+    const statusProjects: Record<ProjectStatus, Project[]> = {} as any;
+    let allProjects: Project[] = [];
+
+    if (response.success && Array.isArray(response.data.rows)) {
+      // 1. Map raw rows into your Project type
+      projects = response.data.rows.map((row: any): Project => ({
+        id: row.id,
+        userId: row.userId ?? row.user_id,
+        name: row.name,
+        amount: row.amount,
+        status: row.status as ProjectStatus,
+        createdAt: new Date(row.createdAt),
+        startAt: new Date(row.startAt),
+        endAt: new Date(row.endAt),
+        description: row.description,
+        duration: row.duration,
+        shop: row.shop,
+      }));
+
+      // 2. Build a bucket for each status
+      Object.values(ProjectStatus).forEach((status) => {
+        if (status === ProjectStatus.ALL) {
+          // "All" should contain every project
+          statusProjects[status] = [...projects];
+        } else {
+          statusProjects[status] = projects.filter((p) => p.status === status);
+        }
+      });
+
+      // 3. Flatten the buckets (excluding ALL) into one ordered list
+      allProjects = Object.values(ProjectStatus)
+        .filter((st) => st !== ProjectStatus.ALL)
+        .reduce<Project[]>((acc, st) => acc.concat(statusProjects[st]), []);
+    }
+
+    return { projects, statusProjects, allProjects };
+  }
+
+  async addProject(data: any) {
+    const response = await serviceApi.post(`/projects`, data);
+    return response;
+  }
+
+  private mapStatusForApi(status: ProjectStatus): string {
+    switch (status) {
+      case ProjectStatus.ALL:
+        return "all projects";
+      case ProjectStatus.TODO:
+        return "to-do";
+      case ProjectStatus.INPROGRESS:
+        return "pending";
+      case ProjectStatus.COMPLETED:
+        return "completed";
+    }
+  }
+
+  async updateProject(id: any, data: any) {
+    if (data.status !== undefined) {
+      data.status = this.mapStatusForApi(data.status);
+    }
+    const response = await serviceApi.update(`/projects/` + id, data);
+    console.log(response);
+    
+    return response;
   }
 
   // Initialize a specific user's shop,
@@ -268,6 +349,87 @@ class ShopController {
     const shopGraph = await this.loadShopGraph(shopId, date);
     return { orderData, shopData, shopGraph };
   }
+
+  // -------------------
+  // Order Methods
+  // -------------------
+
+  /**
+   * Fetches all orders for a shop, converts them via orderFromJson,
+   * groups them by OrderStatus (including ALL_ORDERS), and flattens
+   * a single allOrders list (excluding the ALL_ORDERS bucket).
+   */
+  async initOrders(shopId: string): Promise<{
+    orders: Order[];
+    statusOrders: Record<OrderStatus, Order[]>;
+    allOrders: Order[];
+  }> {
+    // 1. Fetch
+    const response = await serviceApi.fetch(`/orders/shop-orders/${shopId}`);
+
+    // 2. Prepare containers
+    let orders: Order[] = [];
+    const statusOrders = {} as Record<OrderStatus, Order[]>;
+    let allOrders: Order[] = [];
+
+    // 3. Map & sort if successful
+    if (response.success && Array.isArray(response.data.rows)) {
+      console.log(response);
+      
+      orders = response.data.rows.map((o: any) => orderFromJson(o));
+      // optional: newest first
+      orders.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+      // 4. Group into buckets
+      Object.values(OrderStatus).forEach((status) => {
+        if (status === OrderStatus.ALL_ORDERS) {
+          // “All orders” bucket
+          statusOrders[status] = [...orders];
+        } else {
+          statusOrders[status] = orders.filter((o) => o.status === status);
+        }
+      });
+
+      // 5. Flatten into one list (excluding ALL_ORDERS)
+      allOrders = Object.values(OrderStatus)
+        .filter((s) => s !== OrderStatus.ALL_ORDERS)
+        .reduce<Order[]>((acc, s) => acc.concat(statusOrders[s]), []);
+    }
+
+    // 6. Return the full structure
+    return { orders, statusOrders, allOrders };
+  }
+
+  /** Fetch a single order’s details */
+  async loadOrder(orderId: string) {
+    const response = await serviceApi.fetch(`/orders/${orderId}`);
+    return response;
+  }
+
+  /** Create a new order */
+  async addOrders(data: any) {
+    const response = await serviceApi.post(`/orders`, data);
+    return response;
+  }
+
+  /** Alias for addOrders */
+  async addOrder(data: any) {
+    const response = await serviceApi.post(`/orders`, data);
+    return response;
+  }
+
+  /** Delete an order by ID */
+  async deleteOrder(id: string) {
+    const response = await serviceApi.remove(`/orders/${id}`);
+    return response;
+  }
+
+  /** Update an existing order */
+  async updateOrder(id: string, data: any) {
+    const response = await serviceApi.update(`/orders/${id}`, data);
+    return response;
+  }
+
 }
 
 export default new ShopController();
