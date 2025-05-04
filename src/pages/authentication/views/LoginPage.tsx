@@ -4,7 +4,7 @@ import Assets from "../../../assets";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import FilledButton from "../../../common/components/buttons/FilledButton";
 import GoogleButton from "../../../common/components/buttons/GoogleButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import AuthController from "../controller/AuthController";
 import { StorageEnum } from "../../../common/emums/StorageEmuns";
@@ -25,6 +25,8 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
   const passwordReff = useRef<HTMLInputElement>(null);
   const termsRef = useRef<HTMLInputElement>(null);
   const termsReff = useRef<HTMLInputElement>(null);
+  const location = useLocation();
+  const from = (location.state as any)?.from?.pathname || RoutesPath.home;
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (credentialResponse) => {
@@ -52,7 +54,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
             localStorage.setItem(StorageEnum.UserId, response.data.uid);
             localStorage.setItem("hasLoggedInBefore", "true");
             onLoginSuccess();
-            navigate(RoutesPath.home);
+            navigate(from, { replace: true });
           }
         }
         setLoading(false);
@@ -91,7 +93,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
             localStorage.setItem(StorageEnum.UserId, response.data.uid);
             localStorage.setItem("hasLoggedInBefore", "true");
             onLoginSuccess();
-            navigate(RoutesPath.home);
+            navigate(from, { replace: true });
           }
         }
         setLoading(false);
@@ -125,7 +127,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
         localStorage.setItem(StorageEnum.UserId, response.data.uid);
         localStorage.setItem("hasLoggedInBefore", "true");
         onLoginSuccess();
-        navigate(RoutesPath.home);
+        navigate(from, { replace: true });
       }
 
       setLoading(false);
@@ -153,7 +155,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
         localStorage.setItem(StorageEnum.UserId, response.data.uid);
         localStorage.setItem("hasLoggedInBefore", "true");
         onLoginSuccess();
-        navigate(RoutesPath.home);
+        navigate(from, { replace: true });
       }
 
       setLoading(false);

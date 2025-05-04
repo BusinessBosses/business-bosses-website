@@ -88,6 +88,7 @@ import Customers from "./pages/proscreens/customers/customers";
 import ShopController from "./pages/proscreens/biz-center/controllers/ShopController";
 import { setShopInfo } from "./redux/slices/ShopSlice";
 import MyShop from "./pages/proscreens/biz-center/views/myShop";
+import ProtectedRoute from "./services/ProtectedRoute";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -197,7 +198,11 @@ const App = () => {
   const fetchUserShop = async (userId: string) => {
     const response = await ShopController.fetchUserShop(userId);
     console.log(response);
-    if (response.success && response.data.rows && response.data.rows.length > 0) {
+    if (
+      response.success &&
+      response.data.rows &&
+      response.data.rows.length > 0
+    ) {
       dispatch(setShopInfo(response.data.rows[0]));
     }
   };
@@ -514,15 +519,7 @@ const App = () => {
             />
           }
         />
-        <Route
-          path={RoutesPath.createPost}
-          element={
-            <CreatePost
-              partnerData={partnerData}
-              partnerDatatile={partnerDatatile}
-            />
-          }
-        />
+
         <Route
           path={RoutesPath.promotePost}
           element={
@@ -791,26 +788,43 @@ const App = () => {
           element={<BusinessToolsPage />}
         />
         <Route path={"/:value"} element={<ShopView />} />
-        <Route
-          path={"/setupshop"}
-          element={
-            <SetupShop
-              partnerData={partnerData}
-              partnerDatatile={partnerDatatile}
-            />
-          }
-        />
-        <Route path="/pro" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="tasks" element={<Tasks />} />
-          <Route path="my-shop" element={<MyShop />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="customers" element={<Customers />} />
+        <Route element={<ProtectedRoute />}>
           <Route
-            path="edit-shop"
-            element={<Setup shop={shop!} partnerData={partnerData} partnerDatatile={partnerDatatile} />}
+            path={RoutesPath.createPost}
+            element={
+              <CreatePost
+                partnerData={partnerData}
+                partnerDatatile={partnerDatatile}
+              />
+            }
           />
+          <Route
+            path={"/setupshop"}
+            element={
+              <SetupShop
+                partnerData={partnerData}
+                partnerDatatile={partnerDatatile}
+              />
+            }
+          />
+          <Route path="/pro" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="tasks" element={<Tasks />} />
+            <Route path="my-shop" element={<MyShop />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="customers" element={<Customers />} />
+            <Route
+              path="edit-shop"
+              element={
+                <Setup
+                  shop={shop!}
+                  partnerData={partnerData}
+                  partnerDatatile={partnerDatatile}
+                />
+              }
+            />
+          </Route>
         </Route>
       </Routes>
     </>
