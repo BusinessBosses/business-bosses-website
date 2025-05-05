@@ -25,6 +25,8 @@ import serviceApi from "../../../../services/serviceApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { setShopInfo } from "../../../../redux/slices/ShopSlice";
+import { StorageEnum } from "../../../../common/emums/StorageEmuns";
+import RoutesPath from "../../../../constants/Routes";
 
 interface SetupShopProps {
   shop?: Shop | null;
@@ -117,13 +119,21 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
 
   const navigate = useNavigate();
 
+  const lsToken = localStorage.getItem(StorageEnum.AccessToken);
+  
+  const isAuthenticated = Boolean(lsToken);
+
   // Redirect: If shop prop is null and shop Redux slice has data, redirect.
   React.useEffect(() => {
+    if (!isAuthenticated) {
+      navigate(RoutesPath.login);
+      return;
+    }
     if (!shop && shopRedux) {
       toast.error('You already have a shop!', {'autoClose': 3000});
       navigate("/pro/dashboard", { replace: true });
     }
-  }, [shop, shopRedux, navigate]);
+  }, [shop, shopRedux, navigate, isAuthenticated]);
 
   // Pre-fill form fields if "shop" exists (edit mode)
   React.useEffect(() => {
