@@ -23,7 +23,7 @@ import ShopController from "../../biz-center/controllers/ShopController";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import serviceApi from "../../../../services/serviceApi";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { setShopInfo } from "../../../../redux/slices/ShopSlice";
 import { StorageEnum } from "../../../../common/emums/StorageEmuns";
 import RoutesPath from "../../../../constants/Routes";
@@ -122,11 +122,13 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
   const lsToken = localStorage.getItem(StorageEnum.AccessToken);
   
   const isAuthenticated = Boolean(lsToken);
+   const locations = useLocation();
+  const from = (locations.state as any)?.from?.pathname || RoutesPath.home;
 
   // Redirect: If shop prop is null and shop Redux slice has data, redirect.
   React.useEffect(() => {
     if (!isAuthenticated) {
-      navigate(RoutesPath.login);
+      navigate(RoutesPath.login, { replace: true, state: { from: locations }});
       return;
     }
     if (!shop && shopRedux) {
