@@ -64,6 +64,7 @@ const SettingsPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   
   const handleConfirmSignOut= () => {
     login();
+    AuthController.logoutRequest();
     navigate(RoutesPath.home);
 
    

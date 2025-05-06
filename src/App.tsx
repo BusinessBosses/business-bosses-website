@@ -94,7 +94,7 @@ const App = () => {
   const [err, setErr] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const market = useAppSelector((state) => state.market);
+  const market = useAppSelector((state: { market: any }) => state.market);
   const user = useAppSelector((state) => state.user);
   const shop = useAppSelector((state) => state.shop.shopInfo);
   const [errorMessage, setErrorMessage] = useState("");
