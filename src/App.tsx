@@ -289,7 +289,6 @@ const App = () => {
       SendHandshake();
     } else {
       setLoading(false);
-      login();
     }
   }, []);
 
