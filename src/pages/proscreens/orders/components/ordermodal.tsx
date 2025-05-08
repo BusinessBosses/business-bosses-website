@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FiX, FiCalendar, FiChevronDown } from "react-icons/fi";
+import { FiX, FiChevronDown } from "react-icons/fi";
 import { Shop } from "../../../../common/interfaces/Shop";
-import CustomEditText from "../../biz-center/components/customedittext";
 import ProCustomButton from "../../biz-center/components/procustombutton";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import CustomDropdown from "../../biz-center/components/customdropdown";
-import CustomTextWidget from "../../biz-center/components/customtextwidget";
+import { Client } from "../../customers/models/client";
 
 interface OrderItem {
   id: string;
@@ -27,12 +25,6 @@ interface Order {
   notes?: string;
   invoiceOption?: string;
   orderChannel?: string;
-}
-
-interface Client {
-  id: string;
-  name: string;
-  type: string;
 }
 
 interface Product {
