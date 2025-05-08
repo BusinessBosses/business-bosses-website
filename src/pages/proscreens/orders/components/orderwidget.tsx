@@ -71,7 +71,7 @@ const OrderWidget = ({
       <div className="mt-2 space-y-1">
         <p className="text-sm text-gray-500">
           <span className="font-bold">Customer:</span>{" "}
-          {order.client?.name || "Unassigned Client"}
+          {order.client?.name || order.user?.name }
         </p>
 
         <p className="text-sm text-gray-500">

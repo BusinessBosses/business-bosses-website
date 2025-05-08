@@ -1,6 +1,7 @@
 import { toast } from "react-toastify"
 import serviceApi from "../../../services/serviceApi";
 import { error } from "console";
+import { StorageEnum } from "../../../common/emums/StorageEmuns";
 
 class Authentication {
     validateLogin(data: LoginStruct): boolean {
@@ -12,7 +13,7 @@ class Authentication {
         } else if (!!!data.password) {
             toast.error("Invalid Password");
             return false
-        } 
+        }
         return true
     }
 
@@ -47,7 +48,17 @@ class Authentication {
         return response;
     }
 
-
+    async logoutRequest() {
+        const token = localStorage.getItem(StorageEnum.AccessToken);
+        if (!token) return; // nothing to do
+        localStorage.removeItem(StorageEnum.AccessToken);
+        localStorage.removeItem(StorageEnum.UserId);
+        localStorage.removeItem("hasLoggedInBefore");
+        return serviceApi.post(
+            "/auth/logout",               // adjust to your logout endpoint
+            {},
+        );
+    }
 
 
     async registerRequest(args: RegisterStruct) {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import FilledInput from "../../../common/components/inputs/FilledInput";
 import Assets from "../../../assets";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
@@ -26,6 +26,7 @@ const LoginPage = ({ onLoginSuccess }: Props) => {
   const termsRef = useRef<HTMLInputElement>(null);
   const termsReff = useRef<HTMLInputElement>(null);
   const location = useLocation();
+  console.log('login location.state =', location.state);
   const from = (location.state as any)?.from?.pathname || RoutesPath.home;
 
   const googleLogin = useGoogleLogin({
