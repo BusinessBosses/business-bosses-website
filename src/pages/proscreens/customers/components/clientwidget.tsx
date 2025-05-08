@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { FiEdit2, FiTrash2, FiUser } from "react-icons/fi";
-import OptionsButton from "./optionsbutton";
-import AddClientModal from "./addclientmodal";
-import { Client, ClientType } from "../models/clientmodel";
-import { useAppSelector } from "../redux/store";
-import { useDeleteClientMutation } from "../services/clientsApi";
+import { RootState, useAppSelector } from "../../../../redux/store/store"; // Adjust the path as needed
+import { Client, ClientType } from "../models/client";
 
 interface ClientWidgetProps {
   client: Client;
@@ -19,7 +16,7 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
 }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const currency = useAppSelector((state) => state.shop.shopInfo?.currency);
+  const currency = useAppSelector((state: RootState) => state.shop.shopInfo?.currency);
   const [deleteClient] = useDeleteClientMutation();
 
   const handleDelete = async () => {
@@ -35,13 +32,13 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
 
   const getClientTypeDisplay = (type: ClientType) => {
     switch (type) {
-      case ClientType.ALL:
+      case ClientType.ALL_CLIENTS:
         return "All Clients";
       case ClientType.ONLINE:
         return "Online";
-      case ClientType.INPERSON:
+      case ClientType.IN_PERSON:
         return "In-Person";
-      case ClientType.BBUSER:
+      case ClientType.:
         return "BB User";
       default:
         return type;

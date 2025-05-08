@@ -10,7 +10,6 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import Modal from "./components/modal";
-import ClientWidget from "./components/clientwidget";
 import CampaignItem from "./components/campaignitem";
 import AddClientModal from "./components/addclient";
 import AddSupplierModal from "./components/addsupplier";
@@ -145,7 +144,7 @@ const ClientsScreen: React.FC = () => {
       <div className="container mx-auto px-4 py-4">
         <Tabs
           selectedIndex={activeTab}
-          onSelect={(index) => setActiveTab(index)}
+          onSelect={(index: number) => setActiveTab(index)}
         >
           <TabList className="flex border-b border-gray-200">
             <Tab className="px-4 py-2 font-medium text-sm focus:outline-none">
