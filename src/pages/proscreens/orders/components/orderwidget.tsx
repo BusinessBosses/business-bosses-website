@@ -1,7 +1,6 @@
 import { Order, OrderStatus } from "../model/order";
 import OptionsButton from "../../tasks/components/optionsbutton";
 import { FiPackage } from "react-icons/fi";
-import { ProjectStatusChanger } from "../../tasks/components/statusbutton";
 
 interface OrderWidgetProps {
   order: Order;

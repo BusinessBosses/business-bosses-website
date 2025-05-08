@@ -1,10 +1,11 @@
 import serviceApi from "../../../../services/serviceApi";
+import { Client, clientFromJson, clientFromMap, ClientType } from "../../customers/models/client";
 import { Order, orderFromJson, OrderStatus } from "../../orders/model/order";
 import { Project, ProjectStatus } from "../../tasks/models/projectsmodel";
 
+type ClientsByType = Record<ClientType, Client[]>;
 class ShopController {
   // Existing methods
-
   async fetchShop(user: string) {
     const response = await serviceApi.fetch(`/shops/` + user);
     return response;
@@ -429,6 +430,111 @@ class ShopController {
     const response = await serviceApi.update(`/orders/${id}`, data);
     return response;
   }
+
+  // -------------------
+  // Fetching & Initialization
+  // -------------------
+
+  /** Fetch raw list of clients for a user */
+  async fetchClients(userId: string) {
+    return serviceApi.fetch(`/clients/user-clients/${userId}`);
+  }
+
+  /**
+   * Fetches all clients for a user, groups them by ClientType,
+   * and builds an "allClients" list.
+   */
+  async initClients(userId: string): Promise<{
+    clients: Client[];
+    clientsByType: ClientsByType;
+    allClients: Client[];
+  }> {
+    const resp = await this.fetchClients(userId);
+    console.log(resp);
+    
+    const clients: Client[] = [];
+    const clientsByType = {} as ClientsByType;
+    let allClients: Client[] = [];
+
+    if (resp.success && Array.isArray(resp.data.rows)) {
+      // 1) parse raw JSON into Client objects
+      resp.data.rows.forEach((row: any) => {
+        clients.push(clientFromMap(row));
+      });
+
+      // 2) initialize each bucket
+      Object.values(ClientType).forEach((type) => {
+        if (type === ClientType.ALL_CLIENTS) {
+          clientsByType[type] = [...clients];
+        } else {
+          clientsByType[type] = clients.filter((c) => c.type === type);
+        }
+      });
+
+      // 3) flatten all except the ALL_CLIENTS bucket
+      allClients = Object.values(ClientType)
+        .filter((t) => t !== ClientType.ALL_CLIENTS)
+        .reduce<Client[]>(
+          (acc, t) => acc.concat(clientsByType[t]),
+          []
+        );
+    }
+
+    return { clients, clientsByType, allClients };
+  }
+
+  // -------------------
+  // Create / Update / Delete Clients
+  // -------------------
+
+  async addClient(data: any): Promise<Client | null> {
+    const resp = await serviceApi.post(`/clients`, data);
+    if (!resp.success) return null;
+
+    // assume API returns the new client as JSON
+    return clientFromJson(resp.data);
+  }
+
+  async updateClient(id: string, data: any): Promise<Client | null> {
+    const resp = await serviceApi.update(`/clients/${id}`, data);
+    if (!resp.success) return null;
+    return clientFromJson(resp.data);
+  }
+
+  async deleteClient(id: string): Promise<any> {
+    const resp = await serviceApi.remove(`/clients/${id}`);
+    return resp;
+  }
+
+  // -------------------
+  // Campaigns
+  // -------------------
+
+  /** Send a broadcast campaign */
+  async sendCampaign(data: any): Promise<boolean> {
+    const resp = await serviceApi.post(`/client-notifications/broadcast`, data);
+    return resp.success;
+  }
+
+  /** Fetch campaign history for a user */
+  async fetchCampaigns(userId: string) {
+    return serviceApi.fetch(`/campaign-history/user/${userId}`);
+  }
+
+  // /**
+  //  * Initialize campaigns list
+  //  */
+  // async initCampaigns(userId: string): Promise<Campaign[]> {
+  //   const resp = await this.fetchCampaigns(userId);
+  //   if (!resp.success || !Array.isArray(resp.data)) return [];
+  //   return resp.data.map(campaignFromJson);
+  // }
+
+  // /** Delete a campaign by ID */
+  // async deleteCampaign(id: number): Promise<boolean> {
+  //   const resp = await serviceApi.remove(`/campaign-history/${id}`);
+  //   return resp.success;
+  // }
 
 }
 
