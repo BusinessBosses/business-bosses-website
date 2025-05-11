@@ -1,33 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
+import { Box, Modal, useMediaQuery, useTheme } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  useDrag,
-  useDrop,
+  DndProvider,
   DragSourceMonitor,
   DropTargetMonitor,
+  useDrag,
+  useDrop,
 } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
-import CustomTabBarWidget from "./components/customtabbar";
-import ProCustomButton from "../biz-center/components/procustombutton";
-import { Box, Modal, useMediaQuery, useTheme } from "@mui/material";
-import CustomEditText from "../biz-center/components/customedittext";
-import CustomTextWidget from "../biz-center/components/customtextwidget";
 import {
-  FiMessageSquare,
-  FiX,
-  FiSearch,
   FiCheckSquare,
   FiPlus,
+  FiSearch,
+  FiX
 } from "react-icons/fi";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import { BottomSheet } from "react-spring-bottom-sheet";
+import { useAppSelector } from "../../../redux/store/store";
+import ProCustomButton from "../biz-center/components/procustombutton";
+import ShopController from "../biz-center/controllers/ShopController";
 import AddProjectModal from "./components/addproject";
-import Spinner from "./components/spinner";
+import CustomTabBarWidget from "./components/customtabbar";
 import OptionsButton from "./components/optionsbutton";
+import Spinner from "./components/spinner";
 import { ProjectStatusChanger } from "./components/statusbutton";
 import { Project, ProjectStatus } from "./models/projectsmodel";
-import ShopController from "../biz-center/controllers/ShopController";
-import { useAppSelector } from "../../../redux/store/store";
-import { BottomSheet } from "react-spring-bottom-sheet";
 
 const statusColors: Record<ProjectStatus, string> = {
   [ProjectStatus.ALL]: "bg-gray-100",

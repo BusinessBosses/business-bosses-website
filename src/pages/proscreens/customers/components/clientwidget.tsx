@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FiEdit2, FiTrash2, FiUser } from "react-icons/fi";
+import { FiUser, FiCheckSquare } from "react-icons/fi";
 import { Client, ClientType } from "../models/client";
 import { useAppSelector } from "../../../../redux/store/store";
 import OptionsButton from "../../tasks/components/optionsbutton";
@@ -18,18 +18,6 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const currency = useAppSelector((state) => state.shop.shopInfo?.currency);
-  const [deleteClient] = useDeleteClientMutation();
-
-  const handleDelete = async () => {
-    try {
-      await deleteClient(client.id).unwrap();
-      // Show success notification
-    } catch (err) {
-      // Show error notification
-    } finally {
-      setShowDeleteConfirm(false);
-    }
-  };
 
   const getClientTypeDisplay = (type: ClientType) => {
     switch (type) {
@@ -44,64 +32,85 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
     }
   };
 
+  const getBorderColor = (type: ClientType) => {
+    switch (type) {
+      case ClientType.ONLINE:
+        return "border-blue-500";
+      case ClientType.IN_PERSON:
+        return "border-amber-500";
+      default:
+        return "border-gray-300";
+    }
+  };
+
   return (
     <>
-      <div className="border border-gray-200 bg-white rounded-lg shadow-sm overflow-hidden mb-4">
-        <div className="p-4">
-          {/* Header Row */}
-          <div className="flex justify-between items-start mb-3">
-            <div
-              className={`inline-flex items-center px-3 py-1 rounded-md text-sm font-medium`}
-              style={{ backgroundColor: bgColor }}
-            >
-              {client.image && client.image.length > 0 ? (
-                <img
-                  src={client.image[0]}
-                  alt={client.name}
-                  className="w-4 h-4 rounded-full mr-2"
-                />
-              ) : (
-                <FiUser className="w-4 h-4 text-gray-600 mr-2" />
-              )}
-              <span className="font-semibold">{client.name}</span>
-            </div>
-
-            <OptionsButton
-              onEdit={() => setShowEditModal(true)}
-              onDelete={() => setShowDeleteConfirm(true)}
-              padding="p-1"
-              borderColor="border-transparent"
-            />
-          </div>
-
-          {/* Client Details */}
-          <div className="space-y-2 text-sm">
-            <div className="flex">
-              <span className="text-gray-500 w-24">Email:</span>
-              <span className="font-medium">{client.email}</span>
-            </div>
-
-            <div className="flex">
-              <span className="text-gray-500 w-24">Phone:</span>
-              <span className="font-medium">{client.phone || "N/A"}</span>
-            </div>
-
-            <div className="flex">
-              <span className="text-gray-500 w-24">Total Orders:</span>
-              <span className="font-medium">
-                {client.orderCount} - {currency}
-                {client.totalAmountSpent?.toLocaleString()}
-              </span>
-            </div>
-
-            <div className="flex">
-              <span className="text-gray-500 w-24">Customer type:</span>
-              <span className="font-medium">
-                {getClientTypeDisplay(client.type)}
-              </span>
+      <div
+        className={`p-2 rounded-lg border border-l-4 my-4 ${getBorderColor(
+          client.type
+        )} bg-white`}
+      >
+        <div className="flex justify-between items-start">
+          <div className="w-full">
+            <div className="flex justify-between w-full items-center">
+              <div className="bg-gray-100 w-fit px-2 py-1 rounded-md flex items-center">
+                {client.image && client.image.length > 0 ? (
+                  <img
+                    src={client.image[0]}
+                    alt={client.name}
+                    className="w-4 h-4 rounded-full"
+                  />
+                ) : (
+                  <FiUser size={15} />
+                )}
+                <h4 className="font-medium text-sm pl-2 text-gray-900">
+                  {client.name}
+                </h4>
+              </div>
+              <OptionsButton
+                onEdit={() => setShowEditModal(true)}
+                onDelete={() => setShowDeleteConfirm(true)}
+                padding="p-1"
+                borderColor="border-transparent"
+              />
             </div>
           </div>
         </div>
+
+        <div className="mt-2 space-y-1">
+          <p className="text-sm text-gray-500">
+            <span className="font-bold">Email:</span> {client.email}
+          </p>
+          <p className="text-sm text-gray-500">
+            <span className="font-bold">Phone:</span> {client.phone || "N/A"}
+          </p>
+          <p className="text-sm text-gray-500">
+            <span className="font-bold">Orders:</span> {client.orderCount} -{" "}
+            {currency}
+            {client.totalAmountSpent?.toLocaleString()}
+          </p>
+          <p className="text-sm text-gray-500">
+            <span className="font-bold">Type:</span>{" "}
+            {getClientTypeDisplay(client.type)}
+          </p>
+        </div>
+
+        {isExpanded && (
+          <div className="mt-3 flex justify-end items-end">
+            <button
+              className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md mr-2"
+              onClick={() => setShowEditModal(true)}
+            >
+              Edit
+            </button>
+            <button
+              className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-md"
+              onClick={() => setShowDeleteConfirm(false)}
+            >
+              Close
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Delete Confirmation Modal */}
@@ -118,7 +127,7 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
                 No
               </button>
               <button
-                onClick={handleDelete}
+                onClick={() => {}}
                 className="px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium"
               >
                 Yes
@@ -141,6 +150,3 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
 };
 
 export default ClientWidget;
-function useDeleteClientMutation(): [any] {
-  throw new Error("Function not implemented.");
-}
