@@ -9,10 +9,16 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import CustomTabBarWidget from "./components/customtabbar";
 import ProCustomButton from "../biz-center/components/procustombutton";
-import { Modal } from "@mui/material";
+import { Box, Modal, useMediaQuery, useTheme } from "@mui/material";
 import CustomEditText from "../biz-center/components/customedittext";
 import CustomTextWidget from "../biz-center/components/customtextwidget";
-import { FiMessageSquare, FiX, FiSearch, FiCheckSquare, FiPlus } from "react-icons/fi";
+import {
+  FiMessageSquare,
+  FiX,
+  FiSearch,
+  FiCheckSquare,
+  FiPlus,
+} from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import AddProjectModal from "./components/addproject";
 import Spinner from "./components/spinner";
@@ -21,7 +27,7 @@ import { ProjectStatusChanger } from "./components/statusbutton";
 import { Project, ProjectStatus } from "./models/projectsmodel";
 import ShopController from "../biz-center/controllers/ShopController";
 import { useAppSelector } from "../../../redux/store/store";
-
+import { BottomSheet } from "react-spring-bottom-sheet";
 
 const statusColors: Record<ProjectStatus, string> = {
   [ProjectStatus.ALL]: "bg-gray-100",
@@ -37,7 +43,6 @@ const statusDisplayTitles: Record<ProjectStatus, string> = {
   [ProjectStatus.COMPLETED]: "Completed",
 };
 
-
 const Tasks: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [showModal, setShowModal] = useState(false);
@@ -52,6 +57,9 @@ const Tasks: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollTimerRef = useRef<NodeJS.Timeout | null>(null);
   const shop = useAppSelector((state) => state.shop.shopInfo);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [open, setOpen] = useState(false);
 
   // ← Fetch real projects on mount (or when userId changes)
   useEffect(() => {
@@ -61,9 +69,11 @@ const Tasks: React.FC = () => {
   const loadProjects = async () => {
     setLoading(true);
     try {
-      const { projects: fetched } = await ShopController.initProjects(shop!.user!.uid);
+      const { projects: fetched } = await ShopController.initProjects(
+        shop!.user!.uid
+      );
       console.log(fetched);
-      
+
       setProjects(fetched);
       setFilteredProjects(fetched);
     } catch (err) {
@@ -93,7 +103,7 @@ const Tasks: React.FC = () => {
     setEditTask(task);
     setShowEditModal(true);
   };
-  
+
   useEffect(() => {
     if (!searchQuery.trim()) {
       setFilteredProjects(projects);
@@ -108,17 +118,17 @@ const Tasks: React.FC = () => {
 
   const handleStatusChange = (projectId: string, newStatus: ProjectStatus) => {
     setProjects((prev) =>
-      prev.map((p) =>
-        p.id === projectId ? { ...p, status: newStatus } : p
-      )
+      prev.map((p) => (p.id === projectId ? { ...p, status: newStatus } : p))
     );
-    ShopController.updateProject(projectId, {'status': newStatus});
+    ShopController.updateProject(projectId, { status: newStatus });
   };
 
   // derive per-status lists from the filtered set
   const statusProjects: Record<ProjectStatus, Project[]> = {
     all: filteredProjects,
-    [ProjectStatus.TODO]: filteredProjects.filter((p) => p.status === ProjectStatus.TODO),
+    [ProjectStatus.TODO]: filteredProjects.filter(
+      (p) => p.status === ProjectStatus.TODO
+    ),
     pending: filteredProjects.filter(
       (p) => p.status === ProjectStatus.INPROGRESS
     ),
@@ -149,31 +159,45 @@ const Tasks: React.FC = () => {
     }, 100);
   };
 
+  const handleCloseAddModal = () => {
+    setOpen(false);
+    setShowModal(false);
+    loadProjects();
+  };
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setEditTask(undefined);
+    loadProjects();
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="bg-white rounded-2xl min-h-screen w-full flex flex-col items-center">
+      <div className="bg-gray-50 rounded-2xl min-h-screen w-full flex flex-col items-center">
         {/* Header */}
-        <header className="container">
+        <header className="w-full rounded-t-2xl bg-white border-b px-5">
           <div className="flex justify-between items-center py-4">
             <h1 className="text-xl font-bold text-gray-900">Tasks</h1>
             <ProCustomButton
               text="Add Task"
               icon={<FiPlus className="mr-2" />}
-              onPressed={() => setShowModal(true)}
+              onPressed={() => {
+                if (isMobile) {
+                  setOpen(true);
+                } else {
+                  setShowModal(true);
+                }
+              }}
             />
           </div>
         </header>
-
         {/* Tabs & Filters */}
-        <div className="container w-full">
+        <div className="sm:container px-4 sm:px-0 w-full pt-5">
           <CustomTabBarWidget<ProjectStatus>
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             scrollToSection={scrollToSection}
             proprimaryColor="#000"
-            backgroundColor={[
-              "#6b7280", "#000", "#f59e0b", "#10b981",
-            ]}
+            backgroundColor={["#6b7280", "#000", "#f59e0b", "#10b981"]}
             listofitems={Object.values(ProjectStatus)}
             itemToString={(status) =>
               `${statusDisplayTitles[status]} (${
@@ -186,7 +210,6 @@ const Tasks: React.FC = () => {
             onFilterSelected={(opt) => opt && setSelectedFilterOption(opt)}
           />
         </div>
-
         {/* Content */}
         {loading ? (
           <div className="h-64 pt-52">
@@ -204,7 +227,7 @@ const Tasks: React.FC = () => {
         ) : (
           <div
             ref={scrollContainerRef}
-            className="flex overflow-x-auto pb-4 mt-4 scrollbar-hidden w-full container"
+            className="flex overflow-x-auto pb-4 mt-4 scrollbar-hidden w-full sm:container px-4 sm:px-0"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {Object.values(ProjectStatus).map((status) => (
@@ -229,15 +252,84 @@ const Tasks: React.FC = () => {
           </div>
         )}
 
-        {/* Add Task Modal */}
-        <Modal open={showModal} onClose={() => {setShowModal(false); loadProjects();}}>
-          <AddProjectModal onClose={() => {setShowModal(false); loadProjects();}} />
-        </Modal>
-
-        {/* Edit Task Modal */}
-        <Modal open={showEditModal} onClose={() => {setShowEditModal(false); loadProjects();}}>
-          <AddProjectModal project={editTask} onClose={() => {setShowEditModal(false); loadProjects();}} />
-        </Modal>
+        {/* Add Task Modal - For Mobile */}
+        {isMobile ? (
+          <BottomSheet
+            open={open}
+            onDismiss={handleCloseAddModal}
+            style={{
+              zIndex: theme.zIndex.modal,
+            }}
+          >
+            <Box
+              sx={{
+                maxHeight: "90vh",
+                overflowY: "auto",
+                minHeight: "80vh",
+                padding: 2,
+              }}
+            >
+              <AddProjectModal onClose={handleCloseAddModal} />
+            </Box>
+          </BottomSheet>
+        ) : (
+          <Modal open={showModal} onClose={handleCloseAddModal}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+                borderRadius: 2,
+              }}
+            >
+              <AddProjectModal onClose={handleCloseAddModal} />
+            </Box>
+          </Modal>
+        )}
+        {/* Edit Task Modal - For Mobile */}
+        {isMobile ? (
+          <BottomSheet
+            open={showEditModal}
+            onDismiss={handleCloseEditModal}
+            style={{
+              zIndex: theme.zIndex.modal,
+            }}
+          >
+            <Box sx={{ maxHeight: "90vh", overflowY: "auto", padding: 2 }}>
+              <AddProjectModal
+                onClose={handleCloseEditModal}
+                // projectToEdit={editTask}
+              />
+            </Box>
+          </BottomSheet>
+        ) : (
+          <Modal open={showEditModal} onClose={handleCloseEditModal}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+                borderRadius: 2,
+              }}
+            >
+              <AddProjectModal
+                onClose={handleCloseEditModal}
+                project={editTask}
+                // projectToEdit={editTask}
+              />
+            </Box>
+          </Modal>
+        )}
       </div>
     </DndProvider>
   );
@@ -268,8 +360,8 @@ const StatusColumn = ({
 }) => {
   return (
     <div
-      className="flex-shrink-0 w-11/12 sm:w-96 bg-[#f9f9f9] rounded-xl border mr-4 p-4"
-      style={{ scrollSnapAlign: "start" }}
+      className="flex-shrink-0 w-11/12 sm:w-80 bg-white rounded-xl border mr-4 p-4 "
+      style={{ scrollSnapAlign: "center" }}
     >
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
@@ -325,7 +417,12 @@ const StatusColumn = ({
         >
           {projects.length > 0 ? (
             projects.map((project) => (
-              <TaskCard key={project.id} project={project} status={status} onEdit={onEdit} />
+              <TaskCard
+                key={project.id}
+                project={project}
+                status={status}
+                onEdit={onEdit}
+              />
             ))
           ) : (
             <div className="text-center py-8 text-gray-500">
@@ -377,7 +474,12 @@ const DropColumn = ({
     >
       {projects.length > 0 ? (
         projects.map((project) => (
-          <DraggableTask key={project.id} project={project} onDrag={onDrag} onEdit={onEdit} />
+          <DraggableTask
+            key={project.id}
+            project={project}
+            onDrag={onDrag}
+            onEdit={onEdit}
+          />
         ))
       ) : (
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center text-gray-500">
@@ -435,7 +537,6 @@ const TaskCard = ({
   status: ProjectStatus;
   onEdit: (task: Project) => void;
 }) => {
-  
   const shop = useAppSelector((state) => state.shop.shopInfo);
   return (
     <div
@@ -461,7 +562,7 @@ const TaskCard = ({
             <OptionsButton
               item={undefined}
               isBoost={undefined}
-              onEdit={() => onEdit(project)} 
+              onEdit={() => onEdit(project)}
               onDelete={undefined}
               onView={undefined}
               onBoost={undefined}

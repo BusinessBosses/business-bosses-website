@@ -1,13 +1,8 @@
-<<<<<<< HEAD
-export {};
-=======
 import React, { useState } from "react";
 import { FiEdit2, FiTrash2, FiUser } from "react-icons/fi";
-import OptionsButton from "./optionsbutton";
-import AddClientModal from "./addclientmodal";
-import { Client, ClientType } from "../models/clientmodel";
-import { useAppSelector } from "../redux/store";
-import { useDeleteClientMutation } from "../services/clientsApi";
+import { Client, ClientType } from "../models/client";
+import { useAppSelector } from "../../../../redux/store/store";
+import OptionsButton from "../../tasks/components/optionsbutton";
 
 interface ClientWidgetProps {
   client: Client;
@@ -38,16 +33,14 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
 
   const getClientTypeDisplay = (type: ClientType) => {
     switch (type) {
-      case ClientType.ALL:
+      case ClientType.ALL_CLIENTS:
         return "All Clients";
       case ClientType.ONLINE:
         return "Online";
-      case ClientType.INPERSON:
+      case ClientType.IN_PERSON:
         return "In-Person";
-      case ClientType.BBUSER:
-        return "BB User";
       default:
-        return type;
+        return String(type);
     }
   };
 
@@ -136,15 +129,18 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
       )}
 
       {/* Edit Client Modal */}
-      {showEditModal && (
-        <AddClientModal
-          client={client}
-          onClose={() => setShowEditModal(false)}
-        />
-      )}
+      {
+        showEditModal && {}
+        // <AddClientModal
+        //   client={client}
+        //   onClose={() => setShowEditModal(false)}
+        // />
+      }
     </>
   );
 };
 
 export default ClientWidget;
->>>>>>> parent of c3320f8 (ui changes)
+function useDeleteClientMutation(): [any] {
+  throw new Error("Function not implemented.");
+}

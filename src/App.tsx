@@ -84,11 +84,11 @@ import Layout from "./pages/proscreens/biz-center/views/prolayout";
 import Setup from "./pages/proscreens/setup/views/setup";
 import Tasks from "./pages/proscreens/tasks/tasks";
 import Orders from "./pages/proscreens/orders/orders";
-import Customers from "./pages/proscreens/customers/customers";
 import ShopController from "./pages/proscreens/biz-center/controllers/ShopController";
 import { setShopInfo } from "./redux/slices/ShopSlice";
 import MyShop from "./pages/proscreens/biz-center/views/myShop";
 import ProtectedRoute from "./services/ProtectedRoute";
+import Customers from "./pages/proscreens/customers/views/customers";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);

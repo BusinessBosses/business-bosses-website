@@ -120,8 +120,8 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white w-full max-w-md p-6 rounded-xl shadow-lg">
+    <div className="flex items-center justify-center">
+      <div className="bg-white w-full max-w-md">
         <div className="flex justify-between items-start mb-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
