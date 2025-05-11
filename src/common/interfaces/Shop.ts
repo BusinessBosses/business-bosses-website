@@ -20,7 +20,7 @@ export interface Shop {
   name?: string; // maps to name
   email?: string; // maps to email
   phone?: string; // maps to phone
-  payments?: string[]; // maps to payments (assumes List<dynamic> can be narrowed down to string[])
+  payments?: any; // maps to payments (assumes List<dynamic> can be narrowed down to string[])
   promotionDuration?: number; // maps to promotionDuration
   approved?: boolean; // maps to approved
   plan?: string; // maps to plan

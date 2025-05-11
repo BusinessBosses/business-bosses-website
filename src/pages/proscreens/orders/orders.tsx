@@ -7,7 +7,7 @@ import Spinner from "../tasks/components/spinner";
 import CreateOrderModal from "./components/ordermodal";
 import OrderWidget from "./components/orderwidget";
 import { Order, OrderStatus } from "./model/order";
-import { Client, ClientType } from "../customers/models/client";
+import { Client } from "../customers/models/client";
 import ProCustomButton from "../biz-center/components/procustombutton";
 import ShopController from "../biz-center/controllers/ShopController";
 import { useAppSelector } from "../../../redux/store/store";
@@ -32,6 +32,9 @@ const Orders: React.FC = () => {
 
   // raw + filtered lists
   const [orders, setOrders] = useState<Order[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
+  const [allClients, setAllClients] = useState<Client[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
 
   // grouped by status
@@ -41,6 +44,8 @@ const Orders: React.FC = () => {
     [OrderStatus.PAID]: [],
     [OrderStatus.COMPLETED]: [],
   });
+
+
   const [allOrders, setAllOrders] = useState<Order[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,31 +57,68 @@ const Orders: React.FC = () => {
 
   const shop = useAppSelector((state) => state.shop.shopInfo);
 
+  const fetchOrders = async () => {
+    if (!shop?.id) return;
+    setLoading(true);
+    try {
+      const {
+        orders: fetched,
+        statusOrders: buckets,
+        allOrders: flatList,
+      } = await ShopController.initOrders(shop.id);
+
+      setOrders(fetched);
+      setFilteredOrders(fetched);
+      setStatusOrders(buckets);
+      setAllOrders(flatList);
+    } catch (err) {
+      console.error("Failed to load orders:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchClients = async () => {
+    if (!shop?.id) return;
+    setLoading(true);
+    try {
+      const {
+        allClients: flatList,
+      } = await ShopController.initClients(shop.user!.uid);
+
+      setAllClients(flatList);
+    } catch (err) {
+      console.error("Failed to load orders:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchItems = async () => {
+    if (!shop?.id) return;
+    setLoading(true);
+    try {
+      const responseProducts = await ShopController.fetchProducts(shop.user!.uid);
+      const responseServices = await ShopController.fetchServices(shop.user!.uid);
+      console.log(responseProducts);
+      console.log(responseServices);
+      
+      setProducts(responseProducts.data.rows);
+      setServices(responseServices.data.rows);
+    } catch (err) {
+      console.error("Failed to load products/services:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // 1️⃣ Fetch & group on mount (or when shop changes)
   useEffect(() => {
-    const fetchOrders = async () => {
-      if (!shop?.id) return;
-      setLoading(true);
-      try {
-        const {
-          orders: fetched,
-          statusOrders: buckets,
-          allOrders: flatList,
-        } = await ShopController.initOrders(shop.id);
-
-        setOrders(fetched);
-        setFilteredOrders(fetched);
-        setStatusOrders(buckets);
-        setAllOrders(flatList);
-      } catch (err) {
-        console.error("Failed to load orders:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchOrders();
-  }, [shop?.id]);
-
+    fetchClients();
+    fetchItems();
+  },);
+  
   // 2️⃣ Apply search only on “All Orders”
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -124,22 +166,8 @@ const Orders: React.FC = () => {
   };
 
   // mock data for CreateOrderModal
-  const mockClients: Client[] = [
-    { id: "client1", name: "John Doe", email: "", phone: "", userId: "", type: ClientType.ALL_CLIENTS, createdAt: new Date(), image: [], orderCount: 0, totalAmountSpent: 0 },
-    { id: "client2", name: "Acme Corp", email: "", phone: "", userId: "", type: ClientType.ALL_CLIENTS, createdAt: new Date(), image: [], orderCount: 0, totalAmountSpent: 0 },
-    { id: "client3", name: "Jane Smith", email: "", phone: "", userId: "", type: ClientType.ALL_CLIENTS, createdAt: new Date(), image: [], orderCount: 0, totalAmountSpent: 0 },
-  ];
-  const mockProducts = [
-    { id: "product1", name: "Website Design", price: 1200, images: ["/api/placeholder/50/50"] },
-    { id: "product2", name: "Logo Design", price: 500, images: ["/api/placeholder/50/50"] },
-    { id: "product3", name: "Business Cards", price: 150, images: ["/api/placeholder/50/50"] },
-  ];
-  const mockServices = [
-    { id: "service1", name: "Consultation", price: 100 },
-    { id: "service2", name: "SEO Optimization", price: 300 },
-    { id: "service3", name: "Social Media Setup", price: 250 },
-  ];
-  const mockPaymentMethods = ["Credit Card", "Cash", "Bank Transfer", "PayPal"];
+
+  const paymentMethods = shop?.payments?.map((p : any)=> p.paymentMethod);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -209,12 +237,15 @@ const Orders: React.FC = () => {
           <CreateOrderModal
             onClose={() => setShowModal(false)}
             shop={shop!}
-            clients={mockClients}
-            products={mockProducts}
-            services={mockServices}
-            paymentMethods={mockPaymentMethods}
+            clients={allClients}
+            products={products}
+            services={services}
+            paymentMethods={paymentMethods}
             onCreateOrder={async (orderData) => {
-              // …your existing create logic…
+              setLoading(true);
+              setShowModal(false);
+              await ShopController.addOrder(orderData);
+              fetchOrders(); // Re-fetch orders after creating a new one
               return true;
             }}
             onUpdateOrder={async (orderId, orderData) => {
