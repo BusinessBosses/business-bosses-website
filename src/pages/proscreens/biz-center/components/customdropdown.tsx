@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Assets from "../../../../assets"; // Adjust path as needed
+import Assets from "../../../../assets"; 
 
 type CustomDropdownProps = {
   caption: string;
@@ -13,6 +13,7 @@ type CustomDropdownProps = {
   padding?: string;
   isOrder?: boolean;
   iconColor?: string;
+  backgroundColor?: string;
 };
 
 const CustomDropdown: React.FC<CustomDropdownProps> = ({
@@ -27,15 +28,16 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   padding = "0px",
   isOrder = false,
   iconColor,
+  backgroundColor = "bg-white", // Default to white, can be overridden
 }) => {
-   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
- // whenever initialValue changes, re-sync it into state
- useEffect(() => {
-   if (initialValue && items.includes(initialValue)) {
-     setSelectedItem(initialValue);
-  }
- }, [initialValue, items]);
+  // whenever initialValue changes, re-sync it into state
+  useEffect(() => {
+    if (initialValue && items.includes(initialValue)) {
+      setSelectedItem(initialValue);
+    }
+  }, [initialValue, items]);
   const [error, setError] = useState<string | undefined>();
 
   const handleChange = (value: string | null) => {
@@ -53,7 +55,9 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       className={`${isOrder ? "" : "px-0"}`}
       style={{ paddingLeft: padding, paddingRight: padding }}
     >
-      <div className="bg-white rounded-lg p-4">
+      <div className={`${backgroundColor} rounded-lg p-4`}>
+        {" "}
+        {/* Updated background color here */}
         {isOrder ? (
           <div className="flex items-center justify-between">
             <div className="flex-1">
@@ -109,7 +113,6 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
                 ))}
               </select>
               <div className="absolute right-0 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                {/* Replace with your SVG icon component */}
                 <img src={Assets.dropdown} className="h-1.5" alt="" />
               </div>
             </div>

@@ -120,19 +120,19 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
   const navigate = useNavigate();
 
   const lsToken = localStorage.getItem(StorageEnum.AccessToken);
-  
+
   const isAuthenticated = Boolean(lsToken);
-   const locations = useLocation();
+  const locations = useLocation();
   const from = (locations.state as any)?.from?.pathname || RoutesPath.home;
 
   // Redirect: If shop prop is null and shop Redux slice has data, redirect.
   React.useEffect(() => {
     if (!isAuthenticated) {
-      navigate(RoutesPath.login, { replace: true, state: { from: locations }});
+      navigate(RoutesPath.login, { replace: true, state: { from: locations } });
       return;
     }
     if (!shop && shopRedux) {
-      toast.error('You already have a shop!', {'autoClose': 3000});
+      toast.error("You already have a shop!", { autoClose: 3000 });
       navigate("/pro/dashboard", { replace: true });
     }
   }, [shop, shopRedux, navigate, isAuthenticated]);
@@ -592,9 +592,9 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
     }
     if (response.success) {
       if (shop) {
-        toast.success('Shop Updated Successfully!', {'autoClose': 3000});
+        toast.success("Shop Updated Successfully!", { autoClose: 3000 });
       } else {
-        toast.success('Shop Added Successfully!', {'autoClose': 3000});
+        toast.success("Shop Added Successfully!", { autoClose: 3000 });
       }
       dispatch(setShopInfo(response.data));
       navigate("/pro/dashboard", { replace: true });
@@ -641,9 +641,9 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
 
       <div>
         <div className="bg-white rounded-xl items-center justify-center">
-          <Container maxWidth="lg">
-            <div className="flex flex-col md:flex-row items-center justify-center w-full h-[calc(100vh-80px)]">
-              <div className="w-full pt-5 space-y items-start justify-start md:text-left text-center">
+          <Container>
+            <div className="flex flex-col md:flex-row items-center justify-center w-full  h-[calc(100vh-80px)]">
+              <div className="w-full  pt-5 space-y items-start justify-start md:text-left text-center">
                 <div className="text-lg font-bold">
                   Set Up Your Biz-Centre & Start Selling
                 </div>
@@ -683,8 +683,10 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                   hintText="Choose an image type"
                   items={["Circle", "Banner"]}
                   onChanged={(newValue) => setImageType(newValue ?? "")}
+                  backgroundColor="bg-backgroundcolor"
                 />
                 <CustomEditText
+                  backgroundColor="bg-backgroundcolor"
                   caption="Biz-Center Name *"
                   hintText={"Enter biz-center name here"}
                   value={name}
@@ -693,6 +695,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                 />
                 <CustomEditText
                   optionalText={"(Description)"}
+                  backgroundColor="bg-backgroundcolor"
                   maxLength={300}
                   caption="Biz-Center Message *"
                   hintText={"Enter biz-center description here"}
@@ -700,6 +703,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                   onChange={setDescription}
                 />
                 <CustomEditText
+                  backgroundColor="bg-backgroundcolor"
                   optionalText={"(Optional)"}
                   caption="Phone Number"
                   hintText={"+448908654321"}
@@ -707,6 +711,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                   onChange={setPhone}
                 />
                 <CustomEditText
+                  backgroundColor="bg-backgroundcolor"
                   optionalText={"(Optional)"}
                   caption="Business Email Address"
                   hintText={"example@business.com"}
@@ -715,6 +720,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                 />
 
                 <CustomDropdown
+                  backgroundColor="bg-backgroundcolor"
                   initialValue={category}
                   caption="Select Category *"
                   hintText="Choose a category"
@@ -730,6 +736,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                   }}
                 />
                 <PaymentMethodSelector
+                  backgroundColor="bg-backgroundcolor"
                   onSelectionChange={(newSelections) => {
                     setPaymentSelections(newSelections);
                   }}
@@ -741,6 +748,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                 />
 
                 <CustomEditText
+                  backgroundColor="bg-backgroundcolor"
                   maxLength={300}
                   isPaymentField={true}
                   isSL={true}
