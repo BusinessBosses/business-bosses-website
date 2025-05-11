@@ -16,6 +16,7 @@ import Spinner from "../../tasks/components/spinner";
 import AddClientModal from "../components/addclientmodal";
 import ClientWidget from "../components/clientwidget";
 import { Client, ClientType } from "../models/client";
+import SupplierWidget from "../components/supplierwidget"; // Import SupplierWidget
 
 interface Supplier {
   id: string;
@@ -26,6 +27,8 @@ interface Supplier {
   phone: string;
   address: string;
   lastOrder: string;
+  description: string; // Added missing property
+  location: string; // Added missing property
 }
 
 // Dummy client data
@@ -79,6 +82,8 @@ const dummySuppliers: Supplier[] = [
     phone: "+1 (555) 111-2222",
     address: "1000 Tech Blvd, San Jose, CA",
     lastOrder: "2025-05-01",
+    description: "",
+    location: "",
   },
   {
     id: "s2",
@@ -89,6 +94,8 @@ const dummySuppliers: Supplier[] = [
     phone: "+1 (555) 222-3333",
     address: "500 Commerce Way, Atlanta, GA",
     lastOrder: "2025-04-22",
+    description: "",
+    location: "",
   },
 ];
 
@@ -308,36 +315,21 @@ const Customers: React.FC = () => {
                       No suppliers found
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 gap-2 p-2">
+                    <div className="grid grid-cols-2 gap-2 p-2">
                       {suppliers.map((supplier) => (
-                        <div
+                        <SupplierWidget
                           key={supplier.id}
-                          className="bg-purple-50 rounded-lg shadow-sm p-3 flex flex-col"
-                        >
-                          <div className="flex items-center justify-between mb-2">
-                            <h3 className="text-sm font-bold text-gray-900">
-                              {supplier.name}
-                            </h3>
-                            <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
-                              {supplier.category}
-                            </span>
-                          </div>
-                          <div className="text-xs text-gray-600 mb-1">
-                            Contact: {supplier.contactPerson}
-                          </div>
-                          <div className="text-xs text-gray-600 mb-1">
-                            Email: {supplier.email}
-                          </div>
-                          <div className="text-xs text-gray-600 mb-2">
-                            Last order: {supplier.lastOrder}
-                          </div>
-                          <button
-                            onClick={() => setShowImportSupplierModal(true)}
-                            className="text-xs text-blue-600 hover:underline self-end"
-                          >
-                            Import
-                          </button>
-                        </div>
+                          supplier={supplier}
+                          status={""}
+                          onChangeSuppliersStatus={function (
+                            status: string
+                          ): void {
+                            throw new Error("Function not implemented.");
+                          }}
+                          onTap={function (): void {
+                            throw new Error("Function not implemented.");
+                          }}
+                        />
                       ))}
                     </div>
                   )}

@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useShop } from "../controllers/shopController";
-import OptionsButton from "../widgets/OptionsButton";
-import MyOutlinedButton from "../common/widgets/buttons/MyOutlinedButton";
-import { showSnackbar } from "../common/dialogs/snackbar";
-import AddSupplier from "./AddSupplier";
+import OptionsButton from "../../tasks/components/optionsbutton";
+import ProCustomButton from "../../biz-center/components/procustombutton";
 
-const SuppliersCard = ({
+interface Supplier {
+  id: string;
+  name: string;
+  description: string;
+  location: string;
+  images?: string[];
+}
+
+interface SuppliersCardProps {
+  supplier: Supplier;
+  status: string;
+  onChangeSuppliersStatus: (status: string) => void;
+  onTap: () => void;
+}
+
+const SuppliersCard: React.FC<SuppliersCardProps> = ({
   supplier,
   status,
   onChangeSuppliersStatus,
   onTap,
 }) => {
-  const shopController = useShop();
   const navigate = useNavigate();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
@@ -20,14 +31,15 @@ const SuppliersCard = ({
     navigate("/add-supplier", { state: { supplier } });
   };
 
-  const onDelete = async () => {
-    const deleted = await shopController.deleteSupplier(supplier.id);
-    if (deleted) {
-      showSnackbar({ message: "Supplier deleted successfully!" });
-    } else {
-      showSnackbar({ message: "Error deleting supplier!", error: true });
-    }
-    setShowDeleteDialog(false);
+  const showSnackbar = ({
+    message,
+    error = false,
+  }: {
+    message: string;
+    error?: boolean;
+  }) => {
+    // Replace this with your actual snackbar implementation
+    console.log(error ? `Error: ${message}` : message);
   };
 
   return (
@@ -39,9 +51,9 @@ const SuppliersCard = ({
         <div className="flex flex-col items-center">
           <div className="h-10" />
           <div className="rounded-full overflow-hidden h-16 w-16 flex items-center justify-center bg-gray-100">
-            {supplier.images?.length > 0 ? (
+            {(supplier.images ?? []).length > 0 ? (
               <img
-                src={supplier.images[0]}
+                src={(supplier.images ?? [])[0]}
                 alt={supplier.name}
                 className="h-full w-full object-cover"
               />
@@ -76,14 +88,7 @@ const SuppliersCard = ({
           </p>
           <div className="h-3" />
           <div className="flex w-full justify-between">
-            <div className="flex-1">
-              <MyOutlinedButton
-                onClick={onChangeSuppliersStatus}
-                className="h-9 border border-blue-500 text-blue-500 w-full"
-              >
-                Contact
-              </MyOutlinedButton>
-            </div>
+            <div className="flex-1"></div>
             <div className="w-2" />
             <OptionsButton
               item={supplier}
@@ -115,7 +120,7 @@ const SuppliersCard = ({
               <button
                 type="button"
                 className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
-                onClick={onDelete}
+                onClick={() => {}}
               >
                 Yes
               </button>
