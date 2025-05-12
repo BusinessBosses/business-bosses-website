@@ -117,7 +117,7 @@ const Orders: React.FC = () => {
     fetchOrders();
     fetchClients();
     fetchItems();
-  },);
+  }, []);
   
   // 2️⃣ Apply search only on “All Orders”
   useEffect(() => {
