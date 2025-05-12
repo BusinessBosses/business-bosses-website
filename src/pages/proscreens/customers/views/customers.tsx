@@ -239,16 +239,25 @@ const Customers: React.FC = () => {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             scrollToSection={scrollToSection}
-            proprimaryColor="#000"
-            backgroundColor={["#6b7280", "#000", "#22c55e", "#3b82f6"]}
-            listofitems={customerTypeTabs}
-            itemToString={(type) =>
-              `${typeDisplayNames[type]} (${
-                type === ClientType.ALL_CLIENTS
+            proprimaryColor="#1F2937"
+            backgroundColor={["#6b7280", "#D3FFE3", "#B0D9FB", "#FBD4FF"]} //
+            listofitems={[...customerTypeTabs, "SUPPLIER"]}
+            itemToString={(type) => {
+              if (type === "SUPPLIER") {
+                return `Suppliers (${suppliers.length})`;
+              }
+
+              const clientType = type as ClientType;
+              return `${
+                clientType in typeDisplayNames
+                  ? typeDisplayNames[clientType]
+                  : clientType
+              } (${
+                clientType === ClientType.ALL_CLIENTS
                   ? clients.length
-                  : getClientsByType(type).length
-              })`
-            }
+                  : getClientsByType(clientType).length
+              })`;
+            }}
             filterOptions={["Newest first", "None"]}
             onFilterSelected={(opt) => opt && setSelectedFilterOption(opt)}
           />
@@ -427,11 +436,11 @@ const StatusColumn = ({
 }) => {
   return (
     <div
-      className="flex-shrink-0 w-11/12 sm:w-80 bg-white rounded-xl border mr-4 p-4"
+      className="flex-shrink-0 w-11/12 sm:w-80 bg-white rounded-xl border mr-4"
       style={{ scrollSnapAlign: "center" }}
     >
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center">
+      <div className="flex justify-between items-center mb-0 h-12 rounded-t-2xl sticky top-0 bg-white z-10 border-b border-gray-200 px-4">
+        <div className="flex h-4 items-center">
           {status !== ClientType.ALL_CLIENTS && (
             <div
               className={`w-2 h-2 rounded-full ${typeColors[status]} mr-2`}
@@ -475,11 +484,11 @@ const StatusColumn = ({
         )}
       </div>
 
-      <div className="border-t border-gray-200 my-2"></div>
+      {/* <div className="border-t border-gray-200 my-2"></div> */}
 
       {status === ClientType.ALL_CLIENTS ? (
         <div
-          className="overflow-y-auto"
+          className="overflow-y-auto px-4"
           style={{ maxHeight: "calc(100vh - 250px)" }}
         >
           {clients.length > 0 ? (
@@ -497,12 +506,14 @@ const StatusColumn = ({
           )}
         </div>
       ) : (
-        <DropColumn
-          status={status}
-          clients={clients}
-          onTypeChange={onTypeChange}
-          onDrag={onDrag}
-        />
+        <div className="px-4">
+          <DropColumn
+            status={status}
+            clients={clients}
+            onTypeChange={onTypeChange}
+            onDrag={onDrag}
+          />
+        </div>
       )}
     </div>
   );

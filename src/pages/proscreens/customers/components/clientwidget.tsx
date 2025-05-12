@@ -35,9 +35,9 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
   const getBorderColor = (type: ClientType) => {
     switch (type) {
       case ClientType.ONLINE:
-        return "border-blue-500";
+        return "border-green-200";
       case ClientType.IN_PERSON:
-        return "border-amber-500";
+        return "border-blue-200";
       default:
         return "border-gray-300";
     }
