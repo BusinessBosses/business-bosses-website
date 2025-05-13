@@ -263,7 +263,7 @@ const Customers: React.FC = () => {
           />
 
           {loading ? (
-            <div className="h-64 pt-52">
+            <div className="h-64 pt-52 w-full flex items-center justify-center">
               <Spinner color="black" />
             </div>
           ) : clients.length === 0 ? (

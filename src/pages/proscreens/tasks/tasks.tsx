@@ -8,12 +8,7 @@ import {
   useDrop,
 } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import {
-  FiCheckSquare,
-  FiPlus,
-  FiSearch,
-  FiX
-} from "react-icons/fi";
+import { FiCheckSquare, FiPlus, FiSearch, FiX } from "react-icons/fi";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import { useAppSelector } from "../../../redux/store/store";
 import ProCustomButton from "../biz-center/components/procustombutton";
@@ -192,8 +187,8 @@ const Tasks: React.FC = () => {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             scrollToSection={scrollToSection}
-            proprimaryColor="#000"
-            backgroundColor={["#6b7280", "#000", "#f59e0b", "#10b981"]}
+            proprimaryColor="#1F2937"
+            backgroundColor={["#6b7280", "#f5f5f5", "#fef3c7", "#D3FFE3"]}
             listofitems={Object.values(ProjectStatus)}
             itemToString={(status) =>
               `${statusDisplayTitles[status]} (${
