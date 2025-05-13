@@ -3,6 +3,8 @@ import { AiFillContacts, AiFillCustomerService } from "react-icons/ai";
 import { FiCalendar, FiEdit, FiPackage, FiShoppingCart } from "react-icons/fi";
 import SetupShop from "../views/setupshop";
 import { useAppSelector } from "../../../../redux/store/store";
+import { Route } from "react-router-dom";
+import ManageInventory from "../../biz-center/views/ManageInventory/ManageInventory";
 
 export interface SetupItemType {
   id: string;
@@ -16,13 +18,13 @@ const setupItems: SetupItemType[] = [
     id: "editbizcenter",
     title: "Edit Biz-Center",
     icon: <FiEdit size={20} />,
-    content: <div>hygjhg</div>,
+    content: <div>hgjhg</div>,
   },
   {
     id: "manageproductinventory",
     title: "Manage Product Inventory",
     icon: <FiPackage size={20} />,
-    content: <div>whnkjdnd</div>,
+    content: <ManageInventory />,
   },
   {
     id: "myservices",
