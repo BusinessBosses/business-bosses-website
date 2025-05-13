@@ -45,7 +45,7 @@ const navItems: NavItem[] = [
   {
     icon: <FiSettings size={20} />,
     name: "Setup",
-    path: "/pro/edit-shop",
+    path: "/pro/setup",
   },
 ];
 

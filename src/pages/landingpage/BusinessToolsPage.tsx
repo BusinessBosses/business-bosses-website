@@ -26,7 +26,8 @@ import CustomTextWidget from "../proscreens/biz-center/components/customtextwidg
 import CustomCard from "../proscreens/biz-center/components/customcard";
 import ProSubscribeSection from "../proscreens/biz-center/components/prosubscribesection";
 import { Shop } from "../../common/interfaces/Shop";
-import SetupShop from "../proscreens/setup/views/setup";
+import SetupShop from "../proscreens/setup/views/setupshop";
+
 
 interface ToggleCustomThemeProps {
   showCustomTheme: Boolean;
@@ -153,9 +154,8 @@ export default function BusinessToolsPage({ shop }: SetupShopProps) {
       <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
       <div>
-       <SetupShop partnerData={null} partnerDatatile={null}/>
+        <SetupShop partnerData={null} partnerDatatile={null} />
       </div>
-     
     </ThemeProvider>
   );
 }

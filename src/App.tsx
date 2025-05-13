@@ -78,10 +78,9 @@ import LandingPage from "./pages/landingpage/LandingPage";
 import LandingPageforPartners from "./pages/landingpage/LandingPageforPartners";
 import Expandedshop from "./pages/proscreens/biz-center/views/expandedshop";
 import ShopView from "./pages/proscreens/biz-center/views/shop";
-import SetupShop from "./pages/proscreens/setup/views/setup";
+import SetupShop from "./pages/proscreens/setup/views/setupshop";
 import Dashboard from "./pages/proscreens/dashboard/dashboard";
 import Layout from "./pages/proscreens/biz-center/views/prolayout";
-import Setup from "./pages/proscreens/setup/views/setup";
 import Tasks from "./pages/proscreens/tasks/tasks";
 import Orders from "./pages/proscreens/orders/orders";
 import ShopController from "./pages/proscreens/biz-center/controllers/ShopController";
@@ -89,6 +88,7 @@ import { setShopInfo } from "./redux/slices/ShopSlice";
 import MyShop from "./pages/proscreens/biz-center/views/myShop";
 import ProtectedRoute from "./services/ProtectedRoute";
 import Customers from "./pages/proscreens/customers/views/customers";
+import Setup from "./pages/proscreens/setup/setup";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -813,10 +813,11 @@ const App = () => {
             <Route path="my-shop" element={<MyShop />} />
             <Route path="orders" element={<Orders />} />
             <Route path="customers" element={<Customers />} />
+            <Route path="setup" element={<Setup />} />
             <Route
               path="edit-shop"
               element={
-                <Setup
+                <SetupShop
                   shop={shop!}
                   partnerData={partnerData}
                   partnerDatatile={partnerDatatile}
