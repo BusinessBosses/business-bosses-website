@@ -8,7 +8,7 @@ import {
   useDrop,
 } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { FiCheckSquare, FiPlus, FiSearch, FiX } from "react-icons/fi";
+import { FiCheckSquare, FiSearch, FiX } from "react-icons/fi";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import { useAppSelector } from "../../../redux/store/store";
 import ProCustomButton from "../biz-center/components/procustombutton";
@@ -169,8 +169,7 @@ const Tasks: React.FC = () => {
           <div className="flex justify-between items-center py-4">
             <h1 className="text-xl font-bold text-gray-900">Tasks</h1>
             <ProCustomButton
-              text="Add Task"
-              icon={<FiPlus className="mr-2" />}
+              text="+ Add Task"
               onPressed={() => {
                 if (isMobile) {
                   setOpen(true);

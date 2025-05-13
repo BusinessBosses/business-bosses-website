@@ -1,6 +1,6 @@
 import { Box, Modal, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { FiPlus, FiSearch, FiX } from "react-icons/fi";
+import { FiSearch, FiX } from "react-icons/fi";
 import {
   DndProvider,
   DragSourceMonitor,
@@ -226,8 +226,7 @@ const Customers: React.FC = () => {
           <div className="flex justify-between items-center py-4">
             <h1 className="text-xl font-bold text-gray-900">Customers</h1>
             <ProCustomButton
-              text="Add Customer"
-              icon={<FiPlus className="mr-2" />}
+              text="+ Add Customer"
               onPressed={() => setShowAddClientModal(true)}
             />
           </div>
