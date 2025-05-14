@@ -1,17 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Shop } from "../../../../common/interfaces/Shop";
-
+import { FiShare, FiShare2 } from "react-icons/fi";
 
 interface GotoshopWidgetProps {
-  shop: Shop,
+  shop: Shop;
 }
 
 const GotoshopWidget: React.FC<GotoshopWidgetProps> = ({ shop }) => {
   const navigate = useNavigate();
 
   const handleShopClick = () => {
-    navigate("/pro/my-shop"); 
+    navigate("/pro/my-shop");
   };
 
   return (
@@ -55,24 +55,35 @@ const GotoshopWidget: React.FC<GotoshopWidgetProps> = ({ shop }) => {
             <p className="text-sm font-semibold truncate">
               {shop?.name || "My Shop"}
             </p>
-            <div className="inline-flex items-center bg-gray-100 rounded px-2 py-0.5 mt-0.5">
-              <span className="text-xs font-semibold text-gray-700">
-                View Biz-Center
-              </span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-3 w-3 text-gray-700 ml-0.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <div className="flex flex-row gap-2">
+              <div className="inline-flex items-center bg-gray-100 rounded px-2 py-0.5 mt-0.5">
+                <span className="text-xs font-semibold text-gray-700">
+                  View Biz-Center
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3 text-gray-700 ml-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
+              <div
+                className="inline-flex items-center bg-gray-100 rounded px-2 py-0.5 mt-0.5"
+                onClick={() => {}}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+                <span className="text-xs font-semibold text-gray-700">
+                  Share My Link
+                </span>
+                <FiShare2 size={12} className="ml-1" />
+              </div>
             </div>
           </div>
         </div>

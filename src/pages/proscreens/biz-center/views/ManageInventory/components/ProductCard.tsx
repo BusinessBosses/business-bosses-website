@@ -1,13 +1,14 @@
 import React from "react";
-
-import { Product } from "../../types/Product";
-import { FiMapPin } from "react-icons/fi";
+import { FiMapPin, FiSettings } from "react-icons/fi";
+import { Product } from "../types/Product";
+import OptionsButton from "../../../../tasks/components/optionsbutton";
 
 interface ProductCardProps {
   product: Product;
   onClick: () => void;
   myShop?: boolean;
   marketplace?: boolean;
+  isMyProduct?: boolean;
   onEdit?: () => void;
   onBoost?: () => void;
   onDelete?: () => void;
@@ -18,6 +19,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onClick,
   myShop = false,
   marketplace = false,
+  isMyProduct = false,
   onEdit,
   onBoost,
   onDelete,
@@ -32,7 +34,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this product?")) {
       onDelete && onDelete();
     }
@@ -43,20 +46,24 @@ const ProductCard: React.FC<ProductCardProps> = ({
       "United States": "$",
       "United Kingdom": "£",
       "European Union": "€",
-      // Add more currency mappings as needed
-      default: "$",
+      Nigeria: "₦",
+      default: "₦",
     };
 
     return currencyMap[location] || currencyMap.default;
   };
 
+  const discountedPrice = product.discount
+    ? product.price * (1 - product.discount / 100)
+    : product.price;
+
   return (
     <div
-      className="p-2.5 bg-white rounded-2xl border border-black/10 flex flex-col"
+      className="p-2.5 bg-white rounded-2xl border border-black/10 flex flex-col h-full"
       onClick={onClick}
     >
       {/* Product Image */}
-      {product.images && (
+      {product.images && product.images.length > 0 && (
         <div className="h-32 w-full mb-1.5">
           <div className="h-full w-full rounded-xl overflow-hidden">
             <img
@@ -68,52 +75,41 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       )}
 
-      <div className="flex flex-col">
+      <div className="flex flex-col flex-grow">
         {/* Product Name and Price */}
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-1">
           <h3 className="text-sm font-bold text-gray-800 truncate">
             {product.name}
           </h3>
 
-          {/* {product.comparePrice ? (
+          {product.discount ? (
             <div className="flex items-center">
               <span className="text-sm font-bold">
-                {getCurrencySymbol(product.location || "default")}
-                {formatPrice(
-                  product.price * (1 - (product.discountPercentage || 0) / 100)
-                )}
+                {getCurrencySymbol(product.location || "Nigeria")}
+                {formatPrice(discountedPrice)}
               </span>
               <span className="ml-1 text-xs line-through text-purple-700">
-                {getCurrencySymbol(product.location || "default")}
+                {getCurrencySymbol(product.location || "Nigeria")}
                 {formatPrice(product.price)}
               </span>
             </div>
           ) : (
             <span className="text-sm font-bold">
-              {getCurrencySymbol(product.location || "default")}
+              {getCurrencySymbol(product.location || "Nigeria")}
               {formatPrice(product.price)}
             </span>
-          )} */}
+          )}
         </div>
 
-        {/* Description or Location/Rating */}
-        {!myShop ? (
-          <div className="flex justify-between items-center">
-            <p className="text-xs line-clamp-2 flex-grow">
-              {product.description}
-            </p>
-            {!marketplace && (
-              <button className="px-1.5 py-0.5 border border-purple-700 rounded-md text-xs font-bold text-purple-700">
-                Order
-              </button>
-            )}
-          </div>
-        ) : (
-          <div className="flex justify-between items-start">
-            <p className="text-xs line-clamp-2 flex-grow">
-              {product.description}
-            </p>
-            <div className="flex space-x-1">
+        {/* Description and buttons */}
+        <div className="flex justify-between items-start flex-grow">
+          <p className="text-xs line-clamp-2 flex-grow">
+            {product.description}
+          </p>
+
+          {/* Edit/Boost/Delete buttons for myShop */}
+          {myShop && (
+            <div className="flex space-x-1 ml-1">
               {onEdit && (
                 <button
                   onClick={(e) => {
@@ -155,13 +151,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </button>
               )}
               {onDelete && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete();
-                  }}
-                  className="text-xs p-1"
-                >
+                <button onClick={handleDelete} className="text-xs p-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-3.5 w-3.5"
@@ -177,50 +167,39 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </button>
               )}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* Location, Rating and Order Button for Marketplace */}
-        {marketplace && (
-          <div className="flex justify-between items-center mt-1.5">
+        {/* Location and action button section */}
+        <div className="flex justify-between items-center mt-1.5">
+          {/* Location for marketplace */}
+          {marketplace && (
             <div className="flex items-center">
               <FiMapPin className="h-4 w-4 text-gray-500" />
               <span className="ml-1 text-xs font-bold">
-                {product.location || "N/A"}
+                {product.location || "Nigeria"}
               </span>
             </div>
+          )}
 
-            {/* <div className="flex items-center">
-              <Star className="h-4 w-4 text-amber-400" />
-              <span className="ml-1 text-xs font-bold">
-                {product.rating?.toFixed(1) || "0.0"}
-              </span>
-            </div> */}
+          {/* Empty div for spacing when no location is shown */}
+          {!marketplace && <div className="flex-grow"></div>}
 
+          {/* Options or Order button */}
+          {isMyProduct ? (
+            <OptionsButton />
+          ) : (
             <button
               onClick={(e) => {
-                e.stopPropagation(); /* Handle order */
+                e.stopPropagation();
+                // Handle order
               }}
               className="px-1.5 py-0.5 border border-purple-700 rounded-md text-xs font-bold text-purple-700"
             >
               Order
             </button>
-          </div>
-        )}
-
-        {/* Order Button for non-marketplace shops when not myShop */}
-        {!myShop && !marketplace && (
-          <div className="flex justify-end mt-1.5">
-            <button
-              onClick={(e) => {
-                e.stopPropagation(); /* Handle order */
-              }}
-              className="px-1.5 py-0.5 border border-purple-700 rounded-md text-xs font-bold text-purple-700"
-            >
-              Order
-            </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

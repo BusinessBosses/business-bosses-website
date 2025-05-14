@@ -5,6 +5,7 @@ import SetupShop from "../views/setupshop";
 import { useAppSelector } from "../../../../redux/store/store";
 import { Route } from "react-router-dom";
 import ManageInventory from "../../biz-center/views/ManageInventory/ManageInventory";
+import MyService from "../../biz-center/views/ManageService/MyService";
 
 export interface SetupItemType {
   id: string;
@@ -30,7 +31,7 @@ const setupItems: SetupItemType[] = [
     id: "myservices",
     title: "My Services",
     icon: <AiFillCustomerService size={20} />,
-    content: <div>whnkjdnd</div>,
+    content: <MyService />,
   },
   {
     id: "contactus",
