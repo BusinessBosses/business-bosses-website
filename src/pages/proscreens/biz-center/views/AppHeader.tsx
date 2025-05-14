@@ -82,9 +82,6 @@ const AppHeader: React.FC = () => {
 
           <GotoshopWidget shop={shop!} />
 
-          <Link to="/" className="lg:hidden">
-            <img src="./images/logo/logo.svg" alt="Logo" />
-          </Link>
 
           <button
             onClick={toggleApplicationMenu}

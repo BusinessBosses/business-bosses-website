@@ -1,11 +1,12 @@
 import React, { ReactNode } from "react";
 import { AiFillContacts, AiFillCustomerService } from "react-icons/ai";
-import { FiCalendar, FiEdit, FiPackage, FiShoppingCart } from "react-icons/fi";
+import { FiAtSign, FiBriefcase, FiCalendar, FiEdit, FiFastForward, FiPackage, FiShoppingCart } from "react-icons/fi";
 import SetupShop from "../views/setupshop";
 import { useAppSelector } from "../../../../redux/store/store";
 import { Route } from "react-router-dom";
 import ManageInventory from "../../biz-center/views/ManageInventory/ManageInventory";
 import MyService from "../../biz-center/views/ManageService/MyService";
+import Assets from "../../../../assets";
 
 export interface SetupItemType {
   id: string;
@@ -18,7 +19,7 @@ const setupItems: SetupItemType[] = [
   {
     id: "editbizcenter",
     title: "Edit Biz-Center",
-    icon: <FiEdit size={20} />,
+    icon: <FiEdit size={18} />,
     content: <div>hgjhg</div>,
   },
   {
@@ -30,13 +31,13 @@ const setupItems: SetupItemType[] = [
   {
     id: "myservices",
     title: "My Services",
-    icon: <AiFillCustomerService size={20} />,
+    icon: <FiBriefcase size={19}/>,
     content: <MyService />,
   },
   {
     id: "contactus",
     title: "Contact Us",
-    icon: <AiFillContacts size={20} />,
+    icon: <FiAtSign size={19} />,
     content: <div>whnkjdnd</div>,
   },
 ];

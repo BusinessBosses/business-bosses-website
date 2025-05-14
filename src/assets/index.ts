@@ -132,6 +132,7 @@ import filterprosections  from "./icons/filterprosections.svg";
 import plusIcon  from "./icons/plus.svg";
 import addOrderIcon  from "./icons/addorder.svg";
 import addClientIcon  from "./icons/addclient.svg";
+import { ReactComponent as myservice } from "./icons/myservices.svg";
 
 
 
@@ -271,6 +272,7 @@ const Assets = {
   plusIcon,
   addOrderIcon,
   addClientIcon,
+  myservice,
 
 
 

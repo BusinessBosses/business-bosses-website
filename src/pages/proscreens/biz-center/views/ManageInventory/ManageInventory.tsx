@@ -2,10 +2,12 @@ import React, { useState } from "react";
 
 import { ChevronLeft } from "@mui/icons-material";
 import { FiCrosshair, FiFilter, FiPlusCircle, FiSearch } from "react-icons/fi";
-import ProductCard from "./components/ProductCard";
-import CreateProduct from "./components/CreateProduct";
+
 import ProCustomButton from "../../components/procustombutton";
 import Assets from "../../../../../assets";
+import CreateProduct from "./components/CreateProduct";
+import ProductCard from "./components/ProductCard";
+
 
 const ManageInventory: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -169,8 +171,16 @@ const ManageInventory: React.FC = () => {
                 <ProductCard
                   isMyProduct={true}
                   key={product.id}
-                  product={product}
-                  onClick={() => {}}
+                  imageUrl={product.images[0]}
+                  title={product.name}
+                  price={0}
+                  description={product.description}
+                  onCardClick={function (): void {
+                    throw new Error("Function not implemented.");
+                  }}
+                  onOrderClick={function (): void {
+                    throw new Error("Function not implemented.");
+                  }}
                 />
               ))}
             </div>

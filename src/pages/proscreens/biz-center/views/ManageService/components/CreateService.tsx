@@ -82,9 +82,7 @@ const CreateService: React.FC<CreateServiceProps> = ({
                 />
                 <button
                   type="button"
-                  onClick={(e) => {
-                    () => {};
-                  }}
+                  onClick={() => {}}
                   className="absolute top-1 right-1 p-1 bg-gray-100 rounded-full hover:bg-gray-200"
                 >
                   <FiCalendar className="h-4 w-4 text-gray-500" />

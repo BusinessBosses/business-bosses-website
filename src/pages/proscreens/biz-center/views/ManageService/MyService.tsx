@@ -167,6 +167,7 @@ const MyService: React.FC = () => {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {filteredServices.map((service) => (
                 <ServiceCard
+                  isMyService={true}
                   key={service.id}
                   imageUrl={service.images[0]}
                   title={service.name}

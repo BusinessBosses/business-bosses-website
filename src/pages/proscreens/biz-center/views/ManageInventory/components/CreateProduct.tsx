@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Product } from "../types/Product";
 import { FiCalendar } from "react-icons/fi";
+import { Product } from "../types/Product";
 
 interface CreateProductProps {
   onComplete?: () => void;
@@ -47,7 +47,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setProduct((prev) => ({
+    setProduct((prev: any) => ({
       ...prev,
       [name]:
         name === "price" || name === "comparePrice" || name === "quantity"
