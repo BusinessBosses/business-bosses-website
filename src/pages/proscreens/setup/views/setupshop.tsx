@@ -685,6 +685,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
                   onChanged={(newValue) => setImageType(newValue ?? "")}
                   backgroundColor="bg-backgroundcolor"
                 />
+                
                 <CustomEditText
                   backgroundColor="bg-backgroundcolor"
                   caption="Biz-Center Name *"

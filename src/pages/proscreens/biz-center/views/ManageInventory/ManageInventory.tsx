@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 
 import { ChevronLeft } from "@mui/icons-material";
-import { FiCrosshair, FiFilter, FiPlusCircle, FiSearch } from "react-icons/fi";
+import {
+  FiCrosshair,
+  FiFilter,
+  FiPlusCircle,
+  FiSearch,
+  FiX,
+} from "react-icons/fi";
 
 import ProCustomButton from "../../components/procustombutton";
 import Assets from "../../../../../assets";
 import CreateProduct from "./components/CreateProduct";
 import ProductCard from "./components/ProductCard";
-
 
 const ManageInventory: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -80,20 +85,20 @@ const ManageInventory: React.FC = () => {
   ]);
 
   return (
-    <div className="min-h-screen scrollbar-hidden flex flex-col border border-backgroundcolor rounded-xl">
+    <div className="min-h-screen scrollbar-hidden flex flex-col border border-backgroundcolor rounded-2xl">
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto scrollbar-hidden">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
               <h2 className="text-xl font-bold text-gray-900">
-                Add New Product
+                Create Product Listing
               </h2>
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <FiCrosshair className="h-5 w-5" />
+                <FiX className="h-5 w-5" />
               </button>
             </div>
             <div className="p-6">
