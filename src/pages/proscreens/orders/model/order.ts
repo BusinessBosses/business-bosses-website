@@ -7,20 +7,23 @@ import { User } from "../../../../common/interfaces/user";
 import { Client } from "../../customers/models/client";
 
 export enum OrderStatus {
-  ALL_ORDERS = 'allorders',
-  PENDING = 'pending',
-  PAID = 'paid',
-  COMPLETED = 'completed',
+  ALL_ORDERS = "allorders",
+  PENDING = "pending",
+  PAID = "paid",
+  COMPLETED = "completed",
 }
 
 export interface OrderItem {
   type: string;
   id?: number;
   name?: string;
+  price?: string;
   amount?: number;
 }
 
 export interface Order {
+  orderChannel: string;
+  totalAmount: number;
   id: string;
   userId: string;
   shopId: string;
@@ -48,13 +51,16 @@ export interface Order {
 // Helper functions
 export const orderStatusFromString = (status: string): OrderStatus => {
   switch (status.toLowerCase()) {
-    case 'all orders':
+    case "all orders":
+    case "allorders":
       return OrderStatus.ALL_ORDERS;
-    case 'pending':
+    case "pending":
       return OrderStatus.PENDING;
-    case 'paid':
+    case "paid":
       return OrderStatus.PAID;
-    case 'cancelled':
+    case "completed":
+      return OrderStatus.COMPLETED;
+    case "cancelled": // treat cancelled as completed
       return OrderStatus.COMPLETED;
     default:
       throw new Error(`Unknown status: ${status}`);
@@ -64,39 +70,39 @@ export const orderStatusFromString = (status: string): OrderStatus => {
 export const getOrderStatusDisplayTitle = (status: OrderStatus): string => {
   switch (status) {
     case OrderStatus.ALL_ORDERS:
-      return 'All Orders';
+      return "All Orders";
     case OrderStatus.PENDING:
-      return 'Pending';
+      return "Pending";
     case OrderStatus.PAID:
-      return 'Paid';
+      return "Paid";
     case OrderStatus.COMPLETED:
-      return 'Completed';
+      return "Completed";
   }
 };
 
 export const getOrderStatusBackgroundColor = (status: OrderStatus): string => {
   switch (status) {
     case OrderStatus.ALL_ORDERS:
-      return 'bg-gray-100';
+      return "bg-gray-100";
     case OrderStatus.PENDING:
-      return 'bg-amber-100';
+      return "bg-amber-100";
     case OrderStatus.PAID:
-      return 'bg-blue-100';
+      return "bg-blue-100";
     case OrderStatus.COMPLETED:
-      return 'bg-green-100';
+      return "bg-green-100";
   }
 };
 
 export const orderStatusToString = (status: OrderStatus): string => {
   switch (status) {
     case OrderStatus.ALL_ORDERS:
-      return 'all orders';
+      return "all orders";
     case OrderStatus.PENDING:
-      return 'pending';
+      return "pending";
     case OrderStatus.PAID:
-      return 'paid';
+      return "paid";
     case OrderStatus.COMPLETED:
-      return 'COMPLETED';
+      return "completed";
   }
 };
 
@@ -130,6 +136,8 @@ export const orderFromJson = (json: any): Order => {
     startTime: json.startTime ? new Date(json.startTime) : undefined,
     endTime: json.endTime ? new Date(json.endTime) : undefined,
     status: orderStatusFromString(json.status),
+    totalAmount: json.totalAmount ?? 0,
+    orderChannel: json.orderChannel ?? "",
   };
 };
 
@@ -161,5 +169,7 @@ export const orderToJson = (order: Order): any => {
     shop: order.shop,
     startTime: order.startTime?.toISOString(),
     endTime: order.endTime?.toISOString(),
+    totalAmount: order.totalAmount,
+    orderChannel: order.orderChannel,
   };
 };

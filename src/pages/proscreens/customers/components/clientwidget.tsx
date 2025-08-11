@@ -8,12 +8,14 @@ interface ClientWidgetProps {
   client: Client;
   bgColor: string;
   isExpanded?: boolean;
+  onEdit?: (client: Client) => void;
 }
 
 const ClientWidget: React.FC<ClientWidgetProps> = ({
   client,
   bgColor,
   isExpanded,
+  onEdit,
 }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -99,7 +101,7 @@ const ClientWidget: React.FC<ClientWidgetProps> = ({
           <div className="mt-3 flex justify-end items-end">
             <button
               className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md mr-2"
-              onClick={() => setShowEditModal(true)}
+              onClick={() => onEdit?.(client)}
             >
               Edit
             </button>

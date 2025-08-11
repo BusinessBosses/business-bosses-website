@@ -29,15 +29,14 @@ const statusDisplayTitles: Record<OrderStatus, string> = {
 const Orders: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [editingOrder, setEditingOrder] = useState<Order | undefined>(undefined);
 
-  // raw + filtered lists
   const [orders, setOrders] = useState<Order[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
   const [allClients, setAllClients] = useState<Client[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
 
-  // grouped by status
   const [statusOrders, setStatusOrders] = useState<Record<OrderStatus, Order[]>>({
     [OrderStatus.ALL_ORDERS]: [],
     [OrderStatus.PENDING]: [],
@@ -45,9 +44,7 @@ const Orders: React.FC = () => {
     [OrderStatus.COMPLETED]: [],
   });
 
-
   const [allOrders, setAllOrders] = useState<Order[]>([]);
-
   const [loading, setLoading] = useState<boolean>(true);
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -61,11 +58,8 @@ const Orders: React.FC = () => {
     if (!shop?.id) return;
     setLoading(true);
     try {
-      const {
-        orders: fetched,
-        statusOrders: buckets,
-        allOrders: flatList,
-      } = await ShopController.initOrders(shop.id);
+      const { orders: fetched, statusOrders: buckets, allOrders: flatList } =
+        await ShopController.initOrders(shop.id);
 
       setOrders(fetched);
       setFilteredOrders(fetched);
@@ -80,46 +74,38 @@ const Orders: React.FC = () => {
 
   const fetchClients = async () => {
     if (!shop?.id) return;
-    setLoading(true);
     try {
-      const {
-        allClients: flatList,
-      } = await ShopController.initClients(shop.user!.uid);
-
+      const { allClients: flatList } = await ShopController.initClients(
+        shop.user!.uid
+      );
       setAllClients(flatList);
     } catch (err) {
-      console.error("Failed to load orders:", err);
-    } finally {
-      setLoading(false);
+      console.error("Failed to load clients:", err);
     }
   };
 
   const fetchItems = async () => {
     if (!shop?.id) return;
-    setLoading(true);
     try {
-      const responseProducts = await ShopController.fetchProducts(shop.user!.uid);
-      const responseServices = await ShopController.fetchServices(shop.user!.uid);
-      console.log(responseProducts);
-      console.log(responseServices);
-      
+      const responseProducts = await ShopController.fetchProducts(
+        shop.user!.uid
+      );
+      const responseServices = await ShopController.fetchServices(
+        shop.user!.uid
+      );
       setProducts(responseProducts.data.rows);
       setServices(responseServices.data.rows);
     } catch (err) {
       console.error("Failed to load products/services:", err);
-    } finally {
-      setLoading(false);
     }
   };
 
-  // 1️⃣ Fetch & group on mount (or when shop changes)
   useEffect(() => {
     fetchOrders();
     fetchClients();
     fetchItems();
   }, []);
-  
-  // 2️⃣ Apply search only on “All Orders”
+
   useEffect(() => {
     if (!searchQuery.trim()) {
       setFilteredOrders(orders);
@@ -131,7 +117,6 @@ const Orders: React.FC = () => {
     }
   }, [searchQuery, orders]);
 
-  // 3️⃣ Build the render‐time buckets: use search on ALL, controller buckets on others
   const statusOrdersToRender: Record<OrderStatus, Order[]> = {
     [OrderStatus.ALL_ORDERS]: filteredOrders,
     [OrderStatus.PENDING]: statusOrders[OrderStatus.PENDING],
@@ -139,12 +124,12 @@ const Orders: React.FC = () => {
     [OrderStatus.COMPLETED]: statusOrders[OrderStatus.COMPLETED],
   };
 
-  // helpers for scrolling tabs
   const scrollToSection = (index: number) => {
     if (!scrollContainerRef.current) return;
     const left = index * window.innerWidth * 0.9;
     scrollContainerRef.current.scrollTo({ left, behavior: "smooth" });
   };
+
   const moveMainList = (isRight: boolean) => {
     if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
     scrollTimerRef.current = setTimeout(() => {
@@ -158,16 +143,13 @@ const Orders: React.FC = () => {
     }, 100);
   };
 
-  // when you drop an order into a new status column
   const handleStatusChange = (orderId: string, newStatus: OrderStatus) => {
     setOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
     );
   };
 
-  // mock data for CreateOrderModal
-
-  const paymentMethods = shop?.payments?.map((p : any)=> p.paymentMethod);
+  const paymentMethods = shop?.payments?.map((p: any) => p.paymentMethod);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -227,29 +209,37 @@ const Orders: React.FC = () => {
                   setShowSearchBar={setShowSearchBar}
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
+                  onEditOrder={(order) => setEditingOrder(order)}
                 />
               ))}
             </div>
           )}
         </div>
 
-        {showModal && (
+        {(showModal || editingOrder) && (
           <CreateOrderModal
-            onClose={() => setShowModal(false)}
+            onClose={() => {
+              setShowModal(false);
+              setEditingOrder(undefined);
+            }}
             shop={shop!}
             clients={allClients}
             products={products}
             services={services}
             paymentMethods={paymentMethods}
+            order={editingOrder}
             onCreateOrder={async (orderData) => {
               setLoading(true);
               setShowModal(false);
               await ShopController.addOrder(orderData);
-              fetchOrders(); // Re-fetch orders after creating a new one
+              await fetchOrders();
               return true;
             }}
             onUpdateOrder={async (orderId, orderData) => {
-              // …your existing update logic…
+              setLoading(true);
+              await ShopController.updateOrder(orderId, orderData);
+              await fetchOrders();
+              setEditingOrder(undefined);
               return true;
             }}
           />
@@ -261,10 +251,7 @@ const Orders: React.FC = () => {
 
 export default Orders;
 
-// ----------------------
-// StatusColumn & Draggable
-// ----------------------
-
+// Status Column
 const StatusColumn: React.FC<{
   status: OrderStatus;
   orders: Order[];
@@ -275,6 +262,7 @@ const StatusColumn: React.FC<{
   setShowSearchBar(show: boolean): void;
   searchQuery: string;
   setSearchQuery(q: string): void;
+  onEditOrder(order: Order): void;
 }> = ({
   status,
   orders,
@@ -284,35 +272,34 @@ const StatusColumn: React.FC<{
   setShowSearchBar,
   searchQuery,
   setSearchQuery,
+  onEditOrder,
 }) => {
   const [{ isOver }, drop] = useDrop({
     accept: "order",
-     drop: (item: { order: Order }, monitor) => {
-       // only trigger on the shallowest drop target:
-       if (monitor.isOver({ shallow: true })) {
-         onStatusChange(item.order.id, status);
-       }
-     },
-     collect: (monitor) => ({
-       isOver: monitor.isOver({ shallow: true }),
-       canDrop: monitor.canDrop(),
-     }),
+    canDrop: () => status !== OrderStatus.ALL_ORDERS,
+    drop: (item: { order: Order }, monitor) => {
+      if (monitor.isOver({ shallow: true }) && status !== OrderStatus.ALL_ORDERS) {
+        onStatusChange(item.order.id, status);
+      }
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver({ shallow: true }),
+    }),
   });
 
   return (
     <div
-           ref={drop}
-           style={{
-             backgroundColor:
-               status !== OrderStatus.ALL_ORDERS && isOver
-                 ? "#f3f4f6"
-                 : "white",
-             borderRadius: 8,
-             padding: 16,
-             marginRight: 16,
-             minHeight: 150,
-           }}
-         >
+      ref={status === OrderStatus.ALL_ORDERS ? null : drop}
+      style={{
+        backgroundColor:
+          status !== OrderStatus.ALL_ORDERS && isOver ? "#f3f4f6" : "white",
+        borderRadius: 8,
+        padding: 16,
+        marginRight: 16,
+        minHeight: 150,
+        width: 320,
+      }}
+    >
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           {status !== OrderStatus.ALL_ORDERS && (
@@ -322,8 +309,8 @@ const StatusColumn: React.FC<{
           )}
           <h3 className="text-sm font-bold">{statusDisplayTitles[status]}</h3>
         </div>
-        {status === OrderStatus.ALL_ORDERS && (
-          showSearchBar ? (
+        {status === OrderStatus.ALL_ORDERS &&
+          (showSearchBar ? (
             <div className="flex items-center">
               <input
                 className="border rounded px-2 py-1 text-sm"
@@ -331,7 +318,12 @@ const StatusColumn: React.FC<{
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <button onClick={() => { setShowSearchBar(false); setSearchQuery(""); }}>
+              <button
+                onClick={() => {
+                  setShowSearchBar(false);
+                  setSearchQuery("");
+                }}
+              >
                 <FiX />
               </button>
             </div>
@@ -339,15 +331,39 @@ const StatusColumn: React.FC<{
             <button onClick={() => setShowSearchBar(true)}>
               <FiSearch />
             </button>
-          )
-        )}
+          ))}
       </div>
       <div className="border-t border-gray-200 mb-2" />
       {orders.length > 0 ? (
-        <div className="overflow-y-auto" style={{ maxHeight: "calc(100vh-250px)" }}>
-          {orders.map((order) => (
-            <DraggableOrder key={order.id} order={order} onDrag={onDrag} />
-          ))}
+        <div
+          className="overflow-y-auto"
+          style={{ maxHeight: "calc(100vh - 250px)" }}
+        >
+          {orders.map((order) =>
+            status === OrderStatus.ALL_ORDERS ? (
+              <div
+                key={order.id}
+                style={{
+                  marginBottom: 12,
+                  maxWidth: 320,
+                  margin: "0 auto",
+                }}
+              >
+                <OrderWidget
+                  order={order}
+                  status={order.status}
+                  onEdit={() => onEditOrder(order)}
+                />
+              </div>
+            ) : (
+              <DraggableOrder
+                key={order.id}
+                order={order}
+                onDrag={onDrag}
+                onEdit={() => onEditOrder(order)}
+              />
+            )
+          )}
         </div>
       ) : (
         <div className="text-center text-gray-500 py-8">
@@ -360,17 +376,19 @@ const StatusColumn: React.FC<{
   );
 };
 
-const DraggableOrder: React.FC<{ order: Order; onDrag(isRight: boolean): void }> = ({
-  order,
-  onDrag,
-}) => {
+// Draggable Order
+const DraggableOrder: React.FC<{
+  order: Order;
+  onDrag(isRight: boolean): void;
+  onEdit(): void;
+}> = ({ order, onDrag, onEdit }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
-         type: "order",
-         item: { order },
-         collect: (monitor) => ({
-           isDragging: monitor.isDragging(),
-         }),
-       }));
+    type: "order",
+    item: { order },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     const w = window.innerWidth;
@@ -380,15 +398,16 @@ const DraggableOrder: React.FC<{ order: Order; onDrag(isRight: boolean): void }>
 
   return (
     <div
-       ref={drag}
-       onDrag={handleDrag}            // keep your auto-scroll logic
-       style={{
-         opacity: isDragging ? 0.3 : 1,
-         marginBottom: 12,
-         cursor: "move",
-       }}
-     >
-      <OrderWidget order={order} status={order.status} />
+      ref={drag}
+      onDrag={handleDrag}
+      style={{
+        opacity: isDragging ? 0.3 : 1,
+        marginBottom: 12,
+        cursor: "move",
+        maxWidth: 320,
+      }}
+    >
+      <OrderWidget order={order} status={order.status} onEdit={onEdit} />
     </div>
   );
 };

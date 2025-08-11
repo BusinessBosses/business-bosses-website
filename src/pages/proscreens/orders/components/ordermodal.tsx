@@ -6,26 +6,7 @@ import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Client } from "../../customers/models/client";
-
-interface OrderItem {
-  id: string;
-  type: "product" | "service" | "custom";
-  name: string;
-  price: string | number;
-  images?: string[];
-}
-
-interface Order {
-  id?: string;
-  clientId?: string;
-  items?: OrderItem[];
-  deliveryMethod?: string;
-  deliveryDate?: string;
-  paymentMethod?: string;
-  notes?: string;
-  invoiceOption?: string;
-  orderChannel?: string;
-}
+import { Order } from "../model/order";
 
 interface Product {
   id: string;
@@ -40,8 +21,19 @@ interface Service {
   price: number;
 }
 
+// Local UI type for selected items to avoid mismatches with backend OrderItem
+// Allows string ids, optional images, and number|string price for display
+// It will be transformed as needed when submitting to backend.
+type SelectedItem = {
+  id: string;
+  name: string;
+  price: number | string;
+  type: "product" | "service" | "custom" | string;
+  images?: string[];
+};
+
 interface CreateOrderModalProps {
-  order?: Order;
+  order?: Order | undefined;
   onClose: () => void;
   shop: Shop;
   clients: Client[];
@@ -65,7 +57,7 @@ const CreateOrderModal: React.FC<CreateOrderModalProps> = ({
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedClient, setSelectedClient] = useState<string>("");
-  const [selectedItems, setSelectedItems] = useState<OrderItem[]>([]);
+  const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] =
     useState<string>("");
   const [selectedOrderDate, setSelectedOrderDate] = useState<Date | null>(null);
@@ -81,7 +73,14 @@ const CreateOrderModal: React.FC<CreateOrderModalProps> = ({
   useEffect(() => {
     if (order) {
       setSelectedClient(order.clientId || "");
-      setSelectedItems(order.items || []);
+      setSelectedItems(
+        (order.items || []).map((i) => ({
+          id: String(i.id ?? ""),
+          name: i.name ?? "Item",
+          price: i.price ?? 0,
+          type: i.type,
+        }))
+      );
       setSelectedDeliveryMethod(order.deliveryMethod || "");
       setSelectedOrderDate(
         order.deliveryDate ? new Date(order.deliveryDate) : null

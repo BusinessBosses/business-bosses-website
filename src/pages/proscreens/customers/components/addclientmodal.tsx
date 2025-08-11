@@ -4,38 +4,58 @@ import CustomEditText from "../../biz-center/components/customedittext";
 import ProCustomButton from "../../biz-center/components/procustombutton";
 import { toast } from "react-toastify";
 import { useAppSelector } from "../../../../redux/store/store";
-import ShopController from "../../biz-center/controllers/ShopController";
 import CustomCard from "../../biz-center/components/customcard";
 import Assets from "../../../../assets";
 import CustomDropdown from "../../biz-center/components/customdropdown";
-
-interface Client {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  clientType: string;
-  description?: string;
-  userId: string;
-}
+import {
+  Client,
+  ClientType,
+  getClientTypeDisplayTitle,
+} from "../models/client";
 
 interface AddClientModalProps {
   client?: Client;
   onClose: () => void;
+  onSave?: (clientData: Client) => void;
+  onUpdate?: (clientData: Client) => void;
 }
 
-const AddClientModal: React.FC<AddClientModalProps> = ({ client, onClose }) => {
+const AddClientModal: React.FC<AddClientModalProps> = ({
+  client,
+  onClose,
+  onSave,
+  onUpdate,
+}) => {
   const [name, setName] = useState(client?.name || "");
   const [email, setEmail] = useState(client?.email || "");
   const [phone, setPhone] = useState(client?.phone || "");
-  const [clientType, setClientType] = useState(client?.clientType || "online");
-  const [description, setDescription] = useState(client?.description || "");
+  const [clientType, setClientType] = useState<ClientType>(
+    client?.type || ClientType.ONLINE
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = React.useState(
     Assets.shopplaceholder
   );
 
   const profile = useAppSelector((state) => state.user);
+
+  // Dropdown options are display strings, map enum values to these strings
+  const clientTypeOptions = [
+    ClientType.ONLINE,
+    ClientType.IN_PERSON,
+    // add more types here if needed
+  ];
+
+  const handleClientTypeChange = (selectedLabel: string | null) => {
+    if (!selectedLabel) return;
+    // find ClientType enum key by matching display title
+    const foundType = clientTypeOptions.find(
+      (type) => getClientTypeDisplayTitle(type) === selectedLabel
+    );
+    if (foundType) {
+      setClientType(foundType);
+    }
+  };
 
   const handleSubmit = async () => {
     if (!name) {
@@ -52,11 +72,37 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ client, onClose }) => {
     }
 
     setIsSubmitting(true);
+
+    const clientData: Client = {
+      id: client?.id || "", // generate new id if needed
+      name,
+      email,
+      phone,
+      userId: profile.profile!.uid,
+      type: clientType,
+      createdAt: client ? client.createdAt : new Date(),
+      image: client?.image || [],
+      orderCount: client?.orderCount || 0,
+      totalAmountSpent: client?.totalAmountSpent || 0,
+    };
+
+    try {
+      if (client) {
+        if (onUpdate) await onUpdate(clientData);
+      } else {
+        if (onSave) await onSave(clientData);
+      }
+      onClose();
+    } catch (error) {
+      toast.error("An error occurred. Please try again.", { autoClose: 3000 });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="flex items-center justify-center">
-      <div className="bg-white w-full max-w-md">
+      <div className="bg-white w-full max-w-md p-6 rounded shadow-lg">
         <div className="flex justify-between items-start mb-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
@@ -113,15 +159,13 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ client, onClose }) => {
           />
 
           <CustomDropdown
-            initialValue="Individual"
-            caption="Image Type"
-            hintText="Choose an image type"
-            items={["Individual", "Company"]}
-            onChanged={(value: string | null) => setClientType(value || "")}
+            initialValue={getClientTypeDisplayTitle(clientType)}
+            caption="Client Type"
+            hintText="Choose a client type"
+            items={clientTypeOptions.map(getClientTypeDisplayTitle)}
+            onChanged={handleClientTypeChange}
             backgroundColor="bg-backgroundcolor"
           />
-
-         
 
           <div className="flex justify-end space-x-3 pt-4">
             <ProCustomButton
@@ -137,6 +181,24 @@ const AddClientModal: React.FC<AddClientModalProps> = ({ client, onClose }) => {
             />
           </div>
         </div>
+
+        {/* Hidden file input for image upload */}
+        <input
+          id="image-upload"
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              const file = e.target.files[0];
+              const reader = new FileReader();
+              reader.onload = (ev) => {
+                setSelectedImage(ev.target?.result as string);
+              };
+              reader.readAsDataURL(file);
+            }
+          }}
+        />
       </div>
     </div>
   );
