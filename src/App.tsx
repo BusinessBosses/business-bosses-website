@@ -788,6 +788,7 @@ const App = () => {
           element={<BusinessToolsPage />}
         />
         <Route path={"/:value"} element={<ShopView />} />
+        <Route path={"/privacypolicy"} element={<PrivacyPolicy />} />
         <Route element={<ProtectedRoute />}>
           <Route
             path={RoutesPath.createPost}
@@ -807,7 +808,6 @@ const App = () => {
               />
             }
           />
-          <Route path={"/privacypolicy"} element={<PrivacyPolicy />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Layout />}>
             <Route index element={<Dashboard />} />
