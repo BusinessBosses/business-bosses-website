@@ -1,23 +1,10 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import InputLabel from "@mui/material/InputLabel";
 import Link from "@mui/material/Link";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import { visuallyHidden } from "@mui/utils";
-
-import FacebookIcon from "@mui/icons-material/GitHub";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-
-import SitemarkIcon from "./SitemarkIcon";
-import Assets from "../../../../assets";
-import TwitterIcon from "react-share/lib/TwitterIcon";
 import { useNavigate } from "react-router-dom";
+import Assets from "../../../../assets";
 import RoutesPath from "../../../../constants/Routes";
 
 function Copyright() {
@@ -87,7 +74,7 @@ export default function Footer() {
                 </Typography>
               </Box>
               <div className="mt-5">
-                <Link color="white" variant="body2" href="#">
+                <Link color="white" variant="body2" href="/privacypolicy">
                   Privacy Policy
                 </Link>
                 <Typography

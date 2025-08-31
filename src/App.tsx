@@ -1,94 +1,95 @@
-import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
-import RoutesPath from "./constants/Routes";
-import HomePage from "./pages/home/views/HomePage";
-import MarketPlacePage from "./pages/marketplace/views/MarketPlacePage";
-import Forum from "./pages/forum/views/Forum";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import ReactGA from "react-ga";
-import CreatePost from "./pages/CreatePost/views/CreatePost";
-import PromotePage from "./pages/promote/views/PromotePage";
-import MyProfile from "./pages/profile/views/MyProfile";
-import SettingsPage from "./pages/settings/views/SettingsPage";
-import InvitePage from "./pages/invite/views/InvitePage";
-import NotificationPage from "./pages/notification/views/NotificationPage";
-import HomeSearch from "./pages/search/views/HomeSearch";
-import ConnectionsPage from "./pages/connections/views/ConnectionsPage";
-import RegisterPage from "./pages/authentication/views/RegisterPage";
+import { Helmet } from "react-helmet";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Popup from "reactjs-popup";
+import FetchStatus from "./common/components/fetch_status/FetchStatus";
+import { StorageEnum } from "./common/emums/StorageEmuns";
+import { Market } from "./common/interfaces/Market";
+import { PartnerData } from "./common/interfaces/partnerdata";
+import { PartnerDatatile } from "./common/interfaces/partnerdatatile";
+import { socketUrl } from "./config/config";
+import RoutesPath from "./constants/Routes";
+import { useSocket } from "./hooks/useSockets";
+import AnalysePage from "./pages/analyse/views/AnalysePage";
+import AnalyseProfilePage from "./pages/analyse/views/AnalyseProfilePage";
+import ExploreBusinessBosses from "./pages/analyse/views/ExploreBusinessBosses";
+import RankingPage from "./pages/analyse/views/RankingPage";
+import AuthController from "./pages/authentication/controller/AuthController";
+import RequestOtpForForgotPassword from "./pages/authentication/RequestOtpForForgotPassword";
 import LoginPage from "./pages/authentication/views/LoginPage";
 import OtpVerificationPage from "./pages/authentication/views/OtpVerificationPage";
-import PublicUserProfile from "./pages/profile/views/PublicUserProfile";
-import EditProfilePage from "./pages/profile/views/EditProfilePage";
+import RegisterPage from "./pages/authentication/views/RegisterPage";
+import Bossuppartnerpage from "./pages/bossuppartnerpage/bossuppartnerpage";
+import ComputerBossuppartnersection from "./pages/bossuppartnerpage/computerbossupsection";
 import ChatPage from "./pages/chat/views/ChatPage";
 import ChatRoomPage from "./pages/chat/views/ChatRoomPage";
-import CreateListing from "./pages/marketplace/views/CreateListing";
-import { useEffect, useState } from "react";
-import serviceApi from "./services/serviceApi";
-import { useAppDispatch, useAppSelector } from "./redux/store/store";
-import { addPostToState } from "./redux/slices/PostSlice";
-import FetchStatus from "./common/components/fetch_status/FetchStatus";
-import { saveBossupData, saveUserData } from "./redux/slices/UserSlice";
-import HomeController from "./pages/home/controller/HomeController";
-import { saveChatsToState } from "./redux/slices/ChatSlice";
-import CommunitiesPage from "./pages/communities/views/CommunitiesPage";
-import { useSocket } from "./hooks/useSockets";
-import { socketUrl } from "./config/config";
 import Bossupsearch from "./pages/communities/views/Bossupsearch";
+import CommunitiesPage from "./pages/communities/views/CommunitiesPage";
 import CreateBossup from "./pages/communities/views/CreateBossup";
-import Popup from "reactjs-popup";
-import { StorageEnum } from "./common/emums/StorageEmuns";
-import RequestOtpForForgotPassword from "./pages/authentication/RequestOtpForForgotPassword";
-import ReferPage from "./pages/refer/views/ReferPage";
-import SubscriptionPage from "./pages/subscription/views/SubscriptionPage";
-import AnalysePage from "./pages/analyse/views/AnalysePage";
-import CommunityRules from "./pages/settings/views/CommunityRules";
-import Invitetandcs from "./pages/settings/views/Invitetandcs";
-import AnalyseProfilePage from "./pages/analyse/views/AnalyseProfilePage";
-import ConnectRelevant from "./pages/settings/views/ConnectRelevant";
-import RankingPage from "./pages/analyse/views/RankingPage";
-import ExploreBusinessBosses from "./pages/analyse/views/ExploreBusinessBosses";
-import SellerReview from "./pages/sellerreviews/SellerReview";
-import ExpandedImages from "./pages/expandedimages/expandedimages";
-import Bossuppartnerpage from "./pages/bossuppartnerpage/bossuppartnerpage";
-import ConnectRelevantPage from "./pages/settings/views/ConnectRelevantPage";
-import SubscriptionConfirmationPage from "./pages/subscription/views/SubscriptionConfirmationPage";
-import RenewSubscriptionConfirmationPage from "./pages/subscription/views/RenewSubscriptionConfirmationPage";
-import BoostPostConfirmationPage from "./pages/subscription/views/BoostpostConfirmationPage";
+import ConnectionsPage from "./pages/connections/views/ConnectionsPage";
 import BoostPost from "./pages/CreatePost/views/BoostPost";
-import ReviewPaymentPage from "./pages/subscription/views/ReviewPaymentPage";
-import { toast } from "react-toastify";
-import AuthController from "./pages/authentication/controller/AuthController";
-import SubscriptionFailedPage from "./pages/subscription/views/Subscriptionfailedpage";
-import ComputerBossuppartnersection from "./pages/bossuppartnerpage/computerbossupsection";
-import { PartnerData } from "./common/interfaces/partnerdata";
-import axios from "axios";
-import { PartnerDatatile } from "./common/interfaces/partnerdatatile";
+import CreatePost from "./pages/CreatePost/views/CreatePost";
+import ExpandedImages from "./pages/expandedimages/expandedimages";
+import Forum from "./pages/forum/views/Forum";
+import HomeController from "./pages/home/controller/HomeController";
+import HomePage from "./pages/home/views/HomePage";
+import InvitePage from "./pages/invite/views/InvitePage";
+import BecomeAPartnerPage from "./pages/landingpage/BecomeAPartnerPage";
+import BusinessToolsPage from "./pages/landingpage/BusinessToolsPage";
+import LandingPage from "./pages/landingpage/LandingPage";
+import LandingPageforPartners from "./pages/landingpage/LandingPageforPartners";
 import Liveevent from "./pages/liveevent/liveevent";
-import { Helmet } from "react-helmet";
 import MarketController from "./pages/marketplace/controller/MarketController";
+import CreateListing from "./pages/marketplace/views/CreateListing";
+import CreateListingSelectorpage from "./pages/marketplace/views/CreateListingSelectorpage";
+import MarketPlacePage from "./pages/marketplace/views/MarketPlacePage";
+import NotificationPage from "./pages/notification/views/NotificationPage";
+import EditProfilePage from "./pages/profile/views/EditProfilePage";
+import MyProfile from "./pages/profile/views/MyProfile";
+import PublicUserProfile from "./pages/profile/views/PublicUserProfile";
+import PromotePage from "./pages/promote/views/PromotePage";
+import ShopController from "./pages/proscreens/biz-center/controllers/ShopController";
+import Expandedshop from "./pages/proscreens/biz-center/views/expandedshop";
+import MyShop from "./pages/proscreens/biz-center/views/myShop";
+import Layout from "./pages/proscreens/biz-center/views/prolayout";
+import ShopView from "./pages/proscreens/biz-center/views/shop";
+import Customers from "./pages/proscreens/customers/views/customers";
+import Dashboard from "./pages/proscreens/dashboard/dashboard";
+import Orders from "./pages/proscreens/orders/orders";
+import Setup from "./pages/proscreens/setup/setup";
+import SetupShop from "./pages/proscreens/setup/views/setupshop";
+import Tasks from "./pages/proscreens/tasks/tasks";
+import ReferPage from "./pages/refer/views/ReferPage";
+import HomeSearch from "./pages/search/views/HomeSearch";
+import SellerReview from "./pages/sellerreviews/SellerReview";
+import CommunityRules from "./pages/settings/views/CommunityRules";
+import ConnectRelevant from "./pages/settings/views/ConnectRelevant";
+import ConnectRelevantPage from "./pages/settings/views/ConnectRelevantPage";
+import Invitetandcs from "./pages/settings/views/Invitetandcs";
+import SettingsPage from "./pages/settings/views/SettingsPage";
+import BoostPostConfirmationPage from "./pages/subscription/views/BoostpostConfirmationPage";
+import RenewSubscriptionConfirmationPage from "./pages/subscription/views/RenewSubscriptionConfirmationPage";
+import ReviewPaymentPage from "./pages/subscription/views/ReviewPaymentPage";
+import SubscriptionConfirmationPage from "./pages/subscription/views/SubscriptionConfirmationPage";
+import SubscriptionFailedPage from "./pages/subscription/views/Subscriptionfailedpage";
+import SubscriptionPage from "./pages/subscription/views/SubscriptionPage";
+import { saveChatsToState } from "./redux/slices/ChatSlice";
 import {
   addMarketsToState,
   addMembersToState,
   incrementPage,
   saveCount,
 } from "./redux/slices/MarketSlice";
-import { Market } from "./common/interfaces/Market";
-import CreateListingSelectorpage from "./pages/marketplace/views/CreateListingSelectorpage";
-import BecomeAPartnerPage from "./pages/landingpage/BecomeAPartnerPage";
-import BusinessToolsPage from "./pages/landingpage/BusinessToolsPage";
-import LandingPage from "./pages/landingpage/LandingPage";
-import LandingPageforPartners from "./pages/landingpage/LandingPageforPartners";
-import Expandedshop from "./pages/proscreens/biz-center/views/expandedshop";
-import ShopView from "./pages/proscreens/biz-center/views/shop";
-import SetupShop from "./pages/proscreens/setup/views/setupshop";
-import Dashboard from "./pages/proscreens/dashboard/dashboard";
-import Layout from "./pages/proscreens/biz-center/views/prolayout";
-import Tasks from "./pages/proscreens/tasks/tasks";
-import Orders from "./pages/proscreens/orders/orders";
-import ShopController from "./pages/proscreens/biz-center/controllers/ShopController";
+import { addPostToState } from "./redux/slices/PostSlice";
 import { setShopInfo } from "./redux/slices/ShopSlice";
-import MyShop from "./pages/proscreens/biz-center/views/myShop";
+import { saveBossupData, saveUserData } from "./redux/slices/UserSlice";
+import { useAppDispatch, useAppSelector } from "./redux/store/store";
 import ProtectedRoute from "./services/ProtectedRoute";
-import Customers from "./pages/proscreens/customers/views/customers";
-import Setup from "./pages/proscreens/setup/setup";
+import serviceApi from "./services/serviceApi";
+import PrivacyPolicy from "./pages/privacypolicy/privacypolicy";
 
 const App = () => {
   const [err, setErr] = useState<boolean>(false);
@@ -806,9 +807,10 @@ const App = () => {
               />
             }
           />
-          <Route path="/pro" element={<Layout />}>
+          <Route path={"/privacypolicy"} element={<PrivacyPolicy />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/dashboard" element={<Layout />}>
             <Route index element={<Dashboard />} />
-            <Route path="dashboard" element={<Dashboard />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="my-shop" element={<MyShop />} />
             <Route path="orders" element={<Orders />} />
