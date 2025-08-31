@@ -14,18 +14,19 @@ export interface Shop {
   likes?: string[]; // no equivalent field in the Dart class
   coins?: string[]; // no equivalent field in the Dart class
   views: number; // maps to views
+  imageType?: string;
   discount?: string; // no equivalent field in the Dart class
   isProduct: boolean; // inferred from the use case; no explicit mapping
   name?: string; // maps to name
   email?: string; // maps to email
   phone?: string; // maps to phone
-  payments?: string[]; // maps to payments (assumes List<dynamic> can be narrowed down to string[])
+  payments?: any; // maps to payments (assumes List<dynamic> can be narrowed down to string[])
   promotionDuration?: number; // maps to promotionDuration
   approved?: boolean; // maps to approved
   plan?: string; // maps to plan
   facebook?: string; // maps to facebook
   twitter?: string; // maps to twitter
-  linkedin?: string; // maps to linkedin
+  linkedIn?: string; // maps to linkedin
   instagram?: string; // maps to instagram
   url?: string; // maps to url
   createdAt?: number; // maps to createdAt (DateTime converted to a timestamp)

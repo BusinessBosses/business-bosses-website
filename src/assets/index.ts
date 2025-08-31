@@ -1,14 +1,14 @@
 import MessageIcon from "./icons/message.svg";
 import { ReactComponent as ProfileIcon } from "./icons/person.svg";
-import { ReactComponent as Messagenoback } from "./icons/message.svg";
+import { ReactComponent as Messagenoback } from "./icons/bottombarchat.svg";
 import { ReactComponent as Notifnoback } from "./icons/notifications.svg";
 import NotificationIcon from "./icons/notifications.svg";
-import { ReactComponent as BossupIcon } from "./icons/bossupicon.svg";
+import { ReactComponent as BossupIcon } from "./icons/bossupu.svg";
 import Badge from "./icons/badge.svg";
 import Logo from "./icons/logo.png";
-import { ReactComponent as Home } from "./icons/home.svg";
+import { ReactComponent as Home } from "./icons/homeu.svg";
 import { ReactComponent as User } from "./icons/person.svg";
-import { ReactComponent as MarketPlace } from "./icons/marketplace.svg";
+import { ReactComponent as MarketPlace } from "./icons/cartu.svg";
 import { ReactComponent as Private } from "./icons/private.svg";
 import { ReactComponent as Visible } from "./icons/eye.svg";
 import { ReactComponent as Google } from "./icons/g.svg";
@@ -68,7 +68,7 @@ import { ReactComponent as Topicsicon } from "./icons/topics.svg";
 import { ReactComponent as Inviteicon } from "./icons/invite.svg";
 import { ReactComponent as Membersicon } from "./icons/members.svg";
 import { ReactComponent as Linkicon } from "./icons/link.svg";
-import dashboardicon from "./icons/dashboard.svg";
+import { ReactComponent as dashboardicon } from "./icons/dashboard.svg";
 import timelapseicon from "./icons/timelapse.svg";
 import BossUpAvatar from "./icons/bb_avatar.jpg";
 import appmockup from "./icons/appmockup.png";
@@ -111,12 +111,31 @@ import pwu6 from "./icons/pwu6.png";
 import { ReactComponent as fbsl } from "./icons/fbsl.svg";
 import { ReactComponent as xsl } from "./icons/xsl.svg";
 import { ReactComponent as lsl } from "./icons/lsl.svg";
+import { ReactComponent as igsl } from "./icons/igsl.svg";
 import { ReactComponent as isl } from "./icons/insta.svg";
 import { ReactComponent as website } from "./icons/website.svg";
 import { ReactComponent as email } from "./icons/email.svg";
 import { ReactComponent as phone } from "./icons/phone.svg";
 import orderonapp from "./icons/orderonapp.jpeg";
-import { ReactComponent as order } from "./icons/order.svg";
+import { ReactComponent as order } from "./icons/ordersinvoices.svg";
+import dropdown  from "./icons/dropdown.svg";
+import uploadicon  from "./icons/uploadicon.svg";
+import checkfilled  from "./icons/checkfilled.svg";
+import shopplaceholder  from "./icons/shopplaceholder.png";
+import Nexticonblack  from "./icons/nexticon_black.svg";
+import { ReactComponent as setupshop } from "./icons/setupshop.svg";
+import { ReactComponent as clients } from "./icons/clients.svg";
+import { ReactComponent as ordersinvoices } from "./icons/ordersinvoices.svg";
+import { ReactComponent as projects } from "./icons/projects.svg";
+import dashboard  from "./icons/dashboard.svg";
+import filterprosections  from "./icons/filterprosections.svg";
+import plusIcon  from "./icons/plus.svg";
+import addOrderIcon  from "./icons/addorder.svg";
+import addClientIcon  from "./icons/addclient.svg";
+import { ReactComponent as myservice } from "./icons/myservices.svg";
+
+
+
 
 const Assets = {
   MessageIcon,
@@ -238,5 +257,26 @@ const Assets = {
   phone,
   orderonapp,
   order,
+  igsl,
+  dropdown,
+  uploadicon,
+  checkfilled,
+  shopplaceholder,
+  Nexticonblack,
+  setupshop,
+  clients,
+  ordersinvoices,
+  projects,
+  dashboard,
+  filterprosections,
+  plusIcon,
+  addOrderIcon,
+  addClientIcon,
+  myservice,
+
+
+
+
+
 };
 export default Assets;

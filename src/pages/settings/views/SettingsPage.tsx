@@ -1,18 +1,13 @@
-import React, { ReactNode, useRef, useState } from "react";
+import React, { useState } from "react";
 import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
 import Assets from "../../../assets";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
-import Popup from "reactjs-popup";
-import UserAvatar from "../../../common/components/avatars/UserAvatar";
-import { IoIosMore } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import { useAppSelector } from "../../../redux/store/store";
 import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsmall";
-import { toast } from "react-toastify";
-import { StorageEnum } from "../../../common/emums/StorageEmuns";
 import AuthController from "../../authentication/controller/AuthController";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
@@ -30,40 +25,9 @@ const SettingsPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
   const handleSignOutClick = () => {
     setShowConfirmation(true);
   };
-  const [loading, setLoading] = useState<boolean>(false);
-  const login = async () => {
-    if (loading) return;
-    const validate = AuthController.validateLogin({
-      email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
-      password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
-      terms: true,
-    });
-    if (validate) {
-      setLoading(true);
-      const response = await AuthController.loginRequest({
-        email: `${process.env.REACT_APP_DUMMY_EMAIL}`,
-        password: `${process.env.REACT_APP_DUMMY_PASSWORD}`,
-      });
-      if (response.success) {
-        localStorage.setItem(
-          StorageEnum.AccessToken,
-          response.data.accessToken
-        );
-        localStorage.setItem(StorageEnum.UserId, response.data.uid);
-        toast.success("You have been signed out");
-        
-        // Reload the page to navigate to the home
-        window.location.reload();
-      } else {
-        toast.error("Oops, try again! An Error Occurred");
-      }
-      
-      setLoading(false);
-    }
-  };
-  
+
   const handleConfirmSignOut= () => {
-    login();
+    AuthController.logoutRequest();
     navigate(RoutesPath.home);
 
    

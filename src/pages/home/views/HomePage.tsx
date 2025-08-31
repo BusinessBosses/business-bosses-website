@@ -17,24 +17,17 @@ import { saveUserData } from "../../../redux/slices/UserSlice";
 import { Comment } from "../../../common/interfaces/comment";
 import ComputerHeader from "./components/ComputerHeader";
 import MobileBossOfTheWeek from "./components/BossOfTheWeek";
-import MyProfileDetails from "../../profile/views/components/MyProfileDetails";
-import { User } from "../../../common/interfaces/user";
-import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
-import { useEffect, useState } from "react";
-import { Login } from "@mui/icons-material";
-import FilledButtonsmall from "../../../common/components/buttons/FilledButtonsmall";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RoutesPath from "../../../constants/Routes";
 import Computerlefttabsignedoutuser from "../../profile/views/components/Computerlefttabsignedoutuser";
 import Assets from "../../../assets";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
-import { log } from "console";
 import serviceApi from "../../../services/serviceApi";
 import HomeController from "../controller/HomeController";
 import { Helmet } from "react-helmet";
-import Loader from "../../../common/components/loader/Loader";
 
 
 interface Props {
@@ -232,7 +225,7 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
                 </div>
                 <div className="text-xs">We have so much more to offer to ensure you have a truly boss experience</div>
               </div>
-              {profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+              {profile.profile?.email === `${process.env.REACT_APP_DUMMY_EMAIL}` ?
 
                 <div className="flex" style={{ height: '100%' }}>
                   <button
@@ -412,7 +405,7 @@ const HomePage = ({ socket, partnerData, partnerDatatile }: Props) => {
           >
             <div className="">
               <div className=" flex items-center gap-3">
-                {profile.profile?.email != `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+                {profile.profile?.email !== `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                   <ComputerProfileDetails data={profile.profile!} /> : <Computerlefttabsignedoutuser data={profile.profile!} />}
               </div>
             </div>

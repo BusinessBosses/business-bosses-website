@@ -11,13 +11,18 @@ import Bossupsearch from "../../../communities/views/Bossupsearch";
 import Marketplacesearchpopup from "../../../popups/Marketplacesearchpopup";
 import { PartnerData } from "../../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../../common/interfaces/partnerdatatile";
+import { Container } from "@mui/material";
 interface Props {
   onTapButton?: () => void;
   partnerData: PartnerData | null;
   partnerDatatile: PartnerDatatile | null;
 }
 
-const ComputerHeader = ({ onTapButton, partnerData, partnerDatatile }: Props) => {
+const ComputerHeader = ({
+  onTapButton,
+  partnerData,
+  partnerDatatile,
+}: Props) => {
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const location = useLocation();
@@ -42,121 +47,134 @@ const ComputerHeader = ({ onTapButton, partnerData, partnerDatatile }: Props) =>
   };
 
   const handleButtonClick = () => {
-    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    const confirmMessage =
+      "You need to sign in or create an account to be able to use this feature";
     if (window.confirm(confirmMessage)) {
-      navigate(RoutesPath.login)
+      navigate(RoutesPath.login);
     } else {
-
     }
   };
 
   return (
-    <div
-      className="computer-only bg-white top-0 w-full z-50"
-      style={{ position: "sticky", top: 0, zIndex: 10 }}
-    >
-      <div className="computer-content items-end">
-        <div className="flex  firstsection ml-5 lg:ml-20 pr-5">
-          <div className="flex flex-grow items-center" style={{ width: "25%" }}>
-            <img
-              src={Assets.Logo}
-              className="w-12 h-12 my-3 cursor-pointer"
-              alt=""
-              onClick={() => {
-                dispatch(onChangeRoute(0));
-                navigate(RoutesPath.home);
-              }}
-            />
-            <div className="computer-only">
-              <div className="hidden lg:block">
-                <button
-                  onClick={profile.profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
-                    handleButtonClick : openPopup}
-                  className="flex items-center bg-[#F4F4F4] py-4 px-4 rounded-lg ml-5"
-                >
-                  <CiSearch className="text-[#A9A9A9]" size={20} />
-                  <div className="w-2"></div>
-                  {currentRoute === "/communities" ? (
-                    <p className="text-[#A9A9A9] text-base">
-                      Search groups & topics
-                    </p>
-                  ) : currentRoute === "/market" ? (
-                    <p className="text-[#A9A9A9] text-base">Search products</p>
-                  ) : currentRoute === "/chats" ? (
-                    <p className="text-[#A9A9A9] text-base">Search chats</p>
-                  ) : (
-                    <p className="text-[#A9A9A9] text-base">
-                      Search people & posts
-                    </p>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              <div className="lg:hidden ml-5 mr-5">
-                <div
-                  className="bg-[#f4f4f4] rounded-full p-2 cursor-pointer"
-                  onClick={openPopup}
-                >
-                  <CiSearch
-                    className="text-[#333333]"
-                    size={23}
-                    style={{ strokeWidth: 1 }}
-                  />
-                  <div className="w-2"></div>
-
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        <div className="flex-grow items-end justify-end">
-          <ComputerTopNav
-            onTapButton={() => {
-              if (onTapButton) {
-                onTapButton();
-              }
-            }}
-            currentRoute={currentRoute}
-            unseenNotification={profile?.profile!.unReadCount! > 0}
-            unseenChat={!!chats.find(
-              (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
-            )} partnerData={partnerData} partnerDatatile={partnerDatatile} />
-        </div>
-      </div>
+    <Container maxWidth="lg">
       <div
-        style={{
-          height: "1.2px",
-          width: "100%",
-          background: "rgba(0, 0, 0, 0.1)",
-        }}
-      ></div>
-      {isPopupOpen &&
-        (currentRoute === "/communities" ? (
-          <div className="overlay">
-            <div className="popup" >
-              <Bossupsearch onClosePopup={closePopup} />
-            </div>
-          </div>
-        ) : currentRoute === "/market" ? (
-          <div className="overlay">
-            <div className="popup" style={{ overflowY: "scroll" }}>
-              <Marketplacesearchpopup onClosePopup={closePopup} />
-            </div>
-          </div>
-        ) : (
-          <div className="overlay">
-            <div className="popup" style={{ overflowY: "scroll", scrollbarWidth: "none", msOverflowStyle: "none" }}>
+        className="bg-white top-0 w-full z-50"
+        style={{ position: "sticky", top: 0, zIndex: 10 }}
+      >
+        <div className="computer-content items-end">
+          <div className="flex">
+            <div
+              className="flex flex-grow items-center"
+              style={{ width: "25%" }}
+            >
+              <img
+                src={Assets.Logo}
+                className="w-12 h-12 my-3 cursor-pointer"
+                alt=""
+                onClick={() => {
+                  dispatch(onChangeRoute(0));
+                  navigate(RoutesPath.home);
+                }}
+              />
+              <div className="computer-only">
+                <div className="hidden lg:block">
+                  <button
+                    onClick={
+                      profile.profile?.email ==
+                      `${process.env.REACT_APP_DUMMY_EMAIL}`
+                        ? handleButtonClick
+                        : openPopup
+                    }
+                    className="flex items-center bg-[#F4F4F4] py-4 px-4 rounded-lg ml-5"
+                  >
+                    <CiSearch className="text-[#A9A9A9]" size={20} />
+                    <div className="w-2"></div>
+                    {currentRoute === "/communities" ? (
+                      <p className="text-[#A9A9A9] text-base">
+                        Search groups & topics
+                      </p>
+                    ) : currentRoute === "/market" ? (
+                      <p className="text-[#A9A9A9] text-base">
+                        Search products
+                      </p>
+                    ) : currentRoute === "/chats" ? (
+                      <p className="text-[#A9A9A9] text-base">Search chats</p>
+                    ) : (
+                      <p className="text-[#A9A9A9] text-base">
+                        Search people & posts
+                      </p>
+                    )}
+                  </button>
+                </div>
+              </div>
 
-              <HomeSearch onClosePopup={closePopup} />
+              <div className="flex items-center">
+                <div className="lg:hidden ml-5 mr-5">
+                  <div
+                    className="bg-[#f4f4f4] rounded-full p-2 cursor-pointer"
+                    onClick={openPopup}
+                  >
+                    <CiSearch
+                      className="text-[#333333]"
+                      size={23}
+                      style={{ strokeWidth: 1 }}
+                    />
+                    <div className="w-2"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        ))}
-    </div>
+
+          <div className="flex-grow items-end justify-end">
+            <ComputerTopNav
+              onTapButton={() => {
+                if (onTapButton) {
+                  onTapButton();
+                }
+              }}
+              currentRoute={currentRoute}
+              unseenNotification={profile?.profile!.unReadCount! > 0}
+              unseenChat={
+                !!chats.find(
+                  (fd) => fd.senderUid !== profile?.profile!.uid && !fd.seen
+                )
+              }
+              partnerData={partnerData}
+              partnerDatatile={partnerDatatile}
+            />
+          </div>
+        </div>
+        
+        {isPopupOpen &&
+          (currentRoute === "/communities" ? (
+            <div className="overlay">
+              <div className="popup">
+                <Bossupsearch onClosePopup={closePopup} />
+              </div>
+            </div>
+          ) : currentRoute === "/market" ? (
+            <div className="overlay">
+              <div className="popup" style={{ overflowY: "scroll" }}>
+                <Marketplacesearchpopup onClosePopup={closePopup} />
+              </div>
+            </div>
+          ) : (
+            <div className="overlay">
+              <div
+                className="popup"
+                style={{
+                  overflowY: "scroll",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                }}
+              >
+                <HomeSearch onClosePopup={closePopup} />
+              </div>
+            </div>
+          ))}
+      </div>
+    </Container>
   );
 };
 

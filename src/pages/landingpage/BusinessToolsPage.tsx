@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PaletteMode } from "@mui/material";
+import { Container, PaletteMode } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -19,6 +19,15 @@ import Features from "./views/components/Features";
 import Loginsection from "./views/components/Loginsection";
 import Reviews from "./views/components/Reviews";
 import Assets from "../../assets";
+import CustomEditText from "../proscreens/biz-center/components/customedittext";
+import CustomDropdown from "../proscreens/biz-center/components/customdropdown";
+import ProCustomButton from "../proscreens/biz-center/components/procustombutton";
+import CustomTextWidget from "../proscreens/biz-center/components/customtextwidget";
+import CustomCard from "../proscreens/biz-center/components/customcard";
+import ProSubscribeSection from "../proscreens/biz-center/components/prosubscribesection";
+import { Shop } from "../../common/interfaces/Shop";
+import SetupShop from "../proscreens/setup/views/setupshop";
+
 
 interface ToggleCustomThemeProps {
   showCustomTheme: Boolean;
@@ -63,11 +72,59 @@ function ToggleCustomTheme({
   );
 }
 
-export default function BusinessToolsPage() {
+interface SetupShopProps {
+  shop?: Shop;
+  backToHome?: boolean;
+}
+
+export default function BusinessToolsPage({ shop }: SetupShopProps) {
   const [mode, setMode] = React.useState<PaletteMode>("light");
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
+
+  const [bankValue, setBankValue] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [igslValue, setIgslValue] = React.useState("");
+  const [fbslValue, setFbslValue] = React.useState("");
+  const [lslValue, setLslValue] = React.useState("");
+  const [xslValue, setXslValue] = React.useState("");
+  const [cslValue, setCslValue] = React.useState("");
+  const [category, setCategory] = React.useState("");
+  const [imageType, setImageType] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const LPtheme = createTheme(getLPTheme(mode));
-  const defaultTheme = createTheme({ palette: { mode } });
+  const [isSubmit, setIsSubmit] = React.useState(false);
+
+  const handleSubmit = () => {
+    console.log("Form submitted with:", {
+      name,
+      description,
+      phone,
+      email,
+      category,
+      imageType,
+      bankValue,
+      socialLinks: {
+        instagram: igslValue,
+        facebook: fbslValue,
+        linkedIn: lslValue,
+        x: xslValue,
+        custom: cslValue,
+      },
+    });
+    setIsSubmit(true);
+    // Add your form submission logic here
+  };
+
+  const defaultTheme = createTheme({
+    palette: {
+      mode,
+      background: {
+        default: "#ffffff", // Using hex instead of "white"
+      },
+    },
+  });
 
   const toggleColorMode = () => {
     setMode((prev) => (prev === "dark" ? "light" : "dark"));
@@ -77,14 +134,28 @@ export default function BusinessToolsPage() {
     setShowCustomTheme((prev) => !prev);
   };
 
+  const categories = [
+    "Agriculture, Food & Beverage",
+    "Books & Education",
+    "Construction & Real Estate",
+    "Fashion & Beauty",
+    "Finance & Legal",
+    "Healthcare & Wellness",
+    "Home, Gardens & Outdoors",
+    "Jewellery & Timepieces",
+    "Media & Entertainment",
+    "Security, Safety & Equipment",
+    "Technology, Games & Electronic",
+    "Vehicle & Transportation",
+  ];
+
   return (
     <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
       <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
-      <img src={Assets.comingsoon} alt="Coming Soon" style={{display: "block", margin: "auto" }}/>
-      <Box sx={{ bgcolor: "background.default" }}>
-        <Footer />
-      </Box>
+      <div>
+        <SetupShop partnerData={null} partnerDatatile={null} />
+      </div>
     </ThemeProvider>
   );
 }

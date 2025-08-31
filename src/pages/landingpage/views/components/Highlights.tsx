@@ -122,7 +122,7 @@ export default function Highlights() {
                   boxShadow: "none",
                 }}
               >
-                <img src={item.icon} width="60" height="60" />
+                <img src={item.icon} alt={item.title} width="60" height="60" />
                 <div>
                   <Typography
                     gutterBottom
