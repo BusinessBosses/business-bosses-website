@@ -16,7 +16,9 @@ import Spinner from "../../tasks/components/spinner";
 import AddClientModal from "../components/addclientmodal";
 import ClientWidget from "../components/clientwidget";
 import { Client, ClientType } from "../models/client";
-import SupplierWidget from "../components/supplierwidget"; // Import SupplierWidget
+import SupplierWidget from "../components/supplierwidget";
+import ShopController from "../../biz-center/controllers/ShopController";
+import { useAppSelector } from "../../../../redux/store/store";
 
 interface Supplier {
   id: string;
@@ -27,51 +29,10 @@ interface Supplier {
   phone: string;
   address: string;
   lastOrder: string;
-  description: string; // Added missing property
-  location: string; // Added missing property
+  description: string;
+  location: string;
 }
 
-// Dummy client data
-const dummyClients: Client[] = [
-  {
-    id: "c1",
-    name: "John Smith",
-    email: "john.smith@example.com",
-    phone: "+1 (555) 123-4567",
-    type: ClientType.ONLINE,
-    createdAt: new Date("2025-04-15"),
-    orderCount: 5,
-    totalAmountSpent: 1200.75,
-    userId: "user123",
-    image: ["https://randomuser.me/api/portraits/men/1.jpg"],
-  },
-  {
-    id: "c2",
-    name: "Sarah Johnson",
-    email: "sarah.j@example.com",
-    phone: "+1 (555) 987-6543",
-    type: ClientType.IN_PERSON,
-    createdAt: new Date("2025-05-01"),
-    orderCount: 3,
-    totalAmountSpent: 850.25,
-    userId: "user123",
-    image: ["https://randomuser.me/api/portraits/women/2.jpg"],
-  },
-  {
-    id: "c3",
-    name: "Michael Brown",
-    email: "mbrown@example.com",
-    phone: "+1 (555) 222-3333",
-    type: ClientType.ONLINE,
-    createdAt: new Date("2025-05-08"),
-    orderCount: 1,
-    totalAmountSpent: 320.5,
-    userId: "user123",
-    image: ["https://randomuser.me/api/portraits/men/3.jpg"],
-  },
-];
-
-// Dummy supplier data
 const dummySuppliers: Supplier[] = [
   {
     id: "s1",
@@ -134,19 +95,28 @@ const Customers: React.FC = () => {
   const scrollTimerRef = useRef<NodeJS.Timeout | null>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const shop = useAppSelector((state) => state.shop.shopInfo);
 
   // Load dummy data
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setClients(dummyClients);
-      setSuppliers(dummySuppliers);
+      try {
+        const clientsFromApi = await ShopController.initClients(shop!.userId);
+        const parsedClients = clientsFromApi.clients.map((client) => ({
+          ...client,
+          createdAt: new Date(client.createdAt),
+        }));
+
+        setClients(parsedClients);
+        setSuppliers(dummySuppliers);
+      } catch (error) {
+        console.error("Failed to load clients:", error);
+      }
       setLoading(false);
     };
     loadData();
-  }, []);
+  }, [shop]);
 
   const scrollToSection = (index: number) => {
     if (scrollContainerRef.current) {
@@ -159,6 +129,38 @@ const Customers: React.FC = () => {
 
   const handleCloseAddModal = () => {
     setShowAddClientModal(false);
+  };
+
+  const handleSaveClient = (newClient: Client) => {
+    setClients((prev) => {
+      const index = prev.findIndex((c) => c.id === newClient.id);
+      if (index !== -1) {
+        // Update existing client
+        const updated = [...prev];
+        updated[index] = newClient;
+        return updated;
+      } else {
+        // Add new client
+        return [newClient, ...prev];
+      }
+    });
+    setShowAddClientModal(false);
+  };
+
+  const handleSaveSupplier = (newSupplier: Supplier) => {
+    setSuppliers((prev) => {
+      const index = prev.findIndex((s) => s.id === newSupplier.id);
+      if (index !== -1) {
+        // Update existing supplier
+        const updated = [...prev];
+        updated[index] = newSupplier;
+        return updated;
+      } else {
+        // Add new supplier
+        return [newSupplier, ...prev];
+      }
+    });
+    setShowAddSupplierModal(false);
   };
 
   const moveMainList = (isRight: boolean) => {
@@ -211,7 +213,6 @@ const Customers: React.FC = () => {
     setClients(items);
   }, [selectedFilterOption]);
 
-  // Define the customer type tabs correctly
   const customerTypeTabs = [
     ClientType.ALL_CLIENTS,
     ClientType.ONLINE,
@@ -239,7 +240,7 @@ const Customers: React.FC = () => {
             setActiveTab={setActiveTab}
             scrollToSection={scrollToSection}
             proprimaryColor="#1F2937"
-            backgroundColor={["#6b7280", "#D3FFE3", "#B0D9FB", "#FBD4FF"]} //
+            backgroundColor={["#6b7280", "#D3FFE3", "#B0D9FB", "#FBD4FF"]}
             listofitems={[...customerTypeTabs, "SUPPLIER"]}
             itemToString={(type) => {
               if (type === "SUPPLIER") {
@@ -262,7 +263,7 @@ const Customers: React.FC = () => {
           />
 
           {loading ? (
-            <div className="h-64 pt-52 w-full flex items-center justify-center">
+            <div className="h-64 w-full flex items-center justify-center">
               <Spinner color="black" />
             </div>
           ) : clients.length === 0 ? (
@@ -292,6 +293,9 @@ const Customers: React.FC = () => {
                   setShowSearchBar={setShowSearchBar}
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
+                  onEditClient={function (client: Client): void {
+                    throw new Error("Function not implemented.");
+                  }}
                 />
               ))}
 
@@ -364,7 +368,11 @@ const Customers: React.FC = () => {
                 padding: 2,
               }}
             >
-              <AddClientModal onClose={handleCloseAddModal} />
+              {/* Pass save function to modal */}
+              <AddClientModal
+                onClose={handleCloseAddModal}
+                onSave={handleSaveClient}
+              />
             </Box>
           </BottomSheet>
         ) : (
@@ -382,37 +390,32 @@ const Customers: React.FC = () => {
                 borderRadius: 2,
               }}
             >
-              <AddClientModal onClose={handleCloseAddModal} />
+              <AddClientModal
+                onClose={handleCloseAddModal}
+                onSave={handleSaveClient}
+              />
             </Box>
           </Modal>
         )}
-
-        {/* Supplier Modals (unchanged) */}
-        <Modal
-          open={showAddSupplierModal}
-          onClose={() => setShowAddSupplierModal(false)}
-        >
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Add Supplier</h2>
-            {/* ... existing supplier modal content ... */}
-          </div>
-        </Modal>
-
-        <Modal
-          open={showImportSupplierModal}
-          onClose={() => setShowImportSupplierModal(false)}
-        >
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Import Supplier</h2>
-            {/* ... existing import modal content ... */}
-          </div>
-        </Modal>
       </div>
     </DndProvider>
   );
 };
 
-const StatusColumn = ({
+interface StatusColumnProps {
+  status: ClientType;
+  clients: Client[];
+  allClients: Client[];
+  onTypeChange: (clientId: string, newType: ClientType) => void;
+  onDrag: (isRight: boolean) => void;
+  showSearchBar: boolean;
+  setShowSearchBar: React.Dispatch<React.SetStateAction<boolean>>;
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  onEditClient: (client: Client) => void;
+}
+
+const StatusColumn: React.FC<StatusColumnProps> = ({
   status,
   clients,
   allClients,
@@ -422,177 +425,72 @@ const StatusColumn = ({
   setShowSearchBar,
   searchQuery,
   setSearchQuery,
-}: {
-  status: ClientType;
-  clients: Client[];
-  allClients: Client[];
-  onTypeChange: (id: string, newType: ClientType) => void;
-  onDrag: (isRight: boolean) => void;
-  showSearchBar: boolean;
-  setShowSearchBar: (show: boolean) => void;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
+  onEditClient,
 }) => {
-  return (
-    <div
-      className="flex-shrink-0 w-11/12 sm:w-80 bg-white rounded-xl border mr-4"
-      style={{ scrollSnapAlign: "center" }}
-    >
-      <div className="flex justify-between items-center mb-0 h-12 rounded-t-2xl sticky top-0 bg-white z-10 border-b border-gray-200 px-4">
-        <div className="flex h-4 items-center">
-          {status !== ClientType.ALL_CLIENTS && (
-            <div
-              className={`w-2 h-2 rounded-full ${typeColors[status]} mr-2`}
-            ></div>
-          )}
-          <h3 className="text-sm font-bold text-gray-900">
-            {typeDisplayNames[status]} ({clients.length})
-          </h3>
-        </div>
-
-        {status === ClientType.ALL_CLIENTS && (
-          <div className="flex items-center">
-            {showSearchBar ? (
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  className="text-sm border border-gray-300 rounded-lg px-3 py-1 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-gray-500"
-                  placeholder="Search clients..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <button
-                  onClick={() => {
-                    setShowSearchBar(false);
-                    setSearchQuery("");
-                  }}
-                  className="ml-2 p-1 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200"
-                >
-                  <FiX className="h-4 w-4" />
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowSearchBar(true)}
-                className="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200"
-              >
-                <FiSearch className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* <div className="border-t border-gray-200 my-2"></div> */}
-
-      {status === ClientType.ALL_CLIENTS ? (
-        <div
-          className="overflow-y-auto px-4"
-          style={{ maxHeight: "calc(100vh - 250px)" }}
-        >
-          {clients.length > 0 ? (
-            clients.map((client) => (
-              <ClientWidget
-                key={client.id}
-                client={client}
-                bgColor={typeBackgroundColors[client.type] || ""}
-              />
-            ))
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              No clients found matching your search
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="px-4">
-          <DropColumn
-            status={status}
-            clients={clients}
-            onTypeChange={onTypeChange}
-            onDrag={onDrag}
-          />
-        </div>
-      )}
-    </div>
-  );
-};
-
-const DropColumn = ({
-  status,
-  clients,
-  onTypeChange,
-  onDrag,
-}: {
-  status: ClientType;
-  clients: Client[];
-  onTypeChange: (id: string, newType: ClientType) => void;
-  onDrag: (isRight: boolean) => void;
-}) => {
-  const [{ isOver }, drop] = useDrop({
+  const [{ isOver, canDrop }, drop] = useDrop({
     accept: "client",
-    drop: (item: { client: Client }) => {
-      onTypeChange(item.client.id, status);
+    drop: (item: Client) => {
+      if (item.type !== status) onTypeChange(item.id, status);
     },
-    collect: (monitor: DropTargetMonitor) => ({
-      isOver: monitor.isOver(),
+    canDrop: (item: Client) => item.type !== status,
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
     }),
   });
 
   return (
     <div
       ref={drop}
-      className={`overflow-y-auto rounded-lg ${isOver ? "bg-gray-100" : ""}`}
-      style={{ maxHeight: "calc(100vh - 250px)", minHeight: "100px" }}
+      className={`flex-shrink-0 w-11/12 sm:w-80 rounded-xl border p-4 mr-4 cursor-pointer
+        ${typeBackgroundColors[status]} 
+        ${isOver && canDrop ? "border-4 border-green-400" : "border-gray-200"}`}
     >
-      {clients.length > 0 ? (
-        clients.map((client) => (
-          <DraggableClient key={client.id} client={client} onDrag={onDrag} />
-        ))
-      ) : (
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center text-gray-500">
-          Drag clients here
+      <div className="flex items-center mb-3">
+        <div
+          className={`w-3 h-3 rounded-full mr-2 ${typeColors[status]}`}
+        ></div>
+        <h3 className="text-sm font-bold text-gray-900">
+          {typeDisplayNames[status]} ({clients.length})
+        </h3>
+      </div>
+
+      {/* Search Bar */}
+      {showSearchBar && (
+        <div className="mb-3">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search clients"
+            className="w-full px-2 py-1 rounded border border-gray-300"
+          />
+          <button
+            onClick={() => setShowSearchBar(false)}
+            className="text-gray-600"
+          >
+            <FiX />
+          </button>
         </div>
       )}
-    </div>
-  );
-};
 
-const DraggableClient = ({
-  client,
-  onDrag,
-}: {
-  client: Client;
-  onDrag: (isRight: boolean) => void;
-}) => {
-  const [{ isDragging }, drag] = useDrag({
-    type: "client",
-    item: { client },
-    collect: (monitor: DragSourceMonitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
-
-  const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
-    const screenWidth = window.innerWidth;
-    if (e.clientX > screenWidth * 0.8) {
-      onDrag(true);
-    } else if (e.clientX < screenWidth * 0.2) {
-      onDrag(false);
-    }
-  };
-
-  return (
-    <div
-      ref={drag}
-      draggable
-      onDrag={handleDrag}
-      className={`mb-3 ${isDragging ? "opacity-30" : "opacity-100"}`}
-    >
-      <ClientWidget
-        client={client}
-        bgColor={typeBackgroundColors[client.type] || ""}
-      />
+      <div
+        className="overflow-y-auto"
+        style={{ maxHeight: "calc(100vh - 300px)" }}
+      >
+        {clients.length === 0 ? (
+          <p className="text-sm text-gray-500">No clients</p>
+        ) : (
+          clients.map((client) => (
+            <ClientWidget
+              key={client.id}
+              client={client}
+              bgColor={""}
+              onEdit={() => onEditClient(client)}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 };
