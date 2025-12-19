@@ -78,7 +78,7 @@ const ShopView = () => {
         error={false}
         loading={true}
         errorMessage="Loading shop details..."
-        onReload={() => {}}
+        onReload={() => { }}
       />
     );
   }
@@ -109,13 +109,13 @@ const ShopView = () => {
         />
         <div className="flex">
           <button
-            onClick={() => navigate(RoutesPath.register)}
+            onClick={() => window.open("https://businessbosses.onelink.me/xLWk/", "_blank")}
             className="text-black hover:text-gray-700 font-bold py-2 px-4 rounded"
           >
             Sign Up
           </button>
           <button
-            onClick={() => navigate(RoutesPath.login)}
+            onClick={() => window.open("https://businessbosses.onelink.me/xLWk/", "_blank")}
             className="text-black hover:text-gray-700 font-bold py-2 px-4 rounded"
           >
             Sign In
@@ -171,9 +171,8 @@ const ShopView = () => {
             onClick={async () =>
               await navigator.share({
                 title: `Check this out!`,
-                text: `Have a look at ${
-                  shop?.user?.name ?? shop?.user?.username
-                }'s biz-center on Business Bosses`,
+                text: `Have a look at ${shop?.user?.name ?? shop?.user?.username
+                  }'s biz-center on Business Bosses`,
                 url: `https://my-biz.io/${shop
                   ?.name!.toLowerCase()
                   .replace(/\s+/g, "-")}`,
@@ -203,11 +202,10 @@ const ShopView = () => {
           {["Listings", "Reviews", "Contact"].map((tab, idx) => (
             <div
               key={idx}
-              className={`p-2 cursor-pointer ${
-                activeTab === idx + 1
+              className={`p-2 cursor-pointer ${activeTab === idx + 1
                   ? "border-b-2 border-black font-bold"
                   : "text-gray-500"
-              }`}
+                }`}
               onClick={() => setActiveTab(idx + 1)}
             >
               {tab}
