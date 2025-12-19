@@ -21,7 +21,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({ shop }) => {
         <ContactItem
           icon={Assets.website}
           title="Virtual Address"
-          subtext={`#${shop?.appId}, Biz-Centre, Business Bosses, United Kingdom`}
+          subtext={`#${shop?.appId}, Biz-Centre, Business Bosses, ${shop?.location}`}
         />
         <hr />
         <ContactItem

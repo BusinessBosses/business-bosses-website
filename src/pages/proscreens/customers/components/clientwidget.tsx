@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FiUser, FiCheckSquare } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
 import { Client, ClientType } from "../models/client";
 import { useAppSelector } from "../../../../redux/store/store";
 import OptionsButton from "../../tasks/components/optionsbutton";
