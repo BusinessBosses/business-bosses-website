@@ -278,7 +278,7 @@ const ShopView = () => {
         onClick={() => navigate(RoutesPath.home)}
       >
         <p>Powered by</p>
-        <p className="underline">Business Bosses</p>
+        <p className="underline"><a href="http://businessbosses.co.uk/">Business Bosses</a></p>
       </div>
     </div>
   );
