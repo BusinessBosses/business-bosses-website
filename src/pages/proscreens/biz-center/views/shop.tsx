@@ -101,12 +101,7 @@ const ShopView = () => {
   return (
     <div className="flex flex-col bg-white items-center justify-start p-4 h-screen overflow-y-auto">
       <header className="w-full pb-4 flex justify-between items-center">
-        <img
-          src={Assets.Logo}
-          height={40}
-          width={40}
-          onClick={() => navigate(RoutesPath.home)}
-        />
+        <div></div>
         <div className="flex">
           <button
             onClick={() => window.open("https://businessbosses.onelink.me/xLWk/", "_blank")}
@@ -118,7 +113,7 @@ const ShopView = () => {
             onClick={() => window.open("https://businessbosses.onelink.me/xLWk/", "_blank")}
             className="text-black hover:text-gray-700 font-bold py-2 px-4 rounded"
           >
-            Sign In
+            Log In
           </button>
         </div>
       </header>
@@ -126,8 +121,9 @@ const ShopView = () => {
       <UserAvatarbig imageSize="h-20 w-20" imageURL={shop?.image} />
 
       {/* Shop Info */}
-      <div className="text-sm font-bold truncate mb-2">{shop?.name}</div>
+
       <div className="text-xs text-gray-700 mb-2 text-center">
+        <p className="text-sm font-bold truncate mt-2">{shop?.name}</p>
         <p className={`overflow-hidden ${!showMore ? "line-clamp-1" : ""}`}>
           {shop?.description}
         </p>
@@ -148,7 +144,7 @@ const ShopView = () => {
         <div className="px-2"> • </div>
         <div className="text-xs flex items-center gap-1">
           <AiFillStar size={16} color="#FFA500" />
-          {shop?.user?.averageRating} Reviews
+          {shop?.user?.averageRating ?? 0} Reviews
         </div>
       </div>
 
@@ -276,10 +272,11 @@ const ShopView = () => {
         </div>
       </div>
       <div
-        className="mt-4 text-center text-xs cursor-pointer"
+        className="mt-4 text-center text-xs cursor-pointer flex flex-row gap-1"
         onClick={() => navigate(RoutesPath.home)}
       >
-        Powered by Business Bosses
+        <p>Powered by</p>
+        <p className="underline"><a href="http://businessbosses.co.uk/">Business Bosses</a></p>
       </div>
     </div>
   );
