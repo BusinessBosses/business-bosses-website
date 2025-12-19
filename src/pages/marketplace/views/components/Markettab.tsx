@@ -20,8 +20,8 @@ const MarketplaceTab = ({ currentIndex, onChangeRoute, uid }: Props) => {
 
       <div className="grid grid-cols-3 items-center justify-between" >
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onChangeRoute(0)} className="">
-          {currentIndex === 0 ? <img src={Assets.dashboardicon} style={{ width: 20, height: 40, color: "#333333", paddingBottom:"10px"}} className="w-full flex-grow border-b-2 border-b-primary pt-3 " />
-           : <img src={Assets.dashboardicon} style={{ width: 20, height: 40, color: "#A9A9A9", paddingBottom:"10px" }} className="w-full flex-grow pt-3" />}
+          {currentIndex === 0 ? <img src={Assets.dashboard} style={{ width: 20, height: 40, color: "#333333", paddingBottom:"10px"}} className="w-full flex-grow border-b-2 border-b-primary pt-3 " />
+           : <img src={Assets.dashboard} style={{ width: 20, height: 40, color: "#A9A9A9", paddingBottom:"10px" }} className="w-full flex-grow pt-3" />}
         </div>
 
         <button

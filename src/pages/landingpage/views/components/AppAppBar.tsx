@@ -48,6 +48,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
 
   return (
     <AppBar
+    className="hidden md:block"
       position="relative"
       sx={{
         boxShadow: 0,
@@ -152,11 +153,11 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               onClick={toggleDrawer(true)}
               sx={{
                 color: "#232324", // default icon color
-                backgroundColor: 'transparent', // default background color
-                '&:hover': {
+                backgroundColor: "transparent", // default background color
+                "&:hover": {
                   backgroundColor: "#f0f0f0", // hover background color
                 },
-              }}// Use your custom color here
+              }} // Use your custom color here
             >
               <MenuIcon />
             </IconButton>
@@ -176,7 +177,9 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 <MenuItem onClick={() => navigate(RoutesPath.landingpage)}>
                   About
                 </MenuItem>
-                <MenuItem onClick={() => navigate(RoutesPath.landingpageforpartners)}>
+                <MenuItem
+                  onClick={() => navigate(RoutesPath.landingpageforpartners)}
+                >
                   Partners
                 </MenuItem>
                 <MenuItem onClick={() => navigate(RoutesPath.businesstools)}>

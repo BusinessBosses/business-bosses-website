@@ -52,6 +52,9 @@ const becomeapartner = "/becomeapartner";
 const businesstools = "/businesstools";
 const shop = "/biz-center";
 const expandedshop = "/expandedshop";
+const setupshop = "/setupshop";
+const setup = "/setup";
+const dashboard = "/dashboard";
 
 const RoutesPath = {
   home,
@@ -108,6 +111,9 @@ const RoutesPath = {
   becomeapartner,
   shop,
   expandedshop,
+  setupshop,
+  setup,
+  dashboard,
 };
 
 export default RoutesPath;

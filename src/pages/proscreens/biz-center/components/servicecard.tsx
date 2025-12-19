@@ -1,4 +1,5 @@
 import React from "react";
+import OptionsButton from "../../tasks/components/optionsbutton";
 
 interface ServiceCardProps {
   imageUrl: string;
@@ -9,6 +10,7 @@ interface ServiceCardProps {
   onCardClick: () => void;
   onOrderClick: () => void;
   currencySymbol?: string;
+  isMyService?: boolean;
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({
@@ -20,6 +22,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   onCardClick,
   onOrderClick,
   currencySymbol = "CAD",
+  isMyService = false,
 }) => {
   const discountedPrice = discount ? price - (price * discount) / 100 : null;
 
@@ -54,18 +57,25 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           </div>
         )}
       </div>
-      <div>
-        <p className="text-gray-700 text-xs line-clamp-2 mb-4">{description}</p>
-
-        <button
-          className="px-2.5 py-1 text-[10px] fill-white font-bold hover:text-black text-white bg-black rounded-full hover:bg-white hover:border-white border-[1.5px] "
-          onClick={(e) => {
-            e.stopPropagation();
-            onOrderClick();
-          }}
-        >
-          Book
-        </button>
+      <div className="flex flex-row justify-between items-start mt-2">
+        <div className="flex-1 mr-2">
+          <p className="text-gray-700 text-xs line-clamp-2">{description}</p>
+        </div>
+        <div className="flex-shrink-0">
+          {isMyService ? (
+            <OptionsButton />
+          ) : (
+            <button
+              className="px-2.5 py-1 text-[10px] fill-white font-bold hover:text-black text-white bg-black rounded-full hover:bg-white hover:border-white border-[1.5px]"
+              onClick={(e) => {
+                e.stopPropagation();
+                onOrderClick();
+              }}
+            >
+              Book
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

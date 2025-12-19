@@ -319,7 +319,7 @@ const EditProfilePage = ({partnerData, partnerDatatile }: Props) => {
                 Location
               </label>
               <CountryDropdown
-                classes="bg-[#F4F4F4] outline-none border-none rounded-lg block w-full p-3"
+                classes=""
                 value={country ?? profile?.location ?? ""}
                 onChange={(val) => {
                   setCountry(val);
