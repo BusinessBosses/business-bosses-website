@@ -8,11 +8,13 @@ interface PaymentMethodProps {
     paypalDetails: Record<string, string>;
     walletDetails: Record<string, string>;
   }) => void;
+  backgroundColor?: string; // Add background color prop
 }
 
 const PaymentMethodSelector: React.FC<PaymentMethodProps> = ({
   onSelectionChange,
   onComplete,
+  backgroundColor = "bg-gray-100", // Default to light grey
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selections, setSelections] = useState<Record<string, boolean>>({
@@ -68,12 +70,14 @@ const PaymentMethodSelector: React.FC<PaymentMethodProps> = ({
   return (
     <div className="w-full space-y-4">
       <div
-        className="w-full p-4 bg-white rounded-lg flex  justify-between items-end cursor-pointer"
+        className={`w-full p-4 ${backgroundColor} rounded-lg flex justify-between items-end cursor-pointer`}
         onClick={toggleDropdown}
       >
         <div className="flex flex-col items-start justify-end">
           <span className="text-sm font-semibold">Payment Method *</span>
-          <span className="text-sm font-normal pt-2">{selectedOptionsText}</span>
+          <span className="text-sm font-normal pt-2">
+            {selectedOptionsText}
+          </span>
         </div>
 
         <svg
@@ -93,7 +97,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodProps> = ({
       </div>
 
       {isOpen && (
-        <div className="space-y-4 bg-white p-4 border rounded-lg">
+        <div className={`space-y-4 ${backgroundColor} p-4 border rounded-lg`}>
           <div className="space-y-2">
             <h3 className="text-sm font-medium">Select Payment Methods</h3>
 

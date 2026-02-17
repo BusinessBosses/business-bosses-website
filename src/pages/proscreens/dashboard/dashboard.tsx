@@ -94,42 +94,20 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
   }
 
   return (
-    <div className="bg-blue-50 min-h-screen">
-      {/* App Bar */}
-      <div className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <GotoshopWidget shop={shop!} />
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => navigate("/chat")}
-              className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center"
-            >
-              <img
-                src={Assets.NotificationIcon}
-                alt="Chat"
-                className="w-5 h-5"
-              />
-            </button>
-            <NotificationButton hasUnreadNotification={true} />
-          </div>
+    <div className="bg-gray-50 rounded-2xl min-h-screen w-full flex flex-col items-center">
+      {/* Header */}
+      <header className="w-full rounded-t-2xl bg-white border-b px-5">
+        <div className="flex justify-between items-center py-4">
+          <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
         </div>
-      </div>
+      </header>
+      {/* App Bar */}
 
       {/* Main Content */}
       <div className="mx-auto px-4 py-4 gap-5 flex flex-col md:container">
-        {/* Back Button (conditionally rendered) */}
-        {!noBack && (
-          <button
-            onClick={() => navigate("/home")}
-            className="mt-2 ml-2 px-3 py-1 bg-blue-100 rounded-full flex items-center text-blue-600"
-          >
-            <span className="mr-1">←</span>
-          </button>
-        )}
-
         {/* Filter Button */}
         <div className="mt-2 flex justify-end">
-          <div className="relative">
+          <div className="">
             <button
               onClick={() => setShowFilterMenu(!showFilterMenu)}
               className="bg-white border-backgroundcolor border px-4 py-2 rounded-lg flex items-center shadow-sm"
@@ -148,7 +126,7 @@ const Dashboard = ({ noBack = true }: { noBack?: boolean }) => {
             </button>
 
             {showFilterMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white  rounded-lg shadow-lg z-0 py-1">
+              <div className="absolute right-20 mt-2 w-48 bg-white  rounded-lg shadow-lg z-0 py-1">
                 <div className="px-4 py-2 font-bold border-b">
                   Filter Data By
                 </div>
