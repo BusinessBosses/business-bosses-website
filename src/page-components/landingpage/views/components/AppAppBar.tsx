@@ -112,7 +112,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 size="medium"
                 onClick={() => router.push(RoutesPath.landingpageforpartners)}
               >
-                Partners
+                Become a Partner
               </Button>
               <Button
                 variant="text"
