@@ -8,7 +8,7 @@ import trimText from "../../functions/trimText";
 import formatDate from "../../functions/formatDate";
 import { useAppSelector } from "../../../redux/store/store";
 import RoutesPath from "../../../constants/Routes";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { BottomSheet } from "react-spring-bottom-sheet";
 import "react-spring-bottom-sheet/dist/style.css";
 import GeneralPostsController from "../../controllers/GeneralPostsController";
@@ -21,7 +21,7 @@ import SharePopUp from "../share/SharePopUp";
 import GreyButton from "../buttons/Greybutton";
 import FilledButtonsmall from "../buttons/FilledButtonsmall";
 import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
-import ConnectionsController from "../../../pages/connections/controller/ConnectionsController";
+import ConnectionsController from "../../../page-components/connections/controller/ConnectionsController";
 import { saveUserData } from "../../../redux/slices/UserSlice";
 import { User } from "../../interfaces/user";
 import Outlinegrey from "../buttons/Outlinegrey";
@@ -40,7 +40,7 @@ interface Props {
 }
 const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) => {
   const profile = useAppSelector((state) => state.user.profile);
-  const navigate = useNavigate();
+  const router = useRouter();
   const [comments, setComments] = useState<CommentStruct[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -129,7 +129,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
   const handleButtonClick = () => {
     const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
     if (window.confirm(confirmMessage)) {
-      navigate(RoutesPath.login)
+      router.push(RoutesPath.login)
     } else {
 
     }
@@ -262,7 +262,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
             <div
               onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                 () => { } : () =>
-                  navigate(RoutesPath.PublicUserProfile, { state: data.user })
+                  router.push(RoutesPath.PublicUserProfile, { state: data.user })
               }
               className="flex items-center "
             >
@@ -297,7 +297,7 @@ const ForumItem = ({ data, onCoin, onLike, onComment, onEdit, onView }: Props) =
                   <Outlinegrey
                     onClick={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
                       () => { } : () => {
-                        navigate(RoutesPath.refer, { state: data.user?.uid });
+                        router.push(RoutesPath.refer, { state: data.user?.uid });
                       }}
                     text="Refer"
                   />

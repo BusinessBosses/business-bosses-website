@@ -2,7 +2,7 @@ import UserAvatar from "../avatars/UserAvatar";
 import FilledButton from "../buttons/FilledButton";
 import { User } from "../../interfaces/user";
 import OutlinedButton from "../buttons/OutlinedButton";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import RoutesPath from "../../../constants/Routes";
 import FilledButtonsmall from "../buttons/FilledButtonsmall";
 import OutlinedButtonsmall from "../buttons/OutlinedButtonsmall";
@@ -12,13 +12,13 @@ interface Props {
   onConnect: Function;
 }
 const ConnectTile = ({ profile, connected, onConnect }: Props) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const truncatedName = profile.name && profile.name.length > 20 ? `${profile.name.slice(0, 20)}...` : profile.name;
   const truncateduserName = profile.username && profile.username.length > 20 ? `${profile.username.slice(0, 20)}...` : profile.username;
   return (
     <div>
       <div className="flex items-center justify-between my-3 " onClick={() =>
-        navigate(RoutesPath.PublicUserProfile, { state: profile })
+        router.push(RoutesPath.PublicUserProfile, { state: profile })
       }>
         <div className="flex items-start gap-3">
           <div className="flex-grow">

@@ -26,13 +26,14 @@ const FilledInput = ({
   onPressSuffixIcon,
   inputRef,
 }: Props) => {
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState<number>(0);
 
   const handleScreenWidthChange = () => {
     setScreenWidth(window.innerWidth);
     // Perform any actions or updates based on the screen width change
   };
   useEffect(() => {
+    setScreenWidth(window.innerWidth);
     // Event listener for screen resize
     window.addEventListener("resize", handleScreenWidthChange);
 
