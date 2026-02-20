@@ -4,10 +4,10 @@ import FilledButton from "../buttons/FilledButton";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiUsers } from "react-icons/fi";
 import Assets from "../../../assets";
-import BossupPartnerstile from "../../../pages/home/views/components/BopssupPartnerstile";
+import BossupPartnerstile from "../../../page-components/home/views/components/BopssupPartnerstile";
 import FilledButtonsmall from "../buttons/FilledButtonsmall";
 import { useAppSelector } from "../../../redux/store/store";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import RoutesPath from "../../../constants/Routes";
 import { PartnerData } from "../../interfaces/partnerdata";
 import { PartnerDatatile } from "../../interfaces/partnerdatatile";
@@ -44,11 +44,11 @@ const ForumCard = ({
   partnerData,
   partnerDatatile,
 }: Props) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const handleButtonClick = () => {
     const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
     if (window.confirm(confirmMessage)) {
-      navigate(RoutesPath.login)
+      router.push(RoutesPath.login)
     } else {
 
     }

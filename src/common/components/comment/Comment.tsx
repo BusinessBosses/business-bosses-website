@@ -1,5 +1,5 @@
 import UserAvatar from "../avatars/UserAvatar";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import RoutesPath from "../../../constants/Routes";
 import { Comment as CommentStruct } from "../../interfaces/comment";
 import trimText from "../../functions/trimText";
@@ -7,12 +7,12 @@ interface Props {
   comment: CommentStruct;
 }
 const Comment = ({ comment }: Props) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   return (
     <div className="my-5">
       <div
         onClick={() =>
-          navigate(RoutesPath.PublicUserProfile, { state: comment.user })
+          router.push(RoutesPath.PublicUserProfile, { state: comment.user })
         }
         className="flex items-center"
       >

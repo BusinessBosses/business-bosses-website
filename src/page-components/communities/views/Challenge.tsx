@@ -1,0 +1,257 @@
+import { useEffect, useRef, useState } from "react";
+import ForumCard from "../../../common/components/forum/ForumCard";
+import ForumItem from "../../../common/components/forum/ForumItem";
+import { Forum } from "../../../common/interfaces/forum";
+import { Industry } from "../../../common/interfaces/industry";
+import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
+import CommunitiesController from "../controller/CommunitiesController";
+import AppConstants from "../../../constants/consts";
+import GeneralPostsController, {
+  CoinStruct,
+  LikeStruct,
+  ViewStruct,
+} from "../../../common/controllers/GeneralPostsController";
+import { saveUserData } from "../../../redux/slices/UserSlice";
+import { Comment } from "../../../common/interfaces/comment";
+import { updateForum } from "../../../redux/slices/ForumSlice";
+import { Socket } from "socket.io-client";
+import { useRouter } from "next/navigation";
+import RoutesPath from "../../../constants/Routes";
+import serviceApi from "../../../services/serviceApi";
+import Bossoftheweekpopup from "../../popups/Bossoftheweekpopup";
+import Assets from "../../../assets";
+import NotsignedinPopUp from "../../../common/components/popups/notsignedinpopup";
+import { PartnerData } from "../../../common/interfaces/partnerdata";
+import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
+interface Props {
+  forums: Forum[];
+  socket: Socket;
+  partnerData: PartnerData | null;
+partnerDatatile: PartnerDatatile | null;
+}
+const Challenge = ({ forums, socket, partnerData, partnerDatatile }: Props) => {
+  const [industry, setIndustry] = useState<Industry | null>(null);
+  const industries = useAppSelector((state) => state.industry.industries);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const forumsState = useAppSelector((state) => state.forum.forums);
+  const topicsLength = useAppSelector((state) => state.forum.count);
+  const profile = useAppSelector((state) => state.user.profile);
+  const popupRef = useRef<HTMLDivElement | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleOutsideInteraction = (event: MouseEvent | TouchEvent) => {
+    if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+      closePopup();
+    }
+  };
+  useEffect(() => {
+    if (isPopupOpen) {
+      document.addEventListener("mousedown", handleOutsideInteraction);
+      document.addEventListener("touchstart", handleOutsideInteraction);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
+    };
+  }, [isPopupOpen]);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  const onLike = (args: LikeStruct, postIndex: number) => {
+    let forum = forumsState[postIndex];
+    if (forum.likes!.includes(profile?.uid!)) {
+      forum = {
+        ...forum,
+
+        likes: forum.likes!.filter((ft) => ft !== profile!.uid),
+      };
+    } else {
+      forum = {
+        ...forum,
+        likes: [...forum.likes!, profile!.uid],
+      };
+    }
+    dispatch(updateForum({ index: postIndex, forum }));
+    GeneralPostsController.like(args, socket);
+  };
+
+  const onView = (args: ViewStruct, postIndex: number) => {
+    // Get the post from the posts array
+    let forum = forumsState[postIndex];
+    
+    // Increment the view count
+    forum = {
+      ...forum,
+        views: forum.views + 1,
+    };
+
+    // Dispatch the updated post to Redux
+    dispatch(updateForum({ index: postIndex, forum }));
+
+    GeneralPostsController.addForumView(args);
+  };
+
+  const onCoin = (args: CoinStruct, postIndex: number) => {
+    let forum = forumsState[postIndex];
+    if (forum.coins!.includes(profile?.uid!)) {
+      forum = {
+        ...forum,
+        coins: forum.coins!.filter((ft) => ft !== profile!.uid),
+      };
+      dispatch(
+        saveUserData({
+          ...profile!,
+          coinscount: profile!.coinscount! + 1,
+        })
+      );
+    } else {
+      forum = {
+        ...forum,
+        coins: [...forum.coins!, profile!.uid],
+      };
+      dispatch(
+        saveUserData({
+          ...profile!,
+          coinscount: profile!.coinscount! - 1,
+        })
+      );
+    }
+    dispatch(updateForum({ index: postIndex, forum }));
+    GeneralPostsController.coin(args, socket);
+  };
+
+  const onComment = (comment: Comment, postIndex: number) => {
+    let forum = forumsState[postIndex];
+    forum = {
+      ...forum,
+      comments: [...forum.comments!, comment],
+    };
+    dispatch(updateForum({ index: postIndex, forum }));
+  };
+
+  const handleButtonClick = () => {
+    const confirmMessage = 'You need to sign in or create an account to be able to use this feature';
+    if (window.confirm(confirmMessage)) {
+      router.push(RoutesPath.login)
+    } else {
+
+    }
+  };
+
+  useEffect(() => {
+    const filteredIndustries = CommunitiesController.getIndustriesByCategory(
+      industries,
+      AppConstants.BOSS_UP_CHALLENGE_CATEGORY_ID
+    );
+    if (!!filteredIndustries.length) {
+      setIndustry(filteredIndustries[0]);
+    }
+  }, [industries]);
+  const joinIndustry = async () => {
+    if (!!industry?.joinedUsers?.includes(profile!.uid)) {
+      const newJoinedUsers = industry.joinedUsers.filter(
+        (ft) => ft !== profile?.uid
+      );
+      setIndustry({ ...industry, joinedUsers: newJoinedUsers });
+    } else {
+      setIndustry({
+        ...industry,
+        joinedUsers: [...industry?.joinedUsers!, profile!.uid],
+      });
+    }
+    await serviceApi.update(
+      `/industry/join-leave-industry/${industry?.industryId}`
+    );
+  };
+  return (
+    <div>
+      <div className="mobile-only">
+        {isPopupOpen && (
+          <div className="overlay">
+            <div
+              ref={popupRef}
+              className="mobilepopup"
+            >
+              <NotsignedinPopUp />
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="mobile-only bg-white">
+        <ForumCard
+          onCreate={profile?.email == `${process.env.REACT_APP_DUMMY_EMAIL}` ?
+            handleButtonClick : () => {
+              router.push(RoutesPath.CreateBossup, {
+                state: { industryId: industry?.industryId },
+              });
+            } }
+          createLabel="Enter Challenge"
+          banner={industry?.photo!}
+          didJoin={!!industry?.joinedUsers?.includes(profile!.uid)}
+          label={industry?.description ?? "Industry Description"}
+          members={industry?.joinedUsers?.length ?? 0}
+          onJoin={joinIndustry}
+          topics={topicsLength}
+          aboutontap={openPopup}
+          aboutontaptext={"About"}
+          topicsicon={<Assets.Entries width={12} />}
+          topicstext={"Entries"} partnerData={partnerData}   partnerDatatile={partnerDatatile}        />
+      </div>
+      <div className="bg-white">
+        {forums.map((forum: Forum, index: number) => (
+          <ForumItem
+            onEdit={() => {
+              router.push(RoutesPath.CreateBossup, {
+                state: {
+                  post: forum,
+                },
+              });
+            }}
+            onComment={(comment: Comment) => {
+              onComment(comment, index);
+            }}
+            onLike={(postId: string) => {
+              onLike(
+                {
+                  postId,
+                  type: "forum",
+                  userId: profile!.uid,
+                  receiverUid: forum.user!.uid,
+                },
+                index
+              );
+            }}
+            onCoin={(postId: string) => {
+              onCoin(
+                {
+                  postId,
+                  type: "forum",
+                  userId: profile!.uid,
+                  receiverUid: forum.user!.uid,
+                  timestamp: Date.now(),
+                },
+                index
+              );
+            }}
+            onView={(postId: string) => onView({ postId: postId, views: forum.views + 1 }, index)}
+            key={forum.forumId}
+            data={forum}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Challenge;
