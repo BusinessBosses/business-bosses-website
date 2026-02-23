@@ -3,7 +3,7 @@ import { Box, Card, Container, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import Assets from "../../../../assets";
 import RoutesPath from "../../../../constants/Routes";
-import { useRouter } from "next/navigation";
+import { useRouter } from "../../../../common/hooks/useAppNavigation";
 
 const items = [
   {
@@ -26,7 +26,7 @@ const items = [
   },
 ];
 
-const HowItWorks: React.FC = () => {
+const HowItWorks: React.FC<{ onBecomePartner?: () => void }> = ({ onBecomePartner }) => {
   const router = useRouter();
   return (
     <Box
@@ -121,14 +121,11 @@ const HowItWorks: React.FC = () => {
               }}
             >
               <button
-                  onClick={() =>
-                    (window.location.href =
-                      "https://docs.google.com/forms/d/e/1FAIpQLSchyI0y0kevJ797vYFqbTT4mBzelOXwhvsUtC2dQqqr69FlmA/viewform?usp=sf_link")
-                  }
-                  className="bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold p-2 px-20"
-                >
-                  Become A Partner
-                </button>
+                onClick={onBecomePartner ? onBecomePartner : () => router.push(RoutesPath.becomeapartner)}
+                className="bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold p-2 px-20"
+              >
+                Become A Partner
+              </button>
             </div>
           </div>
         </div>

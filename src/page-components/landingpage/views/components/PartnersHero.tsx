@@ -15,6 +15,7 @@ import Assets from "../../../../assets";
 import ComputerBossuppartnersection from "../../../bossuppartnerpage/computerbossupsection";
 import PartnersField from "./partnerstiles";
 import RoutesPath from "../../../../constants/Routes";
+import { useRouter } from "../../../../common/hooks/useAppNavigation";
 
 const StyledBox = styled("div")(({ theme }) => ({
   alignSelf: "center",
@@ -38,7 +39,8 @@ const StyledBox = styled("div")(({ theme }) => ({
   // }),
 }));
 
-export default function PartnersHero() {
+export default function PartnersHero({ onBecomePartner }: { onBecomePartner?: () => void }) {
+  const router = useRouter();
   return (
     <Box
       id="hero"
@@ -112,10 +114,7 @@ export default function PartnersHero() {
                 }}
               >
                 <button
-                  onClick={() =>
-                    (window.location.href =
-                      "https://docs.google.com/forms/d/e/1FAIpQLSchyI0y0kevJ797vYFqbTT4mBzelOXwhvsUtC2dQqqr69FlmA/viewform?usp=sf_link")
-                  }
+                  onClick={onBecomePartner ? onBecomePartner : () => router.push(RoutesPath.becomeapartner)}
                   className="bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold p-2 px-20"
                 >
                   Become A Partner
