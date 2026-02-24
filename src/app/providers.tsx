@@ -2,7 +2,7 @@
 
 import { Provider } from "react-redux";
 import store from "../redux/store/store";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -17,6 +17,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         hideProgressBar={true}
         closeOnClick
         position={"top-right"}
+        transition={Bounce}
       />
       <GoogleOAuthProvider clientId={clientId}>
         {children}
