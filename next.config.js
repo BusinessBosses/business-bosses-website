@@ -10,7 +10,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: ['@mui/material', '@mui/icons-material'],
+  transpilePackages: ['@mui/material', '@mui/icons-material', 'react-toastify'],
   images: {
     disableStaticImages: true,
   },
