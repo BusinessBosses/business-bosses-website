@@ -4,14 +4,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import { visuallyHidden } from "@mui/utils";
-
-import FacebookIcon from "@mui/icons-material/GitHub";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-
-import SitemarkIcon from "./SitemarkIcon";
 import Assets from "../../../../assets";
-import TwitterIcon from "react-share/lib/TwitterIcon";
 import { useRouter } from "next/navigation";
 import RoutesPath from "../../../../constants/Routes";
 
