@@ -15,7 +15,7 @@ export default function Loginsection() {
         </p>
         <div className="flex justify-center">
           <button
-            className="bg-primary hover:bg-red-700 text-white px-8 py-3 rounded-full font-bold"
+            className="bg-primary text-white px-8 py-3 rounded-lg font-semibold"
             onClick={() => window.location.href = "https://businessbosses.onelink.me/xLWk/36a2ff16"}
           >
             Get Started Now

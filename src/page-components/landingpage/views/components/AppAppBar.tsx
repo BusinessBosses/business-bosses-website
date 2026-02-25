@@ -135,7 +135,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               sx={{
                 backgroundColor: "white",
                 color: "#000",
-                borderRadius: "full",
+                borderRadius: "8px",
                 px: 4,
                 "&:hover": {
                   backgroundColor: "#f0f0f0",
@@ -152,7 +152,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               sx={{
                 backgroundColor: "#e11d48",
                 color: "#fff",
-                borderRadius: "full",
+                borderRadius: "8px",
                 px: 4,
                 fontWeight: 600,
                 "&:hover": {
@@ -211,7 +211,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     sx={{
                       backgroundColor: "#e11d48",
                       color: "#fff",
-                      borderRadius: "full",
+                      borderRadius: "8px",
                       fontWeight: 600,
                       "&:hover": {
                         backgroundColor: "#be123c",
@@ -228,7 +228,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     sx={{
                       backgroundColor: "white",
                       color: "#000",
-                      borderRadius: "full",
+                      borderRadius: "8px",
                       border: "1px solid #e5e7eb",
                       "&:hover": {
                         backgroundColor: "#f0f0f0",

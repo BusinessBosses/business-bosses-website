@@ -88,7 +88,7 @@ export default function Hero() {
           {/* Primary CTA */}
           <button
             onClick={openRanking}
-            className="w-full sm:w-auto bg-primary text-white px-8 py-4 rounded-full font-semibold"
+            className="w-full sm:w-auto bg-primary text-white px-8 py-3 rounded-lg font-semibold"
           >
             Check your Reach Ranking
           </button>
@@ -97,7 +97,7 @@ export default function Hero() {
           <button
             onClick={openMatch}
             className="w-full sm:w-auto flex items-center justify-center gap-2 text-black font-semibold underline-offset-4 hover:underline"
-          >
+            >
             Find your business match
             <span aria-hidden>→</span>
           </button>
