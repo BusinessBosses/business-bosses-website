@@ -127,16 +127,18 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
-              gap: 0.5,
+              gap: 2,
               alignItems: "center",
             }}
           >
             <Button
               sx={{
                 backgroundColor: "white",
-                color: "red",
+                color: "#000",
+                borderRadius: "full",
+                px: 4,
                 "&:hover": {
-                  backgroundColor: "darkred",
+                  backgroundColor: "#f0f0f0",
                 },
               }}
               variant="text"
@@ -148,15 +150,18 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
             <Button
               href="https://businessbosses.onelink.me/xLWk/36a2ff16"
               sx={{
-                backgroundColor: "red",
+                backgroundColor: "#e11d48",
                 color: "#fff",
+                borderRadius: "full",
+                px: 4,
+                fontWeight: 600,
                 "&:hover": {
-                  backgroundColor: "darkred",
+                  backgroundColor: "#be123c",
                 },
               }}
               size="small"
             >
-              Sign up
+              Get Started
             </Button>
           </Box>
           <Box sx={{ display: { sm: "flex", md: "none" } }}>
@@ -204,32 +209,36 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 <MenuItem>
                   <Button
                     sx={{
-                      backgroundColor: "red",
+                      backgroundColor: "#e11d48",
                       color: "#fff",
+                      borderRadius: "full",
+                      fontWeight: 600,
                       "&:hover": {
-                        backgroundColor: "darkred",
+                        backgroundColor: "#be123c",
                       },
                     }}
                     fullWidth
                     href="https://businessbosses.onelink.me/xLWk/36a2ff16"
                   >
-                    Join Now
+                    Get Started
                   </Button>
                 </MenuItem>
                 <MenuItem>
                   <Button
                     sx={{
-                      backgroundColor: "red",
-                      color: "#fff",
+                      backgroundColor: "white",
+                      color: "#000",
+                      borderRadius: "full",
+                      border: "1px solid #e5e7eb",
                       "&:hover": {
-                        backgroundColor: "darkred",
+                        backgroundColor: "#f0f0f0",
                       },
                     }}
                     variant="outlined"
                     fullWidth
                     href="https://businessbosses.onelink.me/xLWk/36a2ff16"
                   >
-                    Log in
+                    Sign in
                   </Button>
                 </MenuItem>
               </Box>

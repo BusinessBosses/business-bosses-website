@@ -45,7 +45,7 @@ export default function BecomeAPartnerModal({ open, onClose }: BecomeAPartnerMod
         <Box sx={{ fontSize: "18px", fontWeight: 600 }}>Become a Partner</Box>
       </DialogTitle>
       <DialogContent sx={{ p: 3 }}>
-        <BecomeAPartnerForm />
+        <BecomeAPartnerForm onSuccess={onClose} />
       </DialogContent>
     </Dialog>
   );
