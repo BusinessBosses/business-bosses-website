@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 import { ChevronLeft } from "@mui/icons-material";
 import { FiCrosshair, FiFilter, FiPlusCircle, FiSearch } from "react-icons/fi";
-import ServiceCard from "../../components/servicecard";
-import CreateService from "./components/CreateService";
-import ProCustomButton from "../../components/procustombutton";
+import ServiceCard from "../../../../../page-components/proscreens/biz-center/components/servicecard";
+import CreateService from "../../../../../components/proscreens/ManageService/CreateService";
+import ProCustomButton from "../../../../../page-components/proscreens/biz-center/components/procustombutton";
 import Assets from "../../../../../assets";
 
 const MyService: React.FC = () => {

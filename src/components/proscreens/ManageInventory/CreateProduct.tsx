@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Product } from "../types/Product";
-import CustomEditText from "../../../components/customedittext";
-import CustomDropdown from "../../../components/customdropdown";
+
+export const dynamic = 'force-dynamic';
+
+import { Product } from "./types/Product";
+import CustomEditText from "../../../page-components/proscreens/biz-center/components/customedittext";
+import CustomDropdown from "../../../page-components/proscreens/biz-center/components/customdropdown";
 import {
   FiChevronUp as ChevronUp,
   FiChevronDown as ChevronDown,
 } from "react-icons/fi";
-import MultipleEditText from "../../../components/multipleedittextfield";
+import MultipleEditText from "../../../page-components/proscreens/biz-center/components/multipleedittextfield";
 
 interface CreateProductProps {
   onComplete?: (product: Product) => void;

@@ -1,5 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Service } from "../types/Service";
+
+export const dynamic = 'force-dynamic';
+
+import { Service } from "./types/Service";
 import { FiCalendar } from "react-icons/fi";
 
 interface CreateServiceProps {

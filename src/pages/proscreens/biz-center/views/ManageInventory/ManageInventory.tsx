@@ -9,10 +9,10 @@ import {
   FiX,
 } from "react-icons/fi";
 
-import ProCustomButton from "../../components/procustombutton";
+import ProCustomButton from "../../../../../page-components/proscreens/biz-center/components/procustombutton";
 import Assets from "../../../../../assets";
-import CreateProduct from "./components/CreateProduct";
-import ProductCard from "./components/ProductCard";
+import CreateProduct from "../../../../../components/proscreens/ManageInventory/CreateProduct";
+import ProductCard from "../../../../../components/proscreens/ManageInventory/ProductCard";
 
 const ManageInventory: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");

@@ -1,7 +1,10 @@
 import React from "react";
+
+export const dynamic = 'force-dynamic';
+
 import { FiMapPin, FiClock } from "react-icons/fi";
-import OptionsButton from "../../../../tasks/components/optionsbutton";
-import { Service } from "../types/Service";
+import OptionsButton from "../../../page-components/proscreens/tasks/components/optionsbutton";
+import { Service } from "./types/Service";
 
 interface ServiceCardProps {
   service: Service;

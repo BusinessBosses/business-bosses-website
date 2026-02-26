@@ -1,5 +1,8 @@
 import React from "react";
-import OptionsButton from "../../../../tasks/components/optionsbutton";
+
+export const dynamic = 'force-dynamic';
+
+import OptionsButton from "../../../page-components/proscreens/tasks/components/optionsbutton";
 
 interface ProductCardProps {
   imageUrl: string;
