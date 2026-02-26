@@ -23,7 +23,7 @@ import ShopController from "../../biz-center/controllers/ShopController";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import serviceApi from "../../../../services/serviceApi";
 import { toast } from "react-toastify";
-import { useLocation, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { setShopInfo } from "../../../../redux/slices/ShopSlice";
 import { StorageEnum } from "../../../../common/emums/StorageEmuns";
 import RoutesPath from "../../../../constants/Routes";
@@ -122,20 +122,20 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
   const lsToken = localStorage.getItem(StorageEnum.AccessToken);
 
   const isAuthenticated = Boolean(lsToken);
-  const locations = useLocation();
-  const from = (locations.state as any)?.from?.pathname || RoutesPath.home;
+  const pathname = usePathname();
+  const from = pathname || RoutesPath.home;
 
   // Redirect: If shop prop is null and shop Redux slice has data, redirect.
   React.useEffect(() => {
     if (!isAuthenticated) {
-      router.push(RoutesPath.login, { replace: true, state: { from: locations } });
+      router.replace(RoutesPath.login);
       return;
     }
     if (!shop && shopRedux) {
       toast.error("You already have a shop!", { autoClose: 3000 });
-      router.push("/pro/dashboard", { replace: true });
+      router.replace("/pro/dashboard");
     }
-  }, [shop, shopRedux, navigate, isAuthenticated]);
+  }, [shop, shopRedux, router, isAuthenticated]);
 
   // Pre-fill form fields if "shop" exists (edit mode)
   React.useEffect(() => {
@@ -596,8 +596,7 @@ const SetupShop = ({ shop, partnerData, partnerDatatile }: SetupShopProps) => {
       } else {
         toast.success("Shop Added Successfully!", { autoClose: 3000 });
       }
-      dispatch(setShopInfo(response.data));
-      router.push("/pro/dashboard", { replace: true });
+      router.replace("/pro/dashboard");
     }
     console.log(response);
     setIsSubmit(false);
