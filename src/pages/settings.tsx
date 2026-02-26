@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AlertTriangle, CheckCircle, Loader2 } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Loader2, Mail } from 'lucide-react';
 
 const SettingPage = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [email, setEmail] = useState('');
 
   const handleDeleteClick = () => {
     setShowConfirmation(true);
@@ -97,8 +98,27 @@ const SettingPage = () => {
                 </h3>
               </div>
               <p className="text-red-700 mb-6">
-                This action cannot be undone. This will permanently delete your account and remove all your data from our servers.
+                This action cannot be undone. This will permanently delete your account and remove all your data from our servers. Please enter your email address to confirm.
               </p>
+              
+              <div className="mb-6">
+                <label htmlFor="confirm-email" className="block text-sm font-medium text-red-800 mb-2">
+                  Enter your email address to confirm
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="email"
+                    id="confirm-email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="block w-full pl-10 pr-3 py-3 border border-red-300 rounded-lg focus:ring-red-500 focus:border-red-500 bg-white text-gray-900 placeholder-gray-500"
+                  />
+                </div>
+              </div>
               
               <div className="flex gap-4">
                 <button
@@ -110,8 +130,8 @@ const SettingPage = () => {
                 </button>
                 <button
                   onClick={handleConfirmDelete}
-                  disabled={isSubmitting}
-                  className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors duration-200 flex items-center gap-2 disabled:opacity-50"
+                  disabled={isSubmitting || !email}
+                  className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <>
