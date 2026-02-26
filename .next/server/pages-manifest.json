@@ -1,0 +1,10 @@
+{
+  "/_app": "pages/_app.js",
+  "/privacypolicy": "pages/privacypolicy.html",
+  "/proscreens/biz-center/views/ManageInventory/ManageInventory": "pages/proscreens/biz-center/views/ManageInventory/ManageInventory.html",
+  "/_error": "pages/_error.js",
+  "/settings": "pages/settings.html",
+  "/proscreens/biz-center/views/ManageService/MyService": "pages/proscreens/biz-center/views/ManageService/MyService.html",
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html"
+}

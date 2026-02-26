@@ -1,0 +1,7 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/becomeapartner/page": "app/becomeapartner/page.js",
+  "/landingpageforpartners/page": "app/landingpageforpartners/page.js",
+  "/page": "app/page.js",
+  "/landingpage/page": "app/landingpage/page.js"
+}
