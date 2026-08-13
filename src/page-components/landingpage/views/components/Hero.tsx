@@ -78,10 +78,9 @@ export default function Hero() {
           THE BUSINESS <span className="text-primary">DEMAND</span> ENGINE
         </h1>
 
-        <p className="text-xl md:text-2xl text-gray-500 mb-10 max-w-3xl mx-auto leading-relaxed">
-          Rank, match, and connect with real-time business opportunities. Use
-          demand intelligence to reach buyers, partners, and investors
-          worldwide.
+        <p className="text-xl md:text-2xl text-gray-500 mb-10 max-w-4xl mx-auto leading-relaxed">
+          One Reach Score. Rank higher and get matched to the right
+          opportunities, everywhere.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -98,9 +97,16 @@ export default function Hero() {
             onClick={openMatch}
             className="w-full sm:w-auto flex items-center justify-center gap-2 text-black font-semibold underline-offset-4 hover:underline"
             >
-            Find your business match
+            Find a Match
             <span aria-hidden>→</span>
           </button>
+        </div>
+
+        {/* Stats */}
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 max-w-4xl mx-auto divide-y sm:divide-y-0 sm:divide-x divide-gray-200">
+          <Stat value="600,000+" label="Businesses reached" />
+          <Stat value="$50.7 Billion" label="Fastest-growing digital category" />
+          <Stat value="94%" label="Audited identity issues fixed" />
         </div>
       </div>
 
@@ -133,6 +139,17 @@ export default function Hero() {
         <MatchResultModal onClose={close} data={matchData} />
       )}
     </section>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="px-6 py-4">
+      <div className="text-3xl md:text-4xl font-black text-gray-900">
+        {value}
+      </div>
+      <div className="mt-1 text-sm text-gray-500">{label}</div>
+    </div>
   );
 }
 

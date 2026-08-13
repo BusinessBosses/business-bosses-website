@@ -265,10 +265,26 @@ export default function Solutions() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Step n={1} title="Buyer Demand Flows In" />
-            <Step n={2} title="Businesses Get Ranked" />
-            <Step n={3} title="Smart Matches Are Made" />
-            <Step n={4} title="Growth Compounds" />
+            <Step
+              n={1}
+              title="Demand Flows In"
+              description="We aggregate thousands of real-time requests and business opportunities globally"
+            />
+            <Step
+              n={2}
+              title="Get Ranked by Reach Score"
+              description="Every business is scored and ranked against that demand — the higher your Reach Score, the sooner you're seen."
+            />
+            <Step
+              n={3}
+              title="Smart Matches Are Made"
+              description="Top-ranked businesses are matched directly to the opportunities and requests fit them best — no searching required."
+            />
+            <Step
+              n={4}
+              title="Growth Compounds"
+              description="Every match raises your Reach Score, and a higher score brings the next match faster — the loop strengthens itself."
+            />
           </div>
 
         </div>
@@ -300,12 +316,12 @@ export default function Solutions() {
               </svg>
             </Card>
 
-            {/* Card 2 - Buyer Requests */}
+            {/* Card 2 - BizCenter */}
             <Card
               badge="Demand"
               iconBg="bg-primary text-white"
-              title="Buyer Requests & Intent Signals"
-              description="Access verified buyer requests and intent signals from businesses actively seeking products and services like yours."
+              title="BizCenter"
+              description="Your digital business hub to manage partnerships, track deals, and showcase your brand to potential clients, and partners."
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                 <path d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -337,12 +353,12 @@ export default function Solutions() {
               </svg>
             </Card>
 
-            {/* Card 5 - BizCenter */}
-            <Card 
-              badge="Intelligence" 
-              iconBg="bg-primary text-white" 
-              title="BizCenter™"
-              description="Your dedicated business hub to manage partnerships, track deals, and showcase your brand to potential buyers and investors."
+            {/* Card 5 - Identity Check */}
+            <Card
+              badge="Intelligence"
+              iconBg="bg-primary text-white"
+              title="Identity Check"
+              description="Check your business identity, reputation, compliance, and security across the web and AI platforms"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                 <path d="M3.75 7.5l5.25 3.75 4.5-2.25 4.5 2.25v9.75a1.5 1.5 0 01-1.5 1.5h-13.5a1.5 1.5 0 01-1.5-1.5V7.5z" strokeLinecap="round" strokeLinejoin="round"/>
@@ -396,16 +412,22 @@ export default function Solutions() {
   );
 }
 
-function Step({ n, title }: { n: number; title: string }) {
+function Step({
+  n,
+  title,
+  description,
+}: {
+  n: number;
+  title: string;
+  description: string;
+}) {
   return (
     <div className="relative group">
       <div className="text-red-500 font-mono text-lg font-bold mb-3">
         {n} →
       </div>
       <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-      <p className="text-gray-600 text-sm leading-relaxed">
-        We aggregate thousands of real-time requests from verified buyers looking for services and products globally.
-      </p>
+      <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
     </div>
   );
 }
