@@ -49,9 +49,13 @@ function computeMatchPercent(industry: string, location: string, type: string) {
   return 40 + (base % 56);
 }
 
-export default function Hero() {
+import { withDefaults, WebsiteHeroContent } from "../../../../lib/site-content";
+
+export default function Hero({ content }: { content?: Partial<WebsiteHeroContent> }) {
   const [flow, setFlow] = useState<Flow>(null);
   const [step, setStep] = useState<Step>(null);
+
+  const heroContent = withDefaults<WebsiteHeroContent>("bb_website_hero", content);
 
   const openRanking = () => {
     setFlow("ranking");
@@ -74,13 +78,17 @@ export default function Hero() {
   return (
     <section className="relative bg-gray-50 pt-20 pb-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 text-center">
+        {heroContent.badge && (
+          <span className="inline-block bg-red-50 text-bb-red border border-red-100 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4">
+            {heroContent.badge}
+          </span>
+        )}
         <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-6">
-          THE BUSINESS <span className="text-primary">DEMAND</span> ENGINE
+          {heroContent.title} <span className="text-primary">{heroContent.titleHighlight}</span>
         </h1>
 
         <p className="text-xl md:text-2xl text-gray-500 mb-10 max-w-4xl mx-auto leading-relaxed">
-          One Reach Score. Rank higher and get matched to the right
-          opportunities, everywhere.
+          {heroContent.description}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -89,24 +97,24 @@ export default function Hero() {
             onClick={openRanking}
             className="w-full sm:w-auto bg-primary text-white px-8 py-3 rounded-lg font-semibold"
           >
-            Check your Reach Ranking
+            {heroContent.primaryCtaText}
           </button>
 
           {/* Link-style CTA */}
           <button
             onClick={openMatch}
             className="w-full sm:w-auto flex items-center justify-center gap-2 text-black font-semibold underline-offset-4 hover:underline"
-            >
-            Find a Match
+          >
+            {heroContent.secondaryCtaText}
             <span aria-hidden>→</span>
           </button>
         </div>
 
         {/* Stats */}
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 max-w-4xl mx-auto divide-y sm:divide-y-0 sm:divide-x divide-gray-200">
-          <Stat value="600,000+" label="Businesses reached" />
-          <Stat value="$50.7 Billion" label="Fastest-growing digital category" />
-          <Stat value="94%" label="Audited identity issues fixed" />
+          <Stat value={heroContent.stat1Value || "600,000+"} label={heroContent.stat1Label || "Businesses reached"} />
+          <Stat value={heroContent.stat2Value || "$50.7 Billion"} label={heroContent.stat2Label || "Fastest-growing digital category"} />
+          <Stat value={heroContent.stat3Value || "94%"} label={heroContent.stat3Label || "Audited identity issues fixed"} />
         </div>
       </div>
 

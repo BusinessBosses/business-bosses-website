@@ -23,7 +23,11 @@ const items = [
   },
 ];
 
-export default function Reviews() {
+import { withDefaults, WebsiteReviewsContent } from "../../../../lib/site-content";
+
+export default function Reviews({ content }: { content?: Partial<WebsiteReviewsContent> }) {
+  const reviewsContent = withDefaults<WebsiteReviewsContent>("bb_website_reviews", content);
+
   return (
     <Box
       id="Reviews"
@@ -60,7 +64,7 @@ export default function Reviews() {
               textAlign: "center",
             }}
           >
-            Reviews
+            {reviewsContent.title || "Reviews"}
           </Typography>
           <Typography
             variant="body1"
@@ -70,7 +74,7 @@ export default function Reviews() {
               textAlign: "center",
             }}
           >
-            19k+ Satisfied Users
+            {reviewsContent.subtitle || "19k+ Satisfied Users"}
           </Typography>
         </Box>
 
@@ -107,11 +111,7 @@ export default function Reviews() {
                 },
               }}
             >
-              Business Bosses has revolutionized the way I network and
-              collaborate with fellow entrepreneurs. As a fashion designer and
-              startup owner, I've always been on the lookout for a platform that
-              caters specifically to the unique needs of entrepreneurs, and
-              Business Bosses has exceeded my expectations in every way.
+              {reviewsContent.reviewText}
             </Typography>
           </div>
           <Assets.Quoteicon

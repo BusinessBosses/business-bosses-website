@@ -8,17 +8,20 @@ import Assets from "../../../../assets";
 import { useRouter } from "next/navigation";
 import RoutesPath from "../../../../constants/Routes";
 
-function Copyright() {
+import { withDefaults, WebsiteFooterContent } from "../../../../lib/site-content";
+
+function Copyright({ copyrightText }: { copyrightText?: string }) {
   return (
     <Typography variant="body2" sx={{ color: "white", mt: 1 }}>
       {"Copyright © "}
-      <div> Business Bosses&nbsp;</div>
+      <div> {copyrightText || "Business Bosses"}&nbsp;</div>
       {new Date().getFullYear()}
     </Typography>
   );
 }
 
-export default function Footer() {
+export default function Footer({ content }: { content?: Partial<WebsiteFooterContent> }) {
+  const footerContent = withDefaults<WebsiteFooterContent>("bb_website_footer", content);
   const router = useRouter();
   return (
     <Box
@@ -92,7 +95,7 @@ export default function Footer() {
                   Terms of Service
                 </Link>
                 <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                  <Copyright />
+                  <Copyright copyrightText={footerContent.copyrightText} />
                 </Box>
               </div>
             </Box>
@@ -155,7 +158,7 @@ export default function Footer() {
             <Link
               color="white"
               variant="body2"
-              href="mailto:support@businessbosses.co.uk"
+              href={`mailto:${footerContent.email || "support@businessbosses.org"}`}
               style={{ opacity: 0.5 }}
             >
               Contact
