@@ -15,6 +15,7 @@ import { useInView } from "react-intersection-observer";
 
 import Solutions from "./views/components/Solutions";
 import Loginsection from "./views/components/Loginsection";
+import MagazineSection from "./views/components/MagazineSection";
 
 import { ServerUrl } from "../../config/config";
 
@@ -65,6 +66,7 @@ export default function LandingPage() {
         howItWorksContent={cmsContent.bb_website_how_it_works}
         solutionsContent={cmsContent.bb_website_solutions}
       />
+      <MagazineSection content={cmsContent.bb_website_magazine} />
       <Box sx={{ bgcolor: "background.default" }}>
         <div
           ref={loginRef}

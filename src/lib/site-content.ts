@@ -51,6 +51,21 @@ export interface WebsiteReviewsContent {
   reviewText?: string;
 }
 
+export interface WebsiteMagazineContent {
+  badge?: string;
+  issueSubtitle?: string;
+  title?: string;
+  description?: string;
+  tags?: string[];
+  coverImage?: string;
+  readButtonText?: string;
+  readButtonLink?: string;
+  allIssuesText?: string;
+  allIssuesLink?: string;
+  contactText?: string;
+  contactLink?: string;
+}
+
 export interface FaqItem {
   question: string;
   answer: string;
@@ -133,6 +148,20 @@ export const BB_CONTENT_DEFAULTS: Record<string, any> = {
     title: "Reviews",
     subtitle: "19k+ Satisfied Users",
     reviewText: "Business Bosses has revolutionized the way I network and collaborate with fellow entrepreneurs. As a fashion designer and startup owner, I've always been on the lookout for a platform that caters specifically to the unique needs of entrepreneurs, and Business Bosses has exceeded my expectations in every way.",
+  },
+  bb_website_magazine: {
+    badge: "AUTO-UPDATES FROM THE LATEST ISSUE",
+    issueSubtitle: "THE MAGAZINE • ISSUE 01 • SEPT 2026",
+    title: "From Vision to Venture",
+    description: "Our digital magazine for founders and growing brands. This issue features Abubakar Nur Khalil, Founder and CEO of Recursive Capital.",
+    tags: ["Cover Story", "The Next Big Idea", "The Shift", "Founder's Playbook", "The Signal"],
+    coverImage: "/magazine_issue_01.png",
+    readButtonText: "Read the latest issue",
+    readButtonLink: "https://businessbosses.news",
+    allIssuesText: "All issues →",
+    allIssuesLink: "https://businessbosses.news",
+    contactText: "Want to be featured? Get in touch",
+    contactLink: "mailto:support@businessbosses.org",
   },
   bb_website_faq: {
     title: "Frequently Asked Questions",
