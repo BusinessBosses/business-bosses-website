@@ -151,27 +151,36 @@ export default function MagazineSection({ content }: { content?: Partial<Website
                   sx={{
                     display: "flex",
                     flexWrap: "wrap",
+                    alignItems: "center",
                     gap: 1.2,
                     pt: 0.5,
                   }}
                 >
-                  {mag.tags.map((tag, idx) => (
-                    <Chip
-                      key={idx}
-                      label={tag}
-                      size="small"
-                      sx={{
-                        bgcolor: "#ffffff",
-                        border: "1px solid #E5E7EB",
-                        color: "#374151",
-                        fontWeight: 600,
-                        fontSize: "0.78rem",
-                        py: 1.8,
-                        px: 0.5,
-                        borderRadius: "9999px",
-                      }}
-                    />
-                  ))}
+                  {mag.tags
+                    .filter((tag) => Boolean(tag && tag.trim()))
+                    .map((tag, idx) => (
+                      <Box
+                        key={idx}
+                        component="span"
+                        sx={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          px: 2,
+                          py: 0.7,
+                          borderRadius: "9999px",
+                          bgcolor: "#FFFFFF !important",
+                          background: "#FFFFFF !important",
+                          border: "1px solid #E5E7EB",
+                          color: "#1F2937 !important",
+                          fontWeight: 600,
+                          fontSize: "0.78rem",
+                          lineHeight: 1.2,
+                          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.04)",
+                        }}
+                      >
+                        {tag.trim()}
+                      </Box>
+                    ))}
                 </Box>
               )}
 
@@ -191,18 +200,24 @@ export default function MagazineSection({ content }: { content?: Partial<Website
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="contained"
+                  disableElevation
                   sx={{
-                    bgcolor: "#D93829",
-                    color: "#ffffff",
+                    bgcolor: "#D93829 !important",
+                    background: "#D93829 !important",
+                    backgroundImage: "none !important",
+                    color: "#ffffff !important",
                     px: 3.5,
                     py: 1.4,
                     borderRadius: "8px",
                     fontWeight: 700,
                     textTransform: "none",
                     fontSize: "0.95rem",
-                    boxShadow: "0 4px 14px rgba(217, 56, 41, 0.35)",
+                    border: "none !important",
+                    boxShadow: "0 4px 14px rgba(217, 56, 41, 0.35) !important",
                     "&:hover": {
-                      bgcolor: "#B82C1F",
+                      bgcolor: "#B82C1F !important",
+                      background: "#B82C1F !important",
+                      backgroundImage: "none !important",
                     },
                   }}
                 >
