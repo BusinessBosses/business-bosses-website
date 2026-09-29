@@ -14,11 +14,14 @@ import HowItWorks from "./views/components/HowItWorks";
 import { useInView } from "react-intersection-observer";
 
 import BecomeAPartnerModal from "./views/components/BecomeAPartnerModal";
+import { ServerUrl } from "../../config/config";
+import { withDefaults, WebsitePartnersContent } from "../../lib/site-content";
 
 export default function LandingPageforPartners() {
   const [mode, setMode] = React.useState<PaletteMode>("light");
   const [showCustomTheme] = React.useState(true);
   const [isPartnerModalOpen, setIsPartnerModalOpen] = React.useState(false);
+  const [cmsContent, setCmsContent] = React.useState<Record<string, any>>({});
 
   const LPtheme = React.useMemo(() => createTheme(getLPTheme(mode)), [mode]);
   const defaultTheme = React.useMemo(() => createTheme({ palette: { mode } }), [mode]);
@@ -26,6 +29,28 @@ export default function LandingPageforPartners() {
   const toggleColorMode = () => {
     setMode((prev) => (prev === "dark" ? "light" : "dark"));
   };
+
+  React.useEffect(() => {
+    let isMounted = true;
+    fetch(`${ServerUrl}/ai-visibility/landing-content`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted && data?.success && data?.data) {
+          setCmsContent(data.data);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load partners CMS content:", err);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const partnersContent = withDefaults<WebsitePartnersContent>(
+    "bb_website_partners",
+    cmsContent.bb_website_partners
+  );
 
   const { ref: partnersHeroRef, inView: partnersHeroInView } = useInView({
     triggerOnce: true,
@@ -56,19 +81,25 @@ export default function LandingPageforPartners() {
         ref={partnersHeroRef}
         className={`fade-in ${partnersHeroInView ? "visible" : ""}`}
       ></div>
-      <PartnersHero onBecomePartner={() => setIsPartnerModalOpen(true)} />
+      <PartnersHero
+        onBecomePartner={() => setIsPartnerModalOpen(true)}
+        content={partnersContent}
+      />
       <Box sx={{ bgcolor: "background.default" }}>
         <div
           ref={partnersHighlightsRef}
           className={`slide-up ${partnersHighlightsInView ? "visible" : ""}`}
         >
-          <PartnersHighlights />
+          <PartnersHighlights content={partnersContent} />
         </div>
         <div
           ref={howItWorksRef}
           className={`slide-up ${howItWorksInView ? "visible" : ""}`}
         >
-          <HowItWorks onBecomePartner={() => setIsPartnerModalOpen(true)} />
+          <HowItWorks
+            onBecomePartner={() => setIsPartnerModalOpen(true)}
+            content={partnersContent}
+          />
         </div>
         <div
           ref={logoCollectionRef}
@@ -76,7 +107,7 @@ export default function LandingPageforPartners() {
         >
           <LogoCollection />
         </div>
-        <Footer />
+        <Footer content={cmsContent.bb_website_footer} />
       </Box>
       <BecomeAPartnerModal
         open={isPartnerModalOpen}

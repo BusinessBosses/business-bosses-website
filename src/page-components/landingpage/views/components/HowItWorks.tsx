@@ -26,8 +26,27 @@ const items = [
   },
 ];
 
-const HowItWorks: React.FC<{ onBecomePartner?: () => void }> = ({ onBecomePartner }) => {
+const HowItWorks: React.FC<{
+  onBecomePartner?: () => void;
+  content?: {
+    howItWorksTitle?: string;
+    howItWorksItems?: Array<{ icon?: string; title: string; description: string }>;
+    ctaText?: string;
+  };
+}> = ({ onBecomePartner, content }) => {
   const router = useRouter();
+  const title = content?.howItWorksTitle || "How It Works";
+  const ctaText = content?.ctaText || "Become A Partner";
+
+  const cardItems =
+    content?.howItWorksItems && content.howItWorksItems.length > 0
+      ? content.howItWorksItems.map((h, i) => ({
+          icon: h.icon || items[i % items.length]?.icon || Assets.hiwone,
+          title: h.title,
+          description: h.description,
+        }))
+      : items;
+
   return (
     <Box
       id="highlights"
@@ -64,11 +83,11 @@ const HowItWorks: React.FC<{ onBecomePartner?: () => void }> = ({ onBecomePartne
               textAlign: "center",
             }}
           >
-            How It Works
+            {title}
           </Typography>
         </Box>
         <Grid container spacing={2.5}>
-          {items.map((item, index) => (
+          {cardItems.map((item, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Stack
                 direction="column"
@@ -81,13 +100,12 @@ const HowItWorks: React.FC<{ onBecomePartner?: () => void }> = ({ onBecomePartne
                   p: 3,
                   height: "100%",
                   border: "0px solid",
-                  // borderColor: "hsla(220, 25%, 25%, .3)",
                   background: "transparent",
                   backgroundColor: "transparent",
                   boxShadow: "none",
                 }}
               >
-                <img src={item.icon} width="150" height="150" />
+                <img src={item.icon} width="150" height="150" alt={item.title} />
                 <div style={{ textAlign: "center" }}>
                   <Typography
                     gutterBottom
@@ -121,10 +139,14 @@ const HowItWorks: React.FC<{ onBecomePartner?: () => void }> = ({ onBecomePartne
               }}
             >
               <button
-                onClick={onBecomePartner ? onBecomePartner : () => router.push(RoutesPath.becomeapartner)}
+                onClick={
+                  onBecomePartner
+                    ? onBecomePartner
+                    : () => router.push(RoutesPath.becomeapartner)
+                }
                 className="bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold p-2 px-20"
               >
-                Become A Partner
+                {ctaText}
               </button>
             </div>
           </div>

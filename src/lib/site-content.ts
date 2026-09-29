@@ -76,6 +76,29 @@ export interface WebsiteFaqContent {
   items: FaqItem[];
 }
 
+export interface PartnerHighlightItem {
+  icon?: string;
+  title: string;
+  description: string;
+}
+
+export interface PartnerHowItWorksItem {
+  icon?: string;
+  title: string;
+  description: string;
+}
+
+export interface WebsitePartnersContent {
+  heroTitle?: string;
+  heroDescription?: string;
+  ctaText?: string;
+  highlightsTitle?: string;
+  highlightsSubtitle?: string;
+  highlights: PartnerHighlightItem[];
+  howItWorksTitle?: string;
+  howItWorksItems: PartnerHowItWorksItem[];
+}
+
 export interface WebsiteFooterContent {
   tagline?: string;
   email?: string;
@@ -188,6 +211,65 @@ export const BB_CONTENT_DEFAULTS: Record<string, any> = {
     tagline: "Join a vibrant community of entrepreneurs. Expand your network, share your expertise, and discover endless opportunities with Business Bosses.",
     email: "support@businessbosses.org",
     copyrightText: "Business Bosses",
+  },
+  bb_website_partners: {
+    heroTitle: "Partner with Business Bosses",
+    heroDescription:
+      "We are looking for brands who want to offer deals to win new Customers, and organisations looking to support Entrepreneurship to improve economical growth",
+    ctaText: "Become A Partner",
+    highlightsTitle: "Why Partner with Us",
+    highlightsSubtitle:
+      "Business Bosses is an entrepreneurship empowerment platform, connecting your brand or organisation with over 130,000 entrepreneurs across 50+ countries",
+    highlights: [
+      {
+        title: "Get More Customers",
+        description:
+          "We showcase your product promotions, and deals, driving revenue growth and expanding your customer base",
+      },
+      {
+        title: "Selected Referrals",
+        description:
+          "We can refer potential customers to your brand, fostering new leads generation, new customer relationships and loyalty",
+      },
+      {
+        title: "Exclusive Brand Positioning",
+        description:
+          "We help position your brand as a supporter of entrepreneurship within the business community to attract potential leads",
+      },
+      {
+        title: "Entrepreneurial Support",
+        description:
+          "We can provide resources, encourage innovation, technology adoption, and regulatory guidance to entrepreneurs.",
+      },
+      {
+        title: "Economic Development",
+        description:
+          "We can help support local economic growth by promoting entrepreneurship, job creation within a given region",
+      },
+      {
+        title: "Community Engagement",
+        description:
+          "We can help engage with businesses seeking feedback and support, to build stronger relationships within communities.",
+      },
+    ],
+    howItWorksTitle: "How It Works",
+    howItWorksItems: [
+      {
+        title: "Choose Partnership",
+        description:
+          "Choose type of partnership or customised to suit your brand or organisation ",
+      },
+      {
+        title: "Set Up",
+        description:
+          "Provide information about your brand or organisation to help set up your partnership ",
+      },
+      {
+        title: "Get Featured",
+        description:
+          "Become a partner, get featured and receive partnership success report",
+      },
+    ],
   },
 };
 

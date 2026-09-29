@@ -53,7 +53,30 @@ const items = [
   },
 ];
 
-export default function Highlights() {
+export default function Highlights({
+  content,
+}: {
+  content?: {
+    highlightsTitle?: string;
+    highlightsSubtitle?: string;
+    highlights?: Array<{ icon?: string; title: string; description: string }>;
+  };
+}) {
+  const title = content?.highlightsTitle || "Why Partner with Us";
+  const subtitle =
+    content?.highlightsSubtitle ||
+    "Business Bosses is an entrepreneurship empowerment platform, connecting your brand or organisation with over 130,000 entrepreneurs across 50+ countries";
+
+  // Use dynamic cards or merge with default icons
+  const cardItems =
+    content?.highlights && content.highlights.length > 0
+      ? content.highlights.map((h, i) => ({
+          icon: h.icon || items[i % items.length]?.icon || Assets.pwu1,
+          title: h.title,
+          description: h.description,
+        }))
+      : items;
+
   return (
     <Box
       id="highlights"
@@ -90,7 +113,7 @@ export default function Highlights() {
               textAlign: "center",
             }}
           >
-            Why Partner with Us
+            {title}
           </Typography>
           <Typography
             variant="body1"
@@ -100,13 +123,11 @@ export default function Highlights() {
               textAlign: "center",
             }}
           >
-            Business Bosses is an entrepreneurship empowerment platform,
-            connecting your brand or organisation with over 130,000
-            entrepreneurs across 50+ countries
+            {subtitle}
           </Typography>
         </Box>
         <Grid container spacing={2.5}>
-          {items.map((item, index) => (
+          {cardItems.map((item, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Stack
                 direction="column"
@@ -117,14 +138,12 @@ export default function Highlights() {
                   color: "inherit",
                   p: 3,
                   height: "100%",
-                  // border: "1px solid",
-                  // borderColor: "hsla(220, 25%, 25%, .3)",
                   background: "transparent",
                   backgroundColor: "#ffffff",
                   boxShadow: "none",
                 }}
               >
-                <img src={item.icon} width="60" height="60" />
+                <img src={item.icon} width="60" height="60" alt={item.title} />
                 <div>
                   <Typography
                     gutterBottom

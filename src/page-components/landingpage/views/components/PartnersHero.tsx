@@ -39,8 +39,24 @@ const StyledBox = styled("div")(({ theme }) => ({
   // }),
 }));
 
-export default function PartnersHero({ onBecomePartner }: { onBecomePartner?: () => void }) {
+export default function PartnersHero({
+  onBecomePartner,
+  content,
+}: {
+  onBecomePartner?: () => void;
+  content?: {
+    heroTitle?: string;
+    heroDescription?: string;
+    ctaText?: string;
+  };
+}) {
   const router = useRouter();
+  const heroTitle = content?.heroTitle || "Partner with Business Bosses";
+  const heroDescription =
+    content?.heroDescription ||
+    "We are looking for brands who want to offer deals to win new Customers, and organisations looking to support Entrepreneurship to improve economical growth";
+  const ctaText = content?.ctaText || "Become A Partner";
+
   return (
     <Box
       id="hero"
@@ -48,10 +64,6 @@ export default function PartnersHero({ onBecomePartner }: { onBecomePartner?: ()
         width: "100%",
         backgroundColor: "#f4f4f4",
         backgroundRepeat: "no-repeat",
-        // ...theme.applyStyles('dark', {
-        //   backgroundImage:
-        //     'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)',
-        // }),
       })}
     >
       <Container
@@ -81,7 +93,7 @@ export default function PartnersHero({ onBecomePartner }: { onBecomePartner?: ()
                 width: { sm: "100%", md: "100%" },
               }}
             >
-              Partner with Business Bosses
+              {heroTitle}
             </Typography>
             <Typography
               sx={{
@@ -91,9 +103,7 @@ export default function PartnersHero({ onBecomePartner }: { onBecomePartner?: ()
                 pb: { xs: 2, sm: 2 },
               }}
             >
-              We are looking for brands who want to offer deals to win new
-              Customers, and organisations looking to support Entrepreneurship
-              to improve economical growth
+              {heroDescription}
             </Typography>
           </Stack>
           <div
@@ -114,10 +124,14 @@ export default function PartnersHero({ onBecomePartner }: { onBecomePartner?: ()
                 }}
               >
                 <button
-                  onClick={onBecomePartner ? onBecomePartner : () => router.push(RoutesPath.becomeapartner)}
+                  onClick={
+                    onBecomePartner
+                      ? onBecomePartner
+                      : () => router.push(RoutesPath.becomeapartner)
+                  }
                   className="bg-primary rounded-xl py-3.5 text-white text-md flex items-center justify-center font-bold p-2 px-20"
                 >
-                  Become A Partner
+                  {ctaText}
                 </button>
               </div>
             </div>
