@@ -118,6 +118,14 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 color="info"
                 size="medium"
+                onClick={() => router.push(RoutesPath.magazine)}
+              >
+                Magazine
+              </Button>
+              <Button
+                variant="text"
+                color="info"
+                size="medium"
                 href="https://businessbosses.news"
               >
                 News
@@ -198,6 +206,9 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   onClick={() => router.push(RoutesPath.landingpageforpartners)}
                 >
                   Become a Partner
+                </MenuItem>
+                <MenuItem onClick={() => router.push(RoutesPath.magazine)}>
+                  Magazine
                 </MenuItem>
                 <MenuItem
                   onClick={() =>

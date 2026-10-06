@@ -144,7 +144,7 @@ export default function MagazineHero() {
           <Button
             variant="contained"
             size="large"
-            onClick={() => router.push("/becomeapartner")}
+            onClick={() => router.push("/apply-featured")}
             sx={{
               backgroundColor: "#FACC15",
               color: "#0F172A",

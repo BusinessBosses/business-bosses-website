@@ -109,6 +109,8 @@ const RoutesPath = {
   landingpageforpartners,
   businesstools,
   becomeapartner,
+  magazine: "/magazine",
+  applyFeatured: "/apply-featured",
   shop,
   expandedshop,
   setupshop,
