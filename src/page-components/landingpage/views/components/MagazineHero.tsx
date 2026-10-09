@@ -213,44 +213,12 @@ export default function MagazineHero() {
                   mx: "auto",
                 }}
               >
-                {latestIssue?.cover_image_url ? (
-                  <CardMedia
-                    component="img"
-                    image={latestIssue.cover_image_url}
-                    alt={latestIssue.title}
-                    sx={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                ) : (
-                  <Box
-                    sx={{
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      p: 4,
-                      background: "linear-gradient(180deg, #1E293B 0%, #0F172A 100%)",
-                      color: "#FFFFFF",
-                    }}
-                  >
-                    <Box>
-                      <Typography sx={{ fontWeight: 900, letterSpacing: "2px", color: "#E11D48", fontSize: "12px", mb: 1 }}>
-                        BUSINESS BOSSES
-                      </Typography>
-                      <Chip label="THE NEXT BIG IDEA" size="small" sx={{ bgcolor: "#E11D48", color: "#FFF", fontWeight: 700, fontSize: "10px", mb: 2 }} />
-                      <Typography variant="h4" sx={{ fontWeight: 900, lineHeight: 1.2, mb: 1 }}>
-                        Prodatar
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Typography sx={{ color: "#E11D48", fontWeight: 800, fontSize: "12px" }}>COVER STORY</Typography>
-                      <Typography variant="h5" sx={{ fontWeight: 900, mb: 1 }}>
-                        Abubakar Nur Khalil
-                      </Typography>
-                      <Typography sx={{ fontSize: "13px", color: "#94A3B8" }}>From Vision to Venture</Typography>
-                    </Box>
-                  </Box>
-                )}
+                <CardMedia
+                  component="img"
+                  image={latestIssue?.cover_image_url || "/magazine_cover.png"}
+                  alt={latestIssue?.title || "Business Bosses Magazine Cover"}
+                  sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
               </Box>
             </Grid>
 
@@ -367,14 +335,12 @@ export default function MagazineHero() {
                   onClick={() => issue.pdf_url && window.open(issue.pdf_url, "_blank")}
                 >
                   <Box sx={{ aspectRatio: "3/4", backgroundColor: "#0F172A", overflow: "hidden" }}>
-                    {issue.cover_image_url ? (
-                      <CardMedia component="img" image={issue.cover_image_url} alt={issue.title} sx={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                    ) : (
-                      <Box sx={{ p: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", color: "#FFF" }}>
-                        <Typography sx={{ fontSize: "10px", fontWeight: 900, color: "#E11D48" }}>BUSINESS BOSSES</Typography>
-                        <Typography sx={{ fontSize: "16px", fontWeight: 800 }}>{issue.title}</Typography>
-                      </Box>
-                    )}
+                    <CardMedia
+                      component="img"
+                      image={issue.cover_image_url || "/magazine_cover.png"}
+                      alt={issue.title}
+                      sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
                   </Box>
                   <CardContent sx={{ p: 2 }}>
                     <Typography sx={{ fontSize: "11px", color: "#64748B", mb: 0.5 }}>
