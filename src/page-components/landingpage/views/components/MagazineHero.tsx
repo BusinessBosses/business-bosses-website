@@ -215,7 +215,7 @@ export default function MagazineHero() {
               >
                 <CardMedia
                   component="img"
-                  image={latestIssue?.cover_image_url || "/magazine_cover.png"}
+                  image={latestIssue?.cover_image_url || "https://f005.backblazeb2.com/file/business-bosses-alt/uploads/1790681821114-dcaa8856f97ce667.png"}
                   alt={latestIssue?.title || "Business Bosses Magazine Cover"}
                   sx={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -337,7 +337,7 @@ export default function MagazineHero() {
                   <Box sx={{ aspectRatio: "3/4", backgroundColor: "#0F172A", overflow: "hidden" }}>
                     <CardMedia
                       component="img"
-                      image={issue.cover_image_url || "/magazine_cover.png"}
+                      image={issue.cover_image_url || "https://f005.backblazeb2.com/file/business-bosses-alt/uploads/1790681821114-dcaa8856f97ce667.png"}
                       alt={issue.title}
                       sx={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
