@@ -316,17 +316,13 @@ export default function getLPTheme(mode: PaletteMode): ThemeOptions {
                 },
                 style: {
                   color: 'white',
-                  backgroundColor: brand[300],
-                  backgroundImage: `linear-gradient(to bottom, ${alpha(brand[400], 0.8)}, ${brand[500]})`,
-                  boxShadow: `inset 0 2px 0 ${alpha(brand[200], 0.2)}, inset 0 -2px 0 ${alpha(brand[700], 0.4)}`,
-                  border: `1px solid ${brand[500]}`,
+                  backgroundColor: '#E11D48',
+                  backgroundImage: 'none',
+                  boxShadow: 'none',
+                  border: 'none',
                   '&:hover': {
-                    backgroundColor: brand[700],
+                    backgroundColor: '#BE123C',
                     boxShadow: 'none',
-                  },
-                  '&:active': {
-                    backgroundColor: brand[700],
-                    boxShadow: `inset 0 2.5px 0 ${alpha(brand[700], 0.4)}`,
                   },
                 },
               },
