@@ -110,6 +110,7 @@ const RoutesPath = {
   businesstools,
   becomeapartner,
   magazine: "/magazine",
+  news: "/news",
   applyFeatured: "/apply-featured",
   shop,
   expandedshop,

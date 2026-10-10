@@ -126,7 +126,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 color="info"
                 size="medium"
-                href="https://businessbosses.news"
+                onClick={() => router.push(RoutesPath.news)}
               >
                 News
               </Button>
@@ -210,11 +210,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 <MenuItem onClick={() => router.push(RoutesPath.magazine)}>
                   Magazine
                 </MenuItem>
-                <MenuItem
-                  onClick={() =>
-                    (window.location.href = "https://businessbosses.news")
-                  }
-                >
+                <MenuItem onClick={() => router.push(RoutesPath.news)}>
                   News
                 </MenuItem>
                 <MenuItem>
