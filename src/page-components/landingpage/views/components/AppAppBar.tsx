@@ -196,7 +196,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                   }}
                 >
                   <IconButton onClick={toggleDrawer(false)} color="primary">
-                    <CloseRoundedIcon color="info" />
+                    <CloseRoundedIcon sx={{ color: "#000" }} />
                   </IconButton>
                 </Box>
                 <MenuItem onClick={() => router.push(RoutesPath.landingpage)}>

@@ -1,6 +1,6 @@
 'use client';
-import NewsHero from '../../page-components/landingpage/views/components/NewsHero';
+import NewsPage from '../../page-components/landingpage/NewsPage';
 
 export default function Page() {
-  return <NewsHero />;
+  return <NewsPage />;
 }
