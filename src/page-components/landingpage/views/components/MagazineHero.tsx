@@ -10,6 +10,7 @@ import MagazineSectionsHighlight from "./magazine/MagazineSectionsHighlight";
 import MagazineSpotlight from "./magazine/MagazineSpotlight";
 import MagazineArchive from "./magazine/MagazineArchive";
 import MagazineCtaBanner from "./magazine/MagazineCtaBanner";
+import MagazineFooter from "./magazine/MagazineFooter";
 
 interface MagazineIssue {
   id: string;
@@ -101,7 +102,7 @@ export default function MagazineHero() {
       />
 
       {/* Footer */}
-      <Footer />
+      <MagazineFooter />
     </Box>
   );
 }

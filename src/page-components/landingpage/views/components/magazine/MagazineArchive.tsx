@@ -95,6 +95,62 @@ export default function MagazineArchive({ magazines, loading = false }: Magazine
             ))
           )}
 
+          {/* Placeholder cards for upcoming issues matching design when fewer than 3 issues exist */}
+          {!loading && magazines.length < 3 && [
+            { num: "02", subtitle: "Next Issue" },
+            { num: "03", subtitle: "—" },
+          ].slice(0, 3 - magazines.length).map((item) => (
+            <Grid item xs={12} sm={6} md={3} key={item.num}>
+              <Card
+                elevation={0}
+                sx={{
+                  border: "1px solid #F1F5F9",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "#FFFFFF",
+                }}
+              >
+                <Box
+                  sx={{
+                    aspectRatio: "3/4",
+                    backgroundColor: "#F8FAFC",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderBottom: "1px solid #F1F5F9",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "48px",
+                      fontWeight: 900,
+                      color: "#CBD5E1",
+                      lineHeight: 1,
+                      mb: 1,
+                    }}
+                  >
+                    {item.num}
+                  </Typography>
+                  <Typography sx={{ fontSize: "13px", color: "#94A3B8", fontWeight: 500 }}>
+                    Coming soon
+                  </Typography>
+                </Box>
+                <CardContent sx={{ p: 2 }}>
+                  <Typography sx={{ fontSize: "12px", color: "#94A3B8", mb: 0.5 }}>
+                    Issue {item.num}
+                  </Typography>
+                  <Typography sx={{ fontSize: "14px", fontWeight: 700, color: "#64748B" }}>
+                    {item.subtitle}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+
           {/* Email Subscribe Box */}
           <Grid item xs={12} sm={6} md={3}>
             <Card elevation={0} sx={{ borderRadius: "12px", p: 3, backgroundColor: "#FFF1F2", border: "1px solid #FFE4E6", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>

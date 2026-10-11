@@ -17,7 +17,7 @@ import ToggleColorMode from "./ToggleColorMode";
 import Sitemark from "./SitemarkIcon";
 import Assets from "../../../../assets";
 import RoutesPath from "../../../../constants/Routes";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import LandingPageforPartners from "../../LandingPageforPartners";
 
 interface AppAppBarProps {
@@ -28,6 +28,7 @@ interface AppAppBarProps {
 export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -102,6 +103,10 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 color="info"
                 size="medium"
                 onClick={() => router.push(RoutesPath.index)}
+                sx={{
+                  color: pathname === "/" || pathname === "/about" ? "#e11d48" : "#000",
+                  fontWeight: pathname === "/" || pathname === "/about" ? 700 : 500,
+                }}
               >
                 About
               </Button>
@@ -110,6 +115,10 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 color="info"
                 size="medium"
                 onClick={() => router.push(RoutesPath.partners)}
+                sx={{
+                  color: pathname?.startsWith("/partners") ? "#e11d48" : "#000",
+                  fontWeight: pathname?.startsWith("/partners") ? 700 : 500,
+                }}
               >
                 Become a Partner
               </Button>
@@ -118,6 +127,10 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 color="info"
                 size="medium"
                 onClick={() => router.push(RoutesPath.magazine)}
+                sx={{
+                  color: pathname?.startsWith("/magazine") ? "#e11d48" : "#000",
+                  fontWeight: pathname?.startsWith("/magazine") ? 700 : 500,
+                }}
               >
                 Magazine
               </Button>
@@ -126,6 +139,10 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 color="info"
                 size="medium"
                 onClick={() => router.push(RoutesPath.news)}
+                sx={{
+                  color: pathname?.startsWith("/news") ? "#e11d48" : "#000",
+                  fontWeight: pathname?.startsWith("/news") ? 700 : 500,
+                }}
               >
                 News
               </Button>

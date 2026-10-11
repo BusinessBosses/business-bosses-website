@@ -77,7 +77,7 @@ export default function NewsHero() {
       });
 
       if (res.ok) {
-        alert("Member news post submitted successfully!");
+        alert("Member news post submitted successfully and is pending admin review!");
         setOpenModal(false);
         fetchNews();
       } else {
