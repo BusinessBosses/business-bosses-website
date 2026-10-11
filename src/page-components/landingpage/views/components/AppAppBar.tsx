@@ -102,7 +102,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 color="info"
                 size="medium"
-                onClick={() => router.push(RoutesPath.landingpage)}
+                onClick={() => router.push(RoutesPath.index)}
               >
                 About
               </Button>
@@ -110,7 +110,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 variant="text"
                 color="info"
                 size="medium"
-                onClick={() => router.push(RoutesPath.landingpageforpartners)}
+                onClick={() => router.push(RoutesPath.partners)}
               >
                 Become a Partner
               </Button>
@@ -199,11 +199,11 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                     <CloseRoundedIcon sx={{ color: "#000" }} />
                   </IconButton>
                 </Box>
-                <MenuItem onClick={() => router.push(RoutesPath.landingpage)}>
+                <MenuItem onClick={() => router.push(RoutesPath.index)}>
                   About
                 </MenuItem>
                 <MenuItem
-                  onClick={() => router.push(RoutesPath.landingpageforpartners)}
+                  onClick={() => router.push(RoutesPath.partners)}
                 >
                   Become a Partner
                 </MenuItem>

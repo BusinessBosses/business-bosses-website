@@ -126,7 +126,7 @@ export default function Footer({ content }: { content?: Partial<WebsiteFooterCon
             <Link
               color="white"
               variant="body2"
-              onClick={() => router.push(RoutesPath.landingpageforpartners)}
+              onClick={() => router.push(RoutesPath.partners)}
               style={{ opacity: 0.5 }}
             >
               Partners

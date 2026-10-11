@@ -23,11 +23,6 @@ const nextConfig = {
         destination: 'https://businessbosses.news',
         permanent: true,
       },
-      {
-        source: '/news',
-        destination: 'https://businessbosses.news',
-        permanent: true,
-      },
     ]
   },
   webpack(config) {
