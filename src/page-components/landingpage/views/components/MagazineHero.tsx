@@ -66,7 +66,7 @@ export default function MagazineHero() {
       <MagazineSpotlight latestIssue={latestIssue} />
 
       {/* 4. Issue Archive Grid */}
-      <MagazineArchive magazines={magazines} />
+      <MagazineArchive magazines={magazines} loading={loading} />
 
       {/* 5. Bottom Dark CTA Banner */}
       <MagazineCtaBanner onGetFeatured={() => router.push(RoutesPath.applyFeatured)} />

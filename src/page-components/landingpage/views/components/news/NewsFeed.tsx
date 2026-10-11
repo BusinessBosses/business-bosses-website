@@ -7,6 +7,7 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Chip from "@mui/material/Chip";
+import Skeleton from "@mui/material/Skeleton";
 
 export interface NewsArticle {
   id: string;
@@ -25,9 +26,10 @@ export interface NewsArticle {
 interface NewsFeedProps {
   featuredArticle: NewsArticle | undefined;
   latestArticles: NewsArticle[];
+  loading?: boolean;
 }
 
-export default function NewsFeed({ featuredArticle, latestArticles }: NewsFeedProps) {
+export default function NewsFeed({ featuredArticle, latestArticles, loading = false }: NewsFeedProps) {
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
       {/* Latest News Header */}
@@ -41,7 +43,32 @@ export default function NewsFeed({ featuredArticle, latestArticles }: NewsFeedPr
       </Box>
 
       {/* Featured Card (Only one post can be featured at a time) */}
-      {featuredArticle && (
+      {loading ? (
+        <Card
+          elevation={0}
+          sx={{
+            borderRadius: "16px",
+            border: "1px solid #E2E8F0",
+            mb: 6,
+            overflow: "hidden",
+            bgcolor: "#FFFFFF",
+          }}
+        >
+          <Grid container alignItems="stretch">
+            <Grid item xs={12} md={7}>
+              <Skeleton variant="rectangular" sx={{ width: "100%", height: "100%", minHeight: "320px" }} />
+            </Grid>
+            <Grid item xs={12} md={5} sx={{ p: { xs: 4, md: 6 } }}>
+              <Skeleton width="30%" height={24} sx={{ mb: 2 }} />
+              <Skeleton width="90%" height={38} sx={{ mb: 1 }} />
+              <Skeleton width="75%" height={38} sx={{ mb: 2 }} />
+              <Skeleton width="100%" height={20} />
+              <Skeleton width="85%" height={20} sx={{ mb: 3 }} />
+              <Skeleton width="25%" height={20} />
+            </Grid>
+          </Grid>
+        </Card>
+      ) : featuredArticle ? (
         <Card
           elevation={0}
           sx={{
@@ -79,54 +106,70 @@ export default function NewsFeed({ featuredArticle, latestArticles }: NewsFeedPr
             </Grid>
           </Grid>
         </Card>
-      )}
+      ) : null}
 
       {/* Grid of Latest Articles */}
       <Grid container spacing={3} sx={{ mb: 10 }}>
-        {latestArticles.slice(0, 6).map((item) => (
-          <Grid item xs={12} sm={6} md={4} key={item.id}>
-            <Card
-              elevation={0}
-              sx={{
-                height: "100%",
-                borderRadius: "16px",
-                border: "1px solid #E2E8F0",
-                bgcolor: "#FFFFFF",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <CardMedia
-                component="img"
-                image={item.image_url || "https://f005.backblazeb2.com/file/business-bosses-alt/uploads/1790681821114-dcaa8856f97ce667.png"}
-                alt={item.title}
-                sx={{ height: "180px", objectFit: "cover" }}
-              />
-              <CardContent sx={{ p: 3, flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                <Box>
-                  <Box sx={{ display: "flex", gap: 1, alignItems: "center", mb: 1.5 }}>
-                    <Typography sx={{ fontSize: "12px", fontWeight: 800, color: "#3B82F6" }}>
-                      {item.category}
+        {loading ? (
+          [1, 2, 3].map((idx) => (
+            <Grid item xs={12} sm={6} md={4} key={idx}>
+              <Card elevation={0} sx={{ height: "100%", borderRadius: "16px", border: "1px solid #E2E8F0", bgcolor: "#FFFFFF" }}>
+                <Skeleton variant="rectangular" sx={{ height: "180px", width: "100%" }} />
+                <CardContent sx={{ p: 3 }}>
+                  <Skeleton width="40%" height={18} sx={{ mb: 1 }} />
+                  <Skeleton width="90%" height={26} sx={{ mb: 1 }} />
+                  <Skeleton width="70%" height={18} sx={{ mb: 2 }} />
+                  <Skeleton width="30%" height={18} />
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          latestArticles.slice(0, 6).map((item) => (
+            <Grid item xs={12} sm={6} md={4} key={item.id}>
+              <Card
+                elevation={0}
+                sx={{
+                  height: "100%",
+                  borderRadius: "16px",
+                  border: "1px solid #E2E8F0",
+                  bgcolor: "#FFFFFF",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  image={item.image_url || "https://f005.backblazeb2.com/file/business-bosses-alt/uploads/1790681821114-dcaa8856f97ce667.png"}
+                  alt={item.title}
+                  sx={{ height: "180px", objectFit: "cover" }}
+                />
+                <CardContent sx={{ p: 3, flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                  <Box>
+                    <Box sx={{ display: "flex", gap: 1, alignItems: "center", mb: 1.5 }}>
+                      <Typography sx={{ fontSize: "12px", fontWeight: 800, color: "#3B82F6" }}>
+                        {item.category}
+                      </Typography>
+                      <Typography sx={{ fontSize: "12px", color: "#94A3B8" }}>•</Typography>
+                      <Typography sx={{ fontSize: "12px", color: "#94A3B8" }}>
+                        {new Date(item.publish_date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                      </Typography>
+                    </Box>
+                    <Typography variant="h6" sx={{ fontWeight: 800, color: "#0F172A", mb: 1, lineHeight: 1.3 }}>
+                      {item.title}
                     </Typography>
-                    <Typography sx={{ fontSize: "12px", color: "#94A3B8" }}>•</Typography>
-                    <Typography sx={{ fontSize: "12px", color: "#94A3B8" }}>
-                      {new Date(item.publish_date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                    <Typography sx={{ fontSize: "13px", color: "#64748B", mb: 2, lineHeight: 1.5 }}>
+                      {item.summary}
                     </Typography>
                   </Box>
-                  <Typography variant="h6" sx={{ fontWeight: 800, color: "#0F172A", mb: 1, lineHeight: 1.3 }}>
-                    {item.title}
+                  <Typography sx={{ fontSize: "13px", fontWeight: 800, color: "#E11D48", cursor: "pointer" }}>
+                    Read more →
                   </Typography>
-                  <Typography sx={{ fontSize: "13px", color: "#64748B", mb: 2, lineHeight: 1.5 }}>
-                    {item.summary}
-                  </Typography>
-                </Box>
-                <Typography sx={{ fontSize: "13px", fontWeight: 800, color: "#E11D48", cursor: "pointer" }}>
-                  Read more →
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        )}
       </Grid>
     </Container>
   );

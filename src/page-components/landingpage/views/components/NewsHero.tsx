@@ -13,6 +13,7 @@ export default function NewsHero() {
   const [articles, setArticles] = React.useState<NewsArticle[]>([]);
   const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
   const [categoryCounts, setCategoryCounts] = React.useState<Record<string, number>>({});
+  const [loading, setLoading] = React.useState<boolean>(true);
   
   // Submit modal state
   const [openModal, setOpenModal] = React.useState(false);
@@ -30,6 +31,8 @@ export default function NewsHero() {
       }
     } catch (err) {
       console.error("Failed to fetch news:", err);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -104,12 +107,14 @@ export default function NewsHero() {
       <NewsFeed
         featuredArticle={featuredArticle}
         latestArticles={filteredLatest}
+        loading={loading}
       />
 
       {/* 3. Member News Section */}
       <MemberNewsSection
         memberArticles={memberNewsArticles}
         onSubmitModalOpen={() => setOpenModal(true)}
+        loading={loading}
       />
 
       {/* 4. Press & Media + Newsletter Banner */}

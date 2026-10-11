@@ -7,11 +7,13 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Chip from "@mui/material/Chip";
+import Skeleton from "@mui/material/Skeleton";
 import { NewsArticle } from "./NewsFeed";
 
 interface MemberNewsSectionProps {
   memberArticles: NewsArticle[];
   onSubmitModalOpen: () => void;
+  loading?: boolean;
 }
 
 const RULES = [
@@ -21,7 +23,7 @@ const RULES = [
   "Reviewed by our team before it goes live",
 ];
 
-export default function MemberNewsSection({ memberArticles, onSubmitModalOpen }: MemberNewsSectionProps) {
+export default function MemberNewsSection({ memberArticles, onSubmitModalOpen, loading = false }: MemberNewsSectionProps) {
   return (
     <Container maxWidth="lg">
       <Box sx={{ pt: 6, borderTop: "1px solid #E2E8F0" }}>
@@ -39,7 +41,22 @@ export default function MemberNewsSection({ memberArticles, onSubmitModalOpen }:
           {/* Left Column: Member News Posts */}
           <Grid item xs={12} md={7}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-              {memberArticles.length === 0 ? (
+              {loading ? (
+                [1, 2].map((idx) => (
+                  <Card
+                    key={idx}
+                    elevation={0}
+                    sx={{ p: 2.5, borderRadius: "16px", border: "1px solid #E2E8F0", bgcolor: "#FFFFFF", display: "flex", gap: 2.5, alignItems: "center" }}
+                  >
+                    <Skeleton variant="rectangular" sx={{ width: "120px", height: "100px", borderRadius: "10px" }} />
+                    <Box sx={{ flexGrow: 1 }}>
+                      <Skeleton width="40%" height={20} sx={{ mb: 1 }} />
+                      <Skeleton width="90%" height={26} sx={{ mb: 1 }} />
+                      <Skeleton width="75%" height={18} />
+                    </Box>
+                  </Card>
+                ))
+              ) : memberArticles.length === 0 ? (
                 <Card elevation={0} sx={{ p: 4, border: "1px dashed #CBD5E1", borderRadius: "12px", textAlign: "center", bgcolor: "#FFFFFF" }}>
                   <Typography sx={{ color: "#64748B", fontWeight: 600 }}>
                     No member news submitted yet. Be the first verified business to submit news!
