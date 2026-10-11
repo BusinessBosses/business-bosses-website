@@ -12,10 +12,10 @@ import { withDefaults, WebsiteFooterContent } from "../../../../lib/site-content
 
 function Copyright({ copyrightText }: { copyrightText?: string }) {
   return (
-    <Typography variant="body2" sx={{ color: "white", mt: 1 }}>
+    <Typography component="div" variant="body2" sx={{ color: "white", mt: 1 }}>
       {"Copyright © "}
-      <div> {copyrightText || "Business Bosses"}&nbsp;</div>
-      {new Date().getFullYear()}
+      <Box component="span"> {copyrightText || "Business Bosses"}&nbsp;</Box>
+      <Box component="span" suppressHydrationWarning>{new Date().getFullYear()}</Box>
     </Typography>
   );
 }
