@@ -53,14 +53,18 @@ const items = [
   },
 ];
 
+import Skeleton from "@mui/material/Skeleton";
+
 export default function Highlights({
   content,
+  loading = false,
 }: {
   content?: {
     highlightsTitle?: string;
     highlightsSubtitle?: string;
     highlights?: Array<{ icon?: string; title: string; description: string }>;
   };
+  loading?: boolean;
 }) {
   const title = content?.highlightsTitle || "Why Partner with Us";
   const subtitle =
@@ -127,37 +131,64 @@ export default function Highlights({
           </Typography>
         </Box>
         <Grid container spacing={2.5}>
-          {cardItems.map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Stack
-                direction="column"
-                component={Card}
-                spacing={1}
-                useFlexGap
-                sx={{
-                  color: "inherit",
-                  p: 3,
-                  height: "100%",
-                  background: "transparent",
-                  backgroundColor: "#ffffff",
-                  boxShadow: "none",
-                }}
-              >
-                <img src={item.icon} width="60" height="60" alt={item.title} />
-                <div>
-                  <Typography
-                    gutterBottom
-                    sx={{ fontWeight: "bold", color: "#232324" }}
-                  >
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: "grey" }}>
-                    {item.description}
-                  </Typography>
-                </div>
-              </Stack>
-            </Grid>
-          ))}
+          {loading ? (
+            [1, 2, 3, 4, 5, 6].map((idx) => (
+              <Grid item xs={12} sm={6} md={4} key={idx}>
+                <Stack
+                  direction="column"
+                  component={Card}
+                  spacing={1.5}
+                  useFlexGap
+                  sx={{
+                    p: 3,
+                    height: "100%",
+                    background: "transparent",
+                    backgroundColor: "#ffffff",
+                    boxShadow: "none",
+                  }}
+                >
+                  <Skeleton variant="rounded" width={60} height={60} sx={{ borderRadius: "12px" }} />
+                  <div>
+                    <Skeleton width="60%" height={26} sx={{ mb: 1 }} />
+                    <Skeleton width="100%" height={18} />
+                    <Skeleton width="85%" height={18} />
+                  </div>
+                </Stack>
+              </Grid>
+            ))
+          ) : (
+            cardItems.map((item, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Stack
+                  direction="column"
+                  component={Card}
+                  spacing={1}
+                  useFlexGap
+                  sx={{
+                    color: "inherit",
+                    p: 3,
+                    height: "100%",
+                    background: "transparent",
+                    backgroundColor: "#ffffff",
+                    boxShadow: "none",
+                  }}
+                >
+                  <img src={item.icon} width="60" height="60" alt={item.title} />
+                  <div>
+                    <Typography
+                      gutterBottom
+                      sx={{ fontWeight: "bold", color: "#232324" }}
+                    >
+                      {item.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: "grey" }}>
+                      {item.description}
+                    </Typography>
+                  </div>
+                </Stack>
+              </Grid>
+            ))
+          )}
         </Grid>
       </Container>
     </Box>

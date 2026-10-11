@@ -23,6 +23,7 @@ export default function LandingPage() {
   const [mode, setMode] = React.useState<PaletteMode>("light");
   const [showCustomTheme] = React.useState(true);
   const [cmsContent, setCmsContent] = React.useState<Record<string, any>>({});
+  const [loading, setLoading] = React.useState<boolean>(true);
   const LPtheme = createTheme(getLPTheme(mode));
   const defaultTheme = createTheme({ palette: { mode } });
 
@@ -41,6 +42,11 @@ export default function LandingPage() {
       })
       .catch((err) => {
         console.error("Failed to load dynamic website content:", err);
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
       });
     return () => {
       isMounted = false;
@@ -61,12 +67,12 @@ export default function LandingPage() {
     <ThemeProvider theme={showCustomTheme ? LPtheme : defaultTheme}>
       <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
-      <Hero content={cmsContent.bb_website_hero} />
+      <Hero content={cmsContent.bb_website_hero} loading={loading} />
       <Solutions
         howItWorksContent={cmsContent.bb_website_how_it_works}
         solutionsContent={cmsContent.bb_website_solutions}
       />
-      <MagazineSection content={cmsContent.bb_website_magazine} />
+      <MagazineSection content={cmsContent.bb_website_magazine} loading={loading} />
       <Box sx={{ bgcolor: "background.default" }}>
         <div
           ref={loginRef}

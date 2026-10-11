@@ -22,6 +22,7 @@ export default function LandingPageforPartners() {
   const [showCustomTheme] = React.useState(true);
   const [isPartnerModalOpen, setIsPartnerModalOpen] = React.useState(false);
   const [cmsContent, setCmsContent] = React.useState<Record<string, any>>({});
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   const LPtheme = React.useMemo(() => createTheme(getLPTheme(mode)), [mode]);
   const defaultTheme = React.useMemo(() => createTheme({ palette: { mode } }), [mode]);
@@ -41,6 +42,11 @@ export default function LandingPageforPartners() {
       })
       .catch((err) => {
         console.error("Failed to load partners CMS content:", err);
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
       });
     return () => {
       isMounted = false;
@@ -84,13 +90,14 @@ export default function LandingPageforPartners() {
       <PartnersHero
         onBecomePartner={() => setIsPartnerModalOpen(true)}
         content={partnersContent}
+        loading={loading}
       />
       <Box sx={{ bgcolor: "background.default" }}>
         <div
           ref={partnersHighlightsRef}
           className={`slide-up ${partnersHighlightsInView ? "visible" : ""}`}
         >
-          <PartnersHighlights content={partnersContent} />
+          <PartnersHighlights content={partnersContent} loading={loading} />
         </div>
         <div
           ref={howItWorksRef}

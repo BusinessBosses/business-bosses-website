@@ -50,8 +50,9 @@ function computeMatchPercent(industry: string, location: string, type: string) {
 }
 
 import { withDefaults, WebsiteHeroContent } from "../../../../lib/site-content";
+import Skeleton from "@mui/material/Skeleton";
 
-export default function Hero({ content }: { content?: Partial<WebsiteHeroContent> }) {
+export default function Hero({ content, loading = false }: { content?: Partial<WebsiteHeroContent>; loading?: boolean }) {
   const [flow, setFlow] = useState<Flow>(null);
   const [step, setStep] = useState<Step>(null);
 
@@ -78,44 +79,74 @@ export default function Hero({ content }: { content?: Partial<WebsiteHeroContent
   return (
     <section className="relative bg-gray-50 pt-20 pb-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        {heroContent.badge && (
-          <span className="inline-block bg-red-50 text-bb-red border border-red-100 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4">
-            {heroContent.badge}
-          </span>
+        {loading ? (
+          <div className="flex flex-col items-center">
+            <Skeleton variant="rounded" width={180} height={28} sx={{ mb: 3, borderRadius: "9999px" }} />
+            <Skeleton width="65%" height={64} sx={{ mb: 1 }} />
+            <Skeleton width="50%" height={64} sx={{ mb: 3 }} />
+            <Skeleton width="75%" height={28} sx={{ mb: 1 }} />
+            <Skeleton width="60%" height={28} sx={{ mb: 5 }} />
+            <div className="flex gap-4 justify-center">
+              <Skeleton variant="rounded" width={180} height={48} sx={{ borderRadius: "8px" }} />
+              <Skeleton variant="rounded" width={180} height={48} sx={{ borderRadius: "8px" }} />
+            </div>
+            <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 max-w-4xl mx-auto divide-y sm:divide-y-0 sm:divide-x divide-gray-200 w-full">
+              <div className="px-6 py-4 flex flex-col items-center">
+                <Skeleton width={120} height={44} />
+                <Skeleton width={150} height={20} sx={{ mt: 1 }} />
+              </div>
+              <div className="px-6 py-4 flex flex-col items-center">
+                <Skeleton width={140} height={44} />
+                <Skeleton width={170} height={20} sx={{ mt: 1 }} />
+              </div>
+              <div className="px-6 py-4 flex flex-col items-center">
+                <Skeleton width={100} height={44} />
+                <Skeleton width={160} height={20} sx={{ mt: 1 }} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            {heroContent.badge && (
+              <span className="inline-block bg-red-50 text-bb-red border border-red-100 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4">
+                {heroContent.badge}
+              </span>
+            )}
+            <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-6">
+              {heroContent.title} <span className="text-primary">{heroContent.titleHighlight}</span>
+            </h1>
+
+            <p className="text-xl md:text-2xl text-gray-500 mb-10 max-w-4xl mx-auto leading-relaxed">
+              {heroContent.description}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {/* Primary CTA */}
+              <button
+                onClick={openRanking}
+                className="w-full sm:w-auto bg-primary text-white px-8 py-3 rounded-lg font-semibold"
+              >
+                {heroContent.primaryCtaText}
+              </button>
+
+              {/* Link-style CTA */}
+              <button
+                onClick={openMatch}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 text-black font-semibold underline-offset-4 hover:underline"
+              >
+                {heroContent.secondaryCtaText}
+                <span aria-hidden>→</span>
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 max-w-4xl mx-auto divide-y sm:divide-y-0 sm:divide-x divide-gray-200">
+              <Stat value={heroContent.stat1Value || "600,000+"} label={heroContent.stat1Label || "Businesses reached"} />
+              <Stat value={heroContent.stat2Value || "$50.7 Billion"} label={heroContent.stat2Label || "Fastest-growing digital category"} />
+              <Stat value={heroContent.stat3Value || "94%"} label={heroContent.stat3Label || "Audited identity issues fixed"} />
+            </div>
+          </>
         )}
-        <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-6">
-          {heroContent.title} <span className="text-primary">{heroContent.titleHighlight}</span>
-        </h1>
-
-        <p className="text-xl md:text-2xl text-gray-500 mb-10 max-w-4xl mx-auto leading-relaxed">
-          {heroContent.description}
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {/* Primary CTA */}
-          <button
-            onClick={openRanking}
-            className="w-full sm:w-auto bg-primary text-white px-8 py-3 rounded-lg font-semibold"
-          >
-            {heroContent.primaryCtaText}
-          </button>
-
-          {/* Link-style CTA */}
-          <button
-            onClick={openMatch}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 text-black font-semibold underline-offset-4 hover:underline"
-          >
-            {heroContent.secondaryCtaText}
-            <span aria-hidden>→</span>
-          </button>
-        </div>
-
-        {/* Stats */}
-        <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 max-w-4xl mx-auto divide-y sm:divide-y-0 sm:divide-x divide-gray-200">
-          <Stat value={heroContent.stat1Value || "600,000+"} label={heroContent.stat1Label || "Businesses reached"} />
-          <Stat value={heroContent.stat2Value || "$50.7 Billion"} label={heroContent.stat2Label || "Fastest-growing digital category"} />
-          <Stat value={heroContent.stat3Value || "94%"} label={heroContent.stat3Label || "Audited identity issues fixed"} />
-        </div>
       </div>
 
       {/* FLOW SWITCH */}
