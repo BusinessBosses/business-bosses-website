@@ -5,8 +5,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
+import { MagazinePageCtaContent } from "../../../../../lib/site-content";
+
 interface MagazineCtaBannerProps {
   onGetFeatured: () => void;
+  content?: MagazinePageCtaContent;
 }
 
 const FEATURE_POINTS = [
@@ -15,20 +18,28 @@ const FEATURE_POINTS = [
   { num: "03", title: "Founder's Playbook", desc: "Share a practical lesson other business owners can put to work." },
 ];
 
-export default function MagazineCtaBanner({ onGetFeatured }: MagazineCtaBannerProps) {
+export default function MagazineCtaBanner({ onGetFeatured, content }: MagazineCtaBannerProps) {
+  const badge = content?.badge || "GET FEATURED";
+  const title = content?.title || "Tell your story in the next issue";
+  const description =
+    content?.description ||
+    "Founder profiles, The Next Big Idea and Founder’s Playbook. For visionary leaders and bold builders.";
+  const btnText = content?.btnText || "Get featured";
+  const tagline = content?.tagline || "Free to apply • Selected by our editors";
+
   return (
     <Box sx={{ py: 10, backgroundColor: "#0B0F19", color: "#FFFFFF" }}>
       <Container maxWidth="lg">
         <Grid container spacing={6} alignItems="center">
           <Grid item xs={12} md={6}>
             <Typography sx={{ color: "#E11D48", fontWeight: 800, fontSize: "12px", letterSpacing: "1.5px", mb: 1 }}>
-              GET FEATURED
+              {badge}
             </Typography>
             <Typography variant="h2" sx={{ fontWeight: 900, fontSize: { xs: "32px", md: "44px" }, mb: 2, lineHeight: 1.1 }}>
-              Tell your story in the next issue
+              {title}
             </Typography>
             <Typography sx={{ fontSize: "16px", color: "#94A3B8", mb: 4, lineHeight: 1.6 }}>
-              Founder profiles, The Next Big Idea and Founder’s Playbook. For visionary leaders and bold builders.
+              {description}
             </Typography>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 3, flexWrap: "wrap" }}>
@@ -46,10 +57,10 @@ export default function MagazineCtaBanner({ onGetFeatured }: MagazineCtaBannerPr
                   "&:hover": { backgroundColor: "#BE123C" },
                 }}
               >
-                Get featured
+                {btnText}
               </Button>
               <Typography sx={{ fontSize: "13px", color: "#64748B" }}>
-                Free to apply • Selected by our editors
+                {tagline}
               </Typography>
             </Box>
           </Grid>

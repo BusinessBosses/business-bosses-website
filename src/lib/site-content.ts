@@ -66,6 +66,28 @@ export interface WebsiteMagazineContent {
   contactLink?: string;
 }
 
+export interface MagazinePageHeaderContent {
+  badge?: string;
+  title?: string;
+  description?: string;
+  readBtnText?: string;
+  featuredBtnText?: string;
+  tagline?: string;
+}
+
+export interface MagazinePageCtaContent {
+  badge?: string;
+  title?: string;
+  description?: string;
+  btnText?: string;
+  tagline?: string;
+}
+
+export interface WebsiteMagazinePageContent {
+  header?: MagazinePageHeaderContent;
+  ctaBanner?: MagazinePageCtaContent;
+}
+
 export interface FaqItem {
   question: string;
   answer: string;
@@ -185,6 +207,23 @@ export const BB_CONTENT_DEFAULTS: Record<string, any> = {
     allIssuesLink: "https://businessbosses.news",
     contactText: "Want to be featured? Get in touch",
     contactLink: "mailto:support@businessbosses.org",
+  },
+  bb_website_magazine_page: {
+    header: {
+      badge: "BUSINESS BOSSES MAGAZINE",
+      title: "Stories from the people building what’s next",
+      description: "A free monthly digital magazine for visionary leaders and bold builders. Founder stories, big ideas and practical lessons you can use in your business.",
+      readBtnText: "Read the latest issue",
+      featuredBtnText: "Get featured",
+      tagline: "Free to read • New issue every month • Read on any device",
+    },
+    ctaBanner: {
+      badge: "GET FEATURED",
+      title: "Tell your story in the next issue",
+      description: "Founder profiles, The Next Big Idea and Founder’s Playbook. For visionary leaders and bold builders.",
+      btnText: "Get featured",
+      tagline: "Free to apply • Selected by our editors",
+    },
   },
   bb_website_faq: {
     title: "Frequently Asked Questions",

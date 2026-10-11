@@ -21,10 +21,15 @@ interface MagazineIssue {
   publish_date: string;
 }
 
+import { ServerUrl } from "../../../../config/config";
+import { withDefaults, WebsiteMagazinePageContent } from "../../../../lib/site-content";
+
 export default function MagazineHero() {
   const router = useRouter();
   const [magazines, setMagazines] = React.useState<MagazineIssue[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [cmsContent, setCmsContent] = React.useState<Record<string, any>>({});
+  const [cmsLoading, setCmsLoading] = React.useState(true);
 
   React.useEffect(() => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://orca-app-5dg8w.ondigitalocean.app/api/v1";
@@ -40,7 +45,26 @@ export default function MagazineHero() {
         console.error("Error fetching magazines:", err);
         setLoading(false);
       });
+
+    fetch(`${ServerUrl}/ai-visibility/landing-content`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && data?.data) {
+          setCmsContent(data.data);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching magazine cms content:", err);
+      })
+      .finally(() => {
+        setCmsLoading(false);
+      });
   }, []);
+
+  const magazinePageContent = withDefaults<WebsiteMagazinePageContent>(
+    "bb_website_magazine_page",
+    cmsContent.bb_website_magazine_page
+  );
 
   const latestIssue = magazines.length > 0 ? magazines[0] : null;
 
@@ -57,6 +81,8 @@ export default function MagazineHero() {
           }
         }}
         onGetFeatured={() => router.push(RoutesPath.applyFeatured)}
+        content={magazinePageContent.header}
+        loading={cmsLoading}
       />
 
       {/* 2. Five Sections Highlight */}
@@ -69,7 +95,10 @@ export default function MagazineHero() {
       <MagazineArchive magazines={magazines} loading={loading} />
 
       {/* 5. Bottom Dark CTA Banner */}
-      <MagazineCtaBanner onGetFeatured={() => router.push(RoutesPath.applyFeatured)} />
+      <MagazineCtaBanner
+        onGetFeatured={() => router.push(RoutesPath.applyFeatured)}
+        content={magazinePageContent.ctaBanner}
+      />
 
       {/* Footer */}
       <Footer />
