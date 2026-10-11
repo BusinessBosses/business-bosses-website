@@ -49,7 +49,6 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
 
   return (
     <AppBar
-      className="hidden md:block"
       position="relative"
       sx={{
         boxShadow: 0,
@@ -77,8 +76,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               className="w-10 h-10 my-3 cursor-pointer"
               alt=""
               onClick={() => {
-                // dispatch(onChangeRoute(0));
-                // router.push(RoutesPath.home);
+                router.push(RoutesPath.index);
               }}
             />
             <Typography

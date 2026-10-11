@@ -134,8 +134,8 @@ export default function Footer({ content }: { content?: Partial<WebsiteFooterCon
             <Link
               color="white"
               variant="body2"
-              href="https://businessbosses.news"
-              style={{ opacity: 0.5 }}
+              onClick={() => router.push(RoutesPath.news)}
+              sx={{ opacity: 0.5, cursor: "pointer" }}
             >
               News
             </Link>
