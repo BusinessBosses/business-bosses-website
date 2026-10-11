@@ -7,7 +7,7 @@ import getLPTheme from "./getLPTheme";
 import NewsHero from "./views/components/NewsHero";
 
 export default function NewsPage() {
-  const [mode] = React.useState<PaletteMode>("dark");
+  const [mode] = React.useState<PaletteMode>("light");
   const [showCustomTheme] = React.useState(true);
 
   const LPtheme = React.useMemo(() => createTheme(getLPTheme(mode)), [mode]);

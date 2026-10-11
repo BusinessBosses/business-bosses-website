@@ -54,7 +54,8 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
         boxShadow: 0,
         bgcolor: "transparent",
         backgroundImage: "none",
-        mt: 2,
+        pt: { xs: 1, md: 1.5 },
+        pb: 1,
       }}
     >
       <Container maxWidth="lg">

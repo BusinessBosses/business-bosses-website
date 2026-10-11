@@ -7,7 +7,7 @@ import getLPTheme from "./getLPTheme";
 import MagazineHero from "./views/components/MagazineHero";
 
 export default function MagazinePage() {
-  const [mode] = React.useState<PaletteMode>("dark");
+  const [mode] = React.useState<PaletteMode>("light");
   const [showCustomTheme] = React.useState(true);
 
   const LPtheme = React.useMemo(() => createTheme(getLPTheme(mode)), [mode]);
