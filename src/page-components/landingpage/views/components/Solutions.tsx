@@ -235,12 +235,16 @@ import {
   WebsiteSolutionsContent,
 } from "../../../../lib/site-content";
 
+import Skeleton from "@mui/material/Skeleton";
+
 export default function Solutions({
   howItWorksContent: liveHowItWorks,
   solutionsContent: liveSolutions,
+  loading = false,
 }: {
   howItWorksContent?: Partial<WebsiteHowItWorksContent>;
   solutionsContent?: Partial<WebsiteSolutionsContent>;
+  loading?: boolean;
 }) {
   const howItWorks = withDefaults<WebsiteHowItWorksContent>("bb_website_how_it_works", liveHowItWorks);
   const solutions = withDefaults<WebsiteSolutionsContent>("bb_website_solutions", liveSolutions);
@@ -270,59 +274,98 @@ export default function Solutions({
       {/* How It Works */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            {howItWorks.badge && (
-              <span className="inline-block bg-red-50 text-bb-red border border-red-100 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4">
-                {howItWorks.badge}
-              </span>
+          <div className="text-center mb-16 flex flex-col items-center">
+            {loading ? (
+              <>
+                <Skeleton variant="rounded" width={140} height={24} sx={{ mb: 2, borderRadius: "9999px" }} />
+                <Skeleton width="40%" height={40} />
+              </>
+            ) : (
+              <>
+                {howItWorks.badge && (
+                  <span className="inline-block bg-red-50 text-bb-red border border-red-100 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4">
+                    {howItWorks.badge}
+                  </span>
+                )}
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  {howItWorks.title}
+                </h2>
+              </>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              {howItWorks.title}
-            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {(howItWorks.steps || []).map((step, idx) => (
-              <Step
-                key={step.n || idx + 1}
-                n={step.n || idx + 1}
-                title={step.title}
-                description={step.description}
-              />
-            ))}
+            {loading ? (
+              [1, 2, 3, 4].map((n) => (
+                <div key={n} className="flex flex-col">
+                  <Skeleton width={40} height={28} sx={{ mb: 1 }} />
+                  <Skeleton width="80%" height={28} sx={{ mb: 1 }} />
+                  <Skeleton width="100%" height={18} />
+                  <Skeleton width="90%" height={18} />
+                </div>
+              ))
+            ) : (
+              (howItWorks.steps || []).map((step, idx) => (
+                <Step
+                  key={step.n || idx + 1}
+                  n={step.n || idx + 1}
+                  title={step.title}
+                  description={step.description}
+                />
+              ))
+            )}
           </div>
-
         </div>
       </section>
 
       {/* Solutions Cards */}
       <section className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            {solutions.badge && (
-              <span className="inline-block bg-red-50 text-bb-red border border-red-100 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4">
-                {solutions.badge}
-              </span>
+          <div className="text-center mb-16 flex flex-col items-center">
+            {loading ? (
+              <>
+                <Skeleton variant="rounded" width={140} height={24} sx={{ mb: 2, borderRadius: "9999px" }} />
+                <Skeleton width="45%" height={40} />
+              </>
+            ) : (
+              <>
+                {solutions.badge && (
+                  <span className="inline-block bg-red-50 text-bb-red border border-red-100 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4">
+                    {solutions.badge}
+                  </span>
+                )}
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  {solutions.title}
+                </h2>
+              </>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              {solutions.title}
-            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {(solutions.cards || []).map((card, idx) => (
-              <Card
-                key={idx}
-                badge={card.badge}
-                iconBg="bg-primary text-white"
-                title={card.title}
-                description={card.description}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                  <path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </Card>
-            ))}
+            {loading ? (
+              [1, 2, 3, 4, 5, 6].map((idx) => (
+                <div key={idx} className="bg-white rounded-2xl p-6 border border-gray-100 flex flex-col gap-3">
+                  <Skeleton variant="rounded" width={48} height={48} sx={{ borderRadius: "12px" }} />
+                  <Skeleton width="60%" height={28} />
+                  <Skeleton width="100%" height={20} />
+                  <Skeleton width="85%" height={20} />
+                </div>
+              ))
+            ) : (
+              (solutions.cards || []).map((card, idx) => (
+                <Card
+                  key={idx}
+                  badge={card.badge}
+                  iconBg="bg-primary text-white"
+                  title={card.title}
+                  description={card.description}
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                    <path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </Card>
+              ))
+            )}
           </div>
 
           {/* Find Business Match Link - under all cards */}

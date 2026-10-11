@@ -106,6 +106,7 @@ export default function LandingPageforPartners() {
           <HowItWorks
             onBecomePartner={() => setIsPartnerModalOpen(true)}
             content={partnersContent}
+            loading={loading}
           />
         </div>
         <div

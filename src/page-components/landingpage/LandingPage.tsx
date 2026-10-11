@@ -71,6 +71,7 @@ export default function LandingPage() {
       <Solutions
         howItWorksContent={cmsContent.bb_website_how_it_works}
         solutionsContent={cmsContent.bb_website_solutions}
+        loading={loading}
       />
       <MagazineSection content={cmsContent.bb_website_magazine} loading={loading} />
       <Box sx={{ bgcolor: "background.default" }}>
@@ -84,9 +85,9 @@ export default function LandingPage() {
           ref={reviewsRef}
           className={`slide-up ${reviewsInView ? "visible" : ""}`}
         >
-          <Reviews content={cmsContent.bb_website_reviews} />
+          <Reviews content={cmsContent.bb_website_reviews} loading={loading} />
         </div>
-        <FAQ content={cmsContent.bb_website_faq} />
+        <FAQ content={cmsContent.bb_website_faq} loading={loading} />
         <Footer content={cmsContent.bb_website_footer} />
       </Box>
     </ThemeProvider>

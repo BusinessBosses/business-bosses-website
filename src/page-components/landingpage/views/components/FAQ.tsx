@@ -9,10 +9,17 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Skeleton from "@mui/material/Skeleton";
 
 import { withDefaults, WebsiteFaqContent } from "../../../../lib/site-content";
 
-export default function FAQ({ content }: { content?: Partial<WebsiteFaqContent> }) {
+export default function FAQ({
+  content,
+  loading = false,
+}: {
+  content?: Partial<WebsiteFaqContent>;
+  loading?: boolean;
+}) {
   const faqContent = withDefaults<WebsiteFaqContent>("bb_website_faq", content);
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
@@ -55,35 +62,43 @@ export default function FAQ({ content }: { content?: Partial<WebsiteFaqContent> 
           {faqContent.title || "Frequently Asked Questions"}
         </Typography>
         <Box sx={{ width: "100%" }}>
-          {(faqContent.items || []).map((item, index) => {
-            const panelId = `panel${index + 1}`;
-            return (
-              <Accordion
-                key={index}
-                expanded={expanded === panelId}
-                onChange={handleChange(panelId)}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls={`${panelId}d-content`}
-                  id={`${panelId}d-header`}
+          {loading ? (
+            [1, 2, 3, 4].map((idx) => (
+              <Box key={idx} sx={{ p: 2, mb: 2, bgcolor: "#f8fafc", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
+                <Skeleton width="60%" height={26} />
+              </Box>
+            ))
+          ) : (
+            (faqContent.items || []).map((item, index) => {
+              const panelId = `panel${index + 1}`;
+              return (
+                <Accordion
+                  key={index}
+                  expanded={expanded === panelId}
+                  onChange={handleChange(panelId)}
                 >
-                  <Typography component="h3" variant="subtitle2">
-                    {item.question}
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    variant="body2"
-                    gutterBottom
-                    sx={{ maxWidth: { sm: "100%", md: "70%" }, whiteSpace: "pre-line" }}
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`${panelId}d-content`}
+                    id={`${panelId}d-header`}
                   >
-                    {item.answer}
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-            );
-          })}
+                    <Typography component="h3" variant="subtitle2">
+                      {item.question}
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ maxWidth: { sm: "100%", md: "70%" }, whiteSpace: "pre-line" }}
+                    >
+                      {item.answer}
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+              );
+            })
+          )}
         </Box>
       </Container>
     </Box>

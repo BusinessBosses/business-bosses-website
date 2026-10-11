@@ -26,6 +26,8 @@ const items = [
   },
 ];
 
+import Skeleton from "@mui/material/Skeleton";
+
 const HowItWorks: React.FC<{
   onBecomePartner?: () => void;
   content?: {
@@ -33,7 +35,8 @@ const HowItWorks: React.FC<{
     howItWorksItems?: Array<{ icon?: string; title: string; description: string }>;
     ctaText?: string;
   };
-}> = ({ onBecomePartner, content }) => {
+  loading?: boolean;
+}> = ({ onBecomePartner, content, loading = false }) => {
   const router = useRouter();
   const title = content?.howItWorksTitle || "How It Works";
   const ctaText = content?.ctaText || "Become A Partner";
@@ -87,39 +90,68 @@ const HowItWorks: React.FC<{
           </Typography>
         </Box>
         <Grid container spacing={2.5}>
-          {cardItems.map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Stack
-                direction="column"
-                component={Card}
-                spacing={1}
-                useFlexGap
-                alignItems="center"
-                sx={{
-                  color: "inherit",
-                  p: 3,
-                  height: "100%",
-                  border: "0px solid",
-                  background: "transparent",
-                  backgroundColor: "transparent",
-                  boxShadow: "none",
-                }}
-              >
-                <img src={item.icon} width="150" height="150" alt={item.title} />
-                <div style={{ textAlign: "center" }}>
-                  <Typography
-                    gutterBottom
-                    sx={{ fontWeight: "bold", color: "#232324" }}
-                  >
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: "grey" }}>
-                    {item.description}
-                  </Typography>
-                </div>
-              </Stack>
-            </Grid>
-          ))}
+          {loading ? (
+            [1, 2, 3].map((idx) => (
+              <Grid item xs={12} sm={6} md={4} key={idx}>
+                <Stack
+                  direction="column"
+                  component={Card}
+                  spacing={2}
+                  useFlexGap
+                  alignItems="center"
+                  sx={{
+                    p: 3,
+                    height: "100%",
+                    border: "0px solid",
+                    background: "transparent",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                  }}
+                >
+                  <Skeleton variant="circular" width={120} height={120} />
+                  <div style={{ textAlign: "center", width: "100%" }}>
+                    <Skeleton width="60%" height={26} sx={{ mx: "auto", mb: 1 }} />
+                    <Skeleton width="90%" height={18} sx={{ mx: "auto" }} />
+                    <Skeleton width="75%" height={18} sx={{ mx: "auto" }} />
+                  </div>
+                </Stack>
+              </Grid>
+            ))
+          ) : (
+            cardItems.map((item, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Stack
+                  direction="column"
+                  component={Card}
+                  spacing={1}
+                  useFlexGap
+                  alignItems="center"
+                  sx={{
+                    color: "inherit",
+                    p: 3,
+                    height: "100%",
+                    border: "0px solid",
+                    background: "transparent",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                  }}
+                >
+                  <img src={item.icon} width="150" height="150" alt={item.title} />
+                  <div style={{ textAlign: "center" }}>
+                    <Typography
+                      gutterBottom
+                      sx={{ fontWeight: "bold", color: "#232324" }}
+                    >
+                      {item.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: "grey" }}>
+                      {item.description}
+                    </Typography>
+                  </div>
+                </Stack>
+              </Grid>
+            ))
+          )}
         </Grid>
         <div
           className="px-5 pt-2 "

@@ -24,8 +24,15 @@ const items = [
 ];
 
 import { withDefaults, WebsiteReviewsContent } from "../../../../lib/site-content";
+import Skeleton from "@mui/material/Skeleton";
 
-export default function Reviews({ content }: { content?: Partial<WebsiteReviewsContent> }) {
+export default function Reviews({
+  content,
+  loading = false,
+}: {
+  content?: Partial<WebsiteReviewsContent>;
+  loading?: boolean;
+}) {
   const reviewsContent = withDefaults<WebsiteReviewsContent>("bb_website_reviews", content);
 
   return (
@@ -78,50 +85,60 @@ export default function Reviews({ content }: { content?: Partial<WebsiteReviewsC
           </Typography>
         </Box>
 
-        <Stack
-          direction="row"
-          component={Card}
-          spacing={1}
-          useFlexGap
-          sx={{
-            color: "inherit",
-            p: 3,
-            width: "100%",
-            height: "100%",
-            border: "1px solid",
-            borderColor: "#fff",
-            background: "transparent",
-            backgroundColor: "#ffffff",
-            boxShadow: "none",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Assets.Quoteicon style={{ width: "40px", height: "40px" }} />
-          <div style={{ alignItems: "center", justifyContent: "center" }}>
-            <Typography
-              variant="body2"
-              sx={{
-                color: "grey",
-                px: {
-                  xs: 4,
-                  sm: 4,
-                  justifyContent: "center",
-                  textAlign: "center",
-                },
-              }}
-            >
-              {reviewsContent.reviewText}
-            </Typography>
-          </div>
-          <Assets.Quoteicon
-            style={{
-              width: "40px",
-              height: "40px",
-              transform: "scaleX(-1) scaleY(-1)",
+        {loading ? (
+          <Box sx={{ width: "100%", display: "flex", justifyContent: "center", p: 4, bgcolor: "#ffffff", borderRadius: "16px" }}>
+            <div style={{ width: "80%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <Skeleton width="100%" height={24} sx={{ mb: 1 }} />
+              <Skeleton width="80%" height={24} sx={{ mb: 1 }} />
+              <Skeleton width="50%" height={24} />
+            </div>
+          </Box>
+        ) : (
+          <Stack
+            direction="row"
+            component={Card}
+            spacing={1}
+            useFlexGap
+            sx={{
+              color: "inherit",
+              p: 3,
+              width: "100%",
+              height: "100%",
+              border: "1px solid",
+              borderColor: "#fff",
+              background: "transparent",
+              backgroundColor: "#ffffff",
+              boxShadow: "none",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-          />
-        </Stack>
+          >
+            <Assets.Quoteicon style={{ width: "40px", height: "40px" }} />
+            <div style={{ alignItems: "center", justifyContent: "center" }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "grey",
+                  px: {
+                    xs: 4,
+                    sm: 4,
+                    justifyContent: "center",
+                    textAlign: "center",
+                  },
+                }}
+              >
+                {reviewsContent.reviewText}
+              </Typography>
+            </div>
+            <Assets.Quoteicon
+              style={{
+                width: "40px",
+                height: "40px",
+                transform: "scaleX(-1) scaleY(-1)",
+              }}
+            />
+          </Stack>
+        )}
       </Container>
     </Box>
   );
