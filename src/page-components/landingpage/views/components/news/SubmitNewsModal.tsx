@@ -139,16 +139,6 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
               </Box>
             )}
 
-            {!memberImageUrl && (
-              <TextField
-                size="small"
-                fullWidth
-                value={memberImageUrl}
-                onChange={(e) => setMemberImageUrl(e.target.value)}
-                placeholder="Or paste direct image URL (https://...)"
-                sx={{ mt: 1 }}
-              />
-            )}
           </Box>
           <TextField
             label="News Summary / Story *"
