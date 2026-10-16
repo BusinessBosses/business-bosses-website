@@ -180,22 +180,25 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
           borderRadius: "24px",
           boxShadow: "0 25px 60px -15px rgba(15, 23, 42, 0.3)",
           bgcolor: "#FFFFFF",
+          maxHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
           overflow: "hidden",
-          maxHeight: "92vh",
         },
       }}
     >
-      {/* Header */}
+      {/* Header (Fixed) */}
       <Box
         sx={{
           px: { xs: 3, md: 5 },
-          pt: 4,
-          pb: 3,
+          pt: 3.5,
+          pb: 2.5,
           display: "flex",
           alignItems: "flex-start",
           justifyContent: "space-between",
           borderBottom: "1px solid #F1F5F9",
           bgcolor: "#FFFFFF",
+          flexShrink: 0,
         }}
       >
         <Box>
@@ -224,9 +227,9 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
         </IconButton>
       </Box>
 
-      {/* Form Content */}
-      <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column" }}>
-        <Box sx={{ px: { xs: 3, md: 5 }, py: 3.5, display: "flex", flexDirection: "column", gap: 3, overflowY: "auto" }}>
+      {/* Form Content (Scrollable Body) */}
+      <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0, overflow: "hidden" }}>
+        <Box sx={{ px: { xs: 3, md: 5 }, py: 3.5, display: "flex", flexDirection: "column", gap: 3, overflowY: "auto", flex: 1 }}>
           {errorMessage && (
             <Alert severity="error" sx={{ borderRadius: "14px", fontSize: "13px", fontWeight: 600 }}>
               {errorMessage}
@@ -563,7 +566,7 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
           </Box>
         </Box>
 
-        {/* Modal Actions */}
+        {/* Modal Actions (Fixed Bottom) */}
         <Box
           sx={{
             px: { xs: 3, md: 5 },
@@ -573,6 +576,7 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            flexShrink: 0,
           }}
         >
           <Typography sx={{ fontSize: "12px", color: "#64748B", fontWeight: 500 }}>
