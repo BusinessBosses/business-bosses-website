@@ -114,7 +114,7 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
           onClick={() => setSelectedArticle(featuredArticle)}
         >
           <Grid container alignItems="stretch">
-            <Grid item xs={12} md={7} sx={{ position: "relative", bgcolor: "#FFF1F2", minHeight: "320px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Grid item xs={12} md={7} sx={{ position: "relative", bgcolor: "#F8FAFC", minHeight: "320px", display: "flex", alignItems: "center", justifyContent: "center", p: { xs: 2, md: 3 } }}>
               {getValidImageUrl(featuredArticle.image_url) ? (
                 <img
                   src={getValidImageUrl(featuredArticle.image_url)}
@@ -123,12 +123,13 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
                     e.currentTarget.style.display = "none";
                   }}
                   style={{
-                    width: "100%",
-                    height: "100%",
-                    minHeight: "320px",
-                    maxHeight: "420px",
-                    objectFit: "cover",
+                    maxWidth: "100%",
+                    maxHeight: "440px",
+                    width: "auto",
+                    height: "auto",
+                    objectFit: "contain",
                     display: "block",
+                    borderRadius: "12px",
                   }}
                 />
               ) : (
@@ -375,9 +376,12 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
               <Box
                 sx={{
                   width: "100%",
-                  maxHeight: { xs: "240px", md: "380px" },
+                  maxHeight: { xs: "260px", md: "400px" },
                   overflow: "hidden",
                   bgcolor: "#0F172A",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <img
@@ -387,10 +391,11 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
                     e.currentTarget.style.display = "none";
                   }}
                   style={{
-                    width: "100%",
-                    height: "100%",
-                    maxHeight: "380px",
-                    objectFit: "cover",
+                    maxWidth: "100%",
+                    maxHeight: "400px",
+                    width: "auto",
+                    height: "auto",
+                    objectFit: "contain",
                     display: "block",
                   }}
                 />
