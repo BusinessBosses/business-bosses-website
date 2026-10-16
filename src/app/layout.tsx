@@ -5,7 +5,10 @@ import '../index.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Business Bosses',
+  title: {
+    default: 'Business Bosses - Social Entrepreneur Community',
+    template: '%s | Business Bosses',
+  },
   description: 'Social Entrepreneur Community - Grow and Promote your Business.',
 }
 

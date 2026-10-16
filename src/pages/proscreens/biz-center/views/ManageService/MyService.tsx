@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { ChevronLeft } from "@mui/icons-material";
 import { FiCrosshair, FiFilter, FiPlusCircle, FiSearch } from "react-icons/fi";
+import Head from "next/head";
 import ServiceCard from "../../../../../page-components/proscreens/biz-center/components/servicecard";
 import CreateService from "../../../../../components/proscreens/ManageService/CreateService";
 import ProCustomButton from "../../../../../page-components/proscreens/biz-center/components/procustombutton";
@@ -79,6 +80,9 @@ const MyService: React.FC = () => {
 
   return (
     <div className="min-h-screen scrollbar-hidden flex flex-col border border-backgroundcolor rounded-xl">
+      <Head>
+        <title>Manage Services | Business Bosses BizCenter</title>
+      </Head>
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
