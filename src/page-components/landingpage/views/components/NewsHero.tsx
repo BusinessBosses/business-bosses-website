@@ -63,7 +63,7 @@ export default function NewsHero() {
     return item.category?.toLowerCase() === selectedFilter.toLowerCase();
   });
 
-  const handleMemberSubmit = async (data: { author: string; title: string; imageUrl: string; summary: string }) => {
+  const handleMemberSubmit = async (data: { author: string; title: string; imageUrl: string; summary: string; content?: string }) => {
     setSubmitting(true);
     try {
       const res = await fetch("https://orca-app-5dg8w.ondigitalocean.app/api/v1/news", {
@@ -74,6 +74,7 @@ export default function NewsHero() {
           author_name: data.author || "Verified Member",
           image_url: data.imageUrl,
           summary: data.summary,
+          content: data.content || data.summary,
           category: "Member news",
           is_member_news: true,
           author_verified: true,

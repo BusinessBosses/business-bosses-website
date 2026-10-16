@@ -513,18 +513,45 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
                 </Box>
               )}
 
-              {/* Full Content */}
-              <Typography
-                sx={{
-                  fontSize: "16px",
-                  lineHeight: 1.85,
-                  color: "#334155",
-                  whiteSpace: "pre-line",
-                  mb: 4,
-                }}
-              >
-                {selectedArticle.content || selectedArticle.summary}
-              </Typography>
+              {/* Full Content (Rich Text HTML or Plain Text) */}
+              {selectedArticle.content && /<[a-z][\s\S]*>/i.test(selectedArticle.content) ? (
+                <Box
+                  sx={{
+                    fontSize: "16px",
+                    lineHeight: 1.85,
+                    color: "#334155",
+                    mb: 4,
+                    "& p": { mb: 2 },
+                    "& h2, & h3, & h4": { color: "#0F172A", fontWeight: 800, mt: 3, mb: 1.5 },
+                    "& ul, & ol": { pl: 3, mb: 2 },
+                    "& li": { mb: 0.5 },
+                    "& blockquote": {
+                      borderLeft: "4px solid #E11D48",
+                      pl: 2,
+                      py: 0.5,
+                      my: 2,
+                      fontStyle: "italic",
+                      bgcolor: "#F8FAFC",
+                      borderRadius: "0 8px 8px 0",
+                    },
+                    "& a": { color: "#E11D48", textDecoration: "underline", fontWeight: 600 },
+                    "& strong": { color: "#0F172A", fontWeight: 800 },
+                  }}
+                  dangerouslySetInnerHTML={{ __html: selectedArticle.content }}
+                />
+              ) : (
+                <Typography
+                  sx={{
+                    fontSize: "16px",
+                    lineHeight: 1.85,
+                    color: "#334155",
+                    whiteSpace: "pre-line",
+                    mb: 4,
+                  }}
+                >
+                  {selectedArticle.content || selectedArticle.summary}
+                </Typography>
+              )}
 
               {/* Author / Source signature footer */}
               <Box
