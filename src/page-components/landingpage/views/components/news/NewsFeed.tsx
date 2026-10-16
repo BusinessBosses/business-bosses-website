@@ -114,7 +114,20 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
           onClick={() => setSelectedArticle(featuredArticle)}
         >
           <Grid container alignItems="stretch">
-            <Grid item xs={12} md={7} sx={{ position: "relative", bgcolor: "#F8FAFC", minHeight: "320px", display: "flex", alignItems: "center", justifyContent: "center", p: { xs: 2, md: 3 } }}>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{
+                position: "relative",
+                bgcolor: getValidImageUrl(featuredArticle.image_url) ? "#F8FAFC" : "#FFF1F2",
+                minHeight: { xs: "260px", md: "340px" },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "hidden",
+              }}
+            >
               {getValidImageUrl(featuredArticle.image_url) ? (
                 <img
                   src={getValidImageUrl(featuredArticle.image_url)}
@@ -123,29 +136,27 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
                     e.currentTarget.style.display = "none";
                   }}
                   style={{
-                    maxWidth: "100%",
-                    maxHeight: "440px",
-                    width: "auto",
-                    height: "auto",
-                    objectFit: "contain",
+                    width: "100%",
+                    height: "100%",
+                    minHeight: "340px",
+                    objectFit: "cover",
                     display: "block",
-                    borderRadius: "12px",
                   }}
                 />
               ) : (
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1.5, color: "#E11D48", p: 4, textAlign: "center" }}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1.5, color: "#DC2626", p: 4, textAlign: "center" }}>
+                  <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                     <circle cx="8.5" cy="8.5" r="1.5"/>
                     <polyline points="21 15 16 10 5 21"/>
                   </svg>
-                  <Typography sx={{ fontWeight: 700, fontSize: "14px", color: "#E11D48" }}>
+                  <Typography sx={{ fontWeight: 800, fontSize: "15px", color: "#B91C1C" }}>
                     Add news image
                   </Typography>
                 </Box>
               )}
             </Grid>
-            <Grid item xs={12} md={5} sx={{ p: { xs: 4, md: 6 }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <Grid item xs={12} md={6} sx={{ p: { xs: 4, md: 5 }, display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <Box sx={{ display: "flex", gap: 1, mb: 2, alignItems: "center", flexWrap: "wrap" }}>
                 <Chip
                   label="FEATURED"
