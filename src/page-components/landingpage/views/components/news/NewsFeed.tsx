@@ -34,18 +34,16 @@ interface NewsFeedProps {
   loading?: boolean;
 }
 
-const DEFAULT_NEWS_IMAGE = "https://f005.backblazeb2.com/file/business-bosses-alt/uploads/1790681821114-dcaa8856f97ce667.png";
-
 export default function NewsFeed({ featuredArticle, latestArticles, loading = false }: NewsFeedProps) {
   const [selectedArticle, setSelectedArticle] = React.useState<NewsArticle | null>(null);
   const [visibleCount, setVisibleCount] = React.useState<number>(6);
 
   const getValidImageUrl = (url?: string) => {
-    if (!url) return "";
-    if (url.includes("prodatar.com/report") || (!url.match(/\.(jpeg|jpg|gif|png|webp|svg)(\?.*)?$/i) && !url.includes("backblaze") && !url.includes("cloudinary") && !url.includes("unsplash") && !url.includes("upload.php"))) {
-      return "";
-    }
-    return url;
+    if (!url || typeof url !== "string") return "";
+    const trimmed = url.trim();
+    if (!trimmed || trimmed === "null" || trimmed === "undefined") return "";
+    if (trimmed.includes("prodatar.com/report")) return "";
+    return trimmed;
   };
 
   const getPlaceholderBg = (category?: string) => {
@@ -121,8 +119,7 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
                   src={getValidImageUrl(featuredArticle.image_url)}
                   alt={featuredArticle.title}
                   onError={(e: any) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = DEFAULT_NEWS_IMAGE;
+                    e.currentTarget.style.display = "none";
                   }}
                   style={{
                     width: "100%",
@@ -386,8 +383,7 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
                   src={getValidImageUrl(selectedArticle.image_url)}
                   alt={selectedArticle.title}
                   onError={(e: any) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = DEFAULT_NEWS_IMAGE;
+                    e.currentTarget.style.display = "none";
                   }}
                   style={{
                     width: "100%",
