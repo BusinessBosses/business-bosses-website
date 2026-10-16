@@ -13,6 +13,7 @@ import { NewsArticle } from "./NewsFeed";
 interface MemberNewsSectionProps {
   memberArticles: NewsArticle[];
   onSubmitModalOpen: () => void;
+  onSelectArticle?: (article: NewsArticle) => void;
   loading?: boolean;
 }
 
@@ -23,7 +24,7 @@ const RULES = [
   "Reviewed by our team before it goes live",
 ];
 
-export default function MemberNewsSection({ memberArticles, onSubmitModalOpen, loading = false }: MemberNewsSectionProps) {
+export default function MemberNewsSection({ memberArticles, onSubmitModalOpen, onSelectArticle, loading = false }: MemberNewsSectionProps) {
   return (
     <Container maxWidth="lg">
       <Box sx={{ pt: 6, borderTop: "1px solid #E2E8F0" }}>
@@ -77,12 +78,41 @@ export default function MemberNewsSection({ memberArticles, onSubmitModalOpen, l
                       alignItems: "center",
                     }}
                   >
-                    <CardMedia
-                      component="img"
-                      image={memberPost.image_url}
-                      alt=""
-                      sx={{ width: "120px", height: "100px", borderRadius: "10px", objectFit: "cover" }}
-                    />
+                    {memberPost.image_url ? (
+                      <CardMedia
+                        component="img"
+                        image={memberPost.image_url}
+                        alt=""
+                        sx={{ width: "120px", height: "100px", borderRadius: "10px", objectFit: "cover" }}
+                      />
+                    ) : (
+                      <Box
+                        sx={{
+                          width: "120px",
+                          height: "100px",
+                          borderRadius: "10px",
+                          bgcolor: "#FFEDD5",
+                          color: "#EA580C",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 0.5,
+                          flexShrink: 0,
+                          p: 1,
+                          textAlign: "center",
+                        }}
+                      >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                          <circle cx="8.5" cy="8.5" r="1.5"/>
+                          <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                        <Typography sx={{ fontSize: "10px", fontWeight: 700 }}>
+                          Add member image
+                        </Typography>
+                      </Box>
+                    )}
                     <Box sx={{ flexGrow: 1 }}>
                       <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
                         <Typography sx={{ fontWeight: 800, fontSize: "12px", color: "#0F172A" }}>
@@ -96,13 +126,38 @@ export default function MemberNewsSection({ memberArticles, onSubmitModalOpen, l
                       <Typography sx={{ fontSize: "12px", color: "#64748B", mb: 1, lineHeight: 1.4 }}>
                         {memberPost.summary}
                       </Typography>
-                      <Typography sx={{ fontSize: "12px", fontWeight: 800, color: "#E11D48", cursor: "pointer" }}>
-                        Read more →
-                      </Typography>
-                    </Box>
-                  </Card>
-                ))
+                        <Typography
+                          onClick={() => onSelectArticle && onSelectArticle(memberPost)}
+                          sx={{ fontSize: "12px", fontWeight: 800, color: "#E11D48", cursor: "pointer", "&:hover": { textDecoration: "underline" } }}
+                        >
+                          Read more →
+                        </Typography>
+                      </Box>
+                    </Card>
+                  ))
               )}
+
+              {/* See all member news link */}
+              <Box sx={{ pt: 1 }}>
+                <Typography
+                  onClick={() => {
+                    const el = document.getElementById("news-feed-section");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  sx={{
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    color: "#0F172A",
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                    "&:hover": { color: "#E11D48" },
+                  }}
+                >
+                  See all member news →
+                </Typography>
+              </Box>
             </Box>
           </Grid>
 

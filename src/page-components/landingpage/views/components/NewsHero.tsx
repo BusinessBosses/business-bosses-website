@@ -104,11 +104,13 @@ export default function NewsHero() {
       />
 
       {/* 2. Featured Article & Latest News Feed */}
-      <NewsFeed
-        featuredArticle={featuredArticle}
-        latestArticles={filteredLatest}
-        loading={loading}
-      />
+      <Box id="news-feed-section">
+        <NewsFeed
+          featuredArticle={featuredArticle}
+          latestArticles={filteredLatest}
+          loading={loading}
+        />
+      </Box>
 
       {/* 3. Member News Section */}
       <MemberNewsSection
