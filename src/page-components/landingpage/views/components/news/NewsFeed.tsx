@@ -357,13 +357,14 @@ export default function NewsFeed({ featuredArticle, latestArticles, loading = fa
           sx: {
             borderRadius: "20px",
             boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.25)",
-            overflow: "hidden",
             bgcolor: "#FFFFFF",
+            maxHeight: "90vh",
+            overflowY: "auto",
           },
         }}
       >
         {selectedArticle && (
-          <Box sx={{ position: "relative" }}>
+          <Box sx={{ position: "relative", display: "flex", flexDirection: "column" }}>
             {/* Modal Close Action Button */}
             <IconButton
               onClick={() => setSelectedArticle(null)}
