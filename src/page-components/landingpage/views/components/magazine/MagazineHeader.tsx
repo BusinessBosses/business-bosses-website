@@ -57,10 +57,10 @@ export default function MagazineHeader({ onReadLatest, onGetFeatured, content, l
             <Typography
               variant="h1"
               sx={{
-                fontWeight: 900,
-                fontSize: { xs: "32px", sm: "44px", md: "52px" },
+                fontWeight: 700,
+                fontSize: { xs: "30px", sm: "38px", md: "44px" },
                 color: "#0F172A",
-                lineHeight: 1.15,
+                lineHeight: 1.25,
                 mb: 2.5,
                 letterSpacing: "-0.5px",
               }}

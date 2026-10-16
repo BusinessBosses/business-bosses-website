@@ -106,6 +106,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 sx={{
                   color: pathname === "/" || pathname === "/about" ? "#e11d48" : "#000",
                   fontWeight: pathname === "/" || pathname === "/about" ? 700 : 500,
+                  textTransform: "none",
                 }}
               >
                 About
@@ -118,6 +119,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 sx={{
                   color: pathname?.startsWith("/partners") ? "#e11d48" : "#000",
                   fontWeight: pathname?.startsWith("/partners") ? 700 : 500,
+                  textTransform: "none",
                 }}
               >
                 Become a Partner
@@ -130,6 +132,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 sx={{
                   color: pathname?.startsWith("/magazine") ? "#e11d48" : "#000",
                   fontWeight: pathname?.startsWith("/magazine") ? 700 : 500,
+                  textTransform: "none",
                 }}
               >
                 Magazine
@@ -142,6 +145,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 sx={{
                   color: pathname?.startsWith("/news") ? "#e11d48" : "#000",
                   fontWeight: pathname?.startsWith("/news") ? 700 : 500,
+                  textTransform: "none",
                 }}
               >
                 News
@@ -161,6 +165,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 color: "#000",
                 borderRadius: "8px",
                 px: 4,
+                textTransform: "none",
                 "&:hover": {
                   backgroundColor: "#f0f0f0",
                 },
@@ -179,6 +184,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 borderRadius: "8px",
                 px: 4,
                 fontWeight: 600,
+                textTransform: "none",
                 "&:hover": {
                   backgroundColor: "#be123c",
                 },
@@ -236,6 +242,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       color: "#fff",
                       borderRadius: "8px",
                       fontWeight: 600,
+                      textTransform: "none",
                       "&:hover": {
                         backgroundColor: "#be123c",
                       },
@@ -253,6 +260,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                       color: "#000",
                       borderRadius: "8px",
                       border: "1px solid #e5e7eb",
+                      textTransform: "none",
                       "&:hover": {
                         backgroundColor: "#f0f0f0",
                       },

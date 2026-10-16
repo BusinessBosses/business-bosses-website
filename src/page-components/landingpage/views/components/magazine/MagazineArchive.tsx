@@ -39,7 +39,15 @@ export default function MagazineArchive({ magazines, loading = false }: Magazine
               Catch up on every issue
             </Typography>
           </Box>
-          <Chip label="2026" sx={{ bgcolor: "#0F172A", color: "#FFF", fontWeight: 700 }} />
+          <Chip
+            label="2026"
+            sx={{
+              bgcolor: "#0F172A !important",
+              color: "#FFFFFF !important",
+              fontWeight: 700,
+              "& .MuiChip-label": { color: "#FFFFFF !important" },
+            }}
+          />
         </Box>
 
         <Grid container spacing={3}>

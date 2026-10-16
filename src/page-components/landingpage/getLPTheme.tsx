@@ -484,36 +484,20 @@ export default function getLPTheme(mode: PaletteMode): ThemeOptions {
             borderColor: brand[100],
             fontWeight: 600,
             backgroundColor: brand[50],
+            color: brand[700],
             '&:hover': {
-              backgroundColor: brand[500],
+              backgroundColor: brand[100],
             },
             '&:focus-visible': {
               borderColor: brand[300],
               backgroundColor: brand[200],
             },
             '& .MuiChip-label': {
-              color: brand[500],
+              color: 'inherit',
             },
             '& .MuiChip-icon': {
-              color: brand[500],
+              color: 'inherit',
             },
-            // ...theme.applyStyles('dark', {
-            //   borderColor: `${alpha(brand[500], 0.2)}`,
-            //   backgroundColor: `${alpha(brand[900], 0.5)}`,
-            //   '&:hover': {
-            //     backgroundColor: brand[600],
-            //   },
-            //   '&:focus-visible': {
-            //     borderColor: brand[500],
-            //     backgroundColor: brand[800],
-            //   },
-            //   '& .MuiChip-label': {
-            //     color: brand[200],
-            //   },
-            //   '& .MuiChip-icon': {
-            //     color: brand[200],
-            //   },
-            // }),
           }),
         },
       },

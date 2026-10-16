@@ -79,6 +79,11 @@ export default function MagazineHero() {
         onReadLatest={() => {
           if (latestIssue?.pdf_url) {
             window.open(latestIssue.pdf_url, "_blank");
+          } else {
+            const spotlightElem = document.getElementById("magazine-spotlight");
+            if (spotlightElem) {
+              spotlightElem.scrollIntoView({ behavior: "smooth" });
+            }
           }
         }}
         onGetFeatured={() => router.push(RoutesPath.applyFeatured)}
@@ -86,11 +91,13 @@ export default function MagazineHero() {
         loading={cmsLoading}
       />
 
-      {/* 2. Five Sections Highlight */}
-      <MagazineSectionsHighlight />
+      {/* 2. Featured Spotlight (From Vision to Venture) */}
+      <Box id="magazine-spotlight">
+        <MagazineSpotlight latestIssue={latestIssue} />
+      </Box>
 
-      {/* 3. Featured Spotlight */}
-      <MagazineSpotlight latestIssue={latestIssue} />
+      {/* 3. Five Sections Highlight */}
+      <MagazineSectionsHighlight />
 
       {/* 4. Issue Archive Grid */}
       <MagazineArchive magazines={magazines} loading={loading} />

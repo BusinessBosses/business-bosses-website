@@ -62,13 +62,24 @@ export default function MagazineSpotlight({ latestIssue }: MagazineSpotlightProp
           {/* Content Column */}
           <Grid item xs={12} md={7}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
-              <Chip label="LATEST ISSUE" size="small" sx={{ bgcolor: "#E11D48", color: "#FFF", fontWeight: 800, fontSize: "11px", px: 1 }} />
+              <Chip
+                label="LATEST ISSUE"
+                size="small"
+                sx={{
+                  bgcolor: "#E11D48 !important",
+                  color: "#FFFFFF !important",
+                  fontWeight: 800,
+                  fontSize: "11px",
+                  px: 1,
+                  "& .MuiChip-label": { color: "#FFFFFF !important" },
+                }}
+              />
               <Typography sx={{ fontSize: "13px", color: "#64748B", fontWeight: 600 }}>
                 {latestIssue?.issue_number || "Issue 01"} • {latestIssue?.publish_date ? new Date(latestIssue.publish_date).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "September 2026"}
               </Typography>
             </Box>
 
-            <Typography variant="h3" sx={{ fontWeight: 900, fontSize: { xs: "28px", md: "38px" }, color: "#0F172A", mb: 2 }}>
+            <Typography variant="h3" sx={{ fontWeight: 700, fontSize: { xs: "28px", md: "38px" }, color: "#0F172A", mb: 2 }}>
               {latestIssue?.title || "From Vision to Venture"}
             </Typography>
 

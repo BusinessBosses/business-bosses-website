@@ -21,7 +21,7 @@ export default function NewsHeader({
         <Typography sx={{ fontWeight: 800, color: "#E11D48", fontSize: "13px", letterSpacing: "1.5px", mb: 1 }}>
           NEWS
         </Typography>
-        <Typography variant="h2" sx={{ fontWeight: 900, color: "#0F172A", fontSize: { xs: "32px", md: "48px" }, mb: 2 }}>
+        <Typography variant="h2" sx={{ fontWeight: 700, color: "#0F172A", fontSize: { xs: "30px", md: "40px" }, mb: 2, lineHeight: 1.25 }}>
           What’s new at Business Bosses
         </Typography>
         <Typography sx={{ fontSize: "16px", color: "#64748B", maxWidth: "680px", mb: 4 }}>
