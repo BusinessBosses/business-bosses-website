@@ -16,7 +16,7 @@ export default function FeedBuyerRequestsSection({
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
-      {/* Header */}
+      {/* Header: Exact mobile parity with BuyerRequestDealsWidget */}
       <div className="flex items-center justify-between px-4 py-3 bg-slate-50/80 border-b border-slate-100">
         <div className="flex items-center space-x-2">
           <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
@@ -24,10 +24,10 @@ export default function FeedBuyerRequestsSection({
           </div>
           <div>
             <h3 className="text-sm font-bold text-slate-900 leading-tight">
-              Buyer Requests
+              What People Are Looking For
             </h3>
             <p className="text-[11px] text-slate-500">
-              Businesses actively looking for solutions
+              Active requests from businesses and buyers
             </p>
           </div>
         </div>
@@ -35,7 +35,7 @@ export default function FeedBuyerRequestsSection({
           href="/buyer-requests"
           className="text-xs font-bold text-[#F21C29] hover:text-[#D01420] flex items-center gap-0.5"
         >
-          <span>View All</span>
+          <span>Explore</span>
           <ChevronRight className="w-3.5 h-3.5" />
         </Link>
       </div>
@@ -70,13 +70,13 @@ export default function FeedBuyerRequestsSection({
 
             <div className="mt-3 pt-2.5 border-t border-slate-200/60 flex items-center justify-between">
               <span className="text-[10px] text-slate-400">
-                {req.author?.name || 'Verified Boss'}
+                {req.author?.name || 'Verified Member'}
               </span>
               <Link
                 href="/buyer-requests"
                 className="text-[11px] font-bold text-[#F21C29] flex items-center gap-0.5 hover:underline"
               >
-                <span>Apply</span>
+                <span>Respond</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
