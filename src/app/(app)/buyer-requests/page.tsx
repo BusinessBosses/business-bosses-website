@@ -177,7 +177,7 @@ export default function BuyerRequestsPage() {
 
   return (
     <div className="w-full flex justify-center pb-24 lg:pb-12 bg-slate-50 min-h-screen">
-      <div className="w-full max-w-5xl px-4 py-6 sm:py-8">
+      <div className="w-full max-w-5xl px-1 sm:px-2 md:px-4 py-4 sm:py-6 min-w-0">
         
         {/* Header with Call-to-Action */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">

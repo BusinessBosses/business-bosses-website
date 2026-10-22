@@ -151,7 +151,7 @@ export default function FeedPage() {
 
   return (
     <div className="w-full flex justify-center min-h-screen bg-slate-50 pb-24 lg:pb-8">
-      <div className="w-full max-w-2xl px-4 py-6 sm:py-8 space-y-4">
+      <div className="w-full max-w-2xl px-1 sm:px-2 md:px-4 py-4 sm:py-6 space-y-4 min-w-0">
         {/* Top Header & Post Trigger */}
         <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center justify-between gap-3">
           <div className="flex-1">

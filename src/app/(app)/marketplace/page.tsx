@@ -89,7 +89,7 @@ export default function MarketplacePage() {
 
   return (
     <div className="w-full flex justify-center pb-24 lg:pb-8 bg-slate-50 min-h-screen">
-      <div className="w-full max-w-5xl px-4 py-4 sm:py-6 space-y-4">
+      <div className="w-full max-w-6xl px-1 sm:px-2 md:px-4 py-4 sm:py-6 space-y-4 min-w-0">
         {/* Top Sticky Header matching Mobile MarketplaceScreen */}
         <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-2xs space-y-3">
           {/* Row 1: Search Bar + Sell Action Button */}
