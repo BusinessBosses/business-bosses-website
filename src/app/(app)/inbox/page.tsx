@@ -33,14 +33,21 @@ export default function InboxPage() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const user = authService.getUser();
-    if (!user && typeof window !== 'undefined') {
-      window.location.href = '/login';
+    initUser();
+  }, []);
+
+  const initUser = async () => {
+    if (!authService.isAuthenticated()) {
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
       return;
     }
-    setCurrentUser(user);
+    const uid = authService.getUserId();
+    const profile = await authService.getCurrentUser();
+    setCurrentUser(profile || { uid });
     loadChats();
-  }, []);
+  };
 
   const loadChats = async () => {
     setLoading(true);
