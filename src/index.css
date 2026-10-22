@@ -276,3 +276,81 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   50% { transform: translateX(-60%); } /* Reverse direction halfway */
   100% { transform: translateX(60%); } /* Continue reversing to the start */
 }
+
+/* Toastify global styles & readability enforcement */
+:root {
+  --toastify-color-light: #ffffff !important;
+  --toastify-color-dark: #1e293b !important;
+  --toastify-color-info: #0284c7 !important;
+  --toastify-color-success: #16a34a !important;
+  --toastify-color-warning: #d97706 !important;
+  --toastify-color-error: #dc2626 !important;
+  --toastify-text-color-light: #0f172a !important;
+  --toastify-text-color-dark: #ffffff !important;
+  --toastify-text-color-info: #ffffff !important;
+  --toastify-text-color-success: #ffffff !important;
+  --toastify-text-color-warning: #ffffff !important;
+  --toastify-text-color-error: #ffffff !important;
+}
+
+.Toastify__toast {
+  opacity: 1 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2) !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.Toastify__toast--default,
+.Toastify__toast-theme--light {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.Toastify__toast--success,
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+}
+
+.Toastify__toast--error,
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+.Toastify__toast--info,
+.Toastify__toast-theme--colored.Toastify__toast--info {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+.Toastify__toast--warning,
+.Toastify__toast-theme--colored.Toastify__toast--warning {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+}
+
+.Toastify__toast-body {
+  color: inherit !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+}
+
+.Toastify__toast-body > div:last-child {
+  color: inherit !important;
+  opacity: 1 !important;
+}
+
+.Toastify__close-button {
+  color: inherit !important;
+  opacity: 0.8 !important;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1 !important;
+}
+

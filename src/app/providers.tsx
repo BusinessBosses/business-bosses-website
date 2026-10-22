@@ -13,6 +13,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
       <ToastContainer
+        theme="colored"
         autoClose={3000}
         hideProgressBar={true}
         closeOnClick
