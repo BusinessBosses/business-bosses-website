@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Sparkles, RefreshCw, Layers } from 'lucide-react';
 import PostCard, { Post } from '../../../components/feed/PostCard';
 import CreatePostModal from '../../../components/feed/CreatePostModal';
+import CommentsModal from '../../../components/feed/CommentsModal';
 import BossOfTheWeekCard from '../../../components/feed/BossOfTheWeekCard';
 import PartnersDealsSection from '../../../components/feed/PartnersDealsSection';
 import { postService } from '../../../services/postService';
@@ -20,6 +21,7 @@ export default function FeedPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
+  const [commentPost, setCommentPost] = useState<Post | null>(null);
 
   // Real highlights state (no placeholders/dummies)
   const [bossOfTheWeek, setBossOfTheWeek] = useState<BossOfTheWeekData | null>(null);
@@ -167,7 +169,16 @@ export default function FeedPage() {
         ) : posts.length > 0 ? (
           <div className="space-y-4">
             {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard
+                key={post.id}
+                post={post}
+                onOpenComments={(p) => setCommentPost(p)}
+                onPostUpdated={(updated) => {
+                  setPosts((prev) =>
+                    prev.map((item) => (item.id === updated.id ? updated : item))
+                  );
+                }}
+              />
             ))}
           </div>
         ) : (
@@ -194,6 +205,25 @@ export default function FeedPage() {
           onClose={() => setIsCreateOpen(false)}
           onPostCreated={fetchPosts}
         />
+
+        {/* Comments Modal (Parity with Mobile PostLikeComment) */}
+        {commentPost && (
+          <CommentsModal
+            isOpen={!!commentPost}
+            onClose={() => setCommentPost(null)}
+            postId={commentPost.id}
+            authorUid={commentPost.author.id}
+            onCommentAdded={() => {
+              setPosts((prev) =>
+                prev.map((p) =>
+                  p.id === commentPost.id
+                    ? { ...p, commentsCount: (p.commentsCount || 0) + 1 }
+                    : p
+                )
+              );
+            }}
+          />
+        )}
       </div>
     </div>
   );

@@ -36,6 +36,7 @@ export interface Post {
   likesCount: number;
   commentsCount: number;
   repostsCount?: number;
+  category?: string;
   isLiked?: boolean;
   isBookmarked?: boolean;
   isReposted?: boolean;
@@ -184,49 +185,67 @@ export const PostCard: React.FC<PostCardProps> = ({
           </div>
         </div>
 
-        {/* Options Menu Button & Dropdown (Parity with Mobile Bottom Sheet) */}
-        <div className="relative">
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-slate-400 hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-50 transition-colors"
-            title="More Options"
-          >
-            <MoreHorizontal className="w-5 h-5" />
-          </button>
-
-          {menuOpen && (
-            <>
-              <div
-                className="fixed inset-0 z-10"
-                onClick={() => setMenuOpen(false)}
-              />
-              <div className="absolute right-0 top-8 z-20 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-1 text-xs sm:text-sm font-semibold text-slate-700 animate-in fade-in zoom-in-95">
-                <button
-                  onClick={handleCopyLink}
-                  className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2"
-                >
-                  <Copy className="w-4 h-4 text-slate-500" />
-                  <span>Copy Link</span>
-                </button>
-                <button
-                  onClick={handleReport}
-                  className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-amber-600"
-                >
-                  <Flag className="w-4 h-4" />
-                  <span>Report Post</span>
-                </button>
-                <button
-                  onClick={handleBlockUser}
-                  className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-red-600"
-                >
-                  <UserX className="w-4 h-4" />
-                  <span>Block User</span>
-                </button>
-              </div>
-            </>
+        {/* Right side: Category badge & Options */}
+        <div className="flex items-center space-x-2">
+          {post.category && (
+            <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200/80">
+              {post.category}
+            </span>
           )}
+
+          {/* Options Menu Button & Dropdown (Parity with Mobile Bottom Sheet) */}
+          <div className="relative">
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="text-slate-400 hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-50 transition-colors"
+              title="More Options"
+            >
+              <MoreHorizontal className="w-5 h-5" />
+            </button>
+
+            {menuOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setMenuOpen(false)}
+                />
+                <div className="absolute right-0 top-8 z-20 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-1 text-xs sm:text-sm font-semibold text-slate-700 animate-in fade-in zoom-in-95">
+                  <button
+                    onClick={handleCopyLink}
+                    className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2"
+                  >
+                    <Copy className="w-4 h-4 text-slate-500" />
+                    <span>Copy Link</span>
+                  </button>
+                  <button
+                    onClick={handleReport}
+                    className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-amber-600"
+                  >
+                    <Flag className="w-4 h-4" />
+                    <span>Report Post</span>
+                  </button>
+                  <button
+                    onClick={handleBlockUser}
+                    className="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-red-600"
+                  >
+                    <UserX className="w-4 h-4" />
+                    <span>Block User</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Category badge on mobile view */}
+      {post.category && (
+        <div className="sm:hidden mb-2">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200/80">
+            {post.category}
+          </span>
+        </div>
+      )}
 
       {/* Post Text */}
       <div className="text-slate-800 text-sm sm:text-base leading-relaxed whitespace-pre-line mb-3.5">

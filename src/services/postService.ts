@@ -54,6 +54,8 @@ export const postService = {
       const mappedPosts: (Post & { timestamp: number })[] = rawPosts.map((item: any) => {
         const ts = Number(item.timestamp) || (item.createdAt ? new Date(item.createdAt).getTime() : Date.now());
         const user = item.user || item.author || {};
+        const forum = item.forum || {};
+        const industry = item.industry?.industry || forum.industry?.industry || user.industry || 'General Business';
         return {
           id: String(item.postId || item.id || item._id),
           author: {
@@ -66,6 +68,7 @@ export const postService = {
           content: item.title || item.text || item.content || item.description || '',
           images: item.photoUrl ? [item.photoUrl] : item.image ? [item.image] : item.images || [],
           createdAt: new Date(ts).toLocaleDateString(),
+          category: industry,
           likesCount: Array.isArray(item.likes) ? item.likes.length : Number(item.likesCount) || 0,
           commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount) || 0,
           repostsCount: Array.isArray(item.reposts) ? item.reposts.length : Number(item.repostsCount) || 0,
@@ -81,6 +84,7 @@ export const postService = {
       const mappedForums: (Post & { timestamp: number })[] = rawForums.map((item: any) => {
         const ts = Number(item.timestamp) || (item.createdAt ? new Date(item.createdAt).getTime() : Date.now());
         const user = item.user || {};
+        const industry = item.industry?.industry || 'Boss Up Challenge';
         return {
           id: String(item.forumId || item.id),
           author: {
@@ -93,6 +97,7 @@ export const postService = {
           content: item.description || item.title || '',
           images: item.photo ? [item.photo] : [],
           createdAt: new Date(ts).toLocaleDateString(),
+          category: industry,
           likesCount: Array.isArray(item.likes) ? item.likes.length : 0,
           commentsCount: Array.isArray(item.comments) ? item.comments.length : 0,
           repostsCount: 0,
