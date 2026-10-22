@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { useLocation, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useLocation } from "../../../common/hooks/useAppNavigation";
 import FilledInput from "../../../common/components/inputs/FilledInput";
 import FilledTextarea from "../../../common/components/inputs/FilledTextarea";
 import Assets from "../../../assets";

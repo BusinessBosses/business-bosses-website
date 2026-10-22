@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useLocation, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useLocation } from "../../../../common/hooks/useAppNavigation";
 import SidebarWidget from "./SidebarWidget";
 import { useSidebar } from "../../../../context/SidebarContext";
 import Assets from "../../../../assets";

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRouter, useLocation } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useLocation } from "../../../../common/hooks/useAppNavigation";
 import ComputerTopNav from "./ComputerTopNav";
 import HomeSearch from "../../../search/views/HomeSearch";
 import RoutesPath from "../../../../constants/Routes";

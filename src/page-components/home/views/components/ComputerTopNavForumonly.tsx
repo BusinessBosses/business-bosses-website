@@ -1,7 +1,8 @@
 import { BsPlusLg } from "react-icons/bs";
 import RoutesPath from "../../../../constants/Routes";
 import Assets from "../../../../assets";
-import { useLocation, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useLocation } from "../../../../common/hooks/useAppNavigation";
 import { useEffect, useState } from "react";
 import { BiX } from "react-icons/bi";
 import CreatePost from "../../../CreatePost/views/CreatePost";

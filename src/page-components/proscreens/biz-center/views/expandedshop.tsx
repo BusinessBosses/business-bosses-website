@@ -3,7 +3,8 @@ import TranslucentDiv from "../../../../common/components/buttons/Translucentbut
 import Lightbox from "react-spring-lightbox";
 import Assets from "../../../../assets";
 import { ImagesListItem } from "react-spring-lightbox/dist/types/ImagesList";
-import { useLocation, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useLocation } from "../../../../common/hooks/useAppNavigation";
 import { Product } from "../../../../common/interfaces/Product";
 import { Service } from "../../../../common/interfaces/Service";
 

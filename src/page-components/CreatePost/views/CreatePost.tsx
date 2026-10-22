@@ -3,7 +3,8 @@ import CommonPageHeader from "../../../common/components/headers/CommonPageHeade
 import UserAvatar from "../../../common/components/avatars/UserAvatar";
 import Assets from "../../../assets";
 import FilledButton from "../../../common/components/buttons/FilledButton";
-import { useLocation, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useLocation } from "../../../common/hooks/useAppNavigation";
 import RoutesPath from "../../../constants/Routes";
 import ComputerHeader from "../../home/views/components/ComputerHeader";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";

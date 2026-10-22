@@ -1,7 +1,8 @@
 import { CiSearch } from "react-icons/ci";
 import MobileBottomNav from "../../home/views/components/MobileBottomNav";
 import { useEffect, useRef, useState } from "react";
-import { Route, Routes, useLocation, useRouter } from "next/navigation";
+import { Route, Routes, useRouter } from "next/navigation";
+import { useLocation } from "../../../common/hooks/useAppNavigation";
 import Challenge from "./Challenge";
 import Tabs from "./components/Tabs";
 import RoutesPath from "../../../constants/Routes";

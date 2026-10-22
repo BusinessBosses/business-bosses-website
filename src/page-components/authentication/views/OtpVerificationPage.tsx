@@ -1,6 +1,7 @@
 import PinInput from "react-pin-input";
 import FilledButton from "../../../common/components/buttons/FilledButton";
-import { useLocation, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useLocation } from "../../../common/hooks/useAppNavigation";
 import RoutesPath from "../../../constants/Routes";
 import { useEffect, useRef, useState } from "react";
 import AuthController from "../controller/AuthController";
