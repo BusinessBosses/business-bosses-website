@@ -2,23 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Briefcase, Clock, MapPin, DollarSign, Send } from 'lucide-react';
-import { apiClient } from '../../../lib/apiClient';
+import { buyerRequestService, BuyerRequest } from '../../../services/buyerRequestService';
 import Image from 'next/image';
-
-interface BuyerRequest {
-  id: string;
-  title: string;
-  description: string;
-  budget: string;
-  deadline: string;
-  category: string;
-  location?: string;
-  author: {
-    name: string;
-    avatarUrl: string;
-  };
-  postedAt: string;
-}
 
 export default function BuyerRequestsPage() {
   const [requests, setRequests] = useState<BuyerRequest[]>([]);
@@ -32,12 +17,10 @@ export default function BuyerRequestsPage() {
   const fetchRequests = async () => {
     setLoading(true);
     try {
-      // Mock call matching GET /buyer-request
-      const response = await apiClient.get('/buyer-request');
-      if (response.data?.success && Array.isArray(response.data?.data)) {
-        setRequests(response.data.data);
+      const data = await buyerRequestService.getBuyerRequests(searchQuery);
+      if (data && data.length > 0) {
+        setRequests(data);
       } else {
-        // Fallback for UI if API is empty/failing
         setRequests(getMockRequests());
       }
     } catch (error) {
@@ -92,12 +75,12 @@ export default function BuyerRequestsPage() {
                placeholder="Search requests by keyword..." 
                value={searchQuery}
                onChange={(e) => setSearchQuery(e.target.value)}
-               className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8E44AD] focus:border-transparent transition-all"
+               className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all text-sm"
              />
            </div>
-           <button className="flex items-center justify-center space-x-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors border border-slate-200">
+           <button className="flex items-center justify-center space-x-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors border border-slate-200 text-sm font-semibold">
              <Filter className="w-5 h-5" />
-             <span className="font-semibold">Filters</span>
+             <span>Filters</span>
            </button>
         </div>
 
@@ -105,19 +88,19 @@ export default function BuyerRequestsPage() {
         <div className="space-y-4">
           {loading ? (
             <div className="w-full flex justify-center py-12">
-               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#8E44AD]"></div>
+               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F21C29]"></div>
             </div>
           ) : requests.length > 0 ? (
             requests.map(request => (
-              <div key={request.id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 sm:p-6 transition-all hover:shadow-md">
+              <div key={request.id} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 transition-all hover:shadow-md">
                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <span className="bg-[#8E44AD]/10 text-[#8E44AD] text-xs font-bold px-2.5 py-1 rounded-full">{request.category}</span>
+                        <span className="bg-red-50 text-[#F21C29] text-xs font-bold px-2.5 py-1 rounded-full border border-red-100">{request.category}</span>
                         <span className="text-xs text-slate-400">{request.postedAt}</span>
                       </div>
                       <h2 className="text-lg font-bold text-slate-900 mb-2">{request.title}</h2>
-                      <p className="text-sm text-slate-600 line-clamp-2">{request.description}</p>
+                      <p className="text-sm text-slate-600 line-clamp-2 leading-relaxed">{request.description}</p>
                     </div>
                     <div className="flex items-center sm:flex-col sm:items-end gap-3 sm:gap-2 shrink-0">
                        <div className="flex items-center space-x-1.5 text-slate-700">
@@ -144,7 +127,7 @@ export default function BuyerRequestsPage() {
                        </div>
                     </div>
                     
-                    <button className="flex items-center justify-center space-x-2 px-5 py-2.5 bg-[#8E44AD] hover:bg-[#6C3483] text-white rounded-lg font-semibold transition-colors shadow-sm">
+                    <button className="flex items-center justify-center space-x-2 px-5 py-2.5 bg-[#F21C29] hover:bg-[#D01420] text-white rounded-xl font-bold transition-all shadow-md active:scale-95 text-sm">
                        <span>Submit Proposal</span>
                        <Send className="w-4 h-4" />
                     </button>

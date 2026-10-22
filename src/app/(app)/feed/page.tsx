@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Sparkles, RefreshCw, Layers } from 'lucide-react';
 import PostCard, { Post } from '../../../components/feed/PostCard';
 import CreatePostModal from '../../../components/feed/CreatePostModal';
-import { apiClient } from '../../../lib/apiClient';
+import { postService } from '../../../services/postService';
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState<'forYou' | 'following'>('forYou');
@@ -20,31 +20,9 @@ export default function FeedPage() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      // Connect to GET /post/all-posts-new or GET /post/get-posts
-      const endpoint = activeTab === 'forYou' ? '/post/all-posts-new' : '/post/get-posts';
-      const response = await apiClient.get(endpoint, {
-        params: { page: 1, limit: 15 },
-      });
-
-      if (response.data?.success && Array.isArray(response.data?.data)) {
-        const mapped: Post[] = response.data.data.map((item: any) => ({
-          id: String(item.id || item._id),
-          author: {
-            id: String(item.userId || item.author?.id || ''),
-            name: item.author?.name || item.user?.name || item.userName || 'Business Boss',
-            username: item.author?.username || item.user?.username || item.userHandle || undefined,
-            avatarUrl: item.author?.avatarUrl || item.user?.avatar || item.userAvatar || 'https://i.pravatar.cc/150?img=12',
-            isPro: !!(item.author?.isPro || item.user?.isPro || item.isBossPro),
-          },
-          content: item.text || item.content || item.description || '',
-          images: item.image ? [item.image] : item.images || [],
-          createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'Just now',
-          likesCount: item.likesCount || item.likes?.length || 0,
-          commentsCount: item.commentsCount || item.comments?.length || 0,
-          isLiked: !!item.isLiked,
-          isBookmarked: !!item.isBookmarked,
-        }));
-        setPosts(mapped);
+      const fetched = await postService.getPosts(activeTab);
+      if (fetched && fetched.length > 0) {
+        setPosts(fetched);
       } else {
         setPosts(getFallbackPosts());
       }
@@ -113,15 +91,15 @@ export default function FeedPage() {
           <div className="flex-1">
             <button
               onClick={() => setIsCreateOpen(true)}
-              className="w-full text-left px-4 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-slate-500 text-sm border border-slate-200 transition-colors flex items-center justify-between"
+              className="w-full text-left px-4 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-slate-500 text-sm border border-slate-200 transition-colors flex items-center justify-between group"
             >
               <span>Share an update with other bosses...</span>
-              <Sparkles className="w-4 h-4 text-[#8E44AD]" />
+              <Sparkles className="w-4 h-4 text-[#F7C844] group-hover:scale-110 transition-transform" />
             </button>
           </div>
           <button
             onClick={() => setIsCreateOpen(true)}
-            className="p-2.5 bg-[#8E44AD] hover:bg-[#6C3483] text-white rounded-xl shadow-md transition-all flex items-center justify-center shrink-0"
+            className="p-2.5 bg-[#F21C29] hover:bg-[#D01420] text-white rounded-xl shadow-md transition-all flex items-center justify-center shrink-0 active:scale-95"
             title="Create Post"
           >
             <Plus className="w-5 h-5" />
@@ -135,7 +113,7 @@ export default function FeedPage() {
               onClick={() => setActiveTab('forYou')}
               className={`pb-2 text-sm font-bold transition-all border-b-2 ${
                 activeTab === 'forYou'
-                  ? 'border-[#8E44AD] text-[#8E44AD]'
+                  ? 'border-[#F21C29] text-[#F21C29]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -145,7 +123,7 @@ export default function FeedPage() {
               onClick={() => setActiveTab('following')}
               className={`pb-2 text-sm font-bold transition-all border-b-2 ${
                 activeTab === 'following'
-                  ? 'border-[#8E44AD] text-[#8E44AD]'
+                  ? 'border-[#F21C29] text-[#F21C29]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -200,7 +178,7 @@ export default function FeedPage() {
             </p>
             <button
               onClick={() => setIsCreateOpen(true)}
-              className="px-4 py-2 bg-[#8E44AD] text-white rounded-xl text-sm font-bold shadow hover:bg-[#6C3483] transition-colors"
+              className="px-5 py-2.5 bg-[#F21C29] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#D01420] transition-colors"
             >
               Create First Post
             </button>

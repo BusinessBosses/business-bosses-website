@@ -17,42 +17,50 @@ export default function DesktopSidebar() {
 
   return (
     <aside className="hidden lg:flex flex-col w-[260px] fixed h-screen border-r border-slate-200 bg-white p-4">
-      <div className="mb-8 px-2 flex items-center space-x-2">
-         {/* Adjust based on actual logo */}
-        <span className="text-xl font-bold text-[#6C3483]">Business Bosses</span>
-        <span className="bg-[#E67E22] text-white text-xs font-bold px-2 py-1 rounded-full">PRO</span>
+      <div className="mb-8 px-2 flex items-center justify-between">
+        <Link href="/feed" className="flex items-center space-x-1.5">
+          <span className="text-xl font-extrabold tracking-tight text-slate-900">
+            Business <span className="text-[#F21C29]">Bosses</span>
+          </span>
+        </Link>
+        <span className="bg-[#F7C844] text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full shadow-sm">
+          PRO
+        </span>
       </div>
 
-      <nav className="flex-1 space-y-2">
+      <nav className="flex-1 space-y-1.5">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname.startsWith(item.href);
+          const isActive = pathname === item.href || (item.href !== '/feed' && pathname.startsWith(item.href));
           
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-colors ${
+              className={`flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all ${
                 isActive 
-                  ? 'bg-[#F8FAFC] text-[#8E44AD] font-semibold' 
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  ? 'bg-red-50 text-[#F21C29] font-bold shadow-sm' 
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium'
               }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
+              <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5] text-[#F21C29]' : 'stroke-2 text-slate-400'}`} />
               <span>{item.label}</span>
               {item.badgeKey && (
-                <span className="ml-auto bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                  3 {/* Placeholder for unread count */}
+                <span className="ml-auto bg-[#F21C29] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  3
                 </span>
               )}
             </Link>
           );
         })}
 
-        <button className="w-full mt-6 bg-[#8E44AD] text-white rounded-lg py-2.5 px-4 flex items-center justify-center space-x-2 hover:bg-[#6C3483] transition-colors">
+        <Link
+          href="/feed"
+          className="w-full mt-6 bg-[#F21C29] text-white rounded-xl py-3 px-4 flex items-center justify-center space-x-2 hover:bg-[#D01420] shadow-md transition-all active:scale-[0.98]"
+        >
             <PlusCircle className="w-5 h-5" />
-            <span className="font-semibold">Create Post</span>
-        </button>
+            <span className="font-bold text-sm">Create Post</span>
+        </Link>
       </nav>
 
       <div className="mt-auto border-t border-slate-200 pt-4 px-2">

@@ -60,11 +60,11 @@ export default function ProfilePage() {
               <div className="flex items-center space-x-2 mb-1">
                  <h1 className="text-2xl font-bold text-slate-900">{profile.name}</h1>
                  {profile.isPro && (
-                    <span className="bg-[#8E44AD] text-white text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center shadow-sm">
+                    <span className="bg-[#F7C844] text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded flex items-center shadow-sm">
                       PRO
                     </span>
                  )}
-                 {profile.isPro && <CheckCircle2 className="w-5 h-5 text-green-600" />}
+                 {profile.isPro && <CheckCircle2 className="w-5 h-5 text-[#F21C29]" />}
               </div>
               
               <p className="text-slate-500 font-medium mb-3">@{profile.handle}</p>
@@ -80,7 +80,7 @@ export default function ProfilePage() {
                     <MapPin className="w-4 h-4" />
                     <span>{profile.location}</span>
                  </div>
-                 <div className="flex items-center space-x-1.5 text-[#8E44AD]">
+                 <div className="flex items-center space-x-1.5 text-[#F21C29] font-medium">
                     <LinkIcon className="w-4 h-4" />
                     <a href={`https://${profile.website}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{profile.website}</a>
                  </div>
@@ -108,7 +108,7 @@ export default function ProfilePage() {
            <button 
              onClick={() => setActiveTab('posts')}
              className={`px-8 py-3 text-sm font-bold border-b-2 transition-colors ${
-               activeTab === 'posts' ? 'border-[#8E44AD] text-[#8E44AD]' : 'border-transparent text-slate-500 hover:text-slate-800'
+               activeTab === 'posts' ? 'border-[#F21C29] text-[#F21C29]' : 'border-transparent text-slate-500 hover:text-slate-800'
              }`}
            >
              Posts
@@ -116,7 +116,7 @@ export default function ProfilePage() {
            <button 
              onClick={() => setActiveTab('about')}
              className={`px-8 py-3 text-sm font-bold border-b-2 transition-colors ${
-               activeTab === 'about' ? 'border-[#8E44AD] text-[#8E44AD]' : 'border-transparent text-slate-500 hover:text-slate-800'
+               activeTab === 'about' ? 'border-[#F21C29] text-[#F21C29]' : 'border-transparent text-slate-500 hover:text-slate-800'
              }`}
            >
              About

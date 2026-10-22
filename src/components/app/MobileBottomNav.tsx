@@ -23,8 +23,8 @@ export default function MobileBottomNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex flex-col items-center justify-center flex-1 py-1 ${
-              isActive ? 'text-[#8E44AD] font-bold' : 'text-slate-500 font-medium'
+            className={`flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
+              isActive ? 'text-[#F21C29] font-bold' : 'text-slate-500 hover:text-slate-700 font-medium'
             }`}
           >
             <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />

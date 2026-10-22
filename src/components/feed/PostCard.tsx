@@ -106,11 +106,11 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPostUpdated }) => {
                 {post.author.name}
               </span>
               {post.author.isPro && (
-                <span className="bg-[#8E44AD] text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm flex items-center">
+                <span className="bg-[#F7C844] text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm flex items-center">
                   PRO
                 </span>
               )}
-              {post.author.isPro && <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />}
+              {post.author.isPro && <CheckCircle2 className="w-3.5 h-3.5 text-[#F21C29]" />}
             </div>
             <div className="flex items-center space-x-1.5 text-xs text-slate-500">
               {post.author.username && <span>@{post.author.username}</span>}
@@ -167,7 +167,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPostUpdated }) => {
             <span>{likesCount}</span>
           </button>
 
-          <button className="flex items-center space-x-1.5 hover:text-[#8E44AD] transition-colors">
+          <button className="flex items-center space-x-1.5 hover:text-[#F21C29] transition-colors">
             <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>{post.commentsCount || 0}</span>
           </button>
@@ -177,10 +177,10 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPostUpdated }) => {
           <button
             onClick={handleToggleBookmark}
             className={`p-1.5 rounded-full hover:bg-slate-50 transition-colors ${
-              bookmarked ? 'text-[#8E44AD]' : 'hover:text-[#8E44AD]'
+              bookmarked ? 'text-[#F7C844]' : 'hover:text-[#F7C844]'
             }`}
           >
-            <Bookmark className={`w-4 h-4 sm:w-5 sm:h-5 ${bookmarked ? 'fill-[#8E44AD]' : ''}`} />
+            <Bookmark className={`w-4 h-4 sm:w-5 sm:h-5 ${bookmarked ? 'fill-[#F7C844]' : ''}`} />
           </button>
 
           <button

@@ -5,9 +5,10 @@ import Link from 'next/link';
 export default function AppTopHeader() {
   return (
     <header className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 h-14 flex items-center justify-between px-4">
-      <Link href="/feed" className="flex items-center space-x-2">
-         {/* Logo placeholder */}
-        <span className="text-lg font-bold text-[#6C3483]">Business Bosses</span>
+      <Link href="/feed" className="flex items-center space-x-1.5">
+        <span className="text-lg font-extrabold tracking-tight text-slate-900">
+          Business <span className="text-[#F21C29]">Bosses</span>
+        </span>
       </Link>
       
       <div className="flex items-center space-x-4">

@@ -48,50 +48,54 @@ const SubscriptionPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => 
   return (
     <div className="w-full max-w-lg mx-auto py-8 px-4 pb-24 lg:pb-8">
        {/* Header Card */}
-       <div className="bg-[#8E44AD] rounded-t-2xl p-6 text-white text-center shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
-          <h1 className="text-2xl font-bold mb-2">Upgrade to a Pro Boss Experience</h1>
-          <p className="text-white/80 text-sm">Everything you need to boost and grow your business 10X faster, all in one place.</p>
+       <div className="bg-gradient-to-br from-[#F21C29] via-[#D01420] to-[#8A0810] rounded-t-2xl p-6 sm:p-8 text-white text-center shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 -mr-8 -mt-8 w-36 h-36 bg-[#F7C844] opacity-20 rounded-full blur-3xl"></div>
+          <div className="inline-flex items-center space-x-1.5 bg-[#F7C844] text-slate-950 font-black text-[11px] px-3 py-1 rounded-full mb-3 shadow">
+             <Star className="w-3.5 h-3.5 fill-slate-950" />
+             <span>BUSINESS BOSSES PRO</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black mb-2 tracking-tight">Upgrade to a Pro Boss Experience</h1>
+          <p className="text-white/90 text-sm max-w-md mx-auto leading-relaxed">Everything you need to boost visibility, close buyer requests, and scale 10X faster.</p>
        </div>
 
-       <div className="bg-white p-6 shadow-lg rounded-b-2xl border border-slate-200 border-t-0">
+       <div className="bg-white p-6 sm:p-7 shadow-lg rounded-b-2xl border border-slate-200 border-t-0">
           
           {/* 8 Core Perks */}
           <div className="space-y-4 mb-8">
-             <h2 className="font-bold text-slate-900 border-b border-slate-100 pb-2">What's included:</h2>
+             <h2 className="font-bold text-slate-900 border-b border-slate-100 pb-2 text-sm uppercase tracking-wider">What's included:</h2>
              
              <div className="grid grid-cols-1 gap-3 text-sm text-slate-700">
                <div className="flex items-center space-x-3">
-                 <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
-                 <span>Premium Gold Pro Badge</span>
+                 <CheckCircle2 className="w-5 h-5 text-[#F21C29] shrink-0" />
+                 <span className="font-medium">Premium Gold Pro Badge on Profile & Posts</span>
                </div>
                <div className="flex items-center space-x-3">
-                 <Zap className="w-5 h-5 text-[#8E44AD] shrink-0" />
-                 <span>Earn 100 bonus coins per month</span>
+                 <Zap className="w-5 h-5 text-[#F7C844] shrink-0 fill-[#F7C844]" />
+                 <span className="font-medium">Earn 100 bonus coins per month</span>
                </div>
                <div className="flex items-center space-x-3">
-                 <Sparkles className="w-5 h-5 text-[#E67E22] shrink-0" />
-                 <span>Boost posts FREE with coins</span>
+                 <Sparkles className="w-5 h-5 text-[#F7C844] shrink-0" />
+                 <span className="font-medium">Boost posts FREE with coins</span>
                </div>
                <div className="flex items-center space-x-3">
                  <Users className="w-5 h-5 text-blue-500 shrink-0" />
-                 <span>More connections & verified business referrals</span>
+                 <span className="font-medium">More connections & verified business referrals</span>
                </div>
                <div className="flex items-center space-x-3">
-                 <Star className="w-5 h-5 text-yellow-500 shrink-0" />
-                 <span>Featured marketplace listing placements</span>
+                 <Star className="w-5 h-5 text-yellow-500 shrink-0 fill-yellow-400" />
+                 <span className="font-medium">Featured marketplace listing placements</span>
                </div>
                <div className="flex items-center space-x-3">
                  <Lock className="w-5 h-5 text-slate-600 shrink-0" />
-                 <span>Exclusive partner discounts & academy perks</span>
+                 <span className="font-medium">Exclusive partner discounts & academy perks</span>
                </div>
                <div className="flex items-center space-x-3">
                  <Map className="w-5 h-5 text-teal-500 shrink-0" />
-                 <span>Grow business with automated marketing campaigns</span>
+                 <span className="font-medium">Grow business with automated marketing campaigns</span>
                </div>
                <div className="flex items-center space-x-3">
-                 <MapPin className="w-5 h-5 text-red-500 shrink-0" />
-                 <span>Find more verified leads & business matches</span>
+                 <MapPin className="w-5 h-5 text-[#F21C29] shrink-0" />
+                 <span className="font-medium">Find more verified leads & business matches</span>
                </div>
              </div>
           </div>
@@ -149,7 +153,7 @@ const SubscriptionPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => 
           <button 
              onClick={createSubscriptionIntent}
              disabled={processing}
-             className="w-full py-4 rounded-xl font-bold text-white shadow-md transition-all flex justify-center items-center disabled:opacity-70 bg-[#8E44AD] hover:bg-[#6C3483]"
+             className="w-full py-4 rounded-xl font-bold text-white shadow-lg transition-all flex justify-center items-center disabled:opacity-70 bg-[#F21C29] hover:bg-[#D01420] active:scale-[0.99]"
           >
              {processing ? (
                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

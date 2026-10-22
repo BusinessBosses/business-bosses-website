@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock, User, AtSign, ArrowRight } from 'lucide-react';
-import { apiClient } from '../../../lib/apiClient';
-import { StorageEnum } from '../../../common/emums/StorageEmuns';
+import { authService } from '../../../services/authService';
 import Link from 'next/link';
 
 export default function RegisterPage() {
@@ -33,31 +32,30 @@ export default function RegisterPage() {
     setError('');
 
     try {
-      const response = await apiClient.post('/auth/sign-up', {
+      const response = await authService.signUp({
         fullname: fullname.trim(),
         username: username.trim().toLowerCase(),
         email: email.trim().toLowerCase(),
         password,
       });
 
-      const token = response.data?.data?.token || response.data?.token;
+      const token = response.data?.token || response.token;
 
-      if (response.data?.success) {
+      if (response.success) {
         if (token) {
-          localStorage.setItem(StorageEnum.AccessToken, token);
+          authService.setToken(token);
           router.push('/feed');
         } else {
-          // If signup requires verification or returns no direct token, forward to login
           router.push('/login?registered=true');
         }
       } else {
-        setError(response.data?.message || 'Registration failed. Please try again.');
+        setError(response.message || 'Registration failed. Please try again.');
       }
     } catch (err: any) {
       console.error('Registration error', err);
       if (err.message === 'Network Error' || err.response?.status >= 500) {
         console.warn('API unavailable, bypassing signup for demo mode');
-        localStorage.setItem(StorageEnum.AccessToken, 'mock-jwt-token-12345');
+        authService.setToken('mock-jwt-token-12345');
         router.push('/feed');
       } else {
         setError(err.response?.data?.message || err.response?.data?.error || 'Registration failed. Please check your details.');
@@ -72,8 +70,8 @@ export default function RegisterPage() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center mb-3">
-            <span className="text-2xl font-black tracking-tighter text-slate-900">
-              Business <span className="text-[#8E44AD]">Bosses</span>
+            <span className="text-2xl font-black tracking-tight text-slate-900">
+              Business <span className="text-[#F21C29]">Bosses</span>
             </span>
           </div>
           <h1 className="text-2xl font-bold text-slate-900 mb-1">Create an Account</h1>
@@ -99,7 +97,7 @@ export default function RegisterPage() {
                 value={fullname}
                 onChange={(e) => setFullname(e.target.value)}
                 placeholder="Jane Doe"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8E44AD] focus:border-transparent transition-all text-sm"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all text-sm"
                 required
               />
             </div>
@@ -117,7 +115,7 @@ export default function RegisterPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="janedoe"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8E44AD] focus:border-transparent transition-all text-sm"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all text-sm"
                 required
               />
             </div>
@@ -135,7 +133,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="jane@example.com"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8E44AD] focus:border-transparent transition-all text-sm"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all text-sm"
                 required
               />
             </div>
@@ -153,7 +151,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8E44AD] focus:border-transparent transition-all text-sm"
+                className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all text-sm"
                 required
               />
               <button
@@ -169,7 +167,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#8E44AD] hover:bg-[#6C3483] text-white rounded-xl font-bold transition-all shadow-md flex items-center justify-center space-x-1.5 disabled:opacity-70 mt-2 text-sm"
+            className="w-full py-3 bg-[#F21C29] hover:bg-[#D01420] text-white rounded-xl font-bold transition-all shadow-md flex items-center justify-center space-x-1.5 disabled:opacity-70 mt-2 text-sm"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -184,7 +182,7 @@ export default function RegisterPage() {
 
         <div className="mt-6 text-center text-xs text-slate-500">
           Already have an account?{' '}
-          <Link href="/login" className="font-bold text-[#8E44AD] hover:underline">
+          <Link href="/login" className="font-bold text-[#F21C29] hover:underline">
             Sign In
           </Link>
         </div>

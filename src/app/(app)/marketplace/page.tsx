@@ -2,24 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Star, MapPin } from 'lucide-react';
-import { apiClient } from '../../../lib/apiClient';
+import { marketplaceService, MarketplaceService } from '../../../services/marketplaceService';
 import Image from 'next/image';
-
-interface MarketplaceService {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  price: string;
-  rating: number;
-  reviewsCount: number;
-  category: string;
-  location?: string;
-  seller: {
-    name: string;
-    avatarUrl: string;
-    isPro: boolean;
-  };
-}
 
 export default function MarketplacePage() {
   const [services, setServices] = useState<MarketplaceService[]>([]);
@@ -36,12 +20,10 @@ export default function MarketplacePage() {
   const fetchServices = async () => {
     setLoading(true);
     try {
-      // Mock call matching GET /service integration
-      const response = await apiClient.get('/service');
-      if (response.data?.success && Array.isArray(response.data?.data)) {
-        setServices(response.data.data);
+      const data = await marketplaceService.getServices(selectedCategory);
+      if (data && data.length > 0) {
+        setServices(data);
       } else {
-        // Fallback for UI if API is empty/failing
         setServices(getMockServices());
       }
     } catch (error) {
@@ -117,10 +99,10 @@ export default function MarketplacePage() {
                  placeholder="Search services..." 
                  value={searchQuery}
                  onChange={(e) => setSearchQuery(e.target.value)}
-                 className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8E44AD] focus:border-transparent text-sm"
+                 className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent text-sm"
                />
              </div>
-             <button className="p-2 bg-white text-slate-700 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
+             <button className="p-2 bg-white text-slate-700 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors">
                <Filter className="w-4 h-4" />
              </button>
            </div>
@@ -132,9 +114,9 @@ export default function MarketplacePage() {
              <button
                key={category}
                onClick={() => setSelectedCategory(category)}
-               className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
+               className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all shadow-sm ${
                  selectedCategory === category 
-                   ? 'bg-[#8E44AD] text-white' 
+                   ? 'bg-[#F21C29] text-white shadow-red-200' 
                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                }`}
              >
@@ -146,12 +128,12 @@ export default function MarketplacePage() {
         {/* Services Grid */}
         {loading ? (
           <div className="w-full flex justify-center py-12">
-             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#8E44AD]"></div>
+             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F21C29]"></div>
           </div>
         ) : services.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {services.map(service => (
-              <div key={service.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden group cursor-pointer hover:shadow-md transition-all flex flex-col h-full">
+              <div key={service.id} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group cursor-pointer hover:shadow-md transition-all flex flex-col h-full">
                  
                  {/* Thumbnail */}
                  <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden">
@@ -161,7 +143,7 @@ export default function MarketplacePage() {
                       fill 
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold text-slate-700 shadow-sm">
+                    <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-bold text-slate-700 shadow-sm">
                        {service.category}
                     </div>
                  </div>
@@ -172,14 +154,14 @@ export default function MarketplacePage() {
                        <Image src={service.seller.avatarUrl} alt={service.seller.name} width={20} height={20} className="rounded-full bg-slate-200" />
                        <span className="text-xs font-semibold text-slate-700 truncate">{service.seller.name}</span>
                        {service.seller.isPro && (
-                         <span className="bg-[#8E44AD] text-white text-[8px] font-bold px-1 rounded flex items-center">PRO</span>
+                         <span className="bg-[#F7C844] text-slate-950 text-[8px] font-black px-1 rounded flex items-center shadow-sm">PRO</span>
                        )}
                     </div>
                     
-                    <h3 className="font-bold text-slate-900 text-sm leading-snug mb-2 line-clamp-2 group-hover:text-[#8E44AD] transition-colors">{service.title}</h3>
+                    <h3 className="font-bold text-slate-900 text-sm leading-snug mb-2 line-clamp-2 group-hover:text-[#F21C29] transition-colors">{service.title}</h3>
                     
                     <div className="flex items-center space-x-1 mb-3">
-                       <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                       <Star className="w-3.5 h-3.5 fill-[#F7C844] text-[#F7C844]" />
                        <span className="text-xs font-bold text-slate-900">{service.rating}</span>
                        <span className="text-xs text-slate-500">({service.reviewsCount})</span>
                        {service.location && (
@@ -193,7 +175,7 @@ export default function MarketplacePage() {
 
                     <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between">
                        <span className="font-bold text-slate-900 text-sm">{service.price}</span>
-                       <button className="text-xs font-bold text-[#8E44AD] hover:text-[#6C3483] transition-colors">
+                       <button className="text-xs font-bold text-[#F21C29] hover:text-[#D01420] transition-colors">
                          Contact Seller
                        </button>
                     </div>

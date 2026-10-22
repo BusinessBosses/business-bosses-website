@@ -35,8 +35,8 @@ export default function RightContextRail() {
         <h3 className="font-bold text-slate-900 mb-3">Upcoming Events</h3>
         <div className="space-y-3">
            {[1, 2].map((i) => (
-             <div key={i} className="flex flex-col p-3 rounded-lg border border-slate-100 hover:border-slate-200 cursor-pointer transition-colors">
-                <p className="text-xs font-semibold text-[#8E44AD] mb-1">TOMORROW, 2:00 PM</p>
+             <div key={i} className="flex flex-col p-3 rounded-xl border border-slate-100 hover:border-red-100 hover:bg-red-50/30 cursor-pointer transition-all">
+                <p className="text-xs font-bold text-[#F21C29] mb-1">TOMORROW, 2:00 PM</p>
                 <p className="text-sm font-semibold text-slate-900">Marketing Masterclass Q&A</p>
                 <p className="text-xs text-slate-500 mt-1 flex items-center">
                   <span className="w-4 h-4 rounded-full bg-slate-200 mr-2" />
