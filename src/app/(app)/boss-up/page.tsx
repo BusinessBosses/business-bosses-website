@@ -12,89 +12,45 @@ import {
   X,
   AlertCircle,
   HelpCircle,
+  ChevronLeft,
+  MessageSquare,
+  Award,
+  ExternalLink,
+  Smartphone,
+  Check,
 } from 'lucide-react';
-import { bossUpService, BossUpCategory } from '../../../services/bossUpService';
+import { bossUpService, BossUpCategory, JoinedUser } from '../../../services/bossUpService';
+import PostCard, { Post } from '../../../components/feed/PostCard';
 
-interface OpportunityCardDef {
-  key: string;
+interface AppDownloadModalInfo {
   title: string;
+  featureName: string;
   description: string;
-  buttonText: string;
-  imageurl?: string;
-  isMagazine?: boolean;
-  isMarketplace?: boolean;
-  link: string;
 }
-
-const OPPORTUNITY_CARDS: OpportunityCardDef[] = [
-  {
-    key: 'marketplace',
-    title: 'Marketplace',
-    description: 'List or find product and services',
-    buttonText: 'Buy & Sell',
-    imageurl: '/marketplace.png',
-    isMarketplace: true,
-    link: '/marketplace',
-  },
-  {
-    key: 'events',
-    title: 'Events',
-    description: 'Join or share events online & in person',
-    buttonText: 'Live Events',
-    imageurl: '/live_event.png',
-    link: '/events',
-  },
-  {
-    key: 'job_board',
-    title: 'Request Board',
-    description: 'Find work or hire the best talent',
-    buttonText: 'Request Board',
-    imageurl: '/job_board.png',
-    link: '/buyer-requests',
-  },
-  {
-    key: 'magazine',
-    title: 'Business Bosses Magazine',
-    description: 'For visionary leaders and bold builders',
-    buttonText: 'Bold Ideas',
-    isMagazine: true,
-    link: '/magazine',
-  },
-  {
-    key: 'partner',
-    title: "Partner's Deals",
-    description: 'Discover & list deals to get more custom...',
-    buttonText: "Partners Deals",
-    imageurl: 'https://images.pexels.com/photos/5520322/pexels-photo-5520322.jpeg',
-    link: '/partners',
-  },
-  {
-    key: 'mentor',
-    title: 'Mentor of the Week',
-    description: 'Explore learning resources for upskilling',
-    buttonText: 'Learning',
-    imageurl: 'https://images.pexels.com/photos/247819/pexels-photo-247819.jpeg',
-    link: '/feed',
-  },
-  {
-    key: 'crowdfund',
-    title: 'Crowdfund',
-    description: 'Share your project to get funding support',
-    buttonText: 'Crowdfund',
-    imageurl: '/donationpic.png',
-    link: '/donations',
-  },
-];
 
 export default function BossUpPage() {
   const [categories, setCategories] = useState<BossUpCategory[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
+
+  // Future challenge "How It Works!" dialog
   const [criteriaModal, setCriteriaModal] = useState<{
     title: string;
     criteria: string;
     startAt?: string | null;
   } | null>(null);
+
+  // App download popup for native mobile-only features (Live Events, Crowdfund)
+  const [appModal, setAppModal] = useState<AppDownloadModalInfo | null>(null);
+
+  // Active Challenge (BossUpSection) detail view
+  const [activeChallenge, setActiveChallenge] = useState<BossUpCategory | null>(null);
+  const [activeTab, setActiveTab] = useState<'posts' | 'members'>('posts');
+  const [challengePosts, setChallengePosts] = useState<Post[]>([]);
+  const [challengeMembers, setChallengeMembers] = useState<JoinedUser[]>([]);
+  const [challengeLoading, setChallengeLoading] = useState<boolean>(false);
+  const [totalPostsCount, setTotalPostsCount] = useState<number>(0);
+  const [isJoined, setIsJoined] = useState<boolean>(false);
 
   useEffect(() => {
     loadCategories();
@@ -132,8 +88,9 @@ export default function BossUpPage() {
     return 'Active';
   };
 
-  const handleChallengeClick = (cat: BossUpCategory) => {
+  const handleChallengeClick = async (cat: BossUpCategory) => {
     const now = Date.now();
+    // If not started yet, show How It Works dialog
     if (cat.startAt && new Date(cat.startAt).getTime() > now && cat.criteria) {
       setCriteriaModal({
         title: cat.industry,
@@ -142,8 +99,257 @@ export default function BossUpPage() {
       });
       return;
     }
-    // Navigate to challenge category feed/section
-    window.location.href = `/feed?category=${encodeURIComponent(cat.industry)}`;
+
+    // Open BossUpSection Detail View
+    setActiveChallenge(cat);
+    setActiveTab('posts');
+    setChallengeLoading(true);
+    try {
+      const [forumRes, memberRes] = await Promise.all([
+        bossUpService.getIndustryForums(cat.industryId),
+        bossUpService.getJoinedUsers(cat.industryId),
+      ]);
+      setChallengePosts(forumRes.posts);
+      setTotalPostsCount(forumRes.count);
+      setChallengeMembers(memberRes);
+    } catch (err) {
+      console.error('Failed to load challenge details', err);
+    } finally {
+      setChallengeLoading(false);
+    }
+  };
+
+  const handleToggleJoin = async () => {
+    if (!activeChallenge) return;
+    setIsJoined(!isJoined);
+    await bossUpService.toggleJoinIndustry(activeChallenge.industryId);
+  };
+
+  // If viewing a specific Challenge (Parity with mobile BossUpSection)
+  if (activeChallenge) {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] pb-20">
+        {/* Top Header */}
+        <div className="sticky top-0 z-30 bg-white border-b border-black/5 px-4 sm:px-6 py-3.5 flex items-center justify-between">
+          <button
+            onClick={() => setActiveChallenge(null)}
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-slate-900"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>Boss Up</span>
+          </button>
+          <h2 className="text-sm font-bold text-slate-900 truncate max-w-[200px] sm:max-w-md">
+            {activeChallenge.industry}
+          </h2>
+          <button
+            onClick={handleToggleJoin}
+            className={`px-3 py-1 rounded-full text-xs font-bold transition-colors ${
+              isJoined
+                ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                : 'bg-[#F21C29] text-white hover:bg-[#d91925]'
+            }`}
+          >
+            {isJoined ? 'Joined' : 'Join'}
+          </button>
+        </div>
+
+        <div className="max-w-3xl mx-auto p-4 sm:p-5 space-y-4">
+          {/* Banner Card */}
+          <div className="bg-white rounded-2xl border border-black/10 overflow-hidden shadow-xs">
+            <div className="relative h-36 sm:h-48 w-full bg-slate-100">
+              {activeChallenge.photo ? (
+                <img
+                  src={activeChallenge.photo}
+                  alt={activeChallenge.industry}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                  <Sparkles className="w-12 h-12" />
+                </div>
+              )}
+              <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-extrabold bg-[#F21C29] text-white shadow-sm">
+                {activeChallenge.industryId === '-MsUOGcOT9oRXGakCcJv'
+                  ? 'Free Promotion'
+                  : activeChallenge.award || 'Win'}
+              </div>
+            </div>
+
+            <div className="p-4 sm:p-5">
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900">
+                {activeChallenge.industry}
+              </h1>
+              {activeChallenge.description && (
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                  {activeChallenge.description}
+                </p>
+              )}
+
+              {/* Stats Bar */}
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-6 text-xs text-slate-600">
+                <div>
+                  <span className="font-extrabold text-slate-900">{totalPostsCount}</span>{' '}
+                  Posts
+                </div>
+                <div>
+                  <span className="font-extrabold text-slate-900">
+                    {challengeMembers.length || activeChallenge.joinedUsersCount || 0}
+                  </span>{' '}
+                  Members
+                </div>
+                <div className="flex items-center gap-1 text-slate-500 font-semibold">
+                  <Clock className="w-3.5 h-3.5 text-slate-400" />
+                  <span>{getStatusText(activeChallenge)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Segmented Tabs: Posts vs Members */}
+          <div className="bg-white rounded-2xl border border-black/10 p-1 flex">
+            <button
+              onClick={() => setActiveTab('posts')}
+              className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
+                activeTab === 'posts'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Posts ({challengePosts.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('members')}
+              className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
+                activeTab === 'members'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Members ({challengeMembers.length})
+            </button>
+          </div>
+
+          {/* Tab Content */}
+          {challengeLoading ? (
+            <div className="py-16 flex flex-col items-center justify-center gap-2 text-slate-400">
+              <Loader2 className="w-6 h-6 animate-spin text-[#F21C29]" />
+              <p className="text-xs font-semibold">Loading challenge data...</p>
+            </div>
+          ) : activeTab === 'posts' ? (
+            challengePosts.length === 0 ? (
+              <div className="py-16 bg-white rounded-2xl border border-black/10 text-center p-6">
+                <MessageSquare className="w-10 h-10 text-slate-300 mx-auto mb-2" />
+                <h4 className="text-sm font-bold text-slate-900">No Posts Yet</h4>
+                <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                  Be the first business to enter this challenge and get promoted!
+                </p>
+                <Link
+                  href="/feed"
+                  className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F21C29] text-white text-xs font-bold hover:bg-[#d91925] transition-colors"
+                >
+                  Create Entry
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {challengePosts.map((post) => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    onLike={() => {}}
+                    onComment={() => {}}
+                    onCoin={() => {}}
+                  />
+                ))}
+              </div>
+            )
+          ) : challengeMembers.length === 0 ? (
+            <div className="py-16 bg-white rounded-2xl border border-black/10 text-center p-6">
+              <Users className="w-10 h-10 text-slate-300 mx-auto mb-2" />
+              <h4 className="text-sm font-bold text-slate-900">No Members Yet</h4>
+              <p className="text-xs text-slate-500 mt-1">Join now to connect with entrepreneurs in this industry.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {challengeMembers.map((m) => (
+                <div
+                  key={m.uid}
+                  className="bg-white rounded-xl border border-black/10 p-3 flex items-center gap-3 shadow-xs"
+                >
+                  <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden flex-shrink-0">
+                    {m.photoUrl ? (
+                      <img src={m.photoUrl} alt={m.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center font-bold text-slate-500">
+                        {m.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xs font-bold text-slate-900 truncate">{m.name}</h4>
+                    <p className="text-[11px] text-slate-500 truncate">{m.industry || 'Business Boss'}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Opportunity card action dispatcher
+  const handleOpportunityClick = (key: string) => {
+    switch (key) {
+      case 'marketplace':
+        // Mobile: Get.to(() => MarketplaceScreen(initialIndex: 0))
+        window.location.href = '/marketplace';
+        break;
+
+      case 'events':
+        // Mobile: Get.toNamed(Routes.liveEvents)
+        // Live audio/video rooms require mobile native device permissions
+        setAppModal({
+          title: 'Live Events',
+          featureName: 'Interactive Live Events',
+          description:
+            'Join audio/video stages, participate in live Q&A, and network in real-time rooms directly inside the Business Bosses mobile app.',
+        });
+        break;
+
+      case 'job_board':
+        // Mobile: Get.to(() => BuyerRequestsScreen(showAppBar: true, title: 'Request Board'))
+        window.location.href = '/buyer-requests';
+        break;
+
+      case 'magazine':
+        // Mobile: openUrl(Uri.parse('https://businessbosses.co.uk/magazine'))
+        window.location.href = '/magazine';
+        break;
+
+      case 'partner':
+        // Mobile: Get.to(() => BossUpPartner()) -> external partner perks & deals
+        window.open('https://businessbosses.news/our-partners/', '_blank');
+        break;
+
+      case 'mentor':
+        // Mobile: Get.to(() => AllLearningPostsScreen(isCoursesTile: false)) -> Learn new skills
+        window.location.href = '/feed';
+        break;
+
+      case 'crowdfund':
+        // Mobile: Get.to(() => DonationsPage(ishome: false)) -> Crowdfund / Donations
+        setAppModal({
+          title: 'Crowdfund',
+          featureName: 'Crowdfund & Grants',
+          description:
+            'Create or back community fundraising campaigns, verify donors, and track campaign goals inside the Business Bosses mobile app.',
+        });
+        break;
+
+      default:
+        break;
+    }
   };
 
   return (
@@ -155,10 +361,11 @@ export default function BossUpPage() {
         </h1>
 
         <div className="flex items-center gap-3">
-          {/* Network Action */}
+          {/* Network Action (Search / Connect) */}
           <Link
-            href="/connect"
+            href="/feed"
             className="flex flex-col items-center justify-center text-slate-700 hover:text-slate-900 transition-colors"
+            title="Network"
           >
             <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center">
               <Users className="w-3.5 h-3.5 text-slate-700" />
@@ -257,61 +464,189 @@ export default function BossUpPage() {
             })}
 
             {/* 2. Fixed Opportunity Cards */}
-            {OPPORTUNITY_CARDS.map((item) => (
-              <div
-                key={item.key}
-                onClick={() => (window.location.href = item.link)}
-                className="bg-white rounded-2xl border border-black/10 p-3 sm:p-3.5 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow"
-              >
-                {/* Top Image / Banner: 86px height */}
-                <div className="relative h-[86px] w-full rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
-                  {item.isMagazine ? (
-                    <div className="h-full w-full bg-[#1A1A1A] p-2.5 flex flex-col justify-center">
-                      <span className="text-[#FACC15] text-[8px] font-extrabold tracking-wider">
-                        BUSINESS BOSSES MAGAZINE
-                      </span>
-                      <h4 className="text-white text-[11px] font-black leading-tight line-clamp-2 mt-0.5">
-                        Tell your story in the next issue
-                      </h4>
-                      <p className="text-[#94A3B8] text-[7.5px] font-medium line-clamp-2 mt-0.5">
-                        Founder profiles, The Next Big Idea and Founder's Playbook.
-                      </p>
-                    </div>
-                  ) : item.imageurl ? (
-                    <img
-                      src={item.imageurl}
-                      alt={item.title}
-                      className={`w-full h-full object-cover ${
-                        item.isMarketplace ? 'object-top' : 'object-center'
-                      }`}
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
-                      <Sparkles className="w-6 h-6" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Description & Action Section */}
-                <div className="mt-2 flex flex-col flex-1 justify-between">
-                  <p className="text-xs sm:text-sm text-slate-700 line-clamp-2 min-h-[32px] sm:min-h-[36px]">
-                    {item.description}
-                  </p>
-
-                  <button
-                    type="button"
-                    className="mt-2.5 w-full py-1.5 px-3 rounded-lg border border-[#F21C29] text-[#F21C29] font-bold text-xs sm:text-sm hover:bg-red-50 transition-colors text-center truncate"
-                  >
-                    {item.buttonText}
-                  </button>
-                </div>
+            {/* 1) Marketplace */}
+            <div
+              onClick={() => handleOpportunityClick('marketplace')}
+              className="bg-white rounded-2xl border border-black/10 p-3 sm:p-3.5 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow"
+            >
+              <div className="relative h-[86px] w-full rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+                <img
+                  src="/marketplace.png"
+                  alt="Marketplace"
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
-            ))}
+              <div className="mt-2 flex flex-col flex-1 justify-between">
+                <p className="text-xs sm:text-sm text-slate-700 line-clamp-2 min-h-[32px] sm:min-h-[36px]">
+                  List or find product and services
+                </p>
+                <button
+                  type="button"
+                  className="mt-2.5 w-full py-1.5 px-3 rounded-lg border border-[#F21C29] text-[#F21C29] font-bold text-xs sm:text-sm hover:bg-red-50 transition-colors text-center truncate"
+                >
+                  Buy & Sell
+                </button>
+              </div>
+            </div>
+
+            {/* 2) Events */}
+            <div
+              onClick={() => handleOpportunityClick('events')}
+              className="bg-white rounded-2xl border border-black/10 p-3 sm:p-3.5 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow"
+            >
+              <div className="relative h-[86px] w-full rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+                <img
+                  src="/live_event.png"
+                  alt="Events"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+              <div className="mt-2 flex flex-col flex-1 justify-between">
+                <p className="text-xs sm:text-sm text-slate-700 line-clamp-2 min-h-[32px] sm:min-h-[36px]">
+                  Join or share events online & in person
+                </p>
+                <button
+                  type="button"
+                  className="mt-2.5 w-full py-1.5 px-3 rounded-lg border border-[#F21C29] text-[#F21C29] font-bold text-xs sm:text-sm hover:bg-red-50 transition-colors text-center truncate"
+                >
+                  Live Events
+                </button>
+              </div>
+            </div>
+
+            {/* 3) Request Board */}
+            <div
+              onClick={() => handleOpportunityClick('job_board')}
+              className="bg-white rounded-2xl border border-black/10 p-3 sm:p-3.5 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow"
+            >
+              <div className="relative h-[86px] w-full rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+                <img
+                  src="/job_board.png"
+                  alt="Request Board"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+              <div className="mt-2 flex flex-col flex-1 justify-between">
+                <p className="text-xs sm:text-sm text-slate-700 line-clamp-2 min-h-[32px] sm:min-h-[36px]">
+                  Find work or hire the best talent
+                </p>
+                <button
+                  type="button"
+                  className="mt-2.5 w-full py-1.5 px-3 rounded-lg border border-[#F21C29] text-[#F21C29] font-bold text-xs sm:text-sm hover:bg-red-50 transition-colors text-center truncate"
+                >
+                  Request Board
+                </button>
+              </div>
+            </div>
+
+            {/* 4) Business Bosses Magazine */}
+            <div
+              onClick={() => handleOpportunityClick('magazine')}
+              className="bg-white rounded-2xl border border-black/10 p-3 sm:p-3.5 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow"
+            >
+              <div className="relative h-[86px] w-full rounded-xl overflow-hidden bg-[#1A1A1A] p-2.5 flex flex-col justify-center flex-shrink-0">
+                <span className="text-[#FACC15] text-[8px] font-extrabold tracking-wider">
+                  BUSINESS BOSSES MAGAZINE
+                </span>
+                <h4 className="text-white text-[11px] font-black leading-tight line-clamp-2 mt-0.5">
+                  Tell your story in the next issue
+                </h4>
+                <p className="text-[#94A3B8] text-[7.5px] font-medium line-clamp-2 mt-0.5">
+                  Founder profiles, The Next Big Idea and Founder's Playbook.
+                </p>
+              </div>
+              <div className="mt-2 flex flex-col flex-1 justify-between">
+                <p className="text-xs sm:text-sm text-slate-700 line-clamp-2 min-h-[32px] sm:min-h-[36px]">
+                  For visionary leaders and bold builders
+                </p>
+                <button
+                  type="button"
+                  className="mt-2.5 w-full py-1.5 px-3 rounded-lg border border-[#F21C29] text-[#F21C29] font-bold text-xs sm:text-sm hover:bg-red-50 transition-colors text-center truncate"
+                >
+                  Bold Ideas
+                </button>
+              </div>
+            </div>
+
+            {/* 5) Partner's Deals */}
+            <div
+              onClick={() => handleOpportunityClick('partner')}
+              className="bg-white rounded-2xl border border-black/10 p-3 sm:p-3.5 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow"
+            >
+              <div className="relative h-[86px] w-full rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+                <img
+                  src="https://images.pexels.com/photos/5520322/pexels-photo-5520322.jpeg"
+                  alt="Partner's Deals"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+              <div className="mt-2 flex flex-col flex-1 justify-between">
+                <p className="text-xs sm:text-sm text-slate-700 line-clamp-2 min-h-[32px] sm:min-h-[36px]">
+                  Discover & list deals to get more custom...
+                </p>
+                <button
+                  type="button"
+                  className="mt-2.5 w-full py-1.5 px-3 rounded-lg border border-[#F21C29] text-[#F21C29] font-bold text-xs sm:text-sm hover:bg-red-50 transition-colors text-center truncate"
+                >
+                  Partners Deals
+                </button>
+              </div>
+            </div>
+
+            {/* 6) Mentor of the Week */}
+            <div
+              onClick={() => handleOpportunityClick('mentor')}
+              className="bg-white rounded-2xl border border-black/10 p-3 sm:p-3.5 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow"
+            >
+              <div className="relative h-[86px] w-full rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+                <img
+                  src="https://images.pexels.com/photos/247819/pexels-photo-247819.jpeg"
+                  alt="Mentor of the Week"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+              <div className="mt-2 flex flex-col flex-1 justify-between">
+                <p className="text-xs sm:text-sm text-slate-700 line-clamp-2 min-h-[32px] sm:min-h-[36px]">
+                  Explore learning resources for upskilling
+                </p>
+                <button
+                  type="button"
+                  className="mt-2.5 w-full py-1.5 px-3 rounded-lg border border-[#F21C29] text-[#F21C29] font-bold text-xs sm:text-sm hover:bg-red-50 transition-colors text-center truncate"
+                >
+                  Learning
+                </button>
+              </div>
+            </div>
+
+            {/* 7) Crowdfund */}
+            <div
+              onClick={() => handleOpportunityClick('crowdfund')}
+              className="bg-white rounded-2xl border border-black/10 p-3 sm:p-3.5 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow"
+            >
+              <div className="relative h-[86px] w-full rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+                <img
+                  src="/donationpic.png"
+                  alt="Crowdfund"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+              <div className="mt-2 flex flex-col flex-1 justify-between">
+                <p className="text-xs sm:text-sm text-slate-700 line-clamp-2 min-h-[32px] sm:min-h-[36px]">
+                  Share your project to get funding support
+                </p>
+                <button
+                  type="button"
+                  className="mt-2.5 w-full py-1.5 px-3 rounded-lg border border-[#F21C29] text-[#F21C29] font-bold text-xs sm:text-sm hover:bg-red-50 transition-colors text-center truncate"
+                >
+                  Crowdfund
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
 
-      {/* How It Works Dialog Modal (Matches Flutter AlertDialog in BossupChallenge) */}
+      {/* 1. How It Works Dialog Modal (Matches Flutter AlertDialog in BossupChallenge) */}
       {criteriaModal && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-xl animate-in fade-in zoom-in-95 duration-150">
@@ -339,6 +674,60 @@ export default function BossUpPage() {
                 OK
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 2. Native Mobile Feature Prompt Modal (Live Events, Crowdfund) */}
+      {appModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+            <button
+              onClick={() => setAppModal(null)}
+              className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-14 h-14 rounded-2xl bg-red-50 text-[#F21C29] flex items-center justify-center mx-auto mb-4">
+              <Smartphone className="w-7 h-7" />
+            </div>
+
+            <h3 className="text-lg font-extrabold text-slate-900 mb-1">
+              {appModal.title}
+            </h3>
+            <p className="text-xs text-slate-500 mb-5 leading-relaxed">
+              {appModal.description}
+            </p>
+
+            <div className="space-y-2.5">
+              <a
+                href="https://apps.apple.com/gh/app/business-bosses-networking/id1569332982"
+                target="_blank"
+                rel="noreferrer"
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-black transition-colors"
+              >
+                <span>Download on iOS App Store</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+
+              <a
+                href="https://play.google.com/store/search?q=Business%20bosses&c=apps"
+                target="_blank"
+                rel="noreferrer"
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-100 text-slate-800 font-bold text-xs hover:bg-slate-200 transition-colors"
+              >
+                <span>Get it on Google Play</span>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+              </a>
+            </div>
+
+            <button
+              onClick={() => setAppModal(null)}
+              className="mt-4 text-xs font-semibold text-slate-400 hover:text-slate-600"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
