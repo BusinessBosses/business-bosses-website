@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Plus, Sparkles, RefreshCw, Layers } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Plus, Sparkles, RefreshCw, Layers, Loader2 } from 'lucide-react';
 import PostCard, { Post } from '../../../components/feed/PostCard';
 import CreatePostModal from '../../../components/feed/CreatePostModal';
 import CommentsModal from '../../../components/feed/CommentsModal';
@@ -19,17 +19,24 @@ export default function FeedPage() {
   const [activeTab, setActiveTab] = useState<'forYou' | 'following'>('forYou');
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [commentPost, setCommentPost] = useState<Post | null>(null);
 
-  // Real highlights state (no placeholders/dummies)
+  // Highlights state
   const [bossOfTheWeek, setBossOfTheWeek] = useState<BossOfTheWeekData | null>(null);
   const [deals, setDeals] = useState<PartnerDealData[]>([]);
   const [isFollowingBoss, setIsFollowingBoss] = useState<boolean>(false);
 
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
   useEffect(() => {
-    fetchPosts();
+    setPage(0);
+    setHasMore(true);
+    fetchInitialPosts();
     if (activeTab === 'forYou') {
       fetchHighlights();
     }
@@ -48,19 +55,67 @@ export default function FeedPage() {
     }
   };
 
-  const fetchPosts = async () => {
+  const fetchInitialPosts = async () => {
     setLoading(true);
     try {
-      const fetched = await postService.getPosts(activeTab);
+      const fetched = await postService.getPosts(activeTab, 0, 20);
       setPosts(fetched || []);
+      setHasMore((fetched || []).length >= 10);
+      setPage(1);
     } catch (error) {
-      console.error('Post fetch failed', error);
+      console.error('Initial post fetch failed', error);
       setPosts([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
   };
+
+  const loadMorePosts = async () => {
+    if (loadingMore || !hasMore || loading) return;
+    setLoadingMore(true);
+
+    try {
+      const lastPost = posts[posts.length - 1];
+      const lastTs = lastPost?.timestamp;
+      const nextPosts = await postService.getPosts(activeTab, page, 20, lastTs);
+
+      if (nextPosts && nextPosts.length > 0) {
+        // Prevent duplicates
+        setPosts((prev) => {
+          const existingIds = new Set(prev.map((p) => p.id));
+          const filtered = nextPosts.filter((p) => !existingIds.has(p.id));
+          return [...prev, ...filtered];
+        });
+        setPage((prev) => prev + 1);
+        setHasMore(nextPosts.length >= 10);
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      console.warn('Error loading more posts', err);
+      setHasMore(false);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
+  // IntersectionObserver Sentinel Callback for Infinite Scroll
+  const lastElementRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (loading || loadingMore) return;
+      if (observerRef.current) observerRef.current.disconnect();
+
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMorePosts();
+        }
+      });
+
+      if (node) observerRef.current.observe(node);
+    },
+    [loading, loadingMore, hasMore, page, posts]
+  );
 
   const handleFollowBoss = async (uid: string) => {
     const success = await feedHighlightService.followUser(uid);
@@ -123,7 +178,7 @@ export default function FeedPage() {
           <button
             onClick={() => {
               setRefreshing(true);
-              fetchPosts();
+              fetchInitialPosts();
               if (activeTab === 'forYou') fetchHighlights();
             }}
             disabled={refreshing}
@@ -134,7 +189,7 @@ export default function FeedPage() {
           </button>
         </div>
 
-        {/* Mobile Feed Parity Sections (Only rendered if live data exists) */}
+        {/* Mobile Feed Parity Highlights */}
         {activeTab === 'forYou' && bossOfTheWeek && (
           <BossOfTheWeekCard
             boss={bossOfTheWeek}
@@ -168,18 +223,30 @@ export default function FeedPage() {
           </div>
         ) : posts.length > 0 ? (
           <div className="space-y-4">
-            {posts.map((post) => (
-              <PostCard
-                key={post.id}
-                post={post}
-                onOpenComments={(p) => setCommentPost(p)}
-                onPostUpdated={(updated) => {
-                  setPosts((prev) =>
-                    prev.map((item) => (item.id === updated.id ? updated : item))
-                  );
-                }}
-              />
-            ))}
+            {posts.map((post, idx) => {
+              const isLast = idx === posts.length - 1;
+              return (
+                <div key={post.id} ref={isLast ? lastElementRef : undefined}>
+                  <PostCard
+                    post={post}
+                    onOpenComments={(p) => setCommentPost(p)}
+                    onPostUpdated={(updated) => {
+                      setPosts((prev) =>
+                        prev.map((item) => (item.id === updated.id ? updated : item))
+                      );
+                    }}
+                  />
+                </div>
+              );
+            })}
+
+            {/* Bottom Infinite Scroll Spinner */}
+            {loadingMore && (
+              <div className="flex items-center justify-center py-6 text-slate-400">
+                <Loader2 className="w-6 h-6 animate-spin text-[#F21C29]" />
+                <span className="ml-2 text-xs font-semibold">Loading more posts...</span>
+              </div>
+            )}
           </div>
         ) : (
           <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center flex flex-col items-center">
@@ -203,10 +270,10 @@ export default function FeedPage() {
         <CreatePostModal
           isOpen={isCreateOpen}
           onClose={() => setIsCreateOpen(false)}
-          onPostCreated={fetchPosts}
+          onPostCreated={fetchInitialPosts}
         />
 
-        {/* Comments Modal (Parity with Mobile PostLikeComment) */}
+        {/* Comments Modal */}
         {commentPost && (
           <CommentsModal
             isOpen={!!commentPost}

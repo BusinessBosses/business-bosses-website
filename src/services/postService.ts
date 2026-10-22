@@ -9,16 +9,24 @@ export interface CreatePostPayload {
 export const postService = {
   /**
    * Fetch timeline posts matching mobile home_controller.dart:
-   * 1. Fetches from /post/all-posts-new or /init/new
+   * 1. Fetches from /post/all-posts-new or /post/get-posts
    * 2. Unpacks response.data (which returns { posts: { rows: [] }, forums: { rows: [] }, courses: { rows: [] } })
    * 3. Flattens and mixes posts and community forums, sorted by timestamp DESC
    */
-  async getPosts(tab: 'forYou' | 'following' = 'forYou', page = 0, limit = 20): Promise<Post[]> {
+  async getPosts(
+    tab: 'forYou' | 'following' = 'forYou',
+    page = 0,
+    limit = 20,
+    lastTimestamp?: number
+  ): Promise<Post[]> {
     try {
       const endpoint = tab === 'forYou' ? '/post/all-posts-new' : '/post/get-posts';
-      const res = await apiClient.get(endpoint, {
-        params: { page, size: limit },
-      });
+      const params: Record<string, any> = { page, size: limit };
+      if (lastTimestamp) {
+        params.lastTimestamp = lastTimestamp;
+      }
+
+      const res = await apiClient.get(endpoint, { params });
 
       const responseData = res.data?.data || res.data;
       if (!responseData) return [];
@@ -144,10 +152,7 @@ export const postService = {
       });
 
       // Unified organic list sorted by timestamp DESC (mobile mixPostandPromoted algorithm)
-      const combined = [...mappedPosts, ...mappedForums].sort((a, b) => b.timestamp - a.timestamp);
-
-      // Return clean Post objects
-      return combined.map(({ timestamp, ...post }) => post);
+      return [...mappedPosts, ...mappedForums].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
     } catch (error) {
       console.error('Failed to fetch posts', error);
       return [];

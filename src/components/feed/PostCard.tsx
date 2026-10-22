@@ -39,6 +39,7 @@ export interface Post {
   coinsCount?: number;
   repostsCount?: number;
   category?: string;
+  timestamp?: number;
   isLiked?: boolean;
   isCoined?: boolean;
   isBookmarked?: boolean;
