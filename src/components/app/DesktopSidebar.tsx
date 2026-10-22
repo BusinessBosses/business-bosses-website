@@ -60,7 +60,9 @@ export default function DesktopSidebar() {
         avatarUrl: user.profilePicture || user.image || user.avatar || undefined,
         isSubscribed: !!(user.isSubscribed || user.isBossPro),
         coinsCount:
-          typeof user.coinsCount === 'number'
+          typeof user.coinscount === 'number'
+            ? user.coinscount
+            : typeof user.coinsCount === 'number'
             ? user.coinsCount
             : typeof user.coins === 'number'
             ? user.coins
@@ -96,13 +98,13 @@ export default function DesktopSidebar() {
           <Link
             href="/subscription"
             className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100/70 hover:to-orange-100/70 border border-amber-200/80 rounded-xl transition-all group"
-            title="Your Boss Coins"
+            title="Your Coins"
           >
             <div className="flex items-center space-x-2">
               <div className="relative w-5 h-5">
                 <Image src="/coin.svg" alt="Coins" fill className="object-contain" />
               </div>
-              <span className="text-xs font-bold text-slate-700">Boss Coins</span>
+              <span className="text-xs font-bold text-slate-700">Coins</span>
             </div>
             <span className="text-xs font-black text-amber-900 group-hover:scale-105 transition-transform">
               {formatCoins(currentUser?.coinsCount)}

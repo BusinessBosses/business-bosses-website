@@ -21,7 +21,9 @@ export default function AppTopHeader() {
       const user = await authService.getCurrentUser();
       if (user) {
         setCoinsCount(
-          typeof user.coinsCount === 'number'
+          typeof user.coinscount === 'number'
+            ? user.coinscount
+            : typeof user.coinsCount === 'number'
             ? user.coinsCount
             : typeof user.coins === 'number'
             ? user.coins
@@ -57,7 +59,7 @@ export default function AppTopHeader() {
         <Link
           href="/subscription"
           className="flex items-center space-x-1.5 px-2.5 py-1 bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 rounded-full transition-colors"
-          title="Your Boss Coins"
+          title="Your Coins"
         >
           <div className="relative w-4 h-4">
             <Image src="/coin.svg" alt="Coins" fill className="object-contain" />
