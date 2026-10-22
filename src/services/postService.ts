@@ -5,9 +5,49 @@ import { authService } from './authService';
 export interface CreatePostPayload {
   text: string;
   image?: string;
+  images?: string[];
+  ytUrl?: string;
 }
 
 export const postService = {
+  /**
+   * Upload an image file using primary or fallback upload service
+   */
+  async uploadImage(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      // Primary: backend proxy /uploads/fallback
+      const res = await apiClient.post('/uploads/fallback', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (res.data?.success && res.data?.data?.url) {
+        return res.data.data.url;
+      }
+      if (res.data?.data?.fileUrl) {
+        return res.data.data.fileUrl;
+      }
+    } catch (fallbackErr) {
+      // Fallback: direct legacy upload endpoint
+      try {
+        const legacyRes = await fetch('https://businessbosses.com.ng/upload.php', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await legacyRes.json();
+        if (data?.fileUrl) {
+          return data.fileUrl;
+        }
+      } catch (legacyErr) {
+        console.error('Both upload channels failed', legacyErr);
+      }
+    }
+
+    throw new Error('Could not upload image. Please check file size and format.');
+  },
   /**
    * Fetch timeline posts matching mobile home_controller.dart:
    * 1. Fetches from /post/all-posts-new or /post/get-posts
