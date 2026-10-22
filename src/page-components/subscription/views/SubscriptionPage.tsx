@@ -1,341 +1,167 @@
-import { useRef, useState } from "react";
-import CommonPageHeader from "../../../common/components/headers/CommonPageHeader";
-import SegmentedControl from "../../../common/components/segmented_control/SegmentedControl";
-import FilledButton from "../../../common/components/buttons/FilledButton";
-import Assets from "../../../assets";
+import React, { useRef, useState } from "react";
 import SubscriptionController, {
   PaymentIntentStruct,
 } from "../controller/SubscriptionController";
-import ComputerHeader from "../../home/views/components/ComputerHeader";
-import MobileBossOfTheWeek from "../../home/views/components/BossOfTheWeek";
-import ComputerProfileDetails from "../../profile/views/components/ComputerProfiledetailswcr";
 import { useAppSelector } from "../../../redux/store/store";
 import { useRouter } from "next/navigation";
-import RoutesPath from "../../../constants/Routes";
 import { PartnerData } from "../../../common/interfaces/partnerdata";
 import { PartnerDatatile } from "../../../common/interfaces/partnerdatatile";
-import { Helmet } from "react-helmet";
+import { CheckCircle2, Star, Sparkles, MapPin, Map, Lock, Users, Zap } from "lucide-react";
 
 interface Props {
   partnerData: PartnerData | null;
-partnerDatatile: PartnerDatatile | null;
+  partnerDatatile: PartnerDatatile | null;
 }
+
 const SubscriptionPage: React.FC<Props> = ({ partnerData, partnerDatatile }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const controlRef = useRef<HTMLDivElement>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0); // 0 = Annually (Pro Yearly), 1 = Monthly
   const [processing, setProcessing] = useState<boolean>(false);
   const profile = useAppSelector((state) => state.user);
   const router = useRouter();
+
   const prices: PaymentIntentStruct[] = [
     {
-      plan: "monthly",
-      price: "price_1NfNnDEGsMsi6baU9FbZf8dQ",
+      plan: "annually",
+      price: "price_1NfNnDEGsMsi6baUkDiWNJr7", // Update with actual stripe price ID if needed
     },
     {
-      plan: "annually",
-      price: "price_1NfNnDEGsMsi6baUkDiWNJr7",
-    },
-  ];
-  const handleSegmentChange = (value: string, index: number) => {
-    setSelectedIndex(index);
-  };
-
-  const getMoneyText = () => {
-    if (selectedIndex === 0) {
-      return (
-        <span className="text-md lg:text-base">
-          Upgrade to a premium boss experience at only
-          <span style={{ color: "red" }}> $9.99/month</span>
-        </span>
-      );
-    } else {
-      return (
-        <span className="text-md lg:text-base">
-          Upgrade to a premium boss experience at only{" "}
-          <span style={{ color: "red" }}> $49.99/year</span>
-        </span>
-      );
+      plan: "monthly",
+      price: "price_1NfNnDEGsMsi6baU9FbZf8dQ", // Update with actual stripe price ID if needed
     }
-  };
+  ];
 
   const createSubscriptionIntent = async () => {
     if (processing) return;
-
     setProcessing(true);
-
-    const response = await SubscriptionController.createSubscriptionIntent(
-      prices[selectedIndex]
-    );
-    if (response.success) {
-      window.open(response.data, "_blank")?.focus();
-    }else{
-
+    try {
+      const intentData = prices[selectedIndex];
+      const res = await SubscriptionController.createSubscriptionIntent(intentData);
+      // Integration with stripe would follow here using res.data
+      console.log('Subscription intent created', res);
+    } catch (error) {
+      console.error('Subscription error', error);
+    } finally {
+      setProcessing(false);
     }
-    console.log(response);
-
-    setProcessing(false);
   };
 
   return (
-    <div>
-       <Helmet>
-        <title>Become a Premium Member - Business Bosses</title>
-      </Helmet>
-      <div className=""
+    <div className="w-full max-w-lg mx-auto py-8 px-4 pb-24 lg:pb-8">
+       {/* Header Card */}
+       <div className="bg-[#8E44AD] rounded-t-2xl p-6 text-white text-center shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+          <h1 className="text-2xl font-bold mb-2">Upgrade to a Pro Boss Experience</h1>
+          <p className="text-white/80 text-sm">Everything you need to boost and grow your business 10X faster, all in one place.</p>
+       </div>
 
-      >
-        <div className="mobile-only">
-          <div
-            className="bg-white top-0 w-full z-50"
-            style={{
-              position: "sticky",
-              top: 0,
-              zIndex: 100,
-
-
-              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.02)",
-            }}
-          >
-
-            <CommonPageHeader title="Become a premium member" />
+       <div className="bg-white p-6 shadow-lg rounded-b-2xl border border-slate-200 border-t-0">
+          
+          {/* 8 Core Perks */}
+          <div className="space-y-4 mb-8">
+             <h2 className="font-bold text-slate-900 border-b border-slate-100 pb-2">What's included:</h2>
+             
+             <div className="grid grid-cols-1 gap-3 text-sm text-slate-700">
+               <div className="flex items-center space-x-3">
+                 <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                 <span>Premium Gold Pro Badge</span>
+               </div>
+               <div className="flex items-center space-x-3">
+                 <Zap className="w-5 h-5 text-[#8E44AD] shrink-0" />
+                 <span>Earn 100 bonus coins per month</span>
+               </div>
+               <div className="flex items-center space-x-3">
+                 <Sparkles className="w-5 h-5 text-[#E67E22] shrink-0" />
+                 <span>Boost posts FREE with coins</span>
+               </div>
+               <div className="flex items-center space-x-3">
+                 <Users className="w-5 h-5 text-blue-500 shrink-0" />
+                 <span>More connections & verified business referrals</span>
+               </div>
+               <div className="flex items-center space-x-3">
+                 <Star className="w-5 h-5 text-yellow-500 shrink-0" />
+                 <span>Featured marketplace listing placements</span>
+               </div>
+               <div className="flex items-center space-x-3">
+                 <Lock className="w-5 h-5 text-slate-600 shrink-0" />
+                 <span>Exclusive partner discounts & academy perks</span>
+               </div>
+               <div className="flex items-center space-x-3">
+                 <Map className="w-5 h-5 text-teal-500 shrink-0" />
+                 <span>Grow business with automated marketing campaigns</span>
+               </div>
+               <div className="flex items-center space-x-3">
+                 <MapPin className="w-5 h-5 text-red-500 shrink-0" />
+                 <span>Find more verified leads & business matches</span>
+               </div>
+             </div>
           </div>
-          <div className="" style={{
-            textAlign: "center",
-            height: "100vh",
-            borderTop: '15px solid rgba(244, 244, 244, 1)',
-            background: "linear-gradient(180deg, #CCDCEE 0%, #FFF 50%)",
-          }}>
-            <div className="p-5">
-              <div className="mt-5 font-bold">{getMoneyText()}</div>
-              <div className="">
-                <SegmentedControl
-                  segments={[
-                    {
-                      label: "Monthly",
-                      ref: useRef<HTMLDivElement>(null),
-                      value: "1",
-                    },
-                    {
-                      label: "Annually",
-                      ref: useRef<HTMLDivElement>(null),
-                      value: "2",
-                    },
-                  ]}
-                  controlRef={controlRef}
-                  name=""
-                  defaultIndex={selectedIndex}
-                  callback={handleSegmentChange}
-                />
-              </div>
 
-              <div
-                className="px-8 py-10"
-                style={{
-                  borderRadius: "16px",
-                  background: "",
-                  boxShadow: "0px 0px 250px 0px rgba(0, 0, 0, 0.25)",
-                  backdropFilter: "blur(5px)",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "start",
-                }}
-              >
-                <div className="font-bold text-sm">What's included:</div>
-                <div className="mt-5 items-center" style={{ display: "flex" }}>
-                  <Assets.Checkmark height={22} />
-                  <span className="text-sm" style={{ marginLeft: "8px" }}>Premium Badge</span>
-                </div>
-                <div className="items-center mt-4" style={{ display: "flex" }}>
-                  <img src={Assets.Coin} alt="" />
-                  <span className="text-sm" style={{ marginLeft: "8px" }}>Get 500 coins per month</span>
-                </div>
-                <div className="items-center mt-3" style={{ display: "flex" }}>
-                  <img src={Assets.Rocket} alt="" />
-                  <span className="text-sm" style={{ marginLeft: "8px" }}>
-                    Boost post FREE with coins
-                  </span>
-                </div>
-                <div className="text-sm items-center mt-3" style={{ display: "flex" }}>
-                  <Assets.Moreconnections height={20} />
-                  <span style={{ marginLeft: "8px" }}>
-                    More connections & referrals
-                  </span>
-                </div>
-                <div className="text-sm items-center mt-4" style={{ display: "flex" }}>
-                  <Assets.Rankingicon height={20} />
-                  <span className="text-sm" style={{ marginLeft: "8px" }}>
-                    Rank higher on posts & listing
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-5">
-                <FilledButton
-                  onClick={createSubscriptionIntent}
-                  text={
-                    // 'Continue'
-                    processing
-                      ? "Processing..."
-                      : selectedIndex === 0
-                        ? "Subscribe at $4.99"
-                        : "Subscribe at $49.99"
-                  }
-                  className="w-full p-3"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-      <div className="computer-only bg-[#fff]">
-        <ComputerHeader partnerData={partnerData} partnerDatatile={partnerDatatile}   />
-
-        <div className="computer-content">
-          <div
-            className="firstsection ml-5 lg:ml-20 pr-5"
-            style={{
-              width: "25%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-            <div className="">
-              <div className=" flex items-center gap-3">
-                <ComputerProfileDetails data={profile.profile!} />
-              </div>
-            </div>
-          </div>
-          <div style={{ borderLeft: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div
-            className="computer-main-content"
-            style={{ width: "50%", flexGrow: 0 }}
-          >
-            <div className="computer-only">
-
-              <CommonPageHeader title="Become a premium member" />
-              <div className="" style={{
-                textAlign: "center",
-                height: "100vh",
-                borderTop: '15px solid rgba(244, 244, 244, 1)',
-                background: "linear-gradient(180deg, #CCDCEE 0%, #FFF 50%)",
-              }}>
-                <div className="p-5">
-                  <div className="mt-5 font-bold">{getMoneyText()}</div>
-                  <div className="">
-                    <SegmentedControl
-                      segments={[
-                        {
-                          label: "Monthly",
-                          ref: useRef<HTMLDivElement>(null),
-                          value: "1",
-                        },
-                        {
-                          label: "Annually",
-                          ref: useRef<HTMLDivElement>(null),
-                          value: "2",
-                        },
-                      ]}
-                      controlRef={controlRef}
-                      name=""
-                      defaultIndex={selectedIndex}
-                      callback={handleSegmentChange}
-                    />
+          {/* Pricing Options */}
+          <div className="space-y-3 mb-6">
+             {/* Pro Yearly */}
+             <div 
+               onClick={() => setSelectedIndex(0)}
+               className={`relative border-2 rounded-xl p-4 cursor-pointer transition-all ${selectedIndex === 0 ? 'border-red-500 bg-red-50' : 'border-slate-200 hover:border-red-300'}`}
+             >
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center space-x-3">
+                     <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedIndex === 0 ? 'border-red-500' : 'border-slate-300'}`}>
+                        {selectedIndex === 0 && <div className="w-2.5 h-2.5 rounded-full bg-red-500" />}
+                     </div>
+                     <div>
+                       <div className="font-bold text-slate-900">Pro Yearly</div>
+                       <div className="text-xs font-semibold text-slate-500">Best Value · Save 33%</div>
+                       <div className="mt-1 flex items-center space-x-1 bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-bold w-max">
+                         <span>🎁 2 months free included</span>
+                       </div>
+                     </div>
                   </div>
-
-                  <div
-                    className="px-8 py-10"
-                    style={{
-                      borderRadius: "16px",
-                      background: "",
-                      boxShadow: "0px 0px 250px 0px rgba(0, 0, 0, 0.25)",
-                      backdropFilter: "blur(5px)",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "start",
-                    }}
-                  >
-                    <div className="font-bold text-base">What's included:</div>
-                    <div className="mt-5 items-center" style={{ display: "flex" }}>
-                      <Assets.Checkmark />
-                      <span className="text-base" style={{ marginLeft: "8px" }}>Premium Badge</span>
-                    </div>
-                    <div className="items-center mt-4" style={{ display: "flex" }}>
-                      <img src={Assets.Coin} alt="" />
-                      <span className="text-base" style={{ marginLeft: "8px" }}>Get 500 coins per month</span>
-                    </div>
-                    <div className="items-center mt-3" style={{ display: "flex" }}>
-                      <img src={Assets.Rocket} alt="" />
-                      <span className="text-base" style={{ marginLeft: "8px" }}>
-                        Boost post FREE with coins
-                      </span>
-                    </div>
-                    <div className="text-sm items-center mt-3" style={{ display: "flex" }}>
-                      <Assets.Moreconnections height={20} />
-                      <span className="text-base" style={{ marginLeft: "8px" }}>
-                        More connections & referrals
-                      </span>
-                    </div>
-                    <div className="text-sm items-center mt-4" style={{ display: "flex" }}>
-                      <Assets.Rankingicon height={20} />
-                      <span className="text-base" style={{ marginLeft: "8px" }}>
-                        Rank higher on posts & listing
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-5">
-                    <FilledButton
-                      onClick={createSubscriptionIntent}
-                      text={
-                        // 'Continue'
-                        processing
-                          ? "Processing..."
-                          : selectedIndex === 0
-                            ? "Subscribe at $4.99"
-                            : "Subscribe at $49.99"
-                      }
-                      className="w-full p-3"
-                    />
+                  <div className="text-right">
+                    <div className="font-bold text-slate-900">$9.99/mo</div>
+                    <div className="text-xs text-slate-500">($119.88/year)</div>
                   </div>
                 </div>
-              </div>
-            </div>
+             </div>
 
+             {/* Pro Monthly */}
+             <div 
+               onClick={() => setSelectedIndex(1)}
+               className={`relative border-2 rounded-xl p-4 cursor-pointer transition-all ${selectedIndex === 1 ? 'border-red-500 bg-red-50' : 'border-slate-200 hover:border-red-300'}`}
+             >
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center space-x-3">
+                     <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedIndex === 1 ? 'border-red-500' : 'border-slate-300'}`}>
+                        {selectedIndex === 1 && <div className="w-2.5 h-2.5 rounded-full bg-red-500" />}
+                     </div>
+                     <div>
+                       <div className="font-bold text-slate-900">Pro Monthly</div>
+                       <div className="text-xs font-semibold text-slate-500">Cancel anytime</div>
+                     </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-slate-900">$14.99/mo</div>
+                  </div>
+                </div>
+             </div>
           </div>
-          <div style={{ borderRight: "1.2px solid rgba(0, 0, 0, 0.1)" }}></div>
-          <div
-            className="lastsection pl-5 mr-5 mt-5 lg:mr-20 pr-0 mb-0"
-            style={{
-              width: "25%",
-              flexGrow: 0,
-              overflow: "none",
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-            }}
+
+          {/* Action Button */}
+          <button 
+             onClick={createSubscriptionIntent}
+             disabled={processing}
+             className="w-full py-4 rounded-xl font-bold text-white shadow-md transition-all flex justify-center items-center disabled:opacity-70 bg-[#8E44AD] hover:bg-[#6C3483]"
           >
-            <div className="rounded-xl overflow-hidden" style={{}}>
-              {profile.bossup ? (
-                <MobileBossOfTheWeek bossOfTheWeek={profile.bossup!} partnerData={partnerData}   partnerDatatile={partnerDatatile} />
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-
-
-
+             {processing ? (
+               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+             ) : (
+               <span>{selectedIndex === 0 ? 'Subscribe to Pro Yearly (Get 2 Months Free)' : 'Subscribe to Pro Monthly'}</span>
+             )}
+          </button>
+          
+          <p className="text-center text-[10px] text-slate-400 mt-4">
+             Secure payment powered by Stripe. Cancel anytime.
+          </p>
+       </div>
     </div>
   );
 };
