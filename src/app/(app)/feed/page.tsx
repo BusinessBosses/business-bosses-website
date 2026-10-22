@@ -321,6 +321,7 @@ export default function FeedPage() {
             onClose={() => setCommentPost(null)}
             postId={commentPost.id}
             authorUid={commentPost.author.id}
+            initialComments={commentPost.comments}
             onCommentAdded={() => {
               setPosts((prev) =>
                 prev.map((p) =>

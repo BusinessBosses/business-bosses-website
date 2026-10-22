@@ -37,6 +37,7 @@ export interface Post {
   createdAt: string;
   likesCount: number;
   commentsCount: number;
+  comments?: any[];
   coinsCount?: number;
   repostsCount?: number;
   category?: string;
