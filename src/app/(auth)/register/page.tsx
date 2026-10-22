@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock, User, AtSign, ArrowRight } from 'lucide-react';
 import { authService } from '../../../services/authService';
+import { toast } from 'react-toastify';
 import Link from 'next/link';
 
 export default function RegisterPage() {
@@ -19,12 +20,16 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullname.trim() || !username.trim() || !email.trim() || !password.trim()) {
-      setError('Please fill in all fields.');
+      const msg = 'Please fill in all fields.';
+      setError(msg);
+      toast.error(msg);
       return;
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters.');
+      const msg = 'Password must be at least 6 characters.';
+      setError(msg);
+      toast.error(msg);
       return;
     }
 
@@ -42,6 +47,7 @@ export default function RegisterPage() {
       const token = authService.extractToken(response);
 
       if (response.success) {
+        toast.success('Account created successfully!');
         if (token) {
           authService.setToken(token);
           window.location.href = '/feed';
@@ -49,16 +55,21 @@ export default function RegisterPage() {
           window.location.href = '/login?registered=true';
         }
       } else {
-        setError(response.message || 'Registration failed. Please try again.');
+        const errorMsg = response.message || 'Registration failed. Please try again.';
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     } catch (err: any) {
       console.error('Registration error', err);
       if (err.message === 'Network Error' || err.response?.status >= 500) {
         console.warn('API unavailable, bypassing signup for demo mode');
         authService.setToken('mock-jwt-token-12345');
+        toast.success('Account created (demo mode)!');
         window.location.href = '/feed';
       } else {
-        setError(err.response?.data?.message || err.response?.data?.error || 'Registration failed. Please check your details.');
+        const errorMsg = err.response?.data?.message || err.response?.data?.error || 'Registration failed. Please check your details.';
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     } finally {
       setLoading(false);

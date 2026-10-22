@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "react-toastify";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import AppAppBar from "./AppAppBar";
@@ -82,16 +83,16 @@ export default function NewsHero() {
       });
 
       if (res.ok) {
-        alert("Member news post submitted successfully and is pending admin review!");
+        toast.success("Member news post submitted successfully and is pending admin review!");
         setOpenModal(false);
         fetchNews();
       } else {
         const errJson = await res.json();
-        alert("Failed to submit news: " + (errJson.message || "Unknown error"));
+        toast.error("Failed to submit news: " + (errJson.message || "Unknown error"));
       }
     } catch (err: any) {
       console.error("Submission error:", err);
-      alert("Error submitting news article");
+      toast.error("Error submitting news article");
     } finally {
       setSubmitting(false);
     }

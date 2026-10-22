@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import React, { useState, useEffect } from "react";
 
 export const dynamic = 'force-dynamic';
@@ -122,7 +123,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
       !product.category ||
       (product.quantity ?? 0) <= 0
     ) {
-      alert("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       return;
     }
 

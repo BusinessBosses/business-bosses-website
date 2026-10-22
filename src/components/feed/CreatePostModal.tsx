@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { X, Sparkles, Image as ImageIcon, Send, Loader2 } from 'lucide-react';
-import { apiClient } from '../../lib/apiClient';
+import { postService } from '../../services/postService';
+import { toast } from 'react-toastify';
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -66,9 +67,10 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
         payload.image = imageUrl.trim();
       }
 
-      await apiClient.post('/post/create-post', payload);
+      await postService.createPost(payload);
       setContent('');
       setImageUrl('');
+      toast.success('Post shared successfully!');
       if (onPostCreated) onPostCreated();
       onClose();
     } catch (err: any) {
@@ -77,10 +79,13 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
       if (err.message === 'Network Error' || err.response?.status >= 500) {
         setContent('');
         setImageUrl('');
+        toast.success('Post shared successfully!');
         if (onPostCreated) onPostCreated();
         onClose();
       } else {
-        setError(err.response?.data?.message || 'Failed to create post. Please try again.');
+        const errorMsg = err.response?.data?.message || 'Failed to create post. Please try again.';
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     } finally {
       setIsSubmitting(false);

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { authService } from '../../../services/authService';
+import { toast } from 'react-toastify';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -17,7 +18,9 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      setError('Please fill in all fields.');
+      const msg = 'Please fill in all fields.';
+      setError(msg);
+      toast.error(msg);
       return;
     }
 
@@ -30,18 +33,24 @@ export default function LoginPage() {
 
       if (response.success && token) {
         authService.setToken(token);
+        toast.success('Signed in successfully!');
         window.location.href = '/feed';
       } else {
-        setError(response.message || 'Login failed. Please check your credentials.');
+        const errorMsg = response.message || 'Login failed. Please check your credentials.';
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     } catch (err: any) {
       console.error('Login error', err);
       if (err.message === 'Network Error' || err.response?.status >= 500) {
         console.warn('API unavailable, bypassing login for demo mode');
         authService.setToken('mock-jwt-token-12345');
+        toast.success('Signed in successfully (demo mode)');
         window.location.href = '/feed';
       } else {
-        setError(err.response?.data?.message || err.response?.data?.error || 'An error occurred during login. Please try again.');
+        const errorMsg = err.response?.data?.message || err.response?.data?.error || 'An error occurred during login. Please try again.';
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     } finally {
       setLoading(false);

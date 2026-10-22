@@ -11,7 +11,7 @@ import { Project } from "../models/projectsmodel";
 
 // Temporary snackbar function for displaying messages
 const showSnackbar = (message: string, isError: boolean) => {
-  alert(`${isError ? "Error: " : ""}${message}`);
+  isError ? toast.error(message) : toast.success(message);
 };
 
 interface AddProjectModalProps {

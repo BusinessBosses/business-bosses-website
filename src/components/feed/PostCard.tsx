@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { Heart, MessageCircle, Bookmark, Share2, MoreHorizontal, CheckCircle2 } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
+import { toast } from 'react-toastify';
 
 export interface Author {
   id?: string;
@@ -77,7 +78,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onPostUpdated }) => {
       }
     } else {
       navigator.clipboard?.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      toast.success('Link copied to clipboard!');
     }
   };
 
