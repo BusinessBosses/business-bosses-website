@@ -26,27 +26,24 @@ export default function LoginPage() {
     setError('');
 
     try {
-      // Integration with POST /user/login as per backend architecture
-      const response = await apiClient.post('/user/login', { email, password });
+      // Connect to standard backend auth endpoint
+      const response = await apiClient.post('/auth/sign-in', { email, password });
       
-      if (response.data?.success && response.data?.data?.token) {
-        // Save token
-        localStorage.setItem(StorageEnum.AccessToken, response.data.data.token);
-        
-        // Redirect to authenticated app
+      const token = response.data?.data?.token || response.data?.token;
+      if (response.data?.success && token) {
+        localStorage.setItem(StorageEnum.AccessToken, token);
         router.push('/feed');
       } else {
         setError(response.data?.message || 'Login failed. Please check your credentials.');
       }
     } catch (err: any) {
       console.error('Login error', err);
-      // For development/mock purposes, bypass if API is unavailable
       if (err.message === 'Network Error' || err.response?.status >= 500) {
-         console.warn('API unavailable, bypassing login for demo mode');
-         localStorage.setItem(StorageEnum.AccessToken, 'mock-jwt-token-12345');
-         router.push('/feed');
+        console.warn('API unavailable, bypassing login for demo mode');
+        localStorage.setItem(StorageEnum.AccessToken, 'mock-jwt-token-12345');
+        router.push('/feed');
       } else {
-         setError(err.response?.data?.message || 'An error occurred during login. Please try again.');
+        setError(err.response?.data?.message || 'An error occurred during login. Please try again.');
       }
     } finally {
       setLoading(false);
