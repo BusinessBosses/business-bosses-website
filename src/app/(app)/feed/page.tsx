@@ -4,7 +4,15 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Sparkles, RefreshCw, Layers } from 'lucide-react';
 import PostCard, { Post } from '../../../components/feed/PostCard';
 import CreatePostModal from '../../../components/feed/CreatePostModal';
+import BossOfTheWeekCard from '../../../components/feed/BossOfTheWeekCard';
+import PartnersDealsSection from '../../../components/feed/PartnersDealsSection';
 import { postService } from '../../../services/postService';
+import {
+  feedHighlightService,
+  BossOfTheWeekData,
+  PartnerDealData,
+} from '../../../services/feedHighlightService';
+import { toast } from 'react-toastify';
 
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState<'forYou' | 'following'>('forYou');
@@ -13,75 +21,54 @@ export default function FeedPage() {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
 
+  // Real highlights state (no placeholders/dummies)
+  const [bossOfTheWeek, setBossOfTheWeek] = useState<BossOfTheWeekData | null>(null);
+  const [deals, setDeals] = useState<PartnerDealData[]>([]);
+  const [isFollowingBoss, setIsFollowingBoss] = useState<boolean>(false);
+
   useEffect(() => {
     fetchPosts();
+    if (activeTab === 'forYou') {
+      fetchHighlights();
+    }
   }, [activeTab]);
+
+  const fetchHighlights = async () => {
+    try {
+      const [bossData, dealsData] = await Promise.all([
+        feedHighlightService.getBossOfTheWeek(),
+        feedHighlightService.getPartnerDeals(),
+      ]);
+      setBossOfTheWeek(bossData);
+      setDeals(dealsData);
+    } catch (err) {
+      console.warn('Could not load highlights', err);
+    }
+  };
 
   const fetchPosts = async () => {
     setLoading(true);
     try {
       const fetched = await postService.getPosts(activeTab);
-      if (fetched && fetched.length > 0) {
-        setPosts(fetched);
-      } else {
-        setPosts(getFallbackPosts());
-      }
+      setPosts(fetched || []);
     } catch (error) {
-      console.warn('Post fetch fallback applied', error);
-      setPosts(getFallbackPosts());
+      console.error('Post fetch failed', error);
+      setPosts([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
   };
 
-  const getFallbackPosts = (): Post[] => [
-    {
-      id: 'f1',
-      author: {
-        name: 'Alex Rivera',
-        username: 'arivera_tech',
-        avatarUrl: 'https://i.pravatar.cc/150?img=33',
-        isPro: true,
-      },
-      content:
-        'Just launched our new automated client onboarding portal! Excited to see 40% reduction in setup turnaround time. Small tweaks in UX create massive leverage for business owners. 🚀💼',
-      createdAt: '1h ago',
-      likesCount: 28,
-      commentsCount: 6,
-      isLiked: false,
-    },
-    {
-      id: 'f2',
-      author: {
-        name: 'Elena Rostova',
-        username: 'elena_growth',
-        avatarUrl: 'https://i.pravatar.cc/150?img=48',
-        isPro: true,
-      },
-      content:
-        'Quick tip for service businesses: Never quote pricing without understanding your prospect\'s real revenue bottleneck first. Diagnosing before prescribing builds trust immediately.',
-      createdAt: '3h ago',
-      likesCount: 54,
-      commentsCount: 14,
-      isLiked: true,
-    },
-    {
-      id: 'f3',
-      author: {
-        name: 'David Chen',
-        username: 'dchen_ecom',
-        avatarUrl: 'https://i.pravatar.cc/150?img=60',
-        isPro: false,
-      },
-      content:
-        'Looking for recommendations on reliable UK warehouse fulfillment partners for sustainable home goods. Drop your suggestions below or DM me!',
-      createdAt: '5h ago',
-      likesCount: 12,
-      commentsCount: 9,
-      isLiked: false,
-    },
-  ];
+  const handleFollowBoss = async (uid: string) => {
+    const success = await feedHighlightService.followUser(uid);
+    if (success) {
+      setIsFollowingBoss(true);
+      toast.success('Successfully connected with Boss of the Week!');
+    } else {
+      toast.error('Unable to follow at this time.');
+    }
+  };
 
   return (
     <div className="w-full flex justify-center min-h-screen bg-slate-50 pb-24 lg:pb-8">
@@ -135,6 +122,7 @@ export default function FeedPage() {
             onClick={() => {
               setRefreshing(true);
               fetchPosts();
+              if (activeTab === 'forYou') fetchHighlights();
             }}
             disabled={refreshing}
             className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center space-x-1"
@@ -143,6 +131,19 @@ export default function FeedPage() {
             <span>Refresh</span>
           </button>
         </div>
+
+        {/* Mobile Feed Parity Sections (Only rendered if live data exists) */}
+        {activeTab === 'forYou' && bossOfTheWeek && (
+          <BossOfTheWeekCard
+            boss={bossOfTheWeek}
+            onFollow={handleFollowBoss}
+            isFollowing={isFollowingBoss}
+          />
+        )}
+
+        {activeTab === 'forYou' && deals.length > 0 && (
+          <PartnersDealsSection deals={deals} />
+        )}
 
         {/* Timeline Posts */}
         {loading ? (
@@ -174,7 +175,9 @@ export default function FeedPage() {
             <Layers className="w-12 h-12 text-slate-300 mb-3" />
             <h3 className="font-bold text-slate-800 text-base mb-1">No posts yet</h3>
             <p className="text-slate-500 text-sm max-w-sm mb-4">
-              Be the first to share an update or insight with the Business Bosses community!
+              {activeTab === 'forYou'
+                ? 'Be the first to share an update or insight with the Business Bosses community!'
+                : 'Follow other entrepreneurs to see their posts and opportunities in your stream.'}
             </p>
             <button
               onClick={() => setIsCreateOpen(true)}

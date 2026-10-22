@@ -23,16 +23,19 @@ export const postService = {
           id: String(item.userId || item.author?.id || ''),
           name: item.author?.name || item.user?.name || item.userName || 'Business Boss',
           username: item.author?.username || item.user?.username || item.userHandle || undefined,
-          avatarUrl: item.author?.avatarUrl || item.user?.avatar || item.userAvatar || 'https://i.pravatar.cc/150?img=12',
+          avatarUrl: item.author?.avatarUrl || item.user?.avatar || item.userAvatar || '',
           isPro: !!(item.author?.isPro || item.user?.isPro || item.isBossPro),
         },
         content: item.text || item.content || item.description || '',
         images: item.image ? [item.image] : item.images || [],
-        createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'Just now',
+        createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '',
         likesCount: item.likesCount || item.likes?.length || 0,
         commentsCount: item.commentsCount || item.comments?.length || 0,
+        repostsCount: item.repostsCount || 0,
         isLiked: !!item.isLiked,
         isBookmarked: !!item.isBookmarked,
+        isReposted: !!item.isReposted,
+        isBoosted: !!item.isPromoted,
       }));
     }
     return [];
