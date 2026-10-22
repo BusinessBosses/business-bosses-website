@@ -274,6 +274,9 @@ export default function FeedPage() {
                     <PostCard
                       post={post}
                       onOpenComments={(p) => setCommentPost(p)}
+                      onPostDeleted={(deletedId) => {
+                        setPosts((prev) => prev.filter((p) => p.id !== deletedId));
+                      }}
                       onPostUpdated={(updated) => {
                         setPosts((prev) =>
                           prev.map((item) => (item.id === updated.id ? updated : item))

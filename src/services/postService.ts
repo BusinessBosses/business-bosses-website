@@ -81,6 +81,7 @@ export const postService = {
         }
 
         const coinsCount = Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount) || 0;
+        const viewsCount = Number(item.views) || 0;
 
         const isLikedByMe = currentUid && Array.isArray(item.likes)
           ? item.likes.some((l: any) => String(l.userId || l.uid || l) === currentUid)
@@ -98,6 +99,8 @@ export const postService = {
             username: user.username || undefined,
             avatarUrl: user.photoUrl || user.avatar || user.profilePicture || '',
             isPro: !!(user.isSubscribed || user.isBossPro),
+            hasShop: !!(user.hasShop || item.hasShop),
+            bio: user.bio || undefined,
           },
           content: item.title || item.text || item.content || item.description || '',
           images: postImages,
@@ -108,12 +111,17 @@ export const postService = {
           commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount) || 0,
           comments: Array.isArray(item.comments) ? item.comments : undefined,
           coinsCount: coinsCount,
+          views: viewsCount,
           repostsCount: Array.isArray(item.reposts) ? item.reposts.length : Number(item.repostsCount) || 0,
           isLiked: isLikedByMe,
           isCoined: isCoinedByMe,
           isBookmarked: !!item.isBookmarked,
           isReposted: !!item.isReposted,
           isBoosted: !!item.promote,
+          isPolled: !!item.isPolled,
+          options: Array.isArray(item.options) ? item.options : undefined,
+          pollvotes: Array.isArray(item.pollvotes) ? item.pollvotes : undefined,
+          isRanked: item.isRanked !== false,
           timestamp: ts,
         };
       });
@@ -137,6 +145,7 @@ export const postService = {
         }
 
         const coinsCount = Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount) || 0;
+        const viewsCount = Number(item.views) || 0;
 
         const isLikedByMe = currentUid && Array.isArray(item.likes)
           ? item.likes.some((l: any) => String(l.userId || l.uid || l) === currentUid)
@@ -154,6 +163,8 @@ export const postService = {
             username: user.username || undefined,
             avatarUrl: user.photoUrl || user.avatar || '',
             isPro: !!(user.isSubscribed || user.isBossPro),
+            hasShop: !!(user.hasShop || item.hasShop),
+            bio: user.bio || undefined,
           },
           content: item.description || item.title || '',
           images: forumImages,
@@ -164,6 +175,7 @@ export const postService = {
           commentsCount: Array.isArray(item.comments) ? item.comments.length : 0,
           comments: Array.isArray(item.comments) ? item.comments : undefined,
           coinsCount: coinsCount,
+          views: viewsCount,
           repostsCount: 0,
           isLiked: isLikedByMe,
           isCoined: isCoinedByMe,
@@ -187,6 +199,61 @@ export const postService = {
    */
   async createPost(payload: CreatePostPayload): Promise<any> {
     const res = await apiClient.post('/post/create-post', payload);
+    return res.data;
+  },
+
+  /**
+   * Cast a vote on a poll
+   */
+  async votePoll(postId: string, selectedOption: string): Promise<any> {
+    const res = await apiClient.post('/pollvote', {
+      postId,
+      selectedOption,
+    });
+    return res.data;
+  },
+
+  /**
+   * Delete a post
+   */
+  async deletePost(postId: string): Promise<any> {
+    const res = await apiClient.delete(`/post/delete-post/${postId}`);
+    return res.data;
+  },
+
+  /**
+   * Hide / block a post from feed
+   */
+  async hidePost(postId: string): Promise<any> {
+    const res = await apiClient.post('/blockedpost', { postId });
+    return res.data;
+  },
+
+  /**
+   * Connect with a user
+   */
+  async connectUser(userId: string): Promise<any> {
+    const currentUid = authService.getUserId();
+    const res = await apiClient.post('/connection/connect', {
+      userId: currentUid,
+      connectedId: userId,
+      connectionId: userId,
+      timestamp: Date.now(),
+    });
+    return res.data;
+  },
+
+  /**
+   * Disconnect from a user
+   */
+  async disconnectUser(userId: string): Promise<any> {
+    const currentUid = authService.getUserId();
+    const res = await apiClient.post('/connection/disconnect', {
+      userId: currentUid,
+      connectedId: userId,
+      connectionId: userId,
+      timestamp: Date.now(),
+    });
     return res.data;
   },
 
