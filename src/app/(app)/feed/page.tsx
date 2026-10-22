@@ -7,12 +7,17 @@ import CreatePostModal from '../../../components/feed/CreatePostModal';
 import CommentsModal from '../../../components/feed/CommentsModal';
 import BossOfTheWeekCard from '../../../components/feed/BossOfTheWeekCard';
 import PartnersDealsSection from '../../../components/feed/PartnersDealsSection';
+import QuickActionsBar from '../../../components/feed/QuickActionsBar';
+import FeedBuyerRequestsSection from '../../../components/feed/FeedBuyerRequestsSection';
+import FeedFeaturedListingsSection from '../../../components/feed/FeedFeaturedListingsSection';
 import { postService } from '../../../services/postService';
 import {
   feedHighlightService,
   BossOfTheWeekData,
   PartnerDealData,
 } from '../../../services/feedHighlightService';
+import { buyerRequestService, BuyerRequest } from '../../../services/buyerRequestService';
+import { marketplaceService, MarketplaceService } from '../../../services/marketplaceService';
 import { toast } from 'react-toastify';
 
 export default function FeedPage() {
@@ -26,10 +31,14 @@ export default function FeedPage() {
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [commentPost, setCommentPost] = useState<Post | null>(null);
 
-  // Highlights state
+  // Highlights state (parity with mobile ForYouTopCards)
   const [bossOfTheWeek, setBossOfTheWeek] = useState<BossOfTheWeekData | null>(null);
   const [deals, setDeals] = useState<PartnerDealData[]>([]);
   const [isFollowingBoss, setIsFollowingBoss] = useState<boolean>(false);
+
+  // Interleaved items state (parity with mobile BuyerRequestDealsWidget & ProshopdealsWidget)
+  const [buyerRequests, setBuyerRequests] = useState<BuyerRequest[]>([]);
+  const [featuredServices, setFeaturedServices] = useState<MarketplaceService[]>([]);
 
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -39,6 +48,7 @@ export default function FeedPage() {
     fetchInitialPosts();
     if (activeTab === 'forYou') {
       fetchHighlights();
+      fetchInterleavedFeeds();
     }
   }, [activeTab]);
 
@@ -52,6 +62,19 @@ export default function FeedPage() {
       setDeals(dealsData);
     } catch (err) {
       console.warn('Could not load highlights', err);
+    }
+  };
+
+  const fetchInterleavedFeeds = async () => {
+    try {
+      const [brs, srvs] = await Promise.all([
+        buyerRequestService.getBuyerRequests().catch(() => []),
+        marketplaceService.getServices().catch(() => []),
+      ]);
+      setBuyerRequests(brs || []);
+      setFeaturedServices(srvs || []);
+    } catch (err) {
+      console.warn('Could not load interleaved feed widgets', err);
     }
   };
 
@@ -129,7 +152,7 @@ export default function FeedPage() {
 
   return (
     <div className="w-full flex justify-center min-h-screen bg-slate-50 pb-24 lg:pb-8">
-      <div className="w-full max-w-2xl px-4 py-6 sm:py-8 space-y-5">
+      <div className="w-full max-w-2xl px-4 py-6 sm:py-8 space-y-4">
         {/* Top Header & Post Trigger */}
         <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center justify-between gap-3">
           <div className="flex-1">
@@ -150,8 +173,11 @@ export default function FeedPage() {
           </button>
         </div>
 
+        {/* Mobile Feed Quick Action Shortcuts */}
+        <QuickActionsBar onOpenCreatePost={() => setIsCreateOpen(true)} />
+
         {/* Feed Filter Tabs */}
-        <div className="flex items-center justify-between border-b border-slate-200 pb-1">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-1 pt-1">
           <div className="flex space-x-6">
             <button
               onClick={() => setActiveTab('forYou')}
@@ -179,7 +205,10 @@ export default function FeedPage() {
             onClick={() => {
               setRefreshing(true);
               fetchInitialPosts();
-              if (activeTab === 'forYou') fetchHighlights();
+              if (activeTab === 'forYou') {
+                fetchHighlights();
+                fetchInterleavedFeeds();
+              }
             }}
             disabled={refreshing}
             className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center space-x-1"
@@ -202,7 +231,7 @@ export default function FeedPage() {
           <PartnersDealsSection deals={deals} />
         )}
 
-        {/* Timeline Posts */}
+        {/* Timeline Posts & Interleaved Sections */}
         {loading ? (
           <div className="space-y-4 py-6">
             {[1, 2, 3].map((n) => (
@@ -226,17 +255,29 @@ export default function FeedPage() {
             {posts.map((post, idx) => {
               const isLast = idx === posts.length - 1;
               return (
-                <div key={post.id} ref={isLast ? lastElementRef : undefined}>
-                  <PostCard
-                    post={post}
-                    onOpenComments={(p) => setCommentPost(p)}
-                    onPostUpdated={(updated) => {
-                      setPosts((prev) =>
-                        prev.map((item) => (item.id === updated.id ? updated : item))
-                      );
-                    }}
-                  />
-                </div>
+                <React.Fragment key={post.id}>
+                  {/* Interleaved Buyer Requests at index 4 (mobile list_items.dart line 160) */}
+                  {activeTab === 'forYou' && idx === 4 && buyerRequests.length > 0 && (
+                    <FeedBuyerRequestsSection requests={buyerRequests} />
+                  )}
+
+                  {/* Interleaved Featured Listings at index 5 (mobile list_items.dart line 142) */}
+                  {activeTab === 'forYou' && idx === 5 && featuredServices.length > 0 && (
+                    <FeedFeaturedListingsSection services={featuredServices} />
+                  )}
+
+                  <div ref={isLast ? lastElementRef : undefined}>
+                    <PostCard
+                      post={post}
+                      onOpenComments={(p) => setCommentPost(p)}
+                      onPostUpdated={(updated) => {
+                        setPosts((prev) =>
+                          prev.map((item) => (item.id === updated.id ? updated : item))
+                        );
+                      }}
+                    />
+                  </div>
+                </React.Fragment>
               );
             })}
 

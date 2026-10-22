@@ -24,6 +24,7 @@ interface UserProfile {
   username?: string;
   avatarUrl?: string;
   isSubscribed?: boolean;
+  coinsCount?: number;
 }
 
 const navItems = [
@@ -58,14 +59,27 @@ export default function DesktopSidebar() {
         username: user.username || undefined,
         avatarUrl: user.profilePicture || user.image || user.avatar || undefined,
         isSubscribed: !!(user.isSubscribed || user.isBossPro),
+        coinsCount:
+          typeof user.coinsCount === 'number'
+            ? user.coinsCount
+            : typeof user.coins === 'number'
+            ? user.coins
+            : 0,
       });
     }
   };
 
+  const formatCoins = (count?: number): string => {
+    if (count === undefined || count === null) return '0';
+    if (count >= 1000000) return (count / 1000000).toFixed(1) + 'M';
+    if (count >= 1000) return (count / 1000).toFixed(1) + 'k';
+    return count.toString();
+  };
+
   return (
     <aside className="hidden lg:flex flex-col w-[260px] fixed h-screen border-r border-slate-200 bg-white p-4 z-30 select-none">
-      {/* Brand Header: Authentic Business Bosses without hardcoded PRO tag */}
-      <div className="mb-6 px-2.5 pt-1">
+      {/* Brand Header: Authentic Business Bosses */}
+      <div className="mb-4 px-2.5 pt-1 flex items-center justify-between">
         <Link href="/feed" className="flex items-center space-x-2 group">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#F21C29] to-[#F7C844] flex items-center justify-center shadow-sm">
             <Flame className="w-5 h-5 text-white fill-white" />
@@ -75,6 +89,27 @@ export default function DesktopSidebar() {
           </span>
         </Link>
       </div>
+
+      {/* User Coins Badge (Desktop Sidebar Header Pill) */}
+      {isAuth && (
+        <div className="mb-4 px-2.5">
+          <Link
+            href="/subscription"
+            className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100/70 hover:to-orange-100/70 border border-amber-200/80 rounded-xl transition-all group"
+            title="Your Boss Coins"
+          >
+            <div className="flex items-center space-x-2">
+              <div className="relative w-5 h-5">
+                <Image src="/coin.svg" alt="Coins" fill className="object-contain" />
+              </div>
+              <span className="text-xs font-bold text-slate-700">Boss Coins</span>
+            </div>
+            <span className="text-xs font-black text-amber-900 group-hover:scale-105 transition-transform">
+              {formatCoins(currentUser?.coinsCount)}
+            </span>
+          </Link>
+        </div>
+      )}
 
       {/* Navigation Links Aligned with Flutter Drawer & Bottom Bar */}
       <nav className="flex-1 space-y-1 overflow-y-auto no-scrollbar pr-0.5">
@@ -116,7 +151,7 @@ export default function DesktopSidebar() {
         </Link>
       </nav>
 
-      {/* User Session Footer (No Mock Alex Doe) */}
+      {/* User Session Footer */}
       <div className="mt-auto border-t border-slate-100 pt-3 px-1">
         {isAuth && currentUser ? (
           <div className="flex items-center justify-between p-1.5 rounded-xl hover:bg-slate-50 transition-colors">
