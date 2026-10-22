@@ -14,6 +14,7 @@ import {
   UserX,
   Copy,
   Sparkles,
+  Coins,
 } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
 import { toast } from 'react-toastify';
@@ -35,9 +36,11 @@ export interface Post {
   createdAt: string;
   likesCount: number;
   commentsCount: number;
+  coinsCount?: number;
   repostsCount?: number;
   category?: string;
   isLiked?: boolean;
+  isCoined?: boolean;
   isBookmarked?: boolean;
   isReposted?: boolean;
   isBoosted?: boolean;
@@ -56,10 +59,13 @@ export const PostCard: React.FC<PostCardProps> = ({
 }) => {
   const [liked, setLiked] = useState<boolean>(!!post.isLiked);
   const [likesCount, setLikesCount] = useState<number>(post.likesCount || 0);
+  const [coined, setCoined] = useState<boolean>(!!post.isCoined);
+  const [coinsCount, setCoinsCount] = useState<number>(post.coinsCount || 0);
   const [bookmarked, setBookmarked] = useState<boolean>(!!post.isBookmarked);
   const [reposted, setReposted] = useState<boolean>(!!post.isReposted);
   const [repostsCount, setRepostsCount] = useState<number>(post.repostsCount || 0);
   const [likeProcessing, setLikeProcessing] = useState<boolean>(false);
+  const [coinProcessing, setCoinProcessing] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const handleToggleLike = async () => {
@@ -83,6 +89,33 @@ export const PostCard: React.FC<PostCardProps> = ({
       toast.error('Could not update like. Please try again.');
     } finally {
       setLikeProcessing(false);
+    }
+  };
+
+  const handleToggleCoin = async () => {
+    if (coinProcessing) return;
+    setCoinProcessing(true);
+
+    const prevCoined = coined;
+    const prevCount = coinsCount;
+
+    // Optimistic coin update
+    setCoined(!prevCoined);
+    setCoinsCount(prevCoined ? Math.max(0, prevCount - 1) : prevCount + 1);
+
+    try {
+      await apiClient.post('/coins', {
+        postId: post.id,
+        receiverUid: post.author.id,
+        type: 'post',
+      });
+      toast.success(prevCoined ? 'Coin removed' : '🪙 Tipped 1 Coin to Boss!');
+    } catch (error) {
+      setCoined(prevCoined);
+      setCoinsCount(prevCount);
+      toast.error('Could not gift coin. Check your coin balance.');
+    } finally {
+      setCoinProcessing(false);
     }
   };
 
@@ -257,18 +290,29 @@ export const PostCard: React.FC<PostCardProps> = ({
         <div className="mb-3.5 rounded-xl overflow-hidden border border-slate-100">
           {post.images.length === 1 ? (
             <div className="relative aspect-[16/9] w-full bg-slate-100">
-              <Image
+              <img
                 src={post.images[0]}
                 alt="Post media"
-                fill
-                className="object-cover"
+                className="w-full h-full object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
               />
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-1 bg-slate-100">
               {post.images.slice(0, 4).map((img, idx) => (
                 <div key={idx} className="relative aspect-square w-full bg-slate-200">
-                  <Image src={img} alt={`Media ${idx}`} fill className="object-cover" />
+                  <img
+                    src={img}
+                    alt={`Media ${idx}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                    }}
+                  />
                 </div>
               ))}
             </div>
@@ -278,7 +322,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 
       {/* Actions Footer (Mobile Parity: Like, Comment, Repost, Bookmark, Share) */}
       <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-slate-500 text-xs sm:text-sm">
-        <div className="flex items-center space-x-5 sm:space-x-6">
+        <div className="flex items-center space-x-4 sm:space-x-5">
           {/* Like */}
           <button
             onClick={handleToggleLike}
@@ -297,6 +341,18 @@ export const PostCard: React.FC<PostCardProps> = ({
           >
             <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>{post.commentsCount || 0}</span>
+          </button>
+
+          {/* Coin (Mobile Boss Coin tip action) */}
+          <button
+            onClick={handleToggleCoin}
+            className={`flex items-center space-x-1.5 transition-colors ${
+              coined ? 'text-amber-500 font-bold' : 'hover:text-amber-500'
+            }`}
+            title="Tip Coin"
+          >
+            <Coins className={`w-4 h-4 sm:w-5 sm:h-5 ${coined ? 'fill-amber-400 text-amber-500' : ''}`} />
+            <span>{coinsCount}</span>
           </button>
 
           {/* Repost */}

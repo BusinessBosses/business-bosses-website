@@ -55,7 +55,22 @@ export const postService = {
         const ts = Number(item.timestamp) || (item.createdAt ? new Date(item.createdAt).getTime() : Date.now());
         const user = item.user || item.author || {};
         const forum = item.forum || {};
-        const industry = item.industry?.industry || forum.industry?.industry || user.industry || 'General Business';
+        const industry = item.industry?.industry || forum.industry?.industry || user.industry || undefined;
+
+        // Extract images from all possible formats
+        let postImages: string[] = [];
+        if (Array.isArray(item.images) && item.images.length > 0) {
+          postImages = item.images.filter(Boolean);
+        } else if (typeof item.images === 'string' && item.images.trim()) {
+          postImages = item.images.split(';').map((s: string) => s.trim()).filter(Boolean);
+        } else if (item.photoUrl) {
+          postImages = [item.photoUrl];
+        } else if (item.image) {
+          postImages = [item.image];
+        }
+
+        const coinsCount = Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount) || 0;
+
         return {
           id: String(item.postId || item.id || item._id),
           author: {
@@ -66,13 +81,15 @@ export const postService = {
             isPro: !!(user.isSubscribed || user.isBossPro),
           },
           content: item.title || item.text || item.content || item.description || '',
-          images: item.photoUrl ? [item.photoUrl] : item.image ? [item.image] : item.images || [],
+          images: postImages,
           createdAt: new Date(ts).toLocaleDateString(),
-          category: industry,
+          category: industry && industry !== 'General Business' ? industry : undefined,
           likesCount: Array.isArray(item.likes) ? item.likes.length : Number(item.likesCount) || 0,
           commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount) || 0,
+          coinsCount: coinsCount,
           repostsCount: Array.isArray(item.reposts) ? item.reposts.length : Number(item.repostsCount) || 0,
           isLiked: !!item.isLiked,
+          isCoined: !!item.isCoined,
           isBookmarked: !!item.isBookmarked,
           isReposted: !!item.isReposted,
           isBoosted: !!item.promote,
@@ -85,6 +102,21 @@ export const postService = {
         const ts = Number(item.timestamp) || (item.createdAt ? new Date(item.createdAt).getTime() : Date.now());
         const user = item.user || {};
         const industry = item.industry?.industry || 'Boss Up Challenge';
+
+        // Extract images from all possible formats
+        let forumImages: string[] = [];
+        if (Array.isArray(item.images) && item.images.length > 0) {
+          forumImages = item.images.filter(Boolean);
+        } else if (typeof item.images === 'string' && item.images.trim()) {
+          forumImages = item.images.split(';').map((s: string) => s.trim()).filter(Boolean);
+        } else if (item.photo) {
+          forumImages = [item.photo];
+        } else if (item.photoUrl) {
+          forumImages = [item.photoUrl];
+        }
+
+        const coinsCount = Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount) || 0;
+
         return {
           id: String(item.forumId || item.id),
           author: {
@@ -95,13 +127,15 @@ export const postService = {
             isPro: !!(user.isSubscribed || user.isBossPro),
           },
           content: item.description || item.title || '',
-          images: item.photo ? [item.photo] : [],
+          images: forumImages,
           createdAt: new Date(ts).toLocaleDateString(),
           category: industry,
           likesCount: Array.isArray(item.likes) ? item.likes.length : 0,
           commentsCount: Array.isArray(item.comments) ? item.comments.length : 0,
+          coinsCount: coinsCount,
           repostsCount: 0,
           isLiked: false,
+          isCoined: false,
           isBookmarked: false,
           isReposted: false,
           isBoosted: !!item.promote,
