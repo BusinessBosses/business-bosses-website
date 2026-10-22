@@ -1,5 +1,6 @@
 import { apiClient } from '../lib/apiClient';
 import { Post } from '../components/feed/PostCard';
+import { authService } from './authService';
 
 export interface CreatePostPayload {
   text: string;
@@ -30,6 +31,8 @@ export const postService = {
 
       const responseData = res.data?.data || res.data;
       if (!responseData) return [];
+
+      const currentUid = authService.getUserId();
 
       let rawPosts: any[] = [];
       let rawForums: any[] = [];
@@ -79,6 +82,14 @@ export const postService = {
 
         const coinsCount = Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount) || 0;
 
+        const isLikedByMe = currentUid && Array.isArray(item.likes)
+          ? item.likes.some((l: any) => String(l.userId || l.uid || l) === currentUid)
+          : false;
+
+        const isCoinedByMe = currentUid && Array.isArray(item.coins)
+          ? item.coins.some((c: any) => String(c.userId || c.uid || c) === currentUid)
+          : false;
+
         return {
           id: String(item.postId || item.id || item._id),
           author: {
@@ -92,12 +103,13 @@ export const postService = {
           images: postImages,
           createdAt: new Date(ts).toLocaleDateString(),
           category: industry && industry !== 'General Business' ? industry : undefined,
+          type: 'post',
           likesCount: Array.isArray(item.likes) ? item.likes.length : Number(item.likesCount) || 0,
           commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount) || 0,
           coinsCount: coinsCount,
           repostsCount: Array.isArray(item.reposts) ? item.reposts.length : Number(item.repostsCount) || 0,
-          isLiked: !!item.isLiked,
-          isCoined: !!item.isCoined,
+          isLiked: isLikedByMe,
+          isCoined: isCoinedByMe,
           isBookmarked: !!item.isBookmarked,
           isReposted: !!item.isReposted,
           isBoosted: !!item.promote,
@@ -125,6 +137,14 @@ export const postService = {
 
         const coinsCount = Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount) || 0;
 
+        const isLikedByMe = currentUid && Array.isArray(item.likes)
+          ? item.likes.some((l: any) => String(l.userId || l.uid || l) === currentUid)
+          : false;
+
+        const isCoinedByMe = currentUid && Array.isArray(item.coins)
+          ? item.coins.some((c: any) => String(c.userId || c.uid || c) === currentUid)
+          : false;
+
         return {
           id: String(item.forumId || item.id),
           author: {
@@ -138,12 +158,13 @@ export const postService = {
           images: forumImages,
           createdAt: new Date(ts).toLocaleDateString(),
           category: industry,
+          type: 'forum',
           likesCount: Array.isArray(item.likes) ? item.likes.length : 0,
           commentsCount: Array.isArray(item.comments) ? item.comments.length : 0,
           coinsCount: coinsCount,
           repostsCount: 0,
-          isLiked: false,
-          isCoined: false,
+          isLiked: isLikedByMe,
+          isCoined: isCoinedByMe,
           isBookmarked: false,
           isReposted: false,
           isBoosted: !!item.promote,

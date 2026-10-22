@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
 import { toast } from 'react-toastify';
+import ImageLightboxModal from './ImageLightboxModal';
 
 export interface Author {
   id?: string;
@@ -39,6 +40,7 @@ export interface Post {
   coinsCount?: number;
   repostsCount?: number;
   category?: string;
+  type?: 'post' | 'forum';
   timestamp?: number;
   isLiked?: boolean;
   isCoined?: boolean;
@@ -68,6 +70,8 @@ export const PostCard: React.FC<PostCardProps> = ({
   const [likeProcessing, setLikeProcessing] = useState<boolean>(false);
   const [coinProcessing, setCoinProcessing] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [lightboxOpen, setLightboxOpen] = useState<boolean>(false);
+  const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
 
   const handleToggleLike = async () => {
     if (likeProcessing) return;
@@ -108,7 +112,7 @@ export const PostCard: React.FC<PostCardProps> = ({
       await apiClient.post('/coins', {
         postId: post.id,
         receiverUid: post.author.id,
-        type: 'post',
+        type: post.type || 'post',
       });
       toast.success(prevCoined ? 'Coin removed' : '🪙 Tipped 1 Coin to Boss!');
     } catch (error) {
@@ -286,15 +290,21 @@ export const PostCard: React.FC<PostCardProps> = ({
         {post.content}
       </div>
 
-      {/* Media Gallery */}
+      {/* Media Gallery with Lightbox Enlarge Trigger */}
       {post.images && post.images.length > 0 && (
         <div className="mb-3.5 rounded-xl overflow-hidden border border-slate-100">
           {post.images.length === 1 ? (
-            <div className="relative aspect-[16/9] w-full bg-slate-100">
+            <div
+              onClick={() => {
+                setActiveImageIndex(0);
+                setLightboxOpen(true);
+              }}
+              className="relative aspect-[16/9] w-full bg-slate-100 cursor-pointer group"
+            >
               <img
                 src={post.images[0]}
                 alt="Post media"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-[1.01] transition-transform duration-200"
                 loading="lazy"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
@@ -304,16 +314,28 @@ export const PostCard: React.FC<PostCardProps> = ({
           ) : (
             <div className="grid grid-cols-2 gap-1 bg-slate-100">
               {post.images.slice(0, 4).map((img, idx) => (
-                <div key={idx} className="relative aspect-square w-full bg-slate-200">
+                <div
+                  key={idx}
+                  onClick={() => {
+                    setActiveImageIndex(idx);
+                    setLightboxOpen(true);
+                  }}
+                  className="relative aspect-square w-full bg-slate-200 cursor-pointer group overflow-hidden"
+                >
                   <img
                     src={img}
                     alt={`Media ${idx}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                     loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = 'none';
                     }}
                   />
+                  {idx === 3 && post.images && post.images.length > 4 && (
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-bold text-base sm:text-lg">
+                      +{post.images.length - 4}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -388,6 +410,15 @@ export const PostCard: React.FC<PostCardProps> = ({
           </button>
         </div>
       </div>
+      {/* Image Lightbox Modal */}
+      {post.images && post.images.length > 0 && (
+        <ImageLightboxModal
+          isOpen={lightboxOpen}
+          onClose={() => setLightboxOpen(false)}
+          images={post.images}
+          initialIndex={activeImageIndex}
+        />
+      )}
     </article>
   );
 };

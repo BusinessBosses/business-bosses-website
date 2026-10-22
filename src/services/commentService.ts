@@ -50,7 +50,9 @@ export const commentService = {
   async addComment(postId: string, text: string, receiverUid?: string): Promise<any> {
     const res = await apiClient.post('/comments', {
       postId,
+      comment: text,
       text,
+      timestamp: Date.now(),
       receiverUid,
     });
     return res.data;

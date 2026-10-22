@@ -73,10 +73,36 @@ export const authService = {
   /**
    * Save session token
    */
-  setToken(token: string): void {
+  setToken(token: string, uid?: string): void {
     if (typeof window === 'undefined') return;
     localStorage.setItem(StorageEnum.AccessToken, token);
     localStorage.setItem('bb_access_token', token);
+    if (uid) {
+      localStorage.setItem('bb_user_uid', uid);
+    }
+  },
+
+  /**
+   * Get current authenticated user ID
+   */
+  getUserId(): string | null {
+    if (typeof window === 'undefined') return null;
+    const directUid = localStorage.getItem('bb_user_uid');
+    if (directUid) return directUid;
+    // Decode from JWT payload if not directly stored
+    const token = localStorage.getItem(StorageEnum.AccessToken) || localStorage.getItem('bb_access_token');
+    if (token) {
+      try {
+        const payloadBase64 = token.split('.')[1];
+        if (payloadBase64) {
+          const decoded = JSON.parse(atob(payloadBase64));
+          return decoded.uid || decoded.id || null;
+        }
+      } catch (e) {
+        // Ignore decode error
+      }
+    }
+    return null;
   },
 
   /**
