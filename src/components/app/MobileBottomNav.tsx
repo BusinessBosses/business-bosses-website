@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Flame, MessageSquare, Plus, ShoppingBag, User } from 'lucide-react';
+import { Flame, Sparkles, Plus, ShoppingBag, User } from 'lucide-react';
 
 interface MobileBottomNavProps {
   onOpenCreate?: () => void;
@@ -27,21 +27,21 @@ export default function MobileBottomNav({ onOpenCreate }: MobileBottomNavProps) 
         <span className="text-[10px] mt-1">Home</span>
       </Link>
 
-      {/* 2. Inbox */}
+      {/* 2. Boss Up Hub (matching mobile activeIndex 3 Boss Up tab) */}
       <Link
-        href="/messages"
+        href="/boss-up"
         className={`flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
-          pathname?.startsWith('/messages')
+          pathname === '/boss-up'
             ? 'text-[#F21C29] font-bold'
             : 'text-slate-500 hover:text-slate-700 font-medium'
         }`}
       >
-        <MessageSquare
+        <Sparkles
           className={`w-5 h-5 ${
-            pathname?.startsWith('/messages') ? 'stroke-[2.5]' : 'stroke-2'
+            pathname === '/boss-up' ? 'stroke-[2.5]' : 'stroke-2'
           }`}
         />
-        <span className="text-[10px] mt-1">Inbox</span>
+        <span className="text-[10px] mt-1">Boss Up</span>
       </Link>
 
       {/* 3. Post (+) Center Action */}

@@ -28,11 +28,11 @@ interface UserProfile {
 }
 
 const navItems = [
-  { label: 'Boss Up', href: '/feed', icon: Flame },
-  { label: 'Inbox', href: '/messages', icon: MessageSquare },
+  { label: 'Feed', href: '/feed', icon: Flame },
+  { label: 'Boss Up', href: '/boss-up', icon: Sparkles },
   { label: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
+  { label: 'Request Board', href: '/buyer-requests', icon: Handshake },
   { label: 'Performance', href: '/magazine', icon: TrendingUp },
-  { label: 'Partnership', href: '/partners', icon: Handshake },
   { label: 'Monetization', href: '/subscription', icon: CreditCard },
   { label: 'Profile', href: '/profile', icon: User },
   { label: 'Settings', href: '/settings', icon: Settings },
