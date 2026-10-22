@@ -89,10 +89,10 @@ export default function BossUpHubPage() {
             <span>BOSS UP & GROW</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">
-            Boss Up Challenge & Hub
+            Boss Up
           </h1>
           <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-xl">
-            Compete for Boss of the Week, discover active opportunities, network with industry leaders, and accelerate your business growth.
+            Enter the Boss Up Challenge for a chance to become Boss of the Week, discover active opportunities, network with industry experts, and accelerate your business growth.
           </p>
         </div>
         <div className="absolute right-0 bottom-0 translate-x-10 translate-y-10 opacity-15 pointer-events-none">
@@ -100,11 +100,11 @@ export default function BossUpHubPage() {
         </div>
       </div>
 
-      {/* Main Grid: Active Challenges + Hub Tiles */}
+      {/* Main Grid: Active Challenges + Opportunities */}
       {loading ? (
         <div className="py-20 flex flex-col items-center justify-center text-slate-400 gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-[#F21C29]" />
-          <p className="text-sm font-semibold">Loading Boss Up Hub...</p>
+          <p className="text-sm font-semibold">Loading Boss Up...</p>
         </div>
       ) : (
         <div className="space-y-8">
