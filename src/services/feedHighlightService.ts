@@ -12,11 +12,9 @@ export interface BossOfTheWeekData {
 
 export interface PartnerDealData {
   id: string;
-  partnerName: string;
-  dealTitle: string;
-  discount: string;
-  logoUrl?: string;
-  dealUrl?: string;
+  companyName: string;
+  companyPhoto?: string;
+  companyUrl?: string;
 }
 
 export const feedHighlightService = {
@@ -46,22 +44,21 @@ export const feedHighlightService = {
   },
 
   /**
-   * Fetch real Partners Deals from backend
+   * Fetch real Partners Deals from backend (matching mobile deals_section.dart)
    */
   async getPartnerDeals(): Promise<PartnerDealData[]> {
     try {
       const res = await apiClient.get('/partner/all', {
-        params: { page: 0, size: 6 },
+        params: { page: 0, size: 10 },
       });
-      const data = res.data?.data || res.data;
-      if (Array.isArray(data)) {
-        return data.map((item: any) => ({
+      // The API returns { data: { count, rows: [...] } }
+      const rows = res.data?.data?.rows || (Array.isArray(res.data?.data) ? res.data.data : []);
+      if (Array.isArray(rows)) {
+        return rows.map((item: any) => ({
           id: String(item.id || item._id),
-          partnerName: item.name || item.companyName || 'Business Partner',
-          dealTitle: item.description || item.deal || item.title || 'Exclusive Member Perk',
-          discount: item.discount || item.tag || 'Special Offer',
-          logoUrl: item.logo || item.image || undefined,
-          dealUrl: item.url || item.website || undefined,
+          companyName: item.companyName || item.name || 'Partner',
+          companyPhoto: item.companyPhoto || item.user?.photoUrl || undefined,
+          companyUrl: item.companyUrl || item.user?.website || undefined,
         }));
       }
       return [];
@@ -87,3 +84,5 @@ export const feedHighlightService = {
     }
   },
 };
+
+export default feedHighlightService;

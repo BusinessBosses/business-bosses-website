@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Plus, Sparkles, RefreshCw, Layers, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { Plus, Sparkles, RefreshCw, Layers, Loader2, ChevronRight } from 'lucide-react';
 import PostCard, { Post } from '../../../components/feed/PostCard';
 import CreatePostModal from '../../../components/feed/CreatePostModal';
 import CommentsModal from '../../../components/feed/CommentsModal';
@@ -10,6 +11,7 @@ import PartnersDealsSection from '../../../components/feed/PartnersDealsSection'
 import QuickActionsBar from '../../../components/feed/QuickActionsBar';
 import FeedBuyerRequestsSection from '../../../components/feed/FeedBuyerRequestsSection';
 import FeedFeaturedListingsSection from '../../../components/feed/FeedFeaturedListingsSection';
+import FindOpportunitiesModal from '../../../components/feed/FindOpportunitiesModal';
 import { postService } from '../../../services/postService';
 import {
   feedHighlightService,
@@ -21,7 +23,7 @@ import { marketplaceService, MarketplaceService } from '../../../services/market
 import { toast } from 'react-toastify';
 
 export default function FeedPage() {
-  const [activeTab, setActiveTab] = useState<'forYou' | 'following'>('forYou');
+  const [activeTab, setActiveTab] = useState<'forYou' | 'marketplace'>('forYou');
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
@@ -29,6 +31,7 @@ export default function FeedPage() {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
+  const [isFindOppOpen, setIsFindOppOpen] = useState<boolean>(false);
   const [commentPost, setCommentPost] = useState<Post | null>(null);
 
   // Highlights state (parity with mobile ForYouTopCards)
@@ -46,11 +49,9 @@ export default function FeedPage() {
     setPage(0);
     setHasMore(true);
     fetchInitialPosts();
-    if (activeTab === 'forYou') {
-      fetchHighlights();
-      fetchInterleavedFeeds();
-    }
-  }, [activeTab]);
+    fetchHighlights();
+    fetchInterleavedFeeds();
+  }, []);
 
   const fetchHighlights = async () => {
     try {
@@ -81,7 +82,7 @@ export default function FeedPage() {
   const fetchInitialPosts = async () => {
     setLoading(true);
     try {
-      const fetched = await postService.getPosts(activeTab, 0, 20);
+      const fetched = await postService.getPosts('forYou', 0, 20);
       setPosts(fetched || []);
       setHasMore((fetched || []).length >= 10);
       setPage(1);
@@ -101,10 +102,9 @@ export default function FeedPage() {
     try {
       const lastPost = posts[posts.length - 1];
       const lastTs = lastPost?.timestamp;
-      const nextPosts = await postService.getPosts(activeTab, page, 20, lastTs);
+      const nextPosts = await postService.getPosts('forYou', page, 20, lastTs);
 
       if (nextPosts && nextPosts.length > 0) {
-        // Prevent duplicates
         setPosts((prev) => {
           const existingIds = new Set(prev.map((p) => p.id));
           const filtered = nextPosts.filter((p) => !existingIds.has(p.id));
@@ -123,7 +123,6 @@ export default function FeedPage() {
     }
   };
 
-  // IntersectionObserver Sentinel Callback for Infinite Scroll
   const lastElementRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (loading || loadingMore) return;
@@ -176,50 +175,55 @@ export default function FeedPage() {
         {/* Mobile Feed Quick Action Shortcuts */}
         <QuickActionsBar onOpenCreatePost={() => setIsCreateOpen(true)} />
 
-        {/* Feed Filter Tabs */}
-        <div className="flex items-center justify-between border-b border-slate-200 pb-1 pt-1">
-          <div className="flex space-x-6">
+        {/* Main Tabs matching Flutter MarketplaceScreen (For you | Marketplace + Find Opportunities >) */}
+        <div className="flex items-center justify-between border-b border-slate-200 pb-2 pt-1">
+          <div className="flex space-x-6 items-center">
             <button
               onClick={() => setActiveTab('forYou')}
-              className={`pb-2 text-sm font-bold transition-all border-b-2 ${
+              className={`pb-1 text-base font-bold transition-all border-b-2 ${
                 activeTab === 'forYou'
-                  ? 'border-[#F21C29] text-[#F21C29]'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'border-[#F21C29] text-slate-900'
+                  : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >
-              For You
+              For you
             </button>
-            <button
-              onClick={() => setActiveTab('following')}
-              className={`pb-2 text-sm font-bold transition-all border-b-2 ${
-                activeTab === 'following'
-                  ? 'border-[#F21C29] text-[#F21C29]'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
+            <Link
+              href="/marketplace"
+              className="pb-1 text-base font-bold text-slate-400 hover:text-slate-700 transition-colors"
             >
-              Following
-            </button>
+              Marketplace
+            </Link>
           </div>
 
-          <button
-            onClick={() => {
-              setRefreshing(true);
-              fetchInitialPosts();
-              if (activeTab === 'forYou') {
+          <div className="flex items-center space-x-4">
+            {/* Find Opportunities matching mobile Home AppBar */}
+            <button
+              onClick={() => setIsFindOppOpen(true)}
+              className="text-xs sm:text-sm font-bold text-slate-900 hover:text-[#F21C29] flex items-center gap-0.5 transition-colors"
+            >
+              <span>Find Opportunities</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => {
+                setRefreshing(true);
+                fetchInitialPosts();
                 fetchHighlights();
                 fetchInterleavedFeeds();
-              }
-            }}
-            disabled={refreshing}
-            className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center space-x-1"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
-          </button>
+              }}
+              disabled={refreshing}
+              className="text-xs font-semibold text-slate-400 hover:text-slate-700 flex items-center space-x-1"
+              title="Refresh feed"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
         </div>
 
         {/* Mobile Feed Parity Highlights */}
-        {activeTab === 'forYou' && bossOfTheWeek && (
+        {bossOfTheWeek && (
           <BossOfTheWeekCard
             boss={bossOfTheWeek}
             onFollow={handleFollowBoss}
@@ -227,7 +231,7 @@ export default function FeedPage() {
           />
         )}
 
-        {activeTab === 'forYou' && deals.length > 0 && (
+        {deals.length > 0 && (
           <PartnersDealsSection deals={deals} />
         )}
 
@@ -257,12 +261,12 @@ export default function FeedPage() {
               return (
                 <React.Fragment key={post.id}>
                   {/* Interleaved Buyer Requests at index 4 (mobile list_items.dart line 160) */}
-                  {activeTab === 'forYou' && idx === 4 && buyerRequests.length > 0 && (
+                  {idx === 4 && buyerRequests.length > 0 && (
                     <FeedBuyerRequestsSection requests={buyerRequests} />
                   )}
 
                   {/* Interleaved Featured Listings at index 5 (mobile list_items.dart line 142) */}
-                  {activeTab === 'forYou' && idx === 5 && featuredServices.length > 0 && (
+                  {idx === 5 && featuredServices.length > 0 && (
                     <FeedFeaturedListingsSection services={featuredServices} />
                   )}
 
@@ -294,9 +298,7 @@ export default function FeedPage() {
             <Layers className="w-12 h-12 text-slate-300 mb-3" />
             <h3 className="font-bold text-slate-800 text-base mb-1">No posts yet</h3>
             <p className="text-slate-500 text-sm max-w-sm mb-4">
-              {activeTab === 'forYou'
-                ? 'Be the first to share an update or insight with the Business Bosses community!'
-                : 'Follow other entrepreneurs to see their posts and opportunities in your stream.'}
+              Be the first to share an update or insight with the Business Bosses community!
             </p>
             <button
               onClick={() => setIsCreateOpen(true)}
@@ -312,6 +314,12 @@ export default function FeedPage() {
           isOpen={isCreateOpen}
           onClose={() => setIsCreateOpen(false)}
           onPostCreated={fetchInitialPosts}
+        />
+
+        {/* Find Opportunities Modal */}
+        <FindOpportunitiesModal
+          isOpen={isFindOppOpen}
+          onClose={() => setIsFindOppOpen(false)}
         />
 
         {/* Comments Modal */}
