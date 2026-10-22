@@ -30,6 +30,7 @@ interface UserProfile {
 const navItems = [
   { label: 'Feed', href: '/feed', icon: Flame },
   { label: 'Boss Up', href: '/boss-up', icon: Sparkles },
+  { label: 'Inbox', href: '/inbox', icon: MessageSquare },
   { label: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
   { label: 'Request Board', href: '/buyer-requests', icon: Handshake },
   { label: 'Performance', href: '/magazine', icon: TrendingUp },
