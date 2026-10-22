@@ -39,14 +39,14 @@ export default function RegisterPage() {
         password,
       });
 
-      const token = response.data?.token || response.token;
+      const token = authService.extractToken(response);
 
       if (response.success) {
         if (token) {
           authService.setToken(token);
-          router.push('/feed');
+          window.location.href = '/feed';
         } else {
-          router.push('/login?registered=true');
+          window.location.href = '/login?registered=true';
         }
       } else {
         setError(response.message || 'Registration failed. Please try again.');
@@ -56,7 +56,7 @@ export default function RegisterPage() {
       if (err.message === 'Network Error' || err.response?.status >= 500) {
         console.warn('API unavailable, bypassing signup for demo mode');
         authService.setToken('mock-jwt-token-12345');
-        router.push('/feed');
+        window.location.href = '/feed';
       } else {
         setError(err.response?.data?.message || err.response?.data?.error || 'Registration failed. Please check your details.');
       }

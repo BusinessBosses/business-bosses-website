@@ -26,11 +26,11 @@ export default function LoginPage() {
 
     try {
       const response = await authService.signIn({ email, password });
-      const token = response.data?.token || response.token;
+      const token = authService.extractToken(response);
 
       if (response.success && token) {
         authService.setToken(token);
-        router.push('/feed');
+        window.location.href = '/feed';
       } else {
         setError(response.message || 'Login failed. Please check your credentials.');
       }
@@ -39,9 +39,9 @@ export default function LoginPage() {
       if (err.message === 'Network Error' || err.response?.status >= 500) {
         console.warn('API unavailable, bypassing login for demo mode');
         authService.setToken('mock-jwt-token-12345');
-        router.push('/feed');
+        window.location.href = '/feed';
       } else {
-        setError(err.response?.data?.message || 'An error occurred during login. Please try again.');
+        setError(err.response?.data?.message || err.response?.data?.error || 'An error occurred during login. Please try again.');
       }
     } finally {
       setLoading(false);

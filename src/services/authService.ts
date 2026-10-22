@@ -17,14 +17,32 @@ export interface AuthResponse {
   success: boolean;
   message?: string;
   data?: {
+    accessToken?: string;
     token?: string;
     uid?: string;
     user?: any;
+    [key: string]: any;
   };
+  accessToken?: string;
   token?: string;
+  [key: string]: any;
 }
 
 export const authService = {
+  /**
+   * Helper to extract JWT token from diverse backend response shapes
+   */
+  extractToken(res: any): string | null {
+    if (!res) return null;
+    return (
+      res.data?.accessToken ||
+      res.data?.token ||
+      res.accessToken ||
+      res.token ||
+      null
+    );
+  },
+
   /**
    * Sign in an existing user
    */
