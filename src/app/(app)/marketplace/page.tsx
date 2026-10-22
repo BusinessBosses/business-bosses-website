@@ -19,6 +19,7 @@ import {
   MarketItem,
 } from '../../../services/marketplaceService';
 import ImageLightboxModal from '../../../components/feed/ImageLightboxModal';
+import SellOptionsModal from '../../../components/marketplace/SellOptionsModal';
 
 const CATEGORIES = [
   'All',
@@ -45,6 +46,7 @@ export default function MarketplacePage() {
   const [selectedLocation, setSelectedLocation] = useState<string>('All Locations');
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null);
+  const [sellModalOpen, setSellModalOpen] = useState<boolean>(false);
 
   // Lightbox modal state for product/service images
   const [lightboxOpen, setLightboxOpen] = useState<boolean>(false);
@@ -104,13 +106,13 @@ export default function MarketplacePage() {
             </form>
 
             {/* Sell Button matching mobile red Sell pill */}
-            <Link
-              href="/proscreens/biz-center/views/ManageInventory/ManageInventory"
+            <button
+              onClick={() => setSellModalOpen(true)}
               className="px-4 py-2.5 bg-[#FF1E39] hover:bg-[#D01420] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-transform active:scale-95 flex items-center space-x-1 shrink-0"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>Sell</span>
-            </Link>
+            </button>
 
             <button
               onClick={() => {
@@ -431,6 +433,12 @@ export default function MarketplacePage() {
           onClose={() => setLightboxOpen(false)}
           images={lightboxImages}
           initialIndex={activeImageIndex}
+        />
+
+        {/* Sell Options Modal matching mobile _showSellOptions */}
+        <SellOptionsModal
+          isOpen={sellModalOpen}
+          onClose={() => setSellModalOpen(false)}
         />
       </div>
     </div>
