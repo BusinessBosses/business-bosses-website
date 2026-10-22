@@ -80,6 +80,22 @@ export const authService = {
   },
 
   /**
+   * Get current authenticated user profile
+   */
+  async getCurrentUser(): Promise<any> {
+    try {
+      const res = await apiClient.get('/users/me');
+      if (res.data?.success && res.data?.data) {
+        return res.data.data;
+      }
+      return res.data || null;
+    } catch (err) {
+      console.warn('Could not retrieve current user profile', err);
+      return null;
+    }
+  },
+
+  /**
    * Remove session token and clear session
    */
   signOut(): void {
