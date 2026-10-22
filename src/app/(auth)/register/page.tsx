@@ -47,12 +47,16 @@ export default function RegisterPage() {
       const token = authService.extractToken(response);
 
       if (response.success) {
-        toast.success('Account created successfully!');
+        toast.success('Account created successfully! Redirecting...');
         if (token) {
           authService.setToken(token);
-          window.location.href = '/feed';
+          setTimeout(() => {
+            router.push('/feed');
+          }, 600);
         } else {
-          window.location.href = '/login?registered=true';
+          setTimeout(() => {
+            router.push('/login?registered=true');
+          }, 600);
         }
       } else {
         const errorMsg = response.message || 'Registration failed. Please try again.';
@@ -64,8 +68,10 @@ export default function RegisterPage() {
       if (err.message === 'Network Error' || err.response?.status >= 500) {
         console.warn('API unavailable, bypassing signup for demo mode');
         authService.setToken('mock-jwt-token-12345');
-        toast.success('Account created (demo mode)!');
-        window.location.href = '/feed';
+        toast.success('Account created! Redirecting...');
+        setTimeout(() => {
+          router.push('/feed');
+        }, 600);
       } else {
         const errorMsg = err.response?.data?.message || err.response?.data?.error || 'Registration failed. Please check your details.';
         setError(errorMsg);
