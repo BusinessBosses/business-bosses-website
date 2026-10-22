@@ -33,12 +33,10 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   const [showAiInput, setShowAiInput] = useState(false);
   const [error, setError] = useState('');
 
-  // Media state: local uploaded files and optional URL
+  // Media state: local uploaded files
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [filePreviews, setFilePreviews] = useState<string[]>([]);
   const [isUploadingFiles, setIsUploadingFiles] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
-  const [showUrlInput, setShowUrlInput] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -102,7 +100,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!content.trim() && selectedFiles.length === 0 && !imageUrl.trim()) {
+    if (!content.trim() && selectedFiles.length === 0) {
       toast.warning('Please enter text or select an image');
       return;
     }
@@ -113,7 +111,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
     try {
       const uploadedUrls: string[] = [];
 
-      // 1. Upload files from local device if any
+      // Upload files from local device if any
       if (selectedFiles.length > 0) {
         setIsUploadingFiles(true);
         for (const file of selectedFiles) {
@@ -125,11 +123,6 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
           }
         }
         setIsUploadingFiles(false);
-      }
-
-      // 2. Add direct image URL if entered
-      if (imageUrl.trim()) {
-        uploadedUrls.push(imageUrl.trim());
       }
 
       const payload: any = {
@@ -149,7 +142,6 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
       setContent('');
       setSelectedFiles([]);
       setFilePreviews([]);
-      setImageUrl('');
       toast.success('Post shared successfully!');
       if (onPostCreated) onPostCreated();
       onClose();
@@ -193,7 +185,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
             placeholder="Share an update, win, or business insight with the network..."
             rows={4}
             className="w-full resize-none p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all"
-            required={selectedFiles.length === 0 && !imageUrl.trim()}
+            required={selectedFiles.length === 0}
           />
 
           {/* AI Promote Tool Bar */}
@@ -264,52 +256,26 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
             </div>
           )}
 
-          {/* Device Upload and URL Media Options */}
-          <div className="space-y-2 pt-1">
-            <div className="flex items-center gap-2">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleFileChange}
-                className="hidden"
-              />
+          {/* Device Media Upload */}
+          <div className="pt-1">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFileChange}
+              className="hidden"
+            />
 
-              {/* Upload from Device button */}
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
-              >
-                <UploadCloud className="w-4 h-4 text-slate-500" />
-                <span>Upload Images</span>
-              </button>
-
-              {/* Paste URL toggle */}
-              <button
-                type="button"
-                onClick={() => setShowUrlInput(!showUrlInput)}
-                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
-              >
-                <LinkIcon className="w-4 h-4 text-slate-500" />
-                <span>Add Image URL</span>
-              </button>
-            </div>
-
-            {/* Optional Image URL Input */}
-            {showUrlInput && (
-              <div className="flex items-center space-x-2 animate-in fade-in duration-150">
-                <ImageIcon className="w-4 h-4 text-slate-400 shrink-0" />
-                <input
-                  type="url"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="https://example.com/image.png"
-                  className="flex-1 text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#F21C29]"
-                />
-              </div>
-            )}
+            {/* Upload from Device button */}
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+            >
+              <UploadCloud className="w-4 h-4 text-slate-500" />
+              <span>Upload Images</span>
+            </button>
           </div>
 
           {/* Submit Action */}
@@ -323,7 +289,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
             </button>
             <button
               type="submit"
-              disabled={isSubmitting || isUploadingFiles || (!content.trim() && selectedFiles.length === 0 && !imageUrl.trim())}
+              disabled={isSubmitting || isUploadingFiles || (!content.trim() && selectedFiles.length === 0)}
               className="px-5 py-2.5 bg-[#F21C29] hover:bg-[#D01420] text-white rounded-xl text-sm font-bold shadow-md transition-all flex items-center space-x-1.5 disabled:opacity-60"
             >
               {isSubmitting || isUploadingFiles ? (
