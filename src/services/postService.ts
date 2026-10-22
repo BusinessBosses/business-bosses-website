@@ -8,37 +8,111 @@ export interface CreatePostPayload {
 
 export const postService = {
   /**
-   * Fetch timeline posts based on filter tab
+   * Fetch timeline posts matching mobile home_controller.dart:
+   * 1. Fetches from /post/all-posts-new or /init/new
+   * 2. Unpacks response.data (which returns { posts: { rows: [] }, forums: { rows: [] }, courses: { rows: [] } })
+   * 3. Flattens and mixes posts and community forums, sorted by timestamp DESC
    */
-  async getPosts(tab: 'forYou' | 'following' = 'forYou', page = 1, limit = 15): Promise<Post[]> {
-    const endpoint = tab === 'forYou' ? '/post/all-posts-new' : '/post/get-posts';
-    const res = await apiClient.get(endpoint, {
-      params: { page, limit },
-    });
+  async getPosts(tab: 'forYou' | 'following' = 'forYou', page = 0, limit = 20): Promise<Post[]> {
+    try {
+      const endpoint = tab === 'forYou' ? '/post/all-posts-new' : '/post/get-posts';
+      const res = await apiClient.get(endpoint, {
+        params: { page, size: limit },
+      });
 
-    if (res.data?.success && Array.isArray(res.data?.data)) {
-      return res.data.data.map((item: any) => ({
-        id: String(item.id || item._id),
-        author: {
-          id: String(item.userId || item.author?.id || ''),
-          name: item.author?.name || item.user?.name || item.userName || 'Business Boss',
-          username: item.author?.username || item.user?.username || item.userHandle || undefined,
-          avatarUrl: item.author?.avatarUrl || item.user?.avatar || item.userAvatar || '',
-          isPro: !!(item.author?.isPro || item.user?.isPro || item.isBossPro),
-        },
-        content: item.text || item.content || item.description || '',
-        images: item.image ? [item.image] : item.images || [],
-        createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '',
-        likesCount: item.likesCount || item.likes?.length || 0,
-        commentsCount: item.commentsCount || item.comments?.length || 0,
-        repostsCount: item.repostsCount || 0,
-        isLiked: !!item.isLiked,
-        isBookmarked: !!item.isBookmarked,
-        isReposted: !!item.isReposted,
-        isBoosted: !!item.isPromoted,
-      }));
+      const responseData = res.data?.data || res.data;
+      if (!responseData) return [];
+
+      let rawPosts: any[] = [];
+      let rawForums: any[] = [];
+      let rawCourses: any[] = [];
+
+      // Check if wrapped in { posts: { rows: [...] } } structure as in /post/all-posts-new
+      if (responseData.posts?.rows && Array.isArray(responseData.posts.rows)) {
+        rawPosts = responseData.posts.rows;
+      } else if (Array.isArray(responseData.posts)) {
+        rawPosts = responseData.posts;
+      } else if (Array.isArray(responseData)) {
+        rawPosts = responseData;
+      }
+
+      // Check for forums (Boss Up challenge posts & community discussions)
+      if (responseData.forums?.rows && Array.isArray(responseData.forums.rows)) {
+        rawForums = responseData.forums.rows;
+      } else if (Array.isArray(responseData.forums)) {
+        rawForums = responseData.forums;
+      }
+
+      // Check for courses
+      if (responseData.courses?.rows && Array.isArray(responseData.courses.rows)) {
+        rawCourses = responseData.courses.rows;
+      } else if (Array.isArray(responseData.courses)) {
+        rawCourses = responseData.courses;
+      }
+
+      // Map standard posts
+      const mappedPosts: (Post & { timestamp: number })[] = rawPosts.map((item: any) => {
+        const ts = Number(item.timestamp) || (item.createdAt ? new Date(item.createdAt).getTime() : Date.now());
+        const user = item.user || item.author || {};
+        return {
+          id: String(item.postId || item.id || item._id),
+          author: {
+            id: String(item.userId || user.uid || user.id || ''),
+            name: user.name || user.fullname || user.username || 'Business Boss',
+            username: user.username || undefined,
+            avatarUrl: user.photoUrl || user.avatar || user.profilePicture || '',
+            isPro: !!(user.isSubscribed || user.isBossPro),
+          },
+          content: item.title || item.text || item.content || item.description || '',
+          images: item.photoUrl ? [item.photoUrl] : item.image ? [item.image] : item.images || [],
+          createdAt: new Date(ts).toLocaleDateString(),
+          likesCount: Array.isArray(item.likes) ? item.likes.length : Number(item.likesCount) || 0,
+          commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount) || 0,
+          repostsCount: Array.isArray(item.reposts) ? item.reposts.length : Number(item.repostsCount) || 0,
+          isLiked: !!item.isLiked,
+          isBookmarked: !!item.isBookmarked,
+          isReposted: !!item.isReposted,
+          isBoosted: !!item.promote,
+          timestamp: ts,
+        };
+      });
+
+      // Map community forums (e.g. Boss Up challenge posts)
+      const mappedForums: (Post & { timestamp: number })[] = rawForums.map((item: any) => {
+        const ts = Number(item.timestamp) || (item.createdAt ? new Date(item.createdAt).getTime() : Date.now());
+        const user = item.user || {};
+        return {
+          id: String(item.forumId || item.id),
+          author: {
+            id: String(item.userId || user.uid || ''),
+            name: user.name || user.fullname || user.username || 'Boss Up Member',
+            username: user.username || undefined,
+            avatarUrl: user.photoUrl || user.avatar || '',
+            isPro: !!(user.isSubscribed || user.isBossPro),
+          },
+          content: item.description || item.title || '',
+          images: item.photo ? [item.photo] : [],
+          createdAt: new Date(ts).toLocaleDateString(),
+          likesCount: Array.isArray(item.likes) ? item.likes.length : 0,
+          commentsCount: Array.isArray(item.comments) ? item.comments.length : 0,
+          repostsCount: 0,
+          isLiked: false,
+          isBookmarked: false,
+          isReposted: false,
+          isBoosted: !!item.promote,
+          timestamp: ts,
+        };
+      });
+
+      // Unified organic list sorted by timestamp DESC (mobile mixPostandPromoted algorithm)
+      const combined = [...mappedPosts, ...mappedForums].sort((a, b) => b.timestamp - a.timestamp);
+
+      // Return clean Post objects
+      return combined.map(({ timestamp, ...post }) => post);
+    } catch (error) {
+      console.error('Failed to fetch posts', error);
+      return [];
     }
-    return [];
   },
 
   /**
@@ -60,14 +134,4 @@ export const postService = {
     }
     throw new Error(res.data?.message || 'Failed to generate copy');
   },
-
-  /**
-   * Toggle post like
-   */
-  async toggleLike(postId: string): Promise<any> {
-    const res = await apiClient.post('/likes', { postId });
-    return res.data;
-  },
 };
-
-export default postService;
