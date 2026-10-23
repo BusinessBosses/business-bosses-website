@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { buyerRequestService, BuyerRequest } from '../../../services/buyerRequestService';
 import CreateBuyerRequestModal from '../../../components/buyerRequests/CreateBuyerRequestModal';
 import ApplyBuyerRequestModal from '../../../components/buyerRequests/ApplyBuyerRequestModal';
+import BuyerRequestDetailModal from '../../../components/buyerRequests/BuyerRequestDetailModal';
 import { authService } from '../../../services/authService';
 
 const CATEGORIES = [
@@ -46,6 +47,7 @@ export default function BuyerRequestsPage() {
   // Modals
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedRequestForApply, setSelectedRequestForApply] = useState<BuyerRequest | null>(null);
+  const [selectedRequestForDetail, setSelectedRequestForDetail] = useState<BuyerRequest | null>(null);
 
   const currentUserId = authService.getUserId();
 
@@ -291,12 +293,40 @@ export default function BuyerRequestsPage() {
               const timeDisplay = formatRelativeTime(request.created_at || request.createdAt || request.postedAt);
               const budgetText = formatBudget(request);
 
+              const images = (request.attachments || []).filter((url) => {
+                return (
+                  url &&
+                  (url.startsWith('http://') ||
+                    url.startsWith('https://') ||
+                    url.startsWith('/'))
+                );
+              });
+
               return (
                 <div 
                   key={request.id} 
-                  className="bg-white rounded-2xl shadow-xs border border-slate-200/90 p-5 sm:p-6 transition-all hover:shadow-md hover:border-slate-300 flex flex-col justify-between"
+                  className="bg-white rounded-2xl shadow-xs border border-slate-200/90 overflow-hidden transition-all hover:shadow-md hover:border-slate-300 flex flex-col justify-between"
                 >
-                  <div className="mb-4">
+                  {/* Top Attached Image (Matches mobile's 120px height in BuyerRequestItem) */}
+                  {images.length > 0 && (
+                    <div 
+                      onClick={() => setSelectedRequestForDetail(request)}
+                      className="relative h-36 sm:h-44 w-full bg-slate-100 cursor-pointer overflow-hidden group"
+                    >
+                      <img
+                        src={images[0]}
+                        alt={request.title}
+                        className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
+                      />
+                      {images.length > 1 && (
+                        <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-xs text-white text-[10px] font-bold">
+                          +{images.length - 1} more
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="p-5 sm:p-6 mb-auto">
                     {/* Top Row: Category & Posted Time */}
                     <div className="flex items-center justify-between gap-2 mb-2.5">
                       <div className="flex items-center space-x-2 flex-wrap gap-y-1">
@@ -315,7 +345,10 @@ export default function BuyerRequestsPage() {
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 mb-2 leading-snug">
+                    <h2 
+                      onClick={() => setSelectedRequestForDetail(request)}
+                      className="text-base sm:text-lg font-black text-slate-900 mb-2 leading-snug cursor-pointer hover:text-[#F21C29] transition-colors"
+                    >
                       {request.title}
                     </h2>
 
@@ -347,8 +380,8 @@ export default function BuyerRequestsPage() {
                     </div>
                   </div>
 
-                  {/* Bottom Row: Author details & Apply Action */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                  {/* Bottom Row: Author details, View Detail & Apply Action */}
+                  <div className="p-5 sm:p-6 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/30">
                     <div className="flex items-center space-x-3">
                       <div className="relative w-9 h-9 rounded-full overflow-hidden bg-slate-200 ring-1 ring-slate-200 shrink-0">
                         <Image 
@@ -371,12 +404,18 @@ export default function BuyerRequestsPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setSelectedRequestForDetail(request)}
+                        className="px-4 py-2 border border-slate-200 hover:border-slate-300 text-slate-700 rounded-xl text-xs font-bold transition-colors"
+                      >
+                        View Request
+                      </button>
                       <button
                         onClick={() => setSelectedRequestForApply(request)}
-                        className="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-5 py-2.5 bg-[#F21C29] hover:bg-[#D01420] text-white rounded-xl text-xs font-bold transition-all shadow-xs active:scale-95"
+                        className="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-4 py-2 bg-[#F21C29] hover:bg-[#D01420] text-white rounded-xl text-xs font-bold transition-all shadow-xs active:scale-95"
                       >
-                        <span>Apply / Send Pitch</span>
+                        <span>Apply</span>
                         <Send className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -421,6 +460,14 @@ export default function BuyerRequestsPage() {
         isOpen={!!selectedRequestForApply}
         onClose={() => setSelectedRequestForApply(null)}
         onSuccess={() => fetchRequests()}
+      />
+
+      {/* View Request Details Modal (Matches mobile _showRequestDetails) */}
+      <BuyerRequestDetailModal
+        request={selectedRequestForDetail}
+        isOpen={!!selectedRequestForDetail}
+        onClose={() => setSelectedRequestForDetail(null)}
+        onApply={(req) => setSelectedRequestForApply(req)}
       />
     </div>
   );
