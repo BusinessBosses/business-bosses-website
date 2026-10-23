@@ -122,6 +122,22 @@ export const authService = {
   },
 
   /**
+   * Synchronous / helper alias for compatibility with components reading cached user
+   */
+  getUser(): any {
+    if (typeof window === 'undefined') return null;
+    const directUid = this.getUserId();
+    if (!directUid) return null;
+    try {
+      const cached = localStorage.getItem('bb_user_profile') || localStorage.getItem('user');
+      if (cached) return JSON.parse(cached);
+    } catch {
+      // ignore
+    }
+    return { uid: directUid };
+  },
+
+  /**
    * Remove session token and clear session
    */
   signOut(): void {

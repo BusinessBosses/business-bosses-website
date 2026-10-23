@@ -4,10 +4,10 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ShoppingBag, ChevronRight, Star } from 'lucide-react';
-import { MarketplaceService } from '../../services/marketplaceService';
+import { MarketItem } from '../../services/marketplaceService';
 
 interface FeedFeaturedListingsSectionProps {
-  services: MarketplaceService[];
+  services: any[];
 }
 
 export default function FeedFeaturedListingsSection({

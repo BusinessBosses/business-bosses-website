@@ -31,7 +31,7 @@ import {
   PartnerDealData,
 } from '../../../services/feedHighlightService';
 import { buyerRequestService, BuyerRequest } from '../../../services/buyerRequestService';
-import { marketplaceService, MarketplaceService } from '../../../services/marketplaceService';
+import { marketplaceService, MarketItem } from '../../../services/marketplaceService';
 import { authService } from '../../../services/authService';
 import { toast } from 'react-toastify';
 
@@ -53,7 +53,7 @@ export default function FeedPage() {
   const [bossOfTheWeek, setBossOfTheWeek] = useState<BossOfTheWeekData | null>(null);
   const [deals, setDeals] = useState<PartnerDealData[]>([]);
   const [buyerRequests, setBuyerRequests] = useState<BuyerRequest[]>([]);
-  const [featuredServices, setFeaturedServices] = useState<MarketplaceService[]>([]);
+  const [featuredServices, setFeaturedServices] = useState<any[]>([]);
   const [isFollowingBoss, setIsFollowingBoss] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
 
@@ -80,10 +80,14 @@ export default function FeedPage() {
     loadCurrentUser();
   }, []);
 
-  const loadCurrentUser = () => {
-    const user = authService.getUser();
-    if (user) {
-      setCurrentUser(user);
+  const loadCurrentUser = async () => {
+    try {
+      const user = await authService.getCurrentUser();
+      if (user) {
+        setCurrentUser(user);
+      }
+    } catch {
+      // Guest or fallback
     }
   };
 
