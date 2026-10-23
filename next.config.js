@@ -14,6 +14,7 @@ const nextConfig = {
   },
   transpilePackages: ['@mui/material', '@mui/icons-material', 'react-toastify'],
   images: {
+    unoptimized: true,
     disableStaticImages: true,
   },
   async redirects() {
