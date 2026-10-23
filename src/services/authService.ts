@@ -87,10 +87,16 @@ export const authService = {
    */
   getUserId(): string | null {
     if (typeof window === 'undefined') return null;
-    const directUid = localStorage.getItem('bb_user_uid');
+    const directUid =
+      localStorage.getItem(StorageEnum.UserId) ||
+      localStorage.getItem('userId') ||
+      localStorage.getItem('bb_user_uid');
     if (directUid) return directUid;
     // Decode from JWT payload if not directly stored
-    const token = localStorage.getItem(StorageEnum.AccessToken) || localStorage.getItem('bb_access_token');
+    const token =
+      localStorage.getItem(StorageEnum.AccessToken) ||
+      localStorage.getItem('bb_access_token') ||
+      localStorage.getItem('accessToken');
     if (token) {
       try {
         const payloadBase64 = token.split('.')[1];
@@ -114,11 +120,26 @@ export const authService = {
       if (res.data?.success && res.data?.data) {
         return res.data.data;
       }
-      return res.data || null;
+      if (res.data?.uid || res.data?.id) {
+        return res.data;
+      }
     } catch (err) {
-      console.warn('Could not retrieve current user profile', err);
-      return null;
+      console.warn('Could not retrieve current user profile from /users/me', err);
     }
+
+    // Fallback: If /users/me failed, try by stored user ID
+    const uid = this.getUserId();
+    if (uid) {
+      try {
+        const userRes = await apiClient.get(`/users/${uid}`);
+        if (userRes.data?.data) return userRes.data.data;
+        if (userRes.data) return userRes.data;
+      } catch (fallbackErr) {
+        console.warn('Could not retrieve user by uid fallback', fallbackErr);
+      }
+    }
+
+    return null;
   },
 
   /**

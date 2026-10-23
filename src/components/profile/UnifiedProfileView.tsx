@@ -152,6 +152,14 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
         }
       }
 
+      // If not logged in and on /profile/ without parameters, redirect to login
+      if (!fetchedUser && !targetUsername && !targetUid) {
+        if (typeof window !== 'undefined' && !authService.isAuthenticated()) {
+          window.location.href = '/login';
+          return;
+        }
+      }
+
       if (!fetchedUser) {
         setErrorMsg('User profile not found. The account may have been changed or removed.');
         setLoading(false);
