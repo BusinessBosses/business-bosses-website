@@ -181,27 +181,27 @@ export default function RightContextRail() {
       
       {/* 1. Pro Boost Card - ONLY shown for non-pro users */}
       {!isProUser && (
-        <div className="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-[#1F1B2E] via-[#161421] to-[#0D0B14] text-white shadow-md border border-slate-800 group">
-          {/* Ambient Top Glow */}
-          <div className="absolute -top-12 -right-12 w-32 h-32 bg-red-600/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="relative overflow-hidden rounded-2xl p-4.5 bg-slate-900 text-white shadow-md border border-slate-800 group">
+          {/* Subtle Ambient Glow */}
+          <div className="absolute -top-10 -right-10 w-28 h-28 bg-[#F21C29]/15 rounded-full blur-2xl pointer-events-none" />
 
-          <div className="relative z-10 space-y-3">
+          <div className="relative z-10 space-y-2.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-xl bg-[#F21C29] flex items-center justify-center shadow-xs">
-                  <Crown className="w-4 h-4 text-white stroke-[2.5]" />
+                <div className="w-7 h-7 rounded-lg bg-[#F21C29] flex items-center justify-center shadow-xs">
+                  <Crown className="w-3.5 h-3.5 text-white stroke-[2.5]" />
                 </div>
                 <span className="text-[11px] font-black tracking-wider uppercase text-white">
                   PRO MEMBERSHIP
                 </span>
               </div>
-              <span className="bg-white/10 text-slate-200 border border-white/20 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+              <span className="bg-white/10 text-slate-200 border border-white/20 text-[10px] font-bold px-2 py-0.5 rounded-full">
                 Boost Reach
               </span>
             </div>
 
             <div>
-              <h3 className="font-extrabold text-sm sm:text-[15px] text-white leading-snug">
+              <h3 className="font-extrabold text-sm text-white leading-snug">
                 Get Verified &amp; Scale Reach
               </h3>
               <p className="text-xs text-slate-300 mt-1 leading-relaxed">
@@ -211,7 +211,7 @@ export default function RightContextRail() {
 
             <Link
               href="/subscription"
-              className="w-full bg-gradient-to-r from-[#F21C29] to-[#D01420] hover:from-[#d91925] hover:to-[#b5101a] text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95 group-hover:shadow-red-500/20 group-hover:shadow-lg"
+              className="w-full bg-[#F21C29] hover:bg-[#D01420] text-white text-xs font-bold py-2 px-3.5 rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95 mt-1"
             >
               <span>Upgrade to Pro</span>
               <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -386,13 +386,13 @@ export default function RightContextRail() {
       </div>
 
       {/* 4. Digital Magazine Spotlight */}
-      <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-4 shadow-sm relative overflow-hidden space-y-3">
+      <div className="bg-slate-900 text-white rounded-2xl p-4 shadow-sm relative overflow-hidden space-y-3 border border-slate-800">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] font-black uppercase text-slate-300 tracking-wider flex items-center gap-1.5">
+          <span className="text-[10px] font-black uppercase text-slate-200 tracking-wider flex items-center gap-1.5">
             <BookOpen className="w-3.5 h-3.5 text-[#F21C29]" />
             DIGITAL MAGAZINE
           </span>
-          <span className="text-[9px] bg-white/10 text-slate-300 px-2 py-0.5 rounded-full font-bold">
+          <span className="text-[9px] bg-white/10 text-slate-200 border border-white/10 px-2 py-0.5 rounded-full font-bold">
             {latestMagazine?.issueNumber || 'Current'}
           </span>
         </div>
@@ -408,7 +408,7 @@ export default function RightContextRail() {
                 e.target.style.display = 'none';
               }}
             />
-            <div className="w-full h-full flex flex-col items-center justify-center p-1 text-center bg-slate-900">
+            <div className="w-full h-full flex flex-col items-center justify-center p-1 text-center bg-slate-800">
               <BookOpen className="w-5 h-5 text-slate-400 mb-1" />
               <span className="text-[7px] font-black uppercase tracking-wider text-white">MAGAZINE</span>
             </div>
@@ -418,7 +418,7 @@ export default function RightContextRail() {
             <h5 className="font-extrabold text-xs text-white leading-snug line-clamp-2">
               {latestMagazine?.title || 'Stories of Global African Entrepreneurs'}
             </h5>
-            <p className="text-[10px] text-slate-400 leading-tight line-clamp-2">
+            <p className="text-[10px] text-slate-300 leading-tight line-clamp-2">
               Interviews, market intelligence &amp; founder journeys.
             </p>
           </div>
@@ -433,13 +433,13 @@ export default function RightContextRail() {
         </Link>
       </div>
 
-      {/* 5. Clean Footer Legal & Attribution */}
-      <div className="px-1 text-[11px] text-slate-400 space-y-2 pt-2">
+      {/* 5. Clean Footer Legal & Attribution - with extra bottom padding to avoid floating widget overlap */}
+      <div className="px-1 text-[11px] text-slate-500 space-y-2 pt-2 pb-16">
         <div className="flex flex-wrap gap-x-3 gap-y-1">
-          <Link href="/privacypolicy" className="hover:text-slate-600 transition-colors">Privacy</Link>
-          <Link href="/becomeapartner" className="hover:text-slate-600 transition-colors">Partners</Link>
-          <Link href="/apply-featured" className="hover:text-slate-600 transition-colors">Get Featured</Link>
-          <Link href="/settings" className="hover:text-slate-600 transition-colors">Settings</Link>
+          <Link href="/privacypolicy" className="hover:text-slate-800 transition-colors font-medium">Privacy</Link>
+          <Link href="/becomeapartner" className="hover:text-slate-800 transition-colors font-medium">Partners</Link>
+          <Link href="/apply-featured" className="hover:text-slate-800 transition-colors font-medium">Get Featured</Link>
+          <Link href="/settings" className="hover:text-slate-800 transition-colors font-medium">Settings</Link>
         </div>
         <p className="text-[10px] text-slate-400">
           © {new Date().getFullYear()} Business Bosses Ltd. All rights reserved.
