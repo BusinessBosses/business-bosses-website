@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from '../common/SafeImage';
 import { Search, Bell, Sparkles } from 'lucide-react';
 import { authService } from '../../services/authService';
 

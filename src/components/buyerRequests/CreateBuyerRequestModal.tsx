@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { X, Upload, Plus, AlertCircle, Loader2 } from 'lucide-react';
-import Image from 'next/image';
+import Image from '../common/SafeImage';
 import { toast } from 'react-toastify';
 import { buyerRequestService } from '../../services/buyerRequestService';
 import { authService } from '../../services/authService';

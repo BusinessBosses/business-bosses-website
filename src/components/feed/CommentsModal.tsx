@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import Image from '../common/SafeImage';
 import { X, Send, MessageCircle } from 'lucide-react';
 import { commentService, CommentItem } from '../../services/commentService';
 import { toast } from 'react-toastify';

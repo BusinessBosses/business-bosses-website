@@ -14,7 +14,7 @@ import {
   Send,
   User,
 } from 'lucide-react';
-import Image from 'next/image';
+import Image from '../common/SafeImage';
 import { BuyerRequest } from '../../services/buyerRequestService';
 import { toast } from 'react-toastify';
 

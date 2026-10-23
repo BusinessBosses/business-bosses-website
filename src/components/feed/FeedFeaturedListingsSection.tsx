@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from '../common/SafeImage';
 import { ShoppingBag, ChevronRight, Star } from 'lucide-react';
 import { MarketItem } from '../../services/marketplaceService';
 

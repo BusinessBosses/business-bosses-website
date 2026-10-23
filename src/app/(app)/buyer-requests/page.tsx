@@ -12,7 +12,7 @@ import {
   Calendar, 
   Paperclip
 } from 'lucide-react';
-import Image from 'next/image';
+import Image from '../../../components/common/SafeImage';
 import { toast } from 'react-toastify';
 import { buyerRequestService, BuyerRequest } from '../../../services/buyerRequestService';
 import CreateBuyerRequestModal from '../../../components/buyerRequests/CreateBuyerRequestModal';

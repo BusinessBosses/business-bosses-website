@@ -12,7 +12,7 @@ import {
   MessageSquare,
   ArrowRight,
 } from 'lucide-react';
-import Image from 'next/image';
+import Image from '../common/SafeImage';
 import { toast } from 'react-toastify';
 import { BuyerRequest, buyerRequestService } from '../../services/buyerRequestService';
 import { chatService } from '../../services/chatService';

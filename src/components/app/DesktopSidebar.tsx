@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from '../common/SafeImage';
 import { usePathname } from 'next/navigation';
 import {
   Flame,
