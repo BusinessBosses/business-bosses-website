@@ -356,9 +356,9 @@ export const PostCard: React.FC<PostCardProps> = ({
   });
 
   return (
-    <article className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 transition-all hover:shadow-md relative">
+    <article className="bg-white rounded-3xl border border-slate-200/90 shadow-xs p-4 sm:p-5 transition-all hover:shadow-md hover:border-slate-300 relative group">
       {/* Header */}
-      <div className="flex items-start justify-between mb-3 relative">
+      <div className="flex items-start justify-between mb-3.5 relative">
         <div className="flex items-start space-x-3">
           {/* Avatar with Ranking Badge */}
           <div className="relative">
