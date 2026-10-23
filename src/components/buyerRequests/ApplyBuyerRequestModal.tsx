@@ -1,10 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
-import { X, Send, DollarSign, FileText, CheckCircle2, Loader2 } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import {
+  X,
+  FileText,
+  UploadCloud,
+  CheckCircle2,
+  Loader2,
+  Paperclip,
+  Trash2,
+  MessageSquare,
+  ArrowRight,
+} from 'lucide-react';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
-import { BuyerRequest } from '../../services/buyerRequestService';
+import { BuyerRequest, buyerRequestService } from '../../services/buyerRequestService';
+import { chatService } from '../../services/chatService';
 import { authService } from '../../services/authService';
 
 interface ApplyBuyerRequestModalProps {
@@ -14,72 +25,154 @@ interface ApplyBuyerRequestModalProps {
   onSuccess?: () => void;
 }
 
+const ALLOWED_EXTENSIONS = ['pdf', 'doc', 'docx', 'rtf', 'txt'];
+const MAX_BYTES = 10 * 1024 * 1024; // 10 MB matching Flutter mobile _maxBytes
+
 export default function ApplyBuyerRequestModal({
   request,
   isOpen,
   onClose,
   onSuccess,
 }: ApplyBuyerRequestModalProps) {
-  const [quotePrice, setQuotePrice] = useState('');
-  const [coverLetter, setCoverLetter] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [pitchMessage, setPitchMessage] = useState<string>('');
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   if (!isOpen || !request) return null;
 
-  const authorName = request.user?.name || request.user?.username || request.author?.name || 'Client';
-  const authorAvatar = request.user?.photoUrl || request.author?.avatarUrl || 'https://i.pravatar.cc/150?img=12';
+  const receiverUid =
+    request.user?.uid ||
+    request.user?.id ||
+    request.author?.id ||
+    request.userId ||
+    '';
+
+  const authorName =
+    request.user?.name ||
+    request.user?.username ||
+    request.author?.name ||
+    'Request Poster';
+
+  const authorAvatar =
+    request.user?.photoUrl ||
+    request.author?.avatarUrl ||
+    'https://i.pravatar.cc/150?img=12';
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    if (!ext || !ALLOWED_EXTENSIONS.includes(ext)) {
+      toast.error('Please choose a valid document (PDF, Word, or text document).');
+      return;
+    }
+
+    if (file.size > MAX_BYTES) {
+      toast.error('Please choose a CV under 10MB.');
+      return;
+    }
+
+    setSelectedFile(file);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!authService.isAuthenticated()) {
-      toast.error('Please log in to apply or submit a proposal');
-      return;
-    }
-    if (!coverLetter.trim()) {
-      toast.error('Please enter a cover letter or pitch for this request');
+      toast.error('Please log in to apply for this request');
       return;
     }
 
-    setIsSubmitting(true);
+    if (!receiverUid) {
+      toast.error('Could not identify request poster to send application');
+      return;
+    }
+
+    setIsUploading(true);
     try {
-      // In mobile app: ApplyToJobButton connects via chat room with buyer request context.
-      // Since web messaging/chat route is in progress, we provide a smooth proposal / direct outreach notification.
-      await new Promise((res) => setTimeout(res, 600)); // Simulate sending proposal
+      let uploadedCvUrl: string | null = null;
+      let uploadedCvName: string | null = null;
+
+      // 1. Upload CV if attached
+      if (selectedFile) {
+        uploadedCvUrl = await buyerRequestService.uploadFile(selectedFile);
+        uploadedCvName = selectedFile.name;
+      }
+
+      // 2. Mobile protocol: Send BUYER_REQUEST:: JSON message
+      // Matches mobile _sendBuyerRequestMessage(BuyerRequestModel request)
+      const buyerRequestPayload = {
+        id: request.id,
+        title: request.title,
+        description: request.description,
+        budget: request.budget,
+        currency: request.currency || '$',
+        category: request.category,
+        location: request.location || '',
+        imageUrl: request.imageUrl || '',
+        createdAt: request.createdAt,
+        user: {
+          uid: receiverUid,
+          name: authorName,
+          photoUrl: authorAvatar,
+        },
+      };
+
+      const buyerRequestMsg = `BUYER_REQUEST::${JSON.stringify(buyerRequestPayload)}`;
+      await chatService.sendMessage(receiverUid, buyerRequestMsg);
+
+      // 3. Mobile protocol: If CV attached, send JOB_CV:: JSON message
+      // Matches mobile _sendCvMessage(String url, String? name)
+      if (uploadedCvUrl) {
+        const cvPayload = {
+          url: uploadedCvUrl,
+          name: uploadedCvName || 'CV',
+        };
+        const cvMsg = `JOB_CV::${JSON.stringify(cvPayload)}`;
+        await chatService.sendMessage(receiverUid, cvMsg);
+      }
+
+      // 4. Send optional introductory pitch message if typed
+      if (pitchMessage.trim()) {
+        await chatService.sendMessage(receiverUid, pitchMessage.trim());
+      }
 
       setSubmitted(true);
-      toast.success('Your proposal has been delivered to the client!');
+      toast.success('Your application has been delivered to the request poster!');
       if (onSuccess) onSuccess();
     } catch (err: any) {
-      toast.error(err?.message || 'Failed to submit proposal');
+      console.error('Failed to submit application', err);
+      toast.error(err?.message || 'Could not send application. Please try again.');
     } finally {
-      setIsSubmitting(false);
+      setIsUploading(false);
     }
   };
 
   const handleClose = () => {
     setSubmitted(false);
-    setQuotePrice('');
-    setCoverLetter('');
+    setSelectedFile(null);
+    setPitchMessage('');
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[90vh]">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-          <div>
-            <h2 className="text-lg font-black text-slate-900 tracking-tight">
-              Apply to Request
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+      <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+        {/* Top Header matching mobile _ApplyWithCvSheet */}
+        <div className="px-6 pt-5 pb-3 border-b border-slate-100 flex items-start justify-between">
+          <div className="pr-4">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+              Apply for this request
             </h2>
-            <p className="text-xs text-slate-500">
-              Send your pitch & quote directly to the buyer
+            <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">
+              {request.title}
             </p>
           </div>
           <button
             onClick={handleClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
@@ -91,91 +184,135 @@ export default function ApplyBuyerRequestModal({
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900">Proposal Sent!</h3>
-              <p className="text-xs text-slate-500 max-w-xs mt-1">
-                {authorName} has received your pitch. They will be notified and can reach out to you directly.
+              <h3 className="text-base font-bold text-slate-900">Application Sent!</h3>
+              <p className="text-xs text-slate-500 max-w-xs mt-1.5 leading-relaxed">
+                Your application has opened a direct chat thread with <strong>{authorName}</strong>. You can follow up anytime in your Inbox.
               </p>
             </div>
-            <button
-              onClick={handleClose}
-              className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-all"
-            >
-              Close
-            </button>
+            <div className="pt-2 flex flex-col sm:flex-row gap-2 w-full">
+              <button
+                type="button"
+                onClick={() => {
+                  handleClose();
+                  window.location.href = '/inbox';
+                }}
+                className="flex-1 py-2.5 px-4 bg-[#F21C29] hover:bg-[#d91925] text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5"
+              >
+                <span>Go to Inbox</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={handleClose}
+                className="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4 no-scrollbar">
-            {/* Target Request Snapshot */}
-            <div className="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl space-y-2">
-              <div className="flex items-center space-x-2.5">
-                <div className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-200 shrink-0">
-                  <Image src={authorAvatar} alt={authorName} fill className="object-cover" />
+          <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-5">
+            {/* Request Summary */}
+            <div className="p-3 bg-slate-50 border border-slate-200/80 rounded-2xl flex items-center gap-3">
+              <div className="relative w-9 h-9 rounded-full overflow-hidden bg-slate-200 shrink-0">
+                <Image src={authorAvatar} alt={authorName} fill className="object-cover" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-bold text-slate-900 truncate">
+                  {authorName}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <span className="text-xs font-bold text-slate-900 truncate block">
-                    {authorName}
-                  </span>
-                  <span className="text-[11px] text-slate-500 truncate block">
-                    {request.category}
-                  </span>
+                <div className="text-[11px] text-slate-500 truncate">
+                  Budget: {request.currency || '$'}{request.budget} • {request.category}
                 </div>
               </div>
-              <h4 className="text-xs font-bold text-slate-800 line-clamp-1">{request.title}</h4>
             </div>
 
-            {/* Proposed Quote / Price */}
+            {/* CV Attachment Area (Exact parity with Flutter mobile) */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Proposed Price / Quote ($) <span className="text-slate-400 font-normal">(optional)</span>
+              <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                Attach your CV <span className="text-slate-400 font-normal">(optional)</span>
               </label>
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <input
-                  type="number"
-                  min="0"
-                  step="any"
-                  value={quotePrice}
-                  onChange={(e) => setQuotePrice(e.target.value)}
-                  placeholder="e.g. 350"
-                  className="w-full pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all"
-                />
-              </div>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.doc,.docx,.rtf,.txt"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+
+              {!selectedFile ? (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full border-2 border-dashed border-slate-200 hover:border-red-300 rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center cursor-pointer transition-colors bg-slate-50/50 hover:bg-red-50/20 group"
+                >
+                  <UploadCloud className="w-7 h-7 text-slate-400 group-hover:text-[#F21C29] transition-colors mb-1.5" />
+                  <span className="text-xs font-bold text-slate-700 group-hover:text-slate-900">
+                    Choose a file
+                  </span>
+                  <span className="text-[10px] text-slate-400 mt-0.5">
+                    PDF or Word, up to 10MB
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between p-3.5 bg-red-50/60 border border-red-200 rounded-2xl">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <FileText className="w-5 h-5 text-[#F21C29] shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-slate-900 truncate">
+                        {selectedFile.name}
+                      </p>
+                      <p className="text-[10px] text-slate-500">
+                        {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedFile(null)}
+                    className="p-1 text-slate-400 hover:text-red-500 rounded-full transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
             </div>
 
-            {/* Cover Letter / Pitch */}
+            {/* Optional Intro Message */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Pitch / Cover Letter <span className="text-red-500">*</span>
+              <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                Message / Pitch <span className="text-slate-400 font-normal">(optional)</span>
               </label>
               <textarea
-                value={coverLetter}
-                onChange={(e) => setCoverLetter(e.target.value)}
-                rows={5}
-                placeholder="Introduce yourself, your experience with this type of request, deliverables you offer, and why you are the best fit..."
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all resize-none"
-                required
+                value={pitchMessage}
+                onChange={(e) => setPitchMessage(e.target.value)}
+                rows={3}
+                placeholder="Say hello, share your availability, or highlight your experience..."
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:bg-white resize-none"
               />
             </div>
 
-            {/* Submit Action */}
+            {/* Submit Button */}
             <div className="pt-2">
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full py-3 px-4 bg-[#F21C29] hover:bg-[#D01420] text-white text-sm font-bold rounded-xl transition-all shadow-sm active:scale-98 disabled:opacity-50 flex items-center justify-center space-x-2"
+                disabled={isUploading}
+                className="w-full py-3 px-4 bg-[#F21C29] hover:bg-[#d91925] text-white text-xs sm:text-sm font-bold rounded-xl transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
               >
-                {isSubmitting ? (
+                {isUploading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Sending Proposal...</span>
+                    <span>Sending Application...</span>
                   </>
                 ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    <span>Send Proposal</span>
-                  </>
+                  <span>
+                    {selectedFile ? 'Send Application' : 'Apply without CV'}
+                  </span>
                 )}
               </button>
+              <p className="text-[11px] text-center text-slate-400 mt-2">
+                This opens a chat with the request poster.
+              </p>
             </div>
           </form>
         )}

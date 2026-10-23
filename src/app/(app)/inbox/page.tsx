@@ -15,6 +15,10 @@ import {
   User,
   Loader2,
   Clock,
+  Briefcase,
+  FileText,
+  ExternalLink,
+  Download,
 } from 'lucide-react';
 import { chatService, ChatMessage, Conversation } from '../../../services/chatService';
 import { authService } from '../../../services/authService';
@@ -181,6 +185,87 @@ export default function InboxPage() {
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
     return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+  };
+
+  const renderMessageBubbleContent = (msg: ChatMessage, isMine: boolean) => {
+    const text = msg.messageText || '';
+
+    // 1. BUYER_REQUEST:: message card (Parity with Flutter mobile _buildBuyerRequestCard)
+    if (text.startsWith('BUYER_REQUEST::')) {
+      try {
+        const rawJson = text.replace('BUYER_REQUEST::', '');
+        const reqData = JSON.parse(rawJson);
+
+        return (
+          <div className="bg-white text-slate-800 rounded-xl p-3 border border-red-200 shadow-xs max-w-sm my-1 text-left">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-[#F21C29] mb-1">
+              <Briefcase className="w-3.5 h-3.5" />
+              <span>Job Application</span>
+            </div>
+            <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-2">
+              {reqData.title}
+            </h4>
+            {reqData.budget && (
+              <p className="text-[11px] font-semibold text-slate-600 mt-1">
+                Budget: {reqData.currency || '$'}{reqData.budget} • {reqData.category}
+              </p>
+            )}
+            {reqData.description && (
+              <p className="text-[11px] text-slate-500 line-clamp-2 mt-1">
+                {reqData.description}
+              </p>
+            )}
+          </div>
+        );
+      } catch (e) {
+        // Fallback
+      }
+    }
+
+    // 2. JOB_CV:: attachment card (Parity with Flutter mobile _buildCvCard)
+    if (text.startsWith('JOB_CV::')) {
+      try {
+        const rawJson = text.replace('JOB_CV::', '');
+        const cvData = JSON.parse(rawJson);
+        const name = cvData.name || 'CV';
+        const url = cvData.url;
+
+        return (
+          <div className="bg-white text-slate-800 rounded-xl p-3 border border-red-200 shadow-xs max-w-xs my-1 flex items-center justify-between gap-3 text-left">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-red-50 text-[#F21C29] flex items-center justify-center shrink-0">
+                <FileText className="w-4 h-4" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-[10px] font-bold text-[#F21C29] block">
+                  CV attached
+                </span>
+                <span className="text-xs font-bold text-slate-900 truncate block">
+                  {name}
+                </span>
+              </div>
+            </div>
+
+            {url && (
+              <a
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shrink-0"
+                title="Download / View CV"
+              >
+                <Download className="w-3.5 h-3.5" />
+              </a>
+            )}
+          </div>
+        );
+      } catch (e) {
+        // Fallback
+      }
+    }
+
+    // Regular message
+    return <p>{text}</p>;
   };
 
   return (
@@ -380,7 +465,7 @@ export default function InboxPage() {
                               className="rounded-xl mb-2 max-h-60 w-full object-cover"
                             />
                           )}
-                          {msg.messageText && <p>{msg.messageText}</p>}
+                          {renderMessageBubbleContent(msg, isMine)}
                           <div
                             className={`flex items-center justify-end gap-1 mt-1 text-[9px] ${
                               isMine ? 'text-white/70' : 'text-slate-400'
