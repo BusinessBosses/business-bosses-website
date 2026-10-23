@@ -198,7 +198,7 @@ export default function FeedPage() {
               className="flex-1 text-left px-4 py-3 bg-slate-50 hover:bg-slate-100/80 rounded-2xl text-slate-500 text-xs sm:text-sm border border-slate-200/80 transition-all flex items-center justify-between group cursor-pointer shadow-2xs"
             >
               <span className="truncate">What&apos;s happening in your business today?</span>
-              <Sparkles className="w-4 h-4 text-[#F7C844] group-hover:scale-110 transition-transform shrink-0 ml-2" />
+              <Sparkles className="w-4 h-4 text-[#F21C29] group-hover:scale-110 transition-transform shrink-0 ml-2" />
             </button>
           </div>
 
@@ -218,7 +218,7 @@ export default function FeedPage() {
                 onClick={() => setIsCreateOpen(true)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors"
               >
-                <BarChart2 className="w-4 h-4 text-amber-500" />
+                <BarChart2 className="w-4 h-4 text-slate-600" />
                 <span className="hidden sm:inline">Poll</span>
               </button>
               <Link
@@ -270,7 +270,7 @@ export default function FeedPage() {
               onClick={() => setIsFindOppOpen(true)}
               className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-900 hover:bg-red-50 hover:text-[#F21C29] flex items-center gap-1 transition-all"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#F7C844] fill-[#F7C844]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#F21C29]" />
               <span className="hidden sm:inline">Find Opportunities</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>

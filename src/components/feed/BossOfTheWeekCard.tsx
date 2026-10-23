@@ -56,7 +56,7 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
             href="/boss-up"
             className="flex items-center space-x-2 group flex-1 min-w-0"
           >
-            <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-[#F21C29] to-[#F7C844] flex items-center justify-center p-0.5 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
+            <div className="w-6 h-6 rounded-full bg-[#F21C29] flex items-center justify-center p-0.5 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
               <Trophy className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </div>
             <span className="text-[15px] sm:text-base font-extrabold text-slate-900 group-hover:text-[#F21C29] transition-colors truncate">
@@ -79,8 +79,8 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
           href={`/profile?id=${boss.uid}`}
           className="flex items-center gap-3 group/profile block mb-3.5"
         >
-          {/* Avatar with gold winner accent ring */}
-          <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 ring-2 ring-[#F7C844] ring-offset-2 bg-slate-200 shadow-xs group-hover/profile:scale-102 transition-transform">
+          {/* Avatar with clean brand red accent ring matching mobile bosseek */}
+          <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 ring-2 ring-[#F21C29] ring-offset-2 bg-slate-100 shadow-xs group-hover/profile:scale-102 transition-transform">
             {boss.avatarUrl ? (
               <Image
                 src={boss.avatarUrl}
@@ -93,8 +93,8 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
                 {boss.name.charAt(0)}
               </div>
             )}
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#F7C844] border-2 border-white flex items-center justify-center shadow-xs">
-              <Trophy className="w-2.5 h-2.5 text-slate-950 fill-slate-950" />
+            <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#F21C29] border-2 border-white flex items-center justify-center shadow-xs">
+              <Trophy className="w-2.5 h-2.5 text-white" />
             </div>
           </div>
 
@@ -168,7 +168,7 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
             onClick={() => setShowGetFeatured(true)}
             className="flex-1 h-9 px-3 rounded-xl text-xs font-bold bg-[#F21C29] hover:bg-[#D01420] text-white flex items-center justify-center gap-1.5 shadow-2xs transition-all"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+            <Sparkles className="w-3.5 h-3.5 text-white" />
             <span>Get Featured</span>
           </button>
         </div>

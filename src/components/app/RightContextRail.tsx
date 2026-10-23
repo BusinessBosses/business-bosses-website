@@ -181,21 +181,21 @@ export default function RightContextRail() {
       
       {/* 1. Pro Boost Card - ONLY shown for non-pro users */}
       {!isProUser && (
-        <div className="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-[#1F1B2E] via-[#161421] to-[#0D0B14] text-white shadow-md border border-amber-500/20 group">
+        <div className="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-[#1F1B2E] via-[#161421] to-[#0D0B14] text-white shadow-md border border-slate-800 group">
           {/* Ambient Top Glow */}
-          <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-red-500/20 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -top-12 -right-12 w-32 h-32 bg-red-600/10 rounded-full blur-2xl pointer-events-none" />
 
           <div className="relative z-10 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#F21C29] to-[#F7C844] flex items-center justify-center shadow-xs">
+                <div className="w-8 h-8 rounded-xl bg-[#F21C29] flex items-center justify-center shadow-xs">
                   <Crown className="w-4 h-4 text-white stroke-[2.5]" />
                 </div>
-                <span className="text-[11px] font-black tracking-wider uppercase text-amber-300">
+                <span className="text-[11px] font-black tracking-wider uppercase text-white">
                   PRO MEMBERSHIP
                 </span>
               </div>
-              <span className="bg-amber-400/10 text-amber-300 border border-amber-400/30 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+              <span className="bg-white/10 text-slate-200 border border-white/20 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
                 Boost Reach
               </span>
             </div>
@@ -282,7 +282,7 @@ export default function RightContextRail() {
                           {boss.name}
                         </p>
                         {boss.isPro && (
-                          <span className="bg-[#F7C844] text-slate-950 text-[8px] font-black px-1 rounded shadow-2xs">
+                          <span className="bg-[#F21C29] text-white text-[8px] font-black px-1 rounded shadow-2xs">
                             PRO
                           </span>
                         )}
@@ -388,8 +388,8 @@ export default function RightContextRail() {
       {/* 4. Digital Magazine Spotlight */}
       <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-4 shadow-sm relative overflow-hidden space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] font-black uppercase text-amber-400 tracking-wider flex items-center gap-1">
-            <BookOpen className="w-3 h-3" />
+          <span className="text-[10px] font-black uppercase text-slate-300 tracking-wider flex items-center gap-1.5">
+            <BookOpen className="w-3.5 h-3.5 text-[#F21C29]" />
             DIGITAL MAGAZINE
           </span>
           <span className="text-[9px] bg-white/10 text-slate-300 px-2 py-0.5 rounded-full font-bold">
@@ -398,7 +398,7 @@ export default function RightContextRail() {
         </div>
 
         <div className="flex gap-3 items-center">
-          <div className="relative w-16 h-22 bg-slate-800 rounded-lg overflow-hidden border border-amber-400/30 shrink-0 shadow-md">
+          <div className="relative w-16 h-22 bg-slate-800 rounded-lg overflow-hidden border border-slate-700 shrink-0 shadow-md">
             <Image
               src={latestMagazine?.coverImageUrl || '/magazine_cover.png'}
               alt="Magazine Cover"
@@ -409,7 +409,7 @@ export default function RightContextRail() {
               }}
             />
             <div className="w-full h-full flex flex-col items-center justify-center p-1 text-center bg-slate-900">
-              <BookOpen className="w-5 h-5 text-amber-400 mb-1" />
+              <BookOpen className="w-5 h-5 text-slate-400 mb-1" />
               <span className="text-[7px] font-black uppercase tracking-wider text-white">MAGAZINE</span>
             </div>
           </div>
@@ -429,7 +429,7 @@ export default function RightContextRail() {
           className="w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold flex items-center justify-center gap-1 transition-colors border border-white/10"
         >
           <span>Read Latest Issue</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-amber-400" />
+          <ArrowUpRight className="w-3.5 h-3.5 text-white" />
         </Link>
       </div>
 
