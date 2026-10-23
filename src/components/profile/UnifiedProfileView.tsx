@@ -32,7 +32,8 @@ import {
   ChevronRight,
   ShieldCheck,
   HelpCircle,
-  Copy,
+  X,
+  Search,
 } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { buyerRequestService, BuyerRequest } from '../../services/buyerRequestService';
@@ -42,6 +43,16 @@ import PostCard, { Post } from '../feed/PostCard';
 interface ProfileViewProps {
   initialUsername?: string;
   initialUid?: string;
+}
+
+interface ConnectedUser {
+  uid: string;
+  name?: string;
+  surname?: string;
+  username?: string;
+  companyName?: string;
+  photoUrl?: string;
+  category?: string;
 }
 
 export default function UnifiedProfileView({ initialUsername, initialUid }: ProfileViewProps) {
@@ -63,6 +74,15 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
     following: 0,
     reachScore: 0,
   });
+
+  // Connections Modal State (Followers / Following / Suggested list)
+  const [connectionsModalTab, setConnectionsModalTab] = useState<'followers' | 'following' | 'suggested' | null>(null);
+  const [followersList, setFollowersList] = useState<ConnectedUser[]>([]);
+  const [followingList, setFollowingList] = useState<ConnectedUser[]>([]);
+  const [suggestedList, setSuggestedList] = useState<ConnectedUser[]>([]);
+  const [loadingConnectionsModal, setLoadingConnectionsModal] = useState<boolean>(false);
+  const [connectionSearchQuery, setConnectionSearchQuery] = useState<string>('');
+
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [connecting, setConnecting] = useState<boolean>(false);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
@@ -188,13 +208,11 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
   const loadBuyerRequests = async (uid: string) => {
     try {
-      // Direct endpoint for user requests (matches mobile: ApiService.get('buyer-request/user/{uid}'))
       const res = await apiClient.get(`/buyer-request/user/${uid}`);
       const data = res.data?.data || res.data || [];
       if (Array.isArray(data)) {
         setRequests(data);
       } else {
-        // Fallback filter
         const allReqs = await buyerRequestService.getBuyerRequests(1, 30);
         setRequests(allReqs.filter((r) => r.userId === uid));
       }
@@ -205,7 +223,6 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
   const loadDeals = async (uid: string) => {
     try {
-      // Matches mobile: ApiService.get('partner/user/{uid}')
       const res = await apiClient.get(`/partner/user/${uid}`);
       const data = res.data?.data || res.data || [];
       if (Array.isArray(data)) {
@@ -218,18 +235,32 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
   const loadConnectionStats = async (targetUid: string, myUid: string) => {
     try {
-      // 1. Connection counts: GET /connection/data/:userId
+      // Direct call to /connection/data/:userId (Matches mobile ConnectionController.getConnections)
       const connRes = await apiClient.get(`/connection/data/${targetUid}`);
       const connData = connRes.data?.data || connRes.data || {};
-      const followers = connData.connecteds || connData.followers || profile?.connectionCount || 0;
-      const following = connData.connections || connData.following || (profile?.connecteds?.length ?? 0);
 
-      // Check if current user is connected
-      if (myUid && connData.isFollowed != null) {
-        setIsConnected(Boolean(connData.isFollowed));
+      const rawConnections = connData.connections?.data || connData.connections || [];
+      const rawConnecteds = connData.connecteds?.data || connData.connecteds || [];
+      const rawSuggested = connData.suggestedUsers?.data?.rows || connData.suggestedUsers?.rows || connData.suggestedUsers || [];
+
+      const parsedConnections: ConnectedUser[] = Array.isArray(rawConnections) ? rawConnections : [];
+      const parsedConnecteds: ConnectedUser[] = Array.isArray(rawConnecteds) ? rawConnecteds : [];
+      const parsedSuggested: ConnectedUser[] = Array.isArray(rawSuggested) ? rawSuggested : [];
+
+      setFollowersList(parsedConnections);
+      setFollowingList(parsedConnecteds);
+      setSuggestedList(parsedSuggested);
+
+      const followersCount = parsedConnections.length || Number(connData.followersCount) || profile?.connectionCount || 0;
+      const followingCount = parsedConnecteds.length || Number(connData.followingCount) || (profile?.connecteds?.length ?? 0);
+
+      // Check if current logged-in user is in followers/following
+      if (myUid) {
+        const found = parsedConnections.some((u) => u.uid === myUid);
+        setIsConnected(found);
       }
 
-      // 2. Reach score: GET /impact/user/:userId
+      // Reach score: GET /impact/user/:userId
       let reachScore = 0;
       try {
         const impactRes = await apiClient.get(`/impact/user/${targetUid}`);
@@ -238,13 +269,18 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
       } catch {}
 
       setConnectionStats({
-        followers: Number(followers) || 0,
-        following: Number(following) || 0,
+        followers: Number(followersCount) || 0,
+        following: Number(followingCount) || 0,
         reachScore: reachScore,
       });
     } catch (e) {
       console.warn('Failed to load connection stats', e);
     }
+  };
+
+  const handleOpenConnectionsModal = (tab: 'followers' | 'following' | 'suggested') => {
+    setConnectionsModalTab(tab);
+    setConnectionSearchQuery('');
   };
 
   const handleToggleConnect = async () => {
@@ -270,6 +306,22 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
       console.error('Failed to toggle connection', err);
     } finally {
       setConnecting(false);
+    }
+  };
+
+  const handleConnectWithUserInModal = async (targetUser: ConnectedUser) => {
+    if (!authService.isAuthenticated()) {
+      window.location.href = '/login';
+      return;
+    }
+    try {
+      await apiClient.post('/connection/connect', { connectionId: targetUser.uid });
+      // Move to following list or mark as connected
+      setFollowingList((prev) => [...prev, targetUser]);
+      setSuggestedList((prev) => prev.filter((u) => u.uid !== targetUser.uid));
+      setConnectionStats((prev) => ({ ...prev, following: prev.following + 1 }));
+    } catch (err) {
+      console.error('Failed to connect', err);
     }
   };
 
@@ -319,7 +371,6 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   const displayName = profile?.name || profile?.fullname || profile?.username || 'Business Boss';
   const handle = profile?.username || 'boss';
 
-  // Mobile Interest Match Label Parity (from profileinfodisplay.dart)
   const getInterestLabel = (type?: string) => {
     switch (type) {
       case 'seller':
@@ -337,12 +388,27 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
   const interestLabel = getInterestLabel(profile?.matchType);
 
-  // Boss of the week / Awards count parity
   const bossCount = Number(profile?.bossCount || 0);
   const mentorCount = Number(profile?.mentorCount || 0);
   const backerCount = Number(profile?.backerCount || 0);
   const ambassadorCount = Number(profile?.ambassadorCount || 0);
   const hasAchievements = bossCount > 0 || mentorCount > 0 || backerCount > 0 || ambassadorCount > 0;
+
+  // Filtered connections list based on active modal tab & search
+  const activeConnectionsList =
+    connectionsModalTab === 'followers'
+      ? followersList
+      : connectionsModalTab === 'following'
+      ? followingList
+      : suggestedList;
+
+  const filteredConnections = activeConnectionsList.filter((u) => {
+    const q = connectionSearchQuery.toLowerCase();
+    const nameMatch = (u.name || '').toLowerCase().includes(q);
+    const usernameMatch = (u.username || '').toLowerCase().includes(q);
+    const companyMatch = (u.companyName || '').toLowerCase().includes(q);
+    return nameMatch || usernameMatch || companyMatch;
+  });
 
   return (
     <div className="w-full max-w-4xl mx-auto pb-20">
@@ -709,25 +775,36 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
             </div>
 
             {/* ============================================================== */}
-            {/* 3-TILE STATS BAR (Mobile Parity: Followers, Following, Reach)    */}
+            {/* 3-TILE INTERACTIVE STATS BAR (Followers, Following, Reach)     */}
+            {/* Clickable tiles that open the Connections List Modal            */}
             {/* ============================================================== */}
             <div className="grid grid-cols-3 gap-2.5 sm:gap-4 p-3 bg-slate-50/80 rounded-2xl border border-slate-100 mb-6 text-center">
-              <div className="p-2">
-                <span className="block text-base sm:text-lg font-black text-slate-900">
+              <button
+                type="button"
+                onClick={() => handleOpenConnectionsModal('followers')}
+                className="p-2 rounded-xl hover:bg-white hover:shadow-xs transition-all cursor-pointer text-center group"
+              >
+                <span className="block text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F21C29] transition-colors">
                   {connectionStats.followers}
                 </span>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                   Followers
                 </span>
-              </div>
-              <div className="p-2 border-x border-slate-200/80">
-                <span className="block text-base sm:text-lg font-black text-slate-900">
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleOpenConnectionsModal('following')}
+                className="p-2 rounded-xl hover:bg-white hover:shadow-xs transition-all cursor-pointer text-center border-x border-slate-200/80 group"
+              >
+                <span className="block text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F21C29] transition-colors">
                   {connectionStats.following}
                 </span>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                   Following
                 </span>
-              </div>
+              </button>
+
               <div className="p-2">
                 <span className="block text-base sm:text-lg font-black text-[#F21C29]">
                   {connectionStats.reachScore}
@@ -975,6 +1052,180 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                   )}
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* ALL CONNECTIONS MODAL (Followers, Following, Suggested Parity)  */}
+      {/* ============================================================== */}
+      {connectionsModalTab && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-150 flex flex-col max-h-[85vh]">
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-red-50 text-[#F21C29] flex items-center justify-center font-bold">
+                  <Users className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-black text-slate-900 text-base leading-tight">
+                    Connections
+                  </h3>
+                  <p className="text-[11px] text-slate-400">
+                    Network members connected to {displayName}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setConnectionsModalTab(null)}
+                className="p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Segmented Controller (Followers vs Following vs Suggested) */}
+            <div className="p-3 border-b border-slate-100 bg-slate-50/70 shrink-0">
+              <div className="grid grid-cols-3 p-1 bg-slate-200/80 rounded-xl gap-1 text-xs font-bold mb-3">
+                <button
+                  type="button"
+                  onClick={() => setConnectionsModalTab('followers')}
+                  className={`py-2 rounded-lg transition-all ${
+                    connectionsModalTab === 'followers'
+                      ? 'bg-white text-slate-900 shadow-xs'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  Followers ({followersList.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConnectionsModalTab('following')}
+                  className={`py-2 rounded-lg transition-all ${
+                    connectionsModalTab === 'following'
+                      ? 'bg-white text-slate-900 shadow-xs'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  Following ({followingList.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConnectionsModalTab('suggested')}
+                  className={`py-2 rounded-lg transition-all ${
+                    connectionsModalTab === 'suggested'
+                      ? 'bg-white text-slate-900 shadow-xs'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  Suggested ({suggestedList.length})
+                </button>
+              </div>
+
+              {/* Live Search inside connections */}
+              <div className="relative">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder={`Search ${connectionsModalTab}...`}
+                  value={connectionSearchQuery}
+                  onChange={(e) => setConnectionSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 outline-none focus:border-red-400 transition-all placeholder:text-slate-400"
+                />
+              </div>
+            </div>
+
+            {/* List Body */}
+            <div className="p-4 overflow-y-auto flex-1 divide-y divide-slate-100">
+              {filteredConnections.length === 0 ? (
+                <div className="py-14 text-center text-slate-400">
+                  <Users className="w-10 h-10 mx-auto mb-2 opacity-30 text-[#F21C29]" />
+                  <p className="text-sm font-bold text-slate-700">No members found</p>
+                  <p className="text-xs text-slate-400 mt-1">
+                    {connectionsModalTab === 'followers'
+                      ? 'No followers found for this account.'
+                      : connectionsModalTab === 'following'
+                      ? 'This member is not following any accounts yet.'
+                      : 'No recommendations available right now.'}
+                  </p>
+                </div>
+              ) : (
+                filteredConnections.map((user) => {
+                  const userIsMe = user.uid === myUid;
+                  const isFollowingThisUser = followingList.some((f) => f.uid === user.uid);
+
+                  return (
+                    <div
+                      key={user.uid}
+                      className="py-3 flex items-center justify-between gap-3 first:pt-0 last:pb-0"
+                    >
+                      <Link
+                        href={`/profile?id=${user.uid}`}
+                        onClick={() => setConnectionsModalTab(null)}
+                        className="flex items-center gap-3 min-w-0 flex-1 hover:opacity-85 transition-opacity"
+                      >
+                        {user.photoUrl ? (
+                          <img
+                            src={user.photoUrl}
+                            alt={user.name || 'User'}
+                            className="w-10 h-10 rounded-full object-cover border border-slate-200 shrink-0"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs shrink-0 border border-slate-200">
+                            {(user.name || user.username || 'U').charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        <div className="min-w-0">
+                          <h4 className="font-extrabold text-slate-900 text-xs sm:text-sm truncate leading-tight">
+                            {user.name ? `${user.name} ${user.surname || ''}` : user.username || 'Business Boss'}
+                          </h4>
+                          <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                            @{user.username || 'boss'}
+                            {user.category ? ` • ${user.category}` : ''}
+                          </p>
+                        </div>
+                      </Link>
+
+                      {!userIsMe && (
+                        <div className="shrink-0 flex items-center gap-1.5">
+                          {connectionsModalTab === 'suggested' && !isFollowingThisUser ? (
+                            <button
+                              type="button"
+                              onClick={() => handleConnectWithUserInModal(user)}
+                              className="px-3 py-1.5 rounded-xl bg-[#F21C29] hover:bg-[#D01420] text-white text-xs font-bold transition-all shadow-2xs"
+                            >
+                              Connect
+                            </button>
+                          ) : (
+                            <Link
+                              href={`/inbox`}
+                              onClick={() => setConnectionsModalTab(null)}
+                              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                              title="Message"
+                            >
+                              <MessageSquare className="w-4 h-4" />
+                            </Link>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-3.5 bg-slate-50 border-t border-slate-100 flex justify-end shrink-0">
+              <button
+                type="button"
+                onClick={() => setConnectionsModalTab(null)}
+                className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all"
+              >
+                Done
+              </button>
             </div>
           </div>
         </div>
