@@ -79,16 +79,73 @@ export default function InboxPage() {
     iHaveReplied: boolean;
   }>();
 
+  const getMessageSnippet = (msg: ChatMessage) => {
+    if (msg.image && !msg.messageText) return '📷 Sent an image';
+    const text = msg.messageText || '';
+    if (text.startsWith('BUYER_REQUEST::')) {
+      try {
+        const parsed = JSON.parse(text.replace('BUYER_REQUEST::', ''));
+        return `📋 Buyer Request: ${parsed.title || 'Request'}`;
+      } catch {
+        return '📋 Buyer Request';
+      }
+    }
+    if (text.startsWith('JOB_CV::')) {
+      try {
+        const parsed = JSON.parse(text.replace('JOB_CV::', ''));
+        return `📄 Job Application: ${parsed.name || 'CV'}`;
+      } catch {
+        return '📄 Job Application / CV';
+      }
+    }
+    return text || (msg.image ? '📷 Sent an image' : '');
+  };
+
   messages.forEach((msg) => {
     const partnerId = msg.senderUid === myUid ? msg.receiverUid : msg.senderUid;
-    const partner = msg.senderUid === myUid ? msg.receiver : msg.sender;
+    
+    // In backend ChatEntity.getAllChats, the other person is attached as msg.user
+    // Fall back to msg.receiver or msg.sender if msg.user is not set
+    const partner = (msg as any).user || (msg.senderUid === myUid ? msg.receiver : msg.sender);
+    
+    // Also try to extract user name from embedded BUYER_REQUEST if partner object has no name
+    let fallbackName = '';
+    if (msg.messageText?.startsWith('BUYER_REQUEST::')) {
+      try {
+        const parsed = JSON.parse(msg.messageText.replace('BUYER_REQUEST::', ''));
+        if (msg.senderUid !== myUid && parsed.user?.name) {
+          fallbackName = parsed.user.name;
+        } else if (msg.senderUid !== myUid && parsed.user?.username) {
+          fallbackName = parsed.user.username;
+        }
+      } catch {}
+    }
+
     const partnerName =
-      partner?.name || partner?.username || (msg.senderUid === myUid ? 'Chat' : 'User');
-    const partnerPhoto = partner?.photoUrl;
-    const isSubscribed = partner?.isSubscribed;
+      partner?.name?.trim() ||
+      partner?.username?.trim() ||
+      fallbackName ||
+      (msg.senderUid === myUid ? 'Boss Chat' : 'Business Boss');
+
+    const partnerPhoto =
+      partner?.photoUrl ||
+      (() => {
+        if (msg.messageText?.startsWith('BUYER_REQUEST::')) {
+          try {
+            const parsed = JSON.parse(msg.messageText.replace('BUYER_REQUEST::', ''));
+            if (msg.senderUid !== myUid && parsed.user?.photoUrl) {
+              return parsed.user.photoUrl;
+            }
+          } catch {}
+        }
+        return undefined;
+      })();
+
+    const isSubscribed = Boolean(partner?.isSubscribed);
 
     const existing = conversationMap.get(partnerId);
     const msgTime = new Date(msg.timestamp).getTime();
+    const snippet = getMessageSnippet(msg);
 
     if (!existing) {
       conversationMap.set(partnerId, {
@@ -96,12 +153,27 @@ export default function InboxPage() {
         partnerName,
         partnerPhoto,
         isSubscribed,
-        lastMessage: msg.messageText || (msg.image ? '📷 Sent an image' : ''),
+        lastMessage: snippet,
         lastTimestamp: msg.timestamp,
         unreadCount: !msg.seen && msg.receiverUid === myUid ? 1 : 0,
         iHaveReplied: msg.senderUid === myUid,
       });
     } else {
+      // If the existing conversation entry has a fallback/generic name, update it with better info
+      if (
+        (existing.partnerName === 'Business Boss' || existing.partnerName === 'Boss Chat' || existing.partnerName === 'User' || existing.partnerName === 'Chat') &&
+        partnerName !== 'Business Boss' &&
+        partnerName !== 'Boss Chat'
+      ) {
+        existing.partnerName = partnerName;
+      }
+      if (!existing.partnerPhoto && partnerPhoto) {
+        existing.partnerPhoto = partnerPhoto;
+      }
+      if (isSubscribed) {
+        existing.isSubscribed = true;
+      }
+
       if (msg.senderUid === myUid) {
         existing.iHaveReplied = true;
       }
@@ -110,7 +182,7 @@ export default function InboxPage() {
       }
       const existingTime = new Date(existing.lastTimestamp).getTime();
       if (msgTime > existingTime) {
-        existing.lastMessage = msg.messageText || (msg.image ? '📷 Sent an image' : '');
+        existing.lastMessage = snippet;
         existing.lastTimestamp = msg.timestamp;
       }
     }
@@ -200,18 +272,18 @@ export default function InboxPage() {
           <div className="bg-white text-slate-800 rounded-xl p-3 border border-red-200 shadow-xs max-w-sm my-1 text-left">
             <div className="flex items-center gap-1.5 text-xs font-bold text-[#F21C29] mb-1">
               <Briefcase className="w-3.5 h-3.5" />
-              <span>Job Application</span>
+              <span>Buyer Request</span>
             </div>
             <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-2">
               {reqData.title}
             </h4>
-            {reqData.budget && (
+            {(reqData.budget_start != null || reqData.budget != null) && (
               <p className="text-[11px] font-semibold text-slate-600 mt-1">
-                Budget: {reqData.currency || '$'}{reqData.budget} • {reqData.category}
+                Budget: {reqData.currency || '$'}{reqData.budget_start != null ? reqData.budget_start : reqData.budget}{reqData.budget_end ? ` - ${reqData.currency || '$'}${reqData.budget_end}` : ''} • {reqData.category || 'General'}
               </p>
             )}
             {reqData.description && (
-              <p className="text-[11px] text-slate-500 line-clamp-2 mt-1">
+              <p className="text-[11px] text-slate-500 line-clamp-3 mt-1 whitespace-pre-wrap">
                 {reqData.description}
               </p>
             )}

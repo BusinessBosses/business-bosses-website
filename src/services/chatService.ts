@@ -25,6 +25,14 @@ export interface ChatMessage {
     photoUrl?: string;
     isSubscribed?: boolean;
   };
+  user?: {
+    uid: string;
+    username?: string;
+    name?: string;
+    surname?: string;
+    photoUrl?: string;
+    isSubscribed?: boolean;
+  };
 }
 
 export interface Conversation {
