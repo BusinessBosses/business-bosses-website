@@ -345,7 +345,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center text-slate-400 gap-3">
         <Loader2 className="w-8 h-8 animate-spin text-[#F21C29]" />
-        <p className="text-sm font-bold text-slate-600">Loading Business Profile...</p>
+        <p className="text-sm font-bold text-slate-600">Loading profile...</p>
       </div>
     );
   }
