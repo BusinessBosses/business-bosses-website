@@ -19,6 +19,7 @@ import {
   Building2
 } from 'lucide-react';
 import { apiClient } from '../../lib/apiClient';
+import { authService } from '../../services/authService';
 import { feedHighlightService } from '../../services/feedHighlightService';
 import { toast } from 'react-toastify';
 
@@ -46,6 +47,8 @@ interface LatestMagazine {
 }
 
 export default function RightContextRail() {
+  const [isProUser, setIsProUser] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [communities, setCommunities] = useState<Community[]>([]);
   const [suggestedBosses, setSuggestedBosses] = useState<SuggestedBoss[]>([]);
   const [latestMagazine, setLatestMagazine] = useState<LatestMagazine | null>(null);
@@ -54,10 +57,24 @@ export default function RightContextRail() {
   const [followingMap, setFollowingMap] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
+    checkCurrentUser();
     fetchCommunities();
     fetchSuggestedBosses();
     fetchLatestMagazine();
   }, []);
+
+  const checkCurrentUser = async () => {
+    try {
+      const user = await authService.getCurrentUser();
+      if (user) {
+        setCurrentUser(user);
+        const isSubscribed = Boolean(user.isSubscribed || user.isBossPro);
+        setIsProUser(isSubscribed);
+      }
+    } catch {
+      // Guest or non-logged in
+    }
+  };
 
   const fetchCommunities = async () => {
     try {
@@ -162,44 +179,46 @@ export default function RightContextRail() {
   return (
     <aside className="hidden xl:flex flex-col w-[320px] fixed right-0 top-0 h-screen border-l border-slate-200/90 bg-white p-5 overflow-y-auto no-scrollbar space-y-6 z-20">
       
-      {/* 1. Pro Boost Card (Branded Gold & Red Gradient with Glow) */}
-      <div className="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-[#1F1B2E] via-[#161421] to-[#0D0B14] text-white shadow-md border border-amber-500/20 group">
-        {/* Ambient Top Glow */}
-        <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-red-500/20 rounded-full blur-2xl pointer-events-none" />
+      {/* 1. Pro Boost Card - ONLY shown for non-pro users */}
+      {!isProUser && (
+        <div className="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-[#1F1B2E] via-[#161421] to-[#0D0B14] text-white shadow-md border border-amber-500/20 group">
+          {/* Ambient Top Glow */}
+          <div className="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-red-500/20 rounded-full blur-2xl pointer-events-none" />
 
-        <div className="relative z-10 space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#F21C29] to-[#F7C844] flex items-center justify-center shadow-xs">
-                <Crown className="w-4 h-4 text-white stroke-[2.5]" />
+          <div className="relative z-10 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#F21C29] to-[#F7C844] flex items-center justify-center shadow-xs">
+                  <Crown className="w-4 h-4 text-white stroke-[2.5]" />
+                </div>
+                <span className="text-[11px] font-black tracking-wider uppercase text-amber-300">
+                  PRO MEMBERSHIP
+                </span>
               </div>
-              <span className="text-[11px] font-black tracking-wider uppercase text-amber-300">
-                PRO MEMBERSHIP
+              <span className="bg-amber-400/10 text-amber-300 border border-amber-400/30 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+                Boost Reach
               </span>
             </div>
-            <span className="bg-amber-400/10 text-amber-300 border border-amber-400/30 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
-              Boost Reach
-            </span>
-          </div>
 
-          <div>
-            <h3 className="font-extrabold text-sm sm:text-[15px] text-white leading-snug">
-              Get Verified &amp; Scale Reach
-            </h3>
-            <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-              Climb the Boss of the Week leaderboard, get unlimited marketplace deals &amp; AI growth tools.
-            </p>
-          </div>
+            <div>
+              <h3 className="font-extrabold text-sm sm:text-[15px] text-white leading-snug">
+                Get Verified &amp; Scale Reach
+              </h3>
+              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                Climb the Boss of the Week leaderboard, get unlimited marketplace deals &amp; AI growth tools.
+              </p>
+            </div>
 
-          <Link
-            href="/subscription"
-            className="w-full bg-gradient-to-r from-[#F21C29] to-[#D01420] hover:from-[#d91925] hover:to-[#b5101a] text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95 group-hover:shadow-red-500/20 group-hover:shadow-lg"
-          >
-            <span>Upgrade to Pro</span>
-            <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
-          </Link>
+            <Link
+              href="/subscription"
+              className="w-full bg-gradient-to-r from-[#F21C29] to-[#D01420] hover:from-[#d91925] hover:to-[#b5101a] text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95 group-hover:shadow-red-500/20 group-hover:shadow-lg"
+            >
+              <span>Upgrade to Pro</span>
+              <ArrowUpRight className="w-3.5 h-3.5 stroke-[2.5]" />
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 2. Suggested Bosses to Connect (Matching Mobile RelevantPeopleTile) */}
       <div className="space-y-3">
