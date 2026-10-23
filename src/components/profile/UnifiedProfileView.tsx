@@ -199,24 +199,40 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
         [];
 
       if (Array.isArray(postRows)) {
-        const mapped: Post[] = postRows.map((item: any) => ({
-          id: String(item.postId || item.id || item._id),
-          caption: item.text || item.title || item.description || '',
-          mediaUrls: Array.isArray(item.images)
+        const mapped: Post[] = postRows.map((item: any) => {
+          const rawImages = Array.isArray(item.images)
             ? item.images.filter((img: string) => img && typeof img === 'string' && img.trim().length > 0)
-            : item.image ? [item.image] : [],
-          author: {
-            id: String(item.userId || uid),
-            name: item.user?.name || item.user?.username || profile?.name || 'Boss',
-            username: item.user?.username || profile?.username || 'user',
-            avatarUrl: item.user?.photoUrl || profile?.photoUrl,
-            isPro: item.user?.isSubscribed || profile?.isSubscribed,
-          },
-          likesCount: Array.isArray(item.likes) ? item.likes.length : Number(item.likesCount || 0),
-          commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount || 0),
-          isLiked: false,
-          timestamp: item.timestamp || item.createdAt || Date.now(),
-        }));
+            : item.image && typeof item.image === 'string' && item.image.trim().length > 0
+            ? [item.image]
+            : [];
+
+          return {
+            id: String(item.postId || item.id || item._id),
+            content: item.title || item.text || item.description || '',
+            images: rawImages,
+            author: {
+              id: String(item.userId || uid),
+              name: item.user?.name || item.user?.username || profile?.name || 'Boss',
+              username: item.user?.username || profile?.username || 'user',
+              avatarUrl: item.user?.photoUrl || profile?.photoUrl || '',
+              isPro: item.user?.isSubscribed || profile?.isSubscribed || false,
+              hasShop: item.user?.hasShop || profile?.hasShop || false,
+            },
+            likesCount: Array.isArray(item.likes) ? item.likes.length : Number(item.likesCount || 0),
+            commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount || 0),
+            coinsCount: Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount || 0),
+            views: Number(item.views || 0),
+            repostsCount: Array.isArray(item.reposts) ? item.reposts.length : Number(item.repostsCount || 0),
+            isLiked: Array.isArray(item.likes) && myUid ? item.likes.some((l: any) => l.userId === myUid) : false,
+            isCoined: Array.isArray(item.coins) && myUid ? item.coins.some((c: any) => c.userId === myUid) : false,
+            isPolled: !!item.isPolled,
+            options: Array.isArray(item.options) ? item.options : [],
+            pollvotes: Array.isArray(item.pollvotes) ? item.pollvotes : [],
+            isRanked: !!item.isRanked,
+            createdAt: item.createdAt || new Date(item.timestamp || Date.now()).toISOString(),
+            timestamp: Number(item.timestamp) || (item.createdAt ? new Date(item.createdAt).getTime() : Date.now()),
+          };
+        });
         setPosts(mapped);
       }
     } catch (e) {
