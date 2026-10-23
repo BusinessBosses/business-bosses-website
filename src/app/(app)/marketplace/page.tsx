@@ -9,10 +9,14 @@ import {
   ShoppingBag,
   Briefcase,
   ChevronRight,
-  ExternalLink,
   Plus,
   RefreshCw,
-  Sparkles,
+  Star,
+  Phone,
+  MessageCircle,
+  ExternalLink,
+  ShieldCheck,
+  X,
 } from 'lucide-react';
 import {
   marketplaceService,
@@ -44,6 +48,7 @@ export default function MarketplacePage() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedLocation, setSelectedLocation] = useState<string>('All Locations');
+  const [selectedType, setSelectedType] = useState<'all' | 'product' | 'service'>('all');
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null);
   const [sellModalOpen, setSellModalOpen] = useState<boolean>(false);
@@ -87,28 +92,71 @@ export default function MarketplacePage() {
     setLightboxOpen(true);
   };
 
+  const filteredItems = items.filter((item) => {
+    if (selectedType === 'all') return true;
+    return item.type === selectedType;
+  });
+
   return (
     <div className="w-full flex justify-center pb-24 lg:pb-8 bg-slate-50 min-h-screen">
-      <div className="w-full max-w-6xl px-1 sm:px-2 md:px-4 py-4 sm:py-6 space-y-4 min-w-0">
-        {/* Top Sticky Header matching Mobile MarketplaceScreen */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-2xs space-y-3">
-          {/* Row 1: Search Bar + Sell Action Button */}
-          <div className="flex items-center gap-3">
+      <div className="w-full max-w-5xl px-3 sm:px-4 py-4 sm:py-6 space-y-4 min-w-0">
+        
+        {/* Top Control Bar matching Mobile MarketplaceScreen */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 sm:p-4 shadow-2xs space-y-3">
+          {/* Row 1: Search + Product/Service Type Toggle + Sell Button */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
             <form onSubmit={handleSearch} className="flex-1 relative">
               <input
                 type="text"
-                placeholder="Search products & services..."
+                placeholder="Search marketplace..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-slate-800 focus:bg-white transition-all"
+                className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#F21C29] focus:bg-white transition-all"
               />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             </form>
+
+            {/* Type selector: All, Products, Services */}
+            <div className="hidden sm:flex items-center bg-slate-100 p-0.5 rounded-full text-xs font-bold text-slate-600 shrink-0">
+              <button
+                type="button"
+                onClick={() => setSelectedType('all')}
+                className={`px-3 py-1.5 rounded-full transition-all ${
+                  selectedType === 'all'
+                    ? 'bg-white text-slate-900 shadow-2xs'
+                    : 'hover:text-slate-900'
+                }`}
+              >
+                All
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedType('product')}
+                className={`px-3 py-1.5 rounded-full transition-all ${
+                  selectedType === 'product'
+                    ? 'bg-white text-slate-900 shadow-2xs'
+                    : 'hover:text-slate-900'
+                }`}
+              >
+                Products
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedType('service')}
+                className={`px-3 py-1.5 rounded-full transition-all ${
+                  selectedType === 'service'
+                    ? 'bg-white text-slate-900 shadow-2xs'
+                    : 'hover:text-slate-900'
+                }`}
+              >
+                Services
+              </button>
+            </div>
 
             {/* Sell Button matching mobile red Sell pill */}
             <button
               onClick={() => setSellModalOpen(true)}
-              className="px-4 py-2.5 bg-[#FF1E39] hover:bg-[#D01420] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-transform active:scale-95 flex items-center space-x-1 shrink-0"
+              className="px-3.5 sm:px-4 py-2 bg-[#F21C29] hover:bg-[#D01420] text-white text-xs sm:text-sm font-bold rounded-full shadow-xs transition-transform active:scale-95 flex items-center space-x-1.5 shrink-0"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>Sell</span>
@@ -120,7 +168,7 @@ export default function MarketplacePage() {
                 loadMarket();
               }}
               disabled={refreshing}
-              className="p-2.5 text-slate-500 hover:text-slate-800 rounded-xl hover:bg-slate-100 transition-colors shrink-0"
+              className="p-2 text-slate-500 hover:text-slate-800 rounded-full hover:bg-slate-100 transition-colors shrink-0"
               title="Refresh"
             >
               <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
@@ -128,9 +176,9 @@ export default function MarketplacePage() {
           </div>
 
           {/* Row 2: Location Filter + Leads & Orders Link */}
-          <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+          <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
             <div className="flex items-center space-x-1.5 text-slate-700">
-              <MapPin className="w-4 h-4 text-[#FF1E39] shrink-0" />
+              <MapPin className="w-4 h-4 text-[#F21C29] shrink-0" />
               <select
                 aria-label="Filter by Location"
                 value={selectedLocation}
@@ -151,11 +199,28 @@ export default function MarketplacePage() {
 
             <Link
               href="/buyer-requests"
-              className="font-bold text-[#FF1E39] underline decoration-[#FF1E39] hover:text-[#D01420]"
+              className="font-bold text-[#F21C29] hover:underline"
             >
-              Leads &amp; Requests
+              Leads &amp; Requests →
             </Link>
           </div>
+        </div>
+
+        {/* Mobile Type Filter Strip */}
+        <div className="flex sm:hidden items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+          {(['all', 'product', 'service'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setSelectedType(t)}
+              className={`px-3 py-1 rounded-full text-xs font-bold capitalize transition-all ${
+                selectedType === t
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-white text-slate-600 border border-slate-200'
+              }`}
+            >
+              {t === 'all' ? 'All Items' : `${t}s`}
+            </button>
+          ))}
         </div>
 
         {/* Categories Chips matching mobile _buildCategoryChips */}
@@ -166,9 +231,9 @@ export default function MarketplacePage() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all shadow-2xs ${
+                className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
                   isSelected
-                    ? 'bg-[#FF1E39] text-white'
+                    ? 'bg-[#F21C29] text-white shadow-2xs'
                     : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
                 }`}
               >
@@ -178,9 +243,9 @@ export default function MarketplacePage() {
           })}
         </div>
 
-        {/* Masonry / Grid of Products & Services matching mobile MasonryGridView */}
+        {/* Grid of Products & Services matching mobile MasonryGridView / InventoryCard */}
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 pt-2">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
               <div
                 key={n}
@@ -192,16 +257,16 @@ export default function MarketplacePage() {
               </div>
             ))}
           </div>
-        ) : items.length > 0 ? (
+        ) : filteredItems.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
-            {items.map((item) => {
+            {filteredItems.map((item) => {
               const coverImg = item.images && item.images.length > 0 ? item.images[0] : null;
 
               return (
                 <div
                   key={`${item.type}-${item.id}`}
                   onClick={() => setSelectedItem(item)}
-                  className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
+                  className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-2xs hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
                 >
                   <div>
                     {/* Image Thumbnail */}
@@ -245,13 +310,13 @@ export default function MarketplacePage() {
                             : 'Quote'}
                         </span>
                         {item.location && (
-                          <span className="text-[10px] text-slate-400 truncate max-w-[80px]">
+                          <span className="text-[10px] text-slate-400 font-semibold truncate max-w-[80px]">
                             {item.location}
                           </span>
                         )}
                       </div>
 
-                      <h4 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-[#FF1E39] transition-colors">
+                      <h4 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-[#F21C29] transition-colors">
                         {item.name}
                       </h4>
 
@@ -261,7 +326,7 @@ export default function MarketplacePage() {
                     </div>
                   </div>
 
-                  {/* Seller / Shop footer */}
+                  {/* Seller / Shop footer with mobile Order button */}
                   <div className="p-3 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between text-[11px]">
                     <div className="flex items-center space-x-1.5 min-w-0">
                       <div className="relative w-5 h-5 rounded-full overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
@@ -288,9 +353,9 @@ export default function MarketplacePage() {
                         e.stopPropagation();
                         setSelectedItem(item);
                       }}
-                      className="text-[11px] font-bold text-[#FF1E39] hover:underline shrink-0"
+                      className="px-2.5 py-1 text-[11px] font-bold text-[#F21C29] border border-red-200 hover:bg-red-50 rounded-lg transition-colors shrink-0"
                     >
-                      View
+                      {item.type === 'service' ? 'Book' : 'Order'}
                     </button>
                   </div>
                 </div>
@@ -298,10 +363,10 @@ export default function MarketplacePage() {
             })}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center flex flex-col items-center">
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-12 text-center flex flex-col items-center shadow-2xs">
             <ShoppingBag className="w-12 h-12 text-slate-300 mb-3" />
             <h3 className="font-bold text-slate-800 text-base mb-1">No Items Available</h3>
-            <p className="text-slate-500 text-sm max-w-sm mb-4">
+            <p className="text-slate-500 text-xs sm:text-sm max-w-sm mb-4">
               {selectedCategory !== 'All'
                 ? `No items found under ${selectedCategory}. Try another category or location.`
                 : 'No items currently match your location or search filters.'}
@@ -310,6 +375,7 @@ export default function MarketplacePage() {
               onClick={() => {
                 setSelectedCategory('All');
                 setSelectedLocation('All Locations');
+                setSelectedType('all');
                 setSearchQuery('');
               }}
               className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-colors"
@@ -342,7 +408,7 @@ export default function MarketplacePage() {
                   onClick={() => setSelectedItem(null)}
                   className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
                 >
-                  ✕
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
@@ -354,7 +420,7 @@ export default function MarketplacePage() {
                       ? `${selectedItem.currency || '£'}${selectedItem.price.toLocaleString()}`
                       : 'Free Quote'}
                   </span>
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#FF1E39] bg-red-50 px-2.5 py-1 rounded-full">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#F21C29] bg-red-50 px-2.5 py-1 rounded-full">
                     {selectedItem.type}
                   </span>
                 </div>
@@ -369,7 +435,7 @@ export default function MarketplacePage() {
                       <>
                         <span>•</span>
                         <span className="flex items-center gap-0.5">
-                          <MapPin className="w-3 h-3 text-[#FF1E39]" />
+                          <MapPin className="w-3 h-3 text-[#F21C29]" />
                           {selectedItem.location}
                         </span>
                       </>
@@ -416,9 +482,10 @@ export default function MarketplacePage() {
                   {selectedItem.shop?.phone && (
                     <a
                       href={`tel:${selectedItem.shop.phone}`}
-                      className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-colors"
+                      className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
                     >
-                      Call Shop
+                      <Phone className="w-3 h-3" />
+                      <span>Call Shop</span>
                     </a>
                   )}
                 </div>
