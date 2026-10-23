@@ -15,14 +15,12 @@ import {
   BarChart2,
   Smile,
   Search,
-  SlidersHorizontal,
 } from 'lucide-react';
 import PostCard, { Post } from '../../../components/feed/PostCard';
 import CreatePostModal from '../../../components/feed/CreatePostModal';
 import CommentsModal from '../../../components/feed/CommentsModal';
 import BossOfTheWeekCard from '../../../components/feed/BossOfTheWeekCard';
 import PartnersDealsSection from '../../../components/feed/PartnersDealsSection';
-import QuickActionsBar from '../../../components/feed/QuickActionsBar';
 import FeedBuyerRequestsSection from '../../../components/feed/FeedBuyerRequestsSection';
 import FeedFeaturedListingsSection from '../../../components/feed/FeedFeaturedListingsSection';
 import FindOpportunitiesModal from '../../../components/feed/FindOpportunitiesModal';
@@ -37,58 +35,55 @@ import { marketplaceService, MarketplaceService } from '../../../services/market
 import { authService } from '../../../services/authService';
 import { toast } from 'react-toastify';
 
-const FEED_TOPICS = [
-  'All',
-  'Boss Up',
-  'Networking',
-  'Growth & Marketing',
-  'Funding & Grants',
-  'Tech & AI',
-  'Founder Stories',
-];
-
 export default function FeedPage() {
-  const [activeTab, setActiveTab] = useState<'forYou' | 'marketplace'>('forYou');
-  const [selectedTopic, setSelectedTopic] = useState<string>('All');
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(0);
+
+  // Modals & Navigation
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [isFindOppOpen, setIsFindOppOpen] = useState<boolean>(false);
   const [commentPost, setCommentPost] = useState<Post | null>(null);
+  const [activeTab, setActiveTab] = useState<'forYou' | 'marketplace'>('forYou');
 
-  // User profile preview for modern composer
-  const [currentUser, setCurrentUser] = useState<any>(null);
-
-  // Highlights state (parity with mobile ForYouTopCards)
+  // Highlights & Interleaved Data
   const [bossOfTheWeek, setBossOfTheWeek] = useState<BossOfTheWeekData | null>(null);
   const [deals, setDeals] = useState<PartnerDealData[]>([]);
-  const [isFollowingBoss, setIsFollowingBoss] = useState<boolean>(false);
-
-  // Interleaved items state (parity with mobile BuyerRequestDealsWidget & ProshopdealsWidget)
   const [buyerRequests, setBuyerRequests] = useState<BuyerRequest[]>([]);
   const [featuredServices, setFeaturedServices] = useState<MarketplaceService[]>([]);
+  const [isFollowingBoss, setIsFollowingBoss] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  // Infinite Scroll Observer
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastElementRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (loading || loadingMore) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMorePosts();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, loadingMore, hasMore]
+  );
 
   useEffect(() => {
-    initUser();
-    setPage(0);
-    setHasMore(true);
     fetchInitialPosts();
     fetchHighlights();
     fetchInterleavedFeeds();
+    loadCurrentUser();
   }, []);
 
-  const initUser = async () => {
-    try {
-      const user = await authService.getCurrentUser();
+  const loadCurrentUser = () => {
+    const user = authService.getUser();
+    if (user) {
       setCurrentUser(user);
-    } catch {
-      // Guest mode
     }
   };
 
@@ -162,22 +157,6 @@ export default function FeedPage() {
     }
   };
 
-  const lastElementRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (loading || loadingMore) return;
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadMorePosts();
-        }
-      });
-
-      if (node) observerRef.current.observe(node);
-    },
-    [loading, loadingMore, hasMore, page, posts]
-  );
-
   const handleFollowBoss = async (uid: string) => {
     const success = await feedHighlightService.followUser(uid);
     if (success) {
@@ -188,19 +167,9 @@ export default function FeedPage() {
     }
   };
 
-  // Filter posts by selected topic if not 'All'
-  const filteredPosts = posts.filter((p) => {
-    if (selectedTopic === 'All') return true;
-    if (selectedTopic === 'Boss Up') return p.type === 'forum' || p.category?.toLowerCase().includes('boss');
-    return (
-      p.category?.toLowerCase().includes(selectedTopic.toLowerCase()) ||
-      p.content.toLowerCase().includes(selectedTopic.toLowerCase())
-    );
-  });
-
   return (
     <div className="w-full flex justify-center min-h-screen bg-[#F8FAFC] pb-24 lg:pb-8">
-      <div className="w-full max-w-2xl px-2 sm:px-4 py-3 sm:py-6 space-y-4 sm:space-y-5 min-w-0">
+      <div className="w-full max-w-4xl px-2 sm:px-4 py-3 sm:py-6 space-y-4 sm:space-y-5 min-w-0">
         {/* Modern Interactive Post Composer Card */}
         <div className="bg-white rounded-3xl border border-slate-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3">
@@ -268,9 +237,6 @@ export default function FeedPage() {
           </div>
         </div>
 
-        {/* Quick Action Pills Strip */}
-        <QuickActionsBar onOpenCreatePost={() => setIsCreateOpen(true)} />
-
         {/* Segmented Feed Switcher & Opportunities Trigger */}
         <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/90 p-1.5 flex items-center justify-between shadow-2xs sticky top-16 z-20">
           <div className="flex items-center gap-1">
@@ -294,6 +260,7 @@ export default function FeedPage() {
           </div>
 
           <div className="flex items-center gap-2 pr-1">
+            {/* Find Opportunities Trigger */}
             <button
               type="button"
               onClick={() => setIsFindOppOpen(true)}
@@ -319,27 +286,6 @@ export default function FeedPage() {
               <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-[#F21C29]' : ''}`} />
             </button>
           </div>
-        </div>
-
-        {/* Topic Filter Pills (Modern horizontal category selector) */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
-          {FEED_TOPICS.map((topic) => {
-            const isSelected = selectedTopic === topic;
-            return (
-              <button
-                key={topic}
-                type="button"
-                onClick={() => setSelectedTopic(topic)}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all shrink-0 ${
-                  isSelected
-                    ? 'bg-[#F21C29] text-white shadow-2xs'
-                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 hover:border-slate-300'
-                }`}
-              >
-                {topic}
-              </button>
-            );
-          })}
         </div>
 
         {/* Mobile Feed Parity Highlights: Boss of the Week */}
@@ -376,10 +322,10 @@ export default function FeedPage() {
               </div>
             ))}
           </div>
-        ) : filteredPosts.length > 0 ? (
+        ) : posts.length > 0 ? (
           <div className="space-y-4 sm:space-y-5">
-            {filteredPosts.map((post, idx) => {
-              const isLast = idx === filteredPosts.length - 1;
+            {posts.map((post, idx) => {
+              const isLast = idx === posts.length - 1;
               return (
                 <React.Fragment key={post.id}>
                   {/* Interleaved Buyer Requests at index 3 */}
@@ -424,25 +370,17 @@ export default function FeedPage() {
               <Layers className="w-7 h-7" />
             </div>
             <h3 className="font-extrabold text-slate-900 text-base mb-1">
-              No posts found for this topic
+              No posts found
             </h3>
             <p className="text-slate-500 text-xs sm:text-sm max-w-sm mb-5 leading-relaxed">
-              {selectedTopic === 'All'
-                ? 'Be the first to share an update or insight with the Business Bosses community!'
-                : `No posts found under "${selectedTopic}". Try choosing "All" or create a new post.`}
+              Be the first to share an update or insight with the Business Bosses community!
             </p>
             <button
               type="button"
-              onClick={() => {
-                if (selectedTopic !== 'All') {
-                  setSelectedTopic('All');
-                } else {
-                  setIsCreateOpen(true);
-                }
-              }}
+              onClick={() => setIsCreateOpen(true)}
               className="px-5 py-2.5 bg-[#F21C29] text-white rounded-xl text-xs sm:text-sm font-bold shadow-md hover:bg-[#D01420] transition-colors"
             >
-              {selectedTopic !== 'All' ? 'View All Posts' : 'Create First Post'}
+              Create First Post
             </button>
           </div>
         )}
