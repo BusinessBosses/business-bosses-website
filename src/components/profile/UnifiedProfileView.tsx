@@ -189,12 +189,22 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   const loadPosts = async (uid: string) => {
     try {
       const res = await apiClient.get(`/post/get-user-posts/${uid}?page=0&size=50`);
-      const postRows = res.data?.data || res.data?.rows || res.data || [];
+      const postRows =
+        res.data?.data?.posts?.rows ||
+        res.data?.posts?.rows ||
+        res.data?.data?.rows ||
+        res.data?.data ||
+        res.data?.rows ||
+        res.data ||
+        [];
+
       if (Array.isArray(postRows)) {
         const mapped: Post[] = postRows.map((item: any) => ({
           id: String(item.postId || item.id || item._id),
-          caption: item.text || item.description || '',
-          mediaUrls: Array.isArray(item.images) ? item.images : item.image ? [item.image] : [],
+          caption: item.text || item.title || item.description || '',
+          mediaUrls: Array.isArray(item.images)
+            ? item.images.filter((img: string) => img && typeof img === 'string' && img.trim().length > 0)
+            : item.image ? [item.image] : [],
           author: {
             id: String(item.userId || uid),
             name: item.user?.name || item.user?.username || profile?.name || 'Boss',
