@@ -69,6 +69,14 @@ export const buyerRequestService = {
   },
 
   /**
+   * Delete a buyer request by ID
+   */
+  async deleteBuyerRequest(id: string): Promise<any> {
+    const res = await apiClient.delete(`/buyer-request/${id}`);
+    return res.data;
+  },
+
+  /**
    * Upload attachment file to server storage
    */
   async uploadAttachment(file: File): Promise<string> {
