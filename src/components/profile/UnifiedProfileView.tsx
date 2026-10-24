@@ -39,6 +39,7 @@ import { authService } from '../../services/authService';
 import { buyerRequestService, BuyerRequest } from '../../services/buyerRequestService';
 import { apiClient } from '../../lib/apiClient';
 import PostCard, { Post } from '../feed/PostCard';
+import { formatThousands } from '../../common/functions/formatThousands';
 
 interface ProfileViewProps {
   initialUsername?: string;
@@ -543,7 +544,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
               <div>
                 <h3 className="font-extrabold text-slate-900 text-sm">Coins & Rewards</h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  <span className="font-bold text-amber-700">{coins} Coins</span> available to boost visibility and unlock perks.
+                  <span className="font-bold text-amber-700">{formatThousands(coins)} Coins</span> available to boost visibility and unlock perks.
                 </p>
               </div>
             </Link>
@@ -820,7 +821,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                 className="p-2 rounded-xl hover:bg-white hover:shadow-xs transition-all cursor-pointer text-center group"
               >
                 <span className="block text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F21C29] transition-colors">
-                  {connectionStats.followers}
+                  {formatThousands(connectionStats.followers)}
                 </span>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                   Followers
@@ -833,7 +834,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                 className="p-2 rounded-xl hover:bg-white hover:shadow-xs transition-all cursor-pointer text-center border-x border-slate-200/80 group"
               >
                 <span className="block text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F21C29] transition-colors">
-                  {connectionStats.following}
+                  {formatThousands(connectionStats.following)}
                 </span>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                   Following
@@ -842,7 +843,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
               <div className="p-2">
                 <span className="block text-base sm:text-lg font-black text-[#F21C29]">
-                  {connectionStats.reachScore}
+                  {formatThousands(connectionStats.reachScore)}
                 </span>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                   Reach Score
