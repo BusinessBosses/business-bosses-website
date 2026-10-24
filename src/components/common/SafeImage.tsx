@@ -4,11 +4,14 @@ import React from 'react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 
 /**
- * Custom Next.js Image component that forces unoptimized={true}
- * by default. This guarantees that in static export mode ('output: export')
- * or dev mode, images always load directly from their source URL (Backblaze B2, S3, CDN)
- * without attempting to route through '/_next/image/?url=...', which returns 404 in static exports.
+ * Custom Image component that:
+ * 1. Defaults to loading="lazy" (native browser lazy-loading)
+ * 2. Defaults to decoding="async"
+ * 3. Forces unoptimized={true} for static exports (loads direct from CDN/storage)
+ * 
+ * Images will only download when the user scrolls near them,
+ * drastically reducing bandwidth usage from Backblaze / S3 storage.
  */
-export default function SafeImage(props: NextImageProps) {
-  return <NextImage unoptimized {...props} />;
+export default function SafeImage({ loading = 'lazy', decoding = 'async', ...props }: NextImageProps) {
+  return <NextImage unoptimized loading={loading} decoding={decoding} {...props} />;
 }

@@ -602,7 +602,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
           {/* Cover Banner */}
           <div className="h-44 sm:h-56 w-full bg-gradient-to-r from-slate-950 via-[#2A1016] to-[#F21C29] relative">
             {profile?.coverPhoto && (
-              <img src={profile.coverPhoto} alt="Cover" className="w-full h-full object-cover" />
+              <img src={profile.coverPhoto} alt="Cover" loading="lazy" decoding="async" className="w-full h-full object-cover" />
             )}
             {/* Share / Copy Profile Button */}
             <button
