@@ -35,7 +35,19 @@ apiClient.interceptors.response.use(
       if (typeof window !== 'undefined') {
         localStorage.removeItem(StorageEnum.AccessToken);
         localStorage.removeItem('bb_access_token');
-        if (!window.location.pathname.startsWith('/auth') && !window.location.pathname.startsWith('/login')) {
+        // Do not redirect to login when browsing public profiles, feeds, or marketplace
+        const path = window.location.pathname;
+        const isPublicPage =
+          path.startsWith('/profile') ||
+          path.startsWith('/feed') ||
+          path.startsWith('/marketplace') ||
+          path.startsWith('/magazine') ||
+          path.startsWith('/news') ||
+          path.startsWith('/auth') ||
+          path.startsWith('/login') ||
+          path.startsWith('/register');
+
+        if (!isPublicPage) {
           window.location.href = '/login?expired=true';
         }
       }
