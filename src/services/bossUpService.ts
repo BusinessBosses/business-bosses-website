@@ -90,6 +90,8 @@ export const bossUpService = {
           postImages = [item.image];
         }
 
+        const isRanked = item.isRanked === true || user.isRanked === true;
+
         return {
           id: String(item.forumId || item.id || item._id),
           author: {
@@ -99,6 +101,7 @@ export const bossUpService = {
             avatarUrl: user.photoUrl || user.avatar || user.profilePicture || '',
             tagline: user.company || user.industry || user.bio || undefined,
             verified: Boolean(user.isVerified || user.verified),
+            isPro: Boolean(user.isSubscribed || user.isPro),
           },
           content: item.title ? `${item.title}\n\n${item.description || ''}` : item.description || '',
           images: postImages,
@@ -108,11 +111,22 @@ export const bossUpService = {
           coinsCount: Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount || 0),
           views: Number(item.views || 0),
           category: item.industry?.industry || undefined,
+          isRanked,
           type: 'forum',
         };
       });
 
-      return { count, posts };
+      // Mobile parity sorting (bossup_controller.dart lines 59-93):
+      // 1. Ranked forums (Boss of the week) first
+      // 2. Non-ranked forums sorted descending by likesCount (most likes first)
+      const rankedPosts = posts.filter((p) => p.isRanked);
+      const nonRankedPosts = posts.filter((p) => !p.isRanked);
+
+      nonRankedPosts.sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0));
+
+      const sortedPosts = [...rankedPosts, ...nonRankedPosts];
+
+      return { count, posts: sortedPosts };
     } catch (e) {
       console.error('Failed to load industry forums', e);
       return { count: 0, posts: [] };
