@@ -35,18 +35,18 @@ export default function BuyerRequestDetailModal({
 }: BuyerRequestDetailModalProps) {
   if (!isOpen || !request) return null;
 
+  const author = request.user || request.author || {};
   const authorName =
-    request.user?.name ||
-    request.user?.username ||
-    request.author?.name ||
+    author.name ||
+    author.username ||
     'Request Poster';
 
   const authorAvatar =
-    request.user?.photoUrl ||
-    request.author?.avatarUrl ||
+    author.photoUrl ||
+    author.avatarUrl ||
     'https://i.pravatar.cc/150?img=12';
 
-  const authorLocation = request.user?.location || request.location || '';
+  const authorLocation = author.location || request.location || '';
 
   const formatBudget = (): string => {
     if (request.budget) return request.budget;

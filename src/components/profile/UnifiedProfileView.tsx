@@ -528,7 +528,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
             </Link>
 
             <Link
-              href="/buyer-requests"
+              href="/requests"
               className="p-5 rounded-2xl border border-slate-200/80 hover:border-blue-300 hover:bg-blue-50/20 transition-all flex items-start gap-4"
             >
               <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
@@ -1062,7 +1062,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                             {req.description}
                           </p>
                           <Link
-                            href={`/buyer-requests`}
+                            href={`/requests`}
                             className="inline-flex items-center gap-1 text-xs font-bold text-slate-900 hover:text-[#F21C29]"
                           >
                             <span>View in Requests</span>

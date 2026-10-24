@@ -32,7 +32,7 @@ export default function FeedBuyerRequestsSection({
           </div>
         </div>
         <Link
-          href="/buyer-requests"
+          href="/requests"
           className="text-xs font-bold text-[#F21C29] hover:text-[#D01420] flex items-center gap-0.5"
         >
           <span>Explore</span>
@@ -73,7 +73,7 @@ export default function FeedBuyerRequestsSection({
                 {req.author?.name || 'Verified Member'}
               </span>
               <Link
-                href="/buyer-requests"
+                href="/requests"
                 className="text-[11px] font-bold text-[#F21C29] flex items-center gap-0.5 hover:underline"
               >
                 <span>Respond</span>

@@ -63,10 +63,10 @@ export default function AppLayout({
         isOpen={isRequestOpen}
         onClose={() => setIsRequestOpen(false)}
         onCreated={() => {
-          if (window.location.pathname === '/buyer-requests') {
+          if (window.location.pathname === '/buyer-requests' || window.location.pathname === '/requests') {
             window.location.reload();
           } else {
-            window.location.href = '/buyer-requests';
+            window.location.href = '/requests';
           }
         }}
       />

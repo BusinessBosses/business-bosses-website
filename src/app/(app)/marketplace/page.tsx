@@ -202,7 +202,7 @@ export default function MarketplacePage() {
             </div>
 
             <Link
-              href="/buyer-requests"
+              href="/requests"
               className="font-bold text-[#F21C29] hover:underline"
             >
               Leads &amp; Requests →

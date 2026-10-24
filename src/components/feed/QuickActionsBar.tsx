@@ -22,7 +22,7 @@ export default function QuickActionsBar({ onOpenCreatePost }: QuickActionsBarPro
 
       {/* 2. Requests */}
       <Link
-        href="/buyer-requests"
+        href="/requests"
         className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-50/80 hover:bg-emerald-100/80 border border-emerald-200/80 text-emerald-800 rounded-xl text-xs font-bold transition-all shadow-2xs shrink-0 active:scale-95"
       >
         <FileText className="w-3.5 h-3.5 text-emerald-600" />

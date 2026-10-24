@@ -222,7 +222,7 @@ export default function FeedPage() {
                 <span className="hidden sm:inline">Poll</span>
               </button>
               <Link
-                href="/buyer-requests"
+                href="/requests"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors"
               >
                 <TrendingUp className="w-4 h-4 text-[#095DED]" />

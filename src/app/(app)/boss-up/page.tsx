@@ -410,7 +410,7 @@ export default function BossUpPage() {
 
       case 'job_board':
         // Mobile: Get.to(() => BuyerRequestsScreen(showAppBar: true, title: 'Request Board'))
-        window.location.href = '/buyer-requests';
+        window.location.href = '/requests';
         break;
 
       case 'magazine':
