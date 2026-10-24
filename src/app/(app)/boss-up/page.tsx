@@ -25,6 +25,7 @@ import CommentsModal from '../../../components/feed/CommentsModal';
 import CreateBossUpModal from '../../../components/bossUp/CreateBossUpModal';
 import PreviousWinnersModal from '../../../components/bossUp/PreviousWinnersModal';
 import BossUpInfoModal from '../../../components/bossUp/BossUpInfoModal';
+import LearningHubModal from '../../../components/bossUp/LearningHubModal';
 import { getUserProfileUrl } from '../../../common/functions/getUserProfileUrl';
 import { toast } from 'react-toastify';
 
@@ -58,10 +59,11 @@ export default function BossUpPage() {
   const [totalPostsCount, setTotalPostsCount] = useState<number>(0);
   const [isJoined, setIsJoined] = useState<boolean>(false);
 
-  // Parity Modals: Entry, Winners, Info, Comments
+  // Parity Modals: Entry, Winners, Info, Comments, Learning
   const [createEntryModalOpen, setCreateEntryModalOpen] = useState(false);
   const [winnersModalOpen, setWinnersModalOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [learningHubModalOpen, setLearningHubModalOpen] = useState(false);
   const [commentPost, setCommentPost] = useState<Post | null>(null);
 
   useEffect(() => {
@@ -423,7 +425,7 @@ export default function BossUpPage() {
 
       case 'mentor':
         // Mobile: Get.to(() => AllLearningPostsScreen(isCoursesTile: false)) -> Learn new skills
-        window.location.href = '/feed';
+        setLearningHubModalOpen(true);
         break;
 
       case 'crowdfund':
@@ -820,6 +822,15 @@ export default function BossUpPage() {
           </div>
         </div>
       )}
+
+      {/* Learning Hub Modal (Parity with all_learning_posts.dart) */}
+      <LearningHubModal
+        isOpen={learningHubModalOpen}
+        onClose={() => setLearningHubModalOpen(false)}
+        onSelectCategory={(category) => {
+          handleChallengeClick(category);
+        }}
+      />
     </div>
   );
 }

@@ -65,6 +65,37 @@ export const bossUpService = {
   },
 
   /**
+   * Fetch Learning industries (Learn New Skills)
+   * Mobile parity: Constants.LEARNINGID = '-Mos1VMnV53H7AZa0W8p'
+   */
+  async getLearningCategories(): Promise<BossUpCategory[]> {
+    try {
+      const res = await apiClient.get('/industry/user-count');
+      const data = res.data?.data || res.data?.message || [];
+      const rows: any[] = Array.isArray(data) ? data : (data.rows || []);
+
+      const learningIndustries = rows
+        .filter((cat: any) => cat.categoryId === '-Mos1VMnV53H7AZa0W8p')
+        .map((cat: any) => ({
+          industryId: String(cat.industryId || cat.id || cat._id),
+          categoryId: cat.categoryId,
+          industry: cat.industry || cat.name || '',
+          photo: cat.photo || '',
+          description: cat.description || '',
+          award: 'Learn',
+          criteria: cat.criteria || '',
+          joinedUsersCount: Number(cat.joinedUsersCount || cat.userCount || 0),
+        }));
+
+      learningIndustries.sort((a, b) => a.industry.localeCompare(b.industry));
+      return learningIndustries;
+    } catch (e) {
+      console.error('Failed to load learning categories', e);
+      return [];
+    }
+  },
+
+  /**
    * Fetch forums/posts belonging to an industry challenge
    * Backend endpoint: GET /forum/get-industry-forums/:industryId?size=50&page=0
    */
