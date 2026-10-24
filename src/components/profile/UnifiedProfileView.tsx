@@ -172,7 +172,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
       if (uid) {
         // Parallel data loading: posts, buyer requests, partner deals, connections & reach
         await Promise.allSettled([
-          loadPosts(uid),
+          loadPosts(uid, myUid),
           loadBuyerRequests(uid),
           loadDeals(uid),
           loadConnectionStats(uid, myUid),
@@ -186,7 +186,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
     }
   };
 
-  const loadPosts = async (uid: string) => {
+  const loadPosts = async (uid: string, currentViewerUid?: string) => {
     try {
       const res = await apiClient.get(`/post/get-user-posts/${uid}?page=0&size=50`);
       const postRows =
@@ -199,6 +199,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
         [];
 
       if (Array.isArray(postRows)) {
+        const viewerId = currentViewerUid || authService.getUserId() || '';
         const mapped: Post[] = postRows.map((item: any) => {
           const rawImages = Array.isArray(item.images)
             ? item.images.filter((img: string) => img && typeof img === 'string' && img.trim().length > 0)
@@ -212,19 +213,19 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
             images: rawImages,
             author: {
               id: String(item.userId || uid),
-              name: item.user?.name || item.user?.username || profile?.name || 'Boss',
-              username: item.user?.username || profile?.username || 'user',
-              avatarUrl: item.user?.photoUrl || profile?.photoUrl || '',
-              isPro: item.user?.isSubscribed || profile?.isSubscribed || false,
-              hasShop: item.user?.hasShop || profile?.hasShop || false,
+              name: item.user?.name || item.user?.username || 'Boss',
+              username: item.user?.username || 'user',
+              avatarUrl: item.user?.photoUrl || '',
+              isPro: item.user?.isSubscribed || false,
+              hasShop: item.user?.hasShop || false,
             },
             likesCount: Array.isArray(item.likes) ? item.likes.length : Number(item.likesCount || 0),
             commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount || 0),
             coinsCount: Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount || 0),
             views: Number(item.views || 0),
             repostsCount: Array.isArray(item.reposts) ? item.reposts.length : Number(item.repostsCount || 0),
-            isLiked: Array.isArray(item.likes) && myUid ? item.likes.some((l: any) => l.userId === myUid) : false,
-            isCoined: Array.isArray(item.coins) && myUid ? item.coins.some((c: any) => c.userId === myUid) : false,
+            isLiked: Array.isArray(item.likes) && viewerId ? item.likes.some((l: any) => l.userId === viewerId) : false,
+            isCoined: Array.isArray(item.coins) && viewerId ? item.coins.some((c: any) => c.userId === viewerId) : false,
             isPolled: !!item.isPolled,
             options: Array.isArray(item.options) ? item.options : [],
             pollvotes: Array.isArray(item.pollvotes) ? item.pollvotes : [],
