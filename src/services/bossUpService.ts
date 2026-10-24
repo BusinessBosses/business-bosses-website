@@ -147,17 +147,23 @@ export const bossUpService = {
         };
       });
 
-      // Mobile parity sorting (bossup_controller.dart lines 59-93):
-      // 1. Ranked forums (Boss of the week) first
-      // 2. Non-ranked forums sorted descending by likesCount (most likes first)
-      const rankedPosts = posts.filter((p) => p.isRanked);
-      const nonRankedPosts = posts.filter((p) => !p.isRanked);
+      // Mobile parity sorting:
+      // Only the primary "Boss Up Challenge" (industryId: '-MsUOGcOT9oRXGakCcJv') is sorted
+      // with Boss of the Week (isRanked) first and then most likes first (bossup_controller.dart lines 59-93).
+      // Other categories (learning, standard topics) maintain default chronology.
+      const isBossUpMain = industryId === '-MsUOGcOT9oRXGakCcJv';
 
-      nonRankedPosts.sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0));
+      if (isBossUpMain) {
+        const rankedPosts = posts.filter((p) => p.isRanked);
+        const nonRankedPosts = posts.filter((p) => !p.isRanked);
 
-      const sortedPosts = [...rankedPosts, ...nonRankedPosts];
+        nonRankedPosts.sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0));
 
-      return { count, posts: sortedPosts };
+        const sortedPosts = [...rankedPosts, ...nonRankedPosts];
+        return { count, posts: sortedPosts };
+      }
+
+      return { count, posts };
     } catch (e) {
       console.error('Failed to load industry forums', e);
       return { count: 0, posts: [] };
