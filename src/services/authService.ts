@@ -60,6 +60,14 @@ export const authService = {
   },
 
   /**
+   * Sign in or Sign up with Google OAuth
+   */
+  async googleSignIn(payload: { token: string; email?: string }): Promise<AuthResponse> {
+    const res = await apiClient.post('/auth/google-sign-in', payload);
+    return res.data;
+  },
+
+  /**
    * Check if a user is currently authenticated
    */
   isAuthenticated(): boolean {
@@ -77,7 +85,10 @@ export const authService = {
     if (typeof window === 'undefined') return;
     localStorage.setItem(StorageEnum.AccessToken, token);
     localStorage.setItem('bb_access_token', token);
+    localStorage.setItem('hasLoggedInBefore', 'true');
     if (uid) {
+      localStorage.setItem(StorageEnum.UserId, uid);
+      localStorage.setItem('userId', uid);
       localStorage.setItem('bb_user_uid', uid);
     }
   },
