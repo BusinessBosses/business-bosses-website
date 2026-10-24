@@ -41,6 +41,7 @@ import { apiClient } from '../../lib/apiClient';
 import PostCard, { Post } from '../feed/PostCard';
 import CommentsModal from '../feed/CommentsModal';
 import { formatThousands } from '../../common/functions/formatThousands';
+import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
 
 interface ProfileViewProps {
   initialUsername?: string;
@@ -1218,7 +1219,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                       className="py-3 flex items-center justify-between gap-3 first:pt-0 last:pb-0"
                     >
                       <Link
-                        href={`/profile?id=${user.uid}`}
+                        href={getUserProfileUrl({ username: user.username, uid: user.uid })}
                         onClick={() => setConnectionsModalTab(null)}
                         className="flex items-center gap-3 min-w-0 flex-1 hover:opacity-85 transition-opacity"
                       >

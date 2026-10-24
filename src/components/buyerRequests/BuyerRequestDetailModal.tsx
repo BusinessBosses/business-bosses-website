@@ -15,8 +15,10 @@ import {
   User,
 } from 'lucide-react';
 import Image from '../common/SafeImage';
+import Link from 'next/link';
 import { BuyerRequest } from '../../services/buyerRequestService';
 import { toast } from 'react-toastify';
+import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
 
 interface BuyerRequestDetailModalProps {
   request: BuyerRequest | null;
@@ -88,13 +90,21 @@ export default function BuyerRequestDetailModal({
         {/* Header Bar */}
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="relative w-10 h-10 rounded-full overflow-hidden bg-slate-200 ring-1 ring-slate-200 shrink-0">
+            <Link
+              href={getUserProfileUrl({ username: author.username, uid: author.uid || request.userId })}
+              onClick={onClose}
+              className="relative w-10 h-10 rounded-full overflow-hidden bg-slate-200 ring-1 ring-slate-200 shrink-0 hover:ring-[#F21C29] transition-all"
+            >
               <Image src={authorAvatar} alt={authorName} fill className="object-cover" />
-            </div>
+            </Link>
             <div className="min-w-0">
-              <h3 className="text-sm font-bold text-slate-900 truncate">
+              <Link
+                href={getUserProfileUrl({ username: author.username, uid: author.uid || request.userId })}
+                onClick={onClose}
+                className="text-sm font-bold text-slate-900 truncate block hover:text-[#F21C29] transition-colors"
+              >
                 {authorName}
-              </h3>
+              </Link>
               {authorLocation && (
                 <span className="text-[11px] text-slate-500 flex items-center gap-1">
                   <MapPin className="w-3 h-3 text-slate-400" />

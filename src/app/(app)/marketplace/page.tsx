@@ -25,6 +25,7 @@ import {
 import ImageLightboxModal from '../../../components/feed/ImageLightboxModal';
 import SellOptionsModal from '../../../components/marketplace/SellOptionsModal';
 import OrderBookingModal from '../../../components/marketplace/OrderBookingModal';
+import { getUserProfileUrl } from '../../../common/functions/getUserProfileUrl';
 
 const CATEGORIES = [
   'All',
@@ -458,8 +459,15 @@ export default function MarketplacePage() {
 
                 {/* Seller & Shop info */}
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                  <div className="flex items-center space-x-2.5">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden bg-slate-100 border border-slate-200">
+                  <Link
+                    href={getUserProfileUrl({
+                      username: selectedItem.user?.username,
+                      uid: selectedItem.user?.uid || selectedItem.userId,
+                    })}
+                    onClick={() => setSelectedItem(null)}
+                    className="flex items-center space-x-2.5 group/seller"
+                  >
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden bg-slate-100 border border-slate-200 group-hover/seller:border-[#F21C29] transition-colors">
                       {selectedItem.shop?.image || selectedItem.user?.photoUrl ? (
                         <Image
                           src={selectedItem.shop?.image || selectedItem.user?.photoUrl || ''}
@@ -474,14 +482,14 @@ export default function MarketplacePage() {
                       )}
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-900">
+                      <p className="text-xs font-bold text-slate-900 group-hover/seller:text-[#F21C29] transition-colors">
                         {selectedItem.shop?.name || selectedItem.user?.name || 'Verified Seller'}
                       </p>
                       <p className="text-[11px] text-slate-400">
-                        {selectedItem.shop?.phone || selectedItem.shop?.email || 'Contact through Business Bosses'}
+                        {selectedItem.shop?.phone || selectedItem.shop?.email || 'View Seller Profile'}
                       </p>
                     </div>
-                  </div>
+                  </Link>
 
                   <div className="flex items-center gap-2">
                     <button

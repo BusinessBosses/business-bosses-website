@@ -29,6 +29,7 @@ import { authService } from '../../services/authService';
 import { postService } from '../../services/postService';
 import { toast } from 'react-toastify';
 import ImageLightboxModal from './ImageLightboxModal';
+import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
 
 export interface Author {
   id?: string;
@@ -369,8 +370,11 @@ export const PostCard: React.FC<PostCardProps> = ({
       <div className="flex items-start justify-between mb-3.5 relative">
         <div className="flex items-start space-x-3">
           {/* Avatar with Ranking Badge */}
-          <div className="relative">
-            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-slate-100 flex-shrink-0 ring-1 ring-slate-200">
+          <Link
+            href={getUserProfileUrl({ username: post.author.username, uid: post.author.id })}
+            className="relative block group/avatar transition-transform hover:scale-105"
+          >
+            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-slate-100 flex-shrink-0 ring-1 ring-slate-200 group-hover/avatar:ring-[#F21C29]">
               {post.author.avatarUrl ? (
                 <Image
                   src={post.author.avatarUrl}
@@ -393,14 +397,17 @@ export const PostCard: React.FC<PostCardProps> = ({
                 <Award className="w-3 h-3 text-slate-900" />
               </div>
             )}
-          </div>
+          </Link>
 
           <div>
             {/* Author Name + Badges */}
             <div className="flex items-center space-x-1.5 flex-wrap">
-              <span className="font-bold text-slate-900 text-sm sm:text-base leading-tight">
+              <Link
+                href={getUserProfileUrl({ username: post.author.username, uid: post.author.id })}
+                className="font-bold text-slate-900 text-sm sm:text-base leading-tight hover:text-[#F21C29] transition-colors"
+              >
                 {post.author.name}
-              </span>
+              </Link>
               {post.author.isPro && (
                 <span className="bg-[#F7C844] text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm flex items-center">
                   PRO
@@ -416,7 +423,14 @@ export const PostCard: React.FC<PostCardProps> = ({
 
             {/* Subtitle: Username & Relative Time */}
             <div className="flex items-center space-x-1.5 text-xs text-slate-500 mt-0.5">
-              {post.author.username && <span>@{post.author.username}</span>}
+              {post.author.username && (
+                <Link
+                  href={getUserProfileUrl({ username: post.author.username, uid: post.author.id })}
+                  className="hover:text-slate-800 transition-colors"
+                >
+                  @{post.author.username}
+                </Link>
+              )}
               {post.author.username && <span>•</span>}
               <time title={post.createdAt}>{formatTimeAgo(post.timestamp)}</time>
             </div>

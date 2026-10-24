@@ -33,6 +33,7 @@ import {
 import { chatService, ChatMessage, Conversation } from '../../../services/chatService';
 import { authService } from '../../../services/authService';
 import { postService } from '../../../services/postService';
+import { getUserProfileUrl } from '../../../common/functions/getUserProfileUrl';
 
 export default function InboxPage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -700,7 +701,7 @@ export default function InboxPage() {
                   )}
 
                   <Link
-                    href={`/profile?id=${activePartner.partnerId}`}
+                    href={getUserProfileUrl({ username: activePartner.username, uid: activePartner.partnerId })}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
                   >
                     <User className="w-3.5 h-3.5" />
@@ -942,7 +943,10 @@ export default function InboxPage() {
                     </p>
                   </div>
                   <Link
-                    href={`/profile?id=${selectedBuyerRequest.user.uid || selectedBuyerRequest.userId}`}
+                    href={getUserProfileUrl({
+                      username: selectedBuyerRequest.user?.username,
+                      uid: selectedBuyerRequest.user?.uid || selectedBuyerRequest.userId,
+                    })}
                     className="text-xs font-bold text-[#F21C29] hover:underline shrink-0"
                   >
                     View

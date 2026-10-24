@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from '../common/SafeImage';
+import Link from 'next/link';
 import { X, Send, MessageCircle } from 'lucide-react';
 import { commentService, CommentItem } from '../../services/commentService';
 import { toast } from 'react-toastify';
+import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
 
 interface CommentsModalProps {
   isOpen: boolean;
@@ -98,44 +100,62 @@ export const CommentsModal: React.FC<CommentsModalProps> = ({
               ))}
             </div>
           ) : comments.length > 0 ? (
-            comments.map((comment) => (
-              <div key={comment.id} className="flex space-x-3 items-start group">
-                <div className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
-                  {comment.user.avatarUrl ? (
-                    <Image
-                      src={comment.user.avatarUrl}
-                      alt={comment.user.name}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center font-bold text-xs text-slate-500 bg-slate-200">
-                      {comment.user.name.charAt(0)}
-                    </div>
-                  )}
-                </div>
-                <div className="flex-1 bg-slate-50 rounded-2xl px-4 py-2.5 border border-slate-100">
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center space-x-1.5">
-                      <span className="text-xs font-bold text-slate-900">
-                        {comment.user.name}
+            comments.map((comment) => {
+              const profileUrl = getUserProfileUrl({
+                username: comment.user.username,
+                uid: comment.userId,
+              });
+              return (
+                <div key={comment.id} className="flex space-x-3 items-start group">
+                  <Link
+                    href={profileUrl}
+                    onClick={onClose}
+                    className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-100 shrink-0 border border-slate-200 hover:border-[#F21C29] transition-colors"
+                  >
+                    {comment.user.avatarUrl ? (
+                      <Image
+                        src={comment.user.avatarUrl}
+                        alt={comment.user.name}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center font-bold text-xs text-slate-500 bg-slate-200">
+                        {comment.user.name.charAt(0)}
+                      </div>
+                    )}
+                  </Link>
+                  <div className="flex-1 bg-slate-50 rounded-2xl px-4 py-2.5 border border-slate-100">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center space-x-1.5">
+                        <Link
+                          href={profileUrl}
+                          onClick={onClose}
+                          className="text-xs font-bold text-slate-900 hover:text-[#F21C29] transition-colors"
+                        >
+                          {comment.user.name}
+                        </Link>
+                        {comment.user.username && (
+                          <Link
+                            href={profileUrl}
+                            onClick={onClose}
+                            className="text-[11px] text-slate-400 hover:text-slate-600 transition-colors"
+                          >
+                            @{comment.user.username}
+                          </Link>
+                        )}
+                      </div>
+                      <span className="text-[10px] text-slate-400">
+                        {comment.createdAt}
                       </span>
-                      {comment.user.username && (
-                        <span className="text-[11px] text-slate-400">
-                          @{comment.user.username}
-                        </span>
-                      )}
                     </div>
-                    <span className="text-[10px] text-slate-400">
-                      {comment.createdAt}
-                    </span>
+                    <p className="text-xs text-slate-700 whitespace-pre-wrap leading-relaxed">
+                      {comment.text}
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-700 whitespace-pre-wrap leading-relaxed">
-                    {comment.text}
-                  </p>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <div className="py-12 text-center text-slate-400">
               <MessageCircle className="w-10 h-10 mx-auto mb-2 text-slate-300 stroke-1" />

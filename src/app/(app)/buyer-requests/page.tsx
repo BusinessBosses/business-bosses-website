@@ -19,6 +19,8 @@ import CreateBuyerRequestModal from '../../../components/buyerRequests/CreateBuy
 import ApplyBuyerRequestModal from '../../../components/buyerRequests/ApplyBuyerRequestModal';
 import BuyerRequestDetailModal from '../../../components/buyerRequests/BuyerRequestDetailModal';
 import { authService } from '../../../services/authService';
+import Link from 'next/link';
+import { getUserProfileUrl } from '../../../common/functions/getUserProfileUrl';
 
 const CATEGORIES = [
   'All',
@@ -383,18 +385,24 @@ export default function BuyerRequestsPage() {
                   {/* Bottom Row: Author details, View Detail & Apply Action */}
                   <div className="p-5 sm:p-6 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/30">
                     <div className="flex items-center space-x-3">
-                      <div className="relative w-9 h-9 rounded-full overflow-hidden bg-slate-200 ring-1 ring-slate-200 shrink-0">
+                      <Link
+                        href={getUserProfileUrl({ username: author.username, uid: author.uid || request.userId })}
+                        className="relative w-9 h-9 rounded-full overflow-hidden bg-slate-200 ring-1 ring-slate-200 shrink-0 hover:ring-[#F21C29] transition-all"
+                      >
                         <Image 
                           src={authorAvatar} 
                           alt={authorName} 
                           fill 
                           className="object-cover" 
                         />
-                      </div>
+                      </Link>
                       <div className="flex flex-col min-w-0">
-                        <span className="text-xs font-bold text-slate-900 truncate">
+                        <Link
+                          href={getUserProfileUrl({ username: author.username, uid: author.uid || request.userId })}
+                          className="text-xs font-bold text-slate-900 truncate hover:text-[#F21C29] transition-colors"
+                        >
                           {authorName}
-                        </span>
+                        </Link>
                         {author.location && (
                           <span className="text-[11px] text-slate-500 flex items-center truncate">
                             <MapPin className="w-3 h-3 mr-0.5 text-slate-400 shrink-0" />

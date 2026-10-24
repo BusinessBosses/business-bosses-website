@@ -22,6 +22,7 @@ import { apiClient } from '../../lib/apiClient';
 import { authService } from '../../services/authService';
 import { feedHighlightService } from '../../services/feedHighlightService';
 import { toast } from 'react-toastify';
+import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
 
 interface Community {
   id: string;
@@ -250,7 +251,7 @@ export default function RightContextRail() {
                   className="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 transition-all group"
                 >
                   <Link
-                    href={`/profile?id=${boss.uid}`}
+                    href={getUserProfileUrl({ username: boss.username, uid: boss.uid })}
                     className="flex items-center space-x-2.5 min-w-0 flex-1 mr-2"
                   >
                     <div className="relative w-9 h-9 rounded-full overflow-hidden bg-slate-100 border border-slate-200 shrink-0">

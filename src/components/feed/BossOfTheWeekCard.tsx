@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { BossOfTheWeekData } from '../../services/feedHighlightService';
 import { GetFeaturedModal } from './GetFeaturedModal';
+import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
 
 interface BossOfTheWeekCardProps {
   boss: BossOfTheWeekData;
@@ -74,9 +75,9 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
           </Link>
         </div>
 
-        {/* Boss Info Row: Avatar + Name, Pro Badge & Bio (Clickable to /profile?id=...) */}
+        {/* Boss Info Row: Avatar + Name, Pro Badge & Bio */}
         <Link
-          href={`/profile?id=${boss.uid}`}
+          href={getUserProfileUrl({ username: boss.username, uid: boss.uid })}
           className="flex items-center gap-3 group/profile block mb-3.5"
         >
           {/* Avatar with clean brand red accent ring matching mobile bosseek */}
