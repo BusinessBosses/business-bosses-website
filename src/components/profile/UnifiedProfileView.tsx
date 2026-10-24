@@ -39,6 +39,7 @@ import { authService } from '../../services/authService';
 import { buyerRequestService, BuyerRequest } from '../../services/buyerRequestService';
 import { apiClient } from '../../lib/apiClient';
 import PostCard, { Post } from '../feed/PostCard';
+import CommentsModal from '../feed/CommentsModal';
 import { formatThousands } from '../../common/functions/formatThousands';
 
 interface ProfileViewProps {
@@ -70,6 +71,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   const [posts, setPosts] = useState<Post[]>([]);
   const [requests, setRequests] = useState<BuyerRequest[]>([]);
   const [deals, setDeals] = useState<any[]>([]);
+  const [commentPost, setCommentPost] = useState<Post | null>(null);
   const [connectionStats, setConnectionStats] = useState<{ followers: number; following: number; reachScore: number }>({
     followers: 0,
     following: 0,
@@ -1007,7 +1009,19 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                   ) : (
                     <div className="space-y-4">
                       {posts.map((post) => (
-                        <PostCard key={post.id} post={post} />
+                        <PostCard
+                          key={post.id}
+                          post={post}
+                          onOpenComments={(p) => setCommentPost(p)}
+                          onPostUpdated={(updated) => {
+                            setPosts((prev) =>
+                              prev.map((item) => (item.id === updated.id ? updated : item))
+                            );
+                          }}
+                          onPostDeleted={(postId) => {
+                            setPosts((prev) => prev.filter((item) => item.id !== postId));
+                          }}
+                        />
                       ))}
                     </div>
                   )}
@@ -1270,6 +1284,26 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
             </div>
           </div>
         </div>
+      )}
+
+      {/* Post Comments Modal */}
+      {commentPost && (
+        <CommentsModal
+          isOpen={!!commentPost}
+          onClose={() => setCommentPost(null)}
+          postId={commentPost.id}
+          authorUid={commentPost.author.id}
+          initialComments={commentPost.comments}
+          onCommentAdded={() => {
+            setPosts((prev) =>
+              prev.map((p) =>
+                p.id === commentPost.id
+                  ? { ...p, commentsCount: (p.commentsCount || 0) + 1 }
+                  : p
+              )
+            );
+          }}
+        />
       )}
     </div>
   );
