@@ -2,7 +2,11 @@ import React from 'react';
 import UnifiedProfileView from '../../../../components/profile/UnifiedProfileView';
 
 export async function generateStaticParams() {
-  return [{ username: '_' }];
+  return [
+    { username: '_' },
+    { username: 'wadaskid' },
+    { username: 'admin' },
+  ];
 }
 
 export default async function UsernameProfilePage({
