@@ -179,6 +179,10 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   // Handle Coin Tip
   const handleToggleCoin = async () => {
+    if (isOwnPost) {
+      toast.info("You cannot tip coins to your own post.");
+      return;
+    }
     if (coinProcessing) return;
     setCoinProcessing(true);
 
@@ -206,6 +210,10 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   // Handle Repost
   const handleToggleRepost = async () => {
+    if (isOwnPost) {
+      toast.info("You cannot repost your own post.");
+      return;
+    }
     const prevReposted = reposted;
     const prevCount = repostsCount;
 
@@ -691,10 +699,15 @@ export const PostCard: React.FC<PostCardProps> = ({
           {/* Coin Tip */}
           <button
             onClick={handleToggleCoin}
+            disabled={isOwnPost || coinProcessing}
             className={`flex items-center space-x-1.5 transition-colors ${
-              coined ? 'text-amber-500 font-bold' : 'hover:text-amber-500'
+              isOwnPost
+                ? 'opacity-60 cursor-not-allowed hover:text-inherit'
+                : coined
+                ? 'text-amber-500 font-bold'
+                : 'hover:text-amber-500'
             }`}
-            title="Tip 1 Boss Coin"
+            title={isOwnPost ? 'You cannot tip your own post' : 'Tip 1 Boss Coin'}
           >
             <Coins className={`w-4 h-4 sm:w-5 sm:h-5 ${coined ? 'fill-amber-400 text-amber-500' : ''}`} />
             <span>{coinsCount}</span>
@@ -712,10 +725,15 @@ export const PostCard: React.FC<PostCardProps> = ({
           {/* Repost */}
           <button
             onClick={handleToggleRepost}
+            disabled={isOwnPost}
             className={`flex items-center space-x-1.5 transition-colors ${
-              reposted ? 'text-emerald-600 font-bold' : 'hover:text-emerald-600'
+              isOwnPost
+                ? 'opacity-60 cursor-not-allowed hover:text-inherit'
+                : reposted
+                ? 'text-emerald-600 font-bold'
+                : 'hover:text-emerald-600'
             }`}
-            title={reposted ? 'Undo Repost' : 'Repost'}
+            title={isOwnPost ? 'You cannot repost your own post' : reposted ? 'Undo Repost' : 'Repost'}
           >
             <Repeat2 className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>{repostsCount}</span>
