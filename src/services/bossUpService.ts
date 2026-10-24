@@ -158,4 +158,55 @@ export const bossUpService = {
       return false;
     }
   },
+
+  /**
+   * Fetch Previous Winners for Boss Up Challenge
+   * Backend endpoint: GET /users/bossup-winners
+   */
+  async getBossUpWinners(): Promise<any[]> {
+    try {
+      const res = await apiClient.get('/users/bossup-winners');
+      const data = res.data?.data || res.data?.message || [];
+      return Array.isArray(data) ? data : (data.rows || []);
+    } catch (e) {
+      console.error('Failed to load bossup winners', e);
+      return [];
+    }
+  },
+
+  /**
+   * Create an entry / forum in Boss Up Challenge
+   * Backend endpoint: POST /forum/create
+   */
+  async createForumEntry(body: {
+    title: string;
+    description: string;
+    industryId: string;
+    ytUrl?: string;
+    images?: string[];
+  }): Promise<boolean> {
+    try {
+      let imageString: string | null = null;
+      if (body.images && body.images.length > 0) {
+        imageString = body.images.join(';');
+      } else if (body.ytUrl && body.ytUrl.trim() !== '') {
+        imageString = 'https://api.businessbosses.co.uk/appfiles/1698854755_13_download_(1).png';
+      }
+
+      const payload = {
+        title: body.title,
+        description: body.description,
+        timestamp: Date.now(),
+        industryId: body.industryId,
+        ytUrl: body.ytUrl || null,
+        images: imageString,
+      };
+
+      const res = await apiClient.post('/forum/create', payload);
+      return res.status === 200 || res.status === 201;
+    } catch (e) {
+      console.error('Failed to create forum entry', e);
+      throw e;
+    }
+  },
 };

@@ -21,6 +21,12 @@ import {
 } from 'lucide-react';
 import { bossUpService, BossUpCategory, JoinedUser } from '../../../services/bossUpService';
 import PostCard, { Post } from '../../../components/feed/PostCard';
+import CommentsModal from '../../../components/feed/CommentsModal';
+import CreateBossUpModal from '../../../components/bossUp/CreateBossUpModal';
+import PreviousWinnersModal from '../../../components/bossUp/PreviousWinnersModal';
+import BossUpInfoModal from '../../../components/bossUp/BossUpInfoModal';
+import { getUserProfileUrl } from '../../../common/functions/getUserProfileUrl';
+import { toast } from 'react-toastify';
 
 interface AppDownloadModalInfo {
   title: string;
@@ -51,6 +57,12 @@ export default function BossUpPage() {
   const [challengeLoading, setChallengeLoading] = useState<boolean>(false);
   const [totalPostsCount, setTotalPostsCount] = useState<number>(0);
   const [isJoined, setIsJoined] = useState<boolean>(false);
+
+  // Parity Modals: Entry, Winners, Info, Comments
+  const [createEntryModalOpen, setCreateEntryModalOpen] = useState(false);
+  const [winnersModalOpen, setWinnersModalOpen] = useState(false);
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [commentPost, setCommentPost] = useState<Post | null>(null);
 
   useEffect(() => {
     loadCategories();
@@ -141,16 +153,25 @@ export default function BossUpPage() {
           <h2 className="text-sm font-bold text-slate-900 truncate max-w-[200px] sm:max-w-md">
             {activeChallenge.industry}
           </h2>
-          <button
-            onClick={handleToggleJoin}
-            className={`px-3 py-1 rounded-full text-xs font-bold transition-colors ${
-              isJoined
-                ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                : 'bg-[#F21C29] text-white hover:bg-[#d91925]'
-            }`}
-          >
-            {isJoined ? 'Joined' : 'Join'}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setInfoModalOpen(true)}
+              className="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition-colors"
+              title="Challenge Information"
+            >
+              <HelpCircle className="w-4 h-4" />
+            </button>
+            <button
+              onClick={handleToggleJoin}
+              className={`px-3 py-1 rounded-full text-xs font-bold transition-colors ${
+                isJoined
+                  ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  : 'bg-[#F21C29] text-white hover:bg-[#d91925]'
+              }`}
+            >
+              {isJoined ? 'Joined' : 'Join'}
+            </button>
+          </div>
         </div>
 
         <div className="max-w-3xl mx-auto p-4 sm:p-5 space-y-4">
@@ -176,30 +197,65 @@ export default function BossUpPage() {
             </div>
 
             <div className="p-4 sm:p-5">
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900">
-                {activeChallenge.industry}
-              </h1>
-              {activeChallenge.description && (
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
-                  {activeChallenge.description}
-                </p>
-              )}
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <h1 className="text-xl sm:text-2xl font-black text-slate-900">
+                    {activeChallenge.industry}
+                  </h1>
+                  {activeChallenge.description && (
+                    <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                      {activeChallenge.description}
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => setCreateEntryModalOpen(true)}
+                  className="px-4 py-2 bg-[#F21C29] hover:bg-[#D01420] text-white text-xs font-bold rounded-xl shadow-xs transition-all shrink-0 flex items-center gap-1.5"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Enter</span>
+                </button>
+              </div>
 
               {/* Stats Bar */}
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-6 text-xs text-slate-600">
-                <div>
-                  <span className="font-extrabold text-slate-900">{totalPostsCount}</span>{' '}
-                  Posts
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between flex-wrap gap-3 text-xs text-slate-600">
+                <div className="flex items-center gap-5">
+                  <div>
+                    <span className="font-extrabold text-slate-900">{totalPostsCount}</span>{' '}
+                    Entries
+                  </div>
+                  <div>
+                    <span className="font-extrabold text-slate-900">
+                      {challengeMembers.length || activeChallenge.joinedUsersCount || 0}
+                    </span>{' '}
+                    Members
+                  </div>
+                  <div className="flex items-center gap-1 text-slate-500 font-semibold">
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{getStatusText(activeChallenge)}</span>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-extrabold text-slate-900">
-                    {challengeMembers.length || activeChallenge.joinedUsersCount || 0}
-                  </span>{' '}
-                  Members
-                </div>
-                <div className="flex items-center gap-1 text-slate-500 font-semibold">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>{getStatusText(activeChallenge)}</span>
+
+                <div className="flex items-center gap-3">
+                  {activeChallenge.industryId === '-MsUOGcOT9oRXGakCcJv' ? (
+                    <button
+                      onClick={() => setWinnersModalOpen(true)}
+                      className="text-[#F21C29] font-bold text-xs hover:underline flex items-center gap-1"
+                    >
+                      <Award className="w-3.5 h-3.5" />
+                      <span>Previous Winners</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        navigator.clipboard?.writeText(window.location.href);
+                        toast.success('Challenge link copied to clipboard!');
+                      }}
+                      className="text-[#F21C29] font-bold text-xs hover:underline flex items-center gap-1"
+                    >
+                      <span>Share Invite</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -215,7 +271,7 @@ export default function BossUpPage() {
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Posts ({challengePosts.length})
+              Entries ({challengePosts.length})
             </button>
             <button
               onClick={() => setActiveTab('members')}
@@ -239,16 +295,17 @@ export default function BossUpPage() {
             challengePosts.length === 0 ? (
               <div className="py-16 bg-white rounded-2xl border border-black/10 text-center p-6">
                 <MessageSquare className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-                <h4 className="text-sm font-bold text-slate-900">No Posts Yet</h4>
+                <h4 className="text-sm font-bold text-slate-900">No Entries Yet</h4>
                 <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
                   Be the first business to enter this challenge and get promoted!
                 </p>
-                <Link
-                  href="/feed"
+                <button
+                  onClick={() => setCreateEntryModalOpen(true)}
                   className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F21C29] text-white text-xs font-bold hover:bg-[#d91925] transition-colors"
                 >
-                  Create Entry
-                </Link>
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Enter Challenge</span>
+                </button>
               </div>
             ) : (
               <div className="space-y-3">
@@ -256,9 +313,7 @@ export default function BossUpPage() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onLike={() => {}}
-                    onComment={() => {}}
-                    onCoin={() => {}}
+                    onOpenComments={(p) => setCommentPost(p)}
                   />
                 ))}
               </div>
@@ -272,28 +327,62 @@ export default function BossUpPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {challengeMembers.map((m) => (
-                <div
+                <Link
                   key={m.uid}
-                  className="bg-white rounded-xl border border-black/10 p-3 flex items-center gap-3 shadow-xs"
+                  href={getUserProfileUrl({ username: m.username, uid: m.uid })}
+                  className="bg-white rounded-xl border border-black/10 p-3 flex items-center gap-3 shadow-xs hover:border-[#F21C29] transition-all group"
                 >
-                  <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden flex-shrink-0 border border-slate-200">
                     {m.photoUrl ? (
                       <img src={m.photoUrl} alt={m.name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center font-bold text-slate-500">
+                      <div className="w-full h-full flex items-center justify-center font-bold text-slate-500 text-xs">
                         {m.name.charAt(0)}
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-xs font-bold text-slate-900 truncate">{m.name}</h4>
+                    <h4 className="text-xs font-bold text-slate-900 group-hover:text-[#F21C29] truncate transition-colors">
+                      {m.name}
+                    </h4>
                     <p className="text-[11px] text-slate-500 truncate">{m.industry || 'Business Boss'}</p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
         </div>
+
+        {/* Modals within detail view */}
+        <CreateBossUpModal
+          isOpen={createEntryModalOpen}
+          onClose={() => setCreateEntryModalOpen(false)}
+          category={activeChallenge}
+          onSuccess={() => {
+            handleChallengeClick(activeChallenge);
+          }}
+        />
+
+        <PreviousWinnersModal
+          isOpen={winnersModalOpen}
+          onClose={() => setWinnersModalOpen(false)}
+        />
+
+        <BossUpInfoModal
+          isOpen={infoModalOpen}
+          onClose={() => setInfoModalOpen(false)}
+          industry={activeChallenge}
+        />
+
+        <CommentsModal
+          isOpen={!!commentPost}
+          onClose={() => setCommentPost(null)}
+          postId={commentPost?.id || ''}
+          authorUid={commentPost?.author.id}
+          onCommentAdded={() => {
+            if (activeChallenge) handleChallengeClick(activeChallenge);
+          }}
+        />
       </div>
     );
   }
