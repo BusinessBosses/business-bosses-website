@@ -398,9 +398,14 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
     );
   }
 
-  const myUid = currentUser?.uid || currentUser?.id || '';
+  const myUid = currentUser?.uid || currentUser?.id || authService.getUserId() || '';
+  const myUsername = currentUser?.username || '';
   const profileUid = profile?.uid || profile?.id || '';
-  const isMe = Boolean(myUid && myUid === profileUid);
+  const profileUsername = profile?.username || '';
+  const isMe = Boolean(
+    (myUid && profileUid && String(myUid) === String(profileUid)) ||
+    (myUsername && profileUsername && myUsername.toLowerCase() === profileUsername.toLowerCase())
+  );
 
   const coins = profile?.coinscount ?? profile?.coinsCount ?? profile?.coins ?? 0;
   const isPro = Boolean(profile?.isSubscribed);
@@ -659,7 +664,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                   <>
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200/80 text-amber-700 text-xs font-bold shadow-2xs">
                       <Coins className="w-4 h-4 text-amber-500" />
-                      <span>{coins} Coins</span>
+                      <span>{formatThousands(coins)} Coins</span>
                     </div>
 
                     <Link
