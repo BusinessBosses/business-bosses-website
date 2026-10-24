@@ -68,6 +68,48 @@ export const authService = {
   },
 
   /**
+   * Check if username or email exists
+   */
+  async checkExists(payload: { username?: string; email?: string }): Promise<{ success: boolean; message?: string }> {
+    try {
+      const res = await apiClient.post('/auth/email-exist', {
+        username: payload.username || '',
+        email: payload.email || '',
+      });
+      return { success: res.data?.success !== false };
+    } catch (err: any) {
+      return {
+        success: false,
+        message: err.response?.data?.message || err.response?.data?.error || 'Already exists',
+      };
+    }
+  },
+
+  /**
+   * Request OTP for password reset
+   */
+  async requestOtp(email: string): Promise<any> {
+    const res = await apiClient.post('/auth/request-otp', { email });
+    return res.data;
+  },
+
+  /**
+   * Verify OTP for email / password reset
+   */
+  async verifyOtp(payload: { email: string; otp: string }): Promise<any> {
+    const res = await apiClient.post('/auth/verify-email', payload);
+    return res.data;
+  },
+
+  /**
+   * Reset Password
+   */
+  async resetPassword(payload: { email: string; newPassword: string }): Promise<any> {
+    const res = await apiClient.post('/auth/reset-password', payload);
+    return res.data;
+  },
+
+  /**
    * Check if a user is currently authenticated
    */
   isAuthenticated(): boolean {
