@@ -8,7 +8,6 @@ import {
   UserPlus, 
   Check, 
   Sparkles, 
-  Share2,
   Trophy,
   ExternalLink
 } from 'lucide-react';
@@ -28,60 +27,43 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
   isFollowing = false,
 }) => {
   const [showGetFeatured, setShowGetFeatured] = useState(false);
-  const [copiedShare, setCopiedShare] = useState(false);
 
   if (!boss || !boss.uid) return null;
 
-  const handleShare = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const shareUrl = `${window.location.origin}/profile?id=${boss.uid}`;
-    if (navigator.share) {
-      navigator.share({
-        title: `${boss.name} - Boss of the Week`,
-        text: `Check out ${boss.name}, Boss of the Week on Business Bosses!`,
-        url: shareUrl,
-      }).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(shareUrl);
-      setCopiedShare(true);
-      setTimeout(() => setCopiedShare(false), 2000);
-    }
-  };
+  const initial = boss.name ? boss.name.charAt(0).toUpperCase() : 'A';
 
   return (
     <>
-      <div className="bg-[#F7F7F9] hover:bg-slate-50/80 transition-all rounded-2xl p-3.5 sm:p-4 border border-slate-200/70 shadow-2xs">
-        {/* Top Header Row matching mobile: Logo + 'Boss of The Week' + Chevron to /boss-up */}
-        <div className="flex items-center justify-between mb-3">
+      <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs">
+        {/* Top Header Row matching Mockup: Trophy Icon + Boss of The Week + Rankings */}
+        <div className="flex items-center justify-between mb-3.5">
           <Link
             href="/boss-up"
             className="flex items-center space-x-2 group flex-1 min-w-0"
           >
-            <div className="w-6 h-6 rounded-full bg-[#F21C29] flex items-center justify-center p-0.5 shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
+            <div className="w-7 h-7 rounded-full bg-[#E51927] flex items-center justify-center p-0.5 shadow-xs shrink-0 group-hover:scale-105 transition-transform">
               <Trophy className="w-3.5 h-3.5 text-white stroke-[2.5]" />
             </div>
-            <span className="text-[15px] sm:text-base font-extrabold text-slate-900 group-hover:text-[#F21C29] transition-colors truncate">
+            <span className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#E51927] transition-colors truncate">
               Boss of The Week
             </span>
-            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-colors shrink-0" />
           </Link>
 
           <Link
             href="/magazine"
-            className="text-[11px] font-bold text-slate-500 hover:text-[#F21C29] flex items-center gap-1 transition-colors shrink-0 ml-2"
+            className="text-xs font-bold text-slate-500 hover:text-[#E51927] transition-colors shrink-0 ml-2"
           >
-            <span className="hidden xs:inline">Rankings</span>
-            <ExternalLink className="w-3 h-3" />
+            Rankings
           </Link>
         </div>
 
-        {/* Boss Info Row: Avatar + Name, Pro Badge & Bio */}
+        {/* Boss Info Row: Teal Avatar with Monogram + Name, Username & Bio */}
         <Link
           href={getUserProfileUrl({ username: boss.username, uid: boss.uid })}
-          className="flex items-center gap-3 group/profile block mb-3.5"
+          className="flex items-start gap-3.5 group/profile block mb-4"
         >
-          {/* Avatar with clean brand red accent ring matching mobile bosseek */}
-          <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 ring-2 ring-[#F21C29] ring-offset-2 bg-slate-100 shadow-xs group-hover/profile:scale-102 transition-transform">
+          {/* Avatar with deep teal circle matching Mockup */}
+          <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 bg-[#0F766E] text-white flex items-center justify-center font-black text-lg shadow-2xs group-hover/profile:scale-105 transition-transform">
             {boss.avatarUrl ? (
               <Image
                 src={boss.avatarUrl}
@@ -90,39 +72,27 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
                 className="object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center font-bold text-slate-500 text-lg">
-                {boss.name.charAt(0)}
-              </div>
+              <span>{initial}</span>
             )}
-            <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#F21C29] border-2 border-white flex items-center justify-center shadow-xs">
-              <Trophy className="w-2.5 h-2.5 text-white" />
-            </div>
           </div>
 
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center space-x-1.5 mb-0.5">
-              <h4 className="font-bold text-slate-900 text-sm sm:text-base truncate group-hover/profile:text-[#F21C29] transition-colors">
-                {boss.name}
-              </h4>
-              {boss.isPro && (
-                <span className="bg-[#F21C29] text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-2xs shrink-0 tracking-wide">
-                  PRO
-                </span>
-              )}
-            </div>
+          <div className="flex-1 min-w-0 space-y-0.5">
+            <h4 className="font-extrabold text-sm sm:text-base text-slate-900 group-hover/profile:text-[#E51927] transition-colors leading-tight truncate">
+              {boss.name}
+            </h4>
             {boss.username && (
-              <p className="text-[11px] text-slate-500 font-medium truncate mb-0.5">
+              <p className="text-[11px] font-semibold text-slate-400 truncate leading-none">
                 @{boss.username}
               </p>
             )}
-            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-              {boss.bio || 'Marketing, growth, and business expansion'}
+            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed pt-0.5">
+              {boss.bio || 'Interior designer helping families and small offices create beautiful spaces on a budget.'}
             </p>
           </div>
         </Link>
 
-        {/* Action Buttons Row matching mobile: Follow / Following + 'Get Featured' */}
-        <div className="flex items-center gap-2 pt-1">
+        {/* Action Buttons Row matching Mockup: Outlined Follow + Solid Red 'Get Featured' */}
+        <div className="grid grid-cols-2 gap-3 pt-1">
           {/* Follow Button */}
           <button
             type="button"
@@ -130,10 +100,10 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
               e.stopPropagation();
               onFollow?.(boss.uid);
             }}
-            className={`flex-1 h-9 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs ${
+            className={`w-full py-2.5 px-3 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer ${
               isFollowing
-                ? 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-300'
-                : 'bg-white hover:bg-red-50 text-[#F21C29] border border-red-200'
+                ? 'bg-slate-100 text-slate-700 border border-slate-300'
+                : 'bg-white hover:bg-red-50 text-[#E51927] border border-red-200'
             }`}
           >
             {isFollowing ? (
@@ -142,44 +112,28 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
                 <span>Following</span>
               </>
             ) : (
-              <>
-                <UserPlus className="w-3.5 h-3.5 text-[#F21C29] stroke-[2.5]" />
-                <span>Follow</span>
-              </>
+              <span>Follow</span>
             )}
           </button>
 
-          {/* Share profile button */}
+          {/* Solid Red Get Featured Button */}
           <button
             type="button"
-            onClick={handleShare}
-            title={copiedShare ? 'Copied link!' : 'Share profile'}
-            className="w-9 h-9 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 flex items-center justify-center transition-colors shadow-2xs shrink-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowGetFeatured(true);
+            }}
+            className="w-full py-2.5 px-3 rounded-2xl text-xs sm:text-sm font-bold bg-[#E51927] hover:bg-[#CF1522] text-white flex items-center justify-center transition-all shadow-2xs active:scale-95 cursor-pointer"
           >
-            {copiedShare ? (
-              <Check className="w-4 h-4 text-emerald-600 stroke-[2.5]" />
-            ) : (
-              <Share2 className="w-3.5 h-3.5" />
-            )}
-          </button>
-
-          {/* Get Featured Primary Button (Opens GetFeatured modal matching mobile sheet) */}
-          <button
-            type="button"
-            onClick={() => setShowGetFeatured(true)}
-            className="flex-1 h-9 px-3 rounded-xl text-xs font-bold bg-[#F21C29] hover:bg-[#D01420] text-white flex items-center justify-center gap-1.5 shadow-2xs transition-all"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-white" />
             <span>Get Featured</span>
           </button>
         </div>
       </div>
 
-      {/* Parity Modal */}
+      {/* Get Featured Modal */}
       <GetFeaturedModal
         isOpen={showGetFeatured}
         onClose={() => setShowGetFeatured(false)}
-        initialTab={3}
       />
     </>
   );
