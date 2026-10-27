@@ -174,80 +174,19 @@ export default function FeedPage() {
   return (
     <div className="w-full flex justify-center min-h-screen bg-[#F8FAFC] pb-24 lg:pb-8">
       <div className="w-full max-w-4xl px-2 sm:px-4 py-3 sm:py-6 space-y-4 sm:space-y-5 min-w-0">
-        {/* Modern Interactive Post Composer Card */}
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-4 sm:p-5 shadow-xs hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3">
-            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-slate-100 ring-2 ring-slate-100 shrink-0">
-              {currentUser?.photoUrl ? (
-                <Image
-                  src={currentUser.photoUrl}
-                  alt={currentUser.name || 'User'}
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center font-bold text-slate-500 bg-gradient-to-tr from-slate-200 to-slate-100">
-                  {currentUser?.name ? currentUser.name.charAt(0) : 'B'}
-                </div>
-              )}
-            </div>
+        {/* Boss Of The Week Spotlight (Exact Mockup Match) */}
+        {bossOfTheWeek && <BossOfTheWeekCard boss={bossOfTheWeek} />}
 
-            <button
-              type="button"
-              onClick={() => setIsCreateOpen(true)}
-              className="flex-1 text-left px-4 py-3 bg-slate-50 hover:bg-slate-100/80 rounded-2xl text-slate-500 text-xs sm:text-sm border border-slate-200/80 transition-all flex items-center justify-between group cursor-pointer shadow-2xs"
-            >
-              <span className="truncate">What&apos;s happening in your business today?</span>
-              <Sparkles className="w-4 h-4 text-[#F21C29] group-hover:scale-110 transition-transform shrink-0 ml-2" />
-            </button>
-          </div>
+        {/* Partners' Deals Section (Exact Mockup Match) */}
+        {deals.length > 0 && <PartnersDealsSection deals={deals} />}
 
-          {/* Quick triggers inside composer */}
-          <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-100 text-xs font-semibold text-slate-600">
-            <div className="flex items-center gap-1 sm:gap-2">
-              <button
-                type="button"
-                onClick={() => setIsCreateOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors"
-              >
-                <ImageIcon className="w-4 h-4 text-emerald-600" />
-                <span className="hidden sm:inline">Photo</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsCreateOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors"
-              >
-                <BarChart2 className="w-4 h-4 text-slate-600" />
-                <span className="hidden sm:inline">Poll</span>
-              </button>
-              <Link
-                href="/requests"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors"
-              >
-                <TrendingUp className="w-4 h-4 text-[#095DED]" />
-                <span className="hidden sm:inline">Requests</span>
-              </Link>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setIsCreateOpen(true)}
-              className="px-4 py-1.5 rounded-xl bg-[#F21C29] hover:bg-[#d91925] text-white font-bold text-xs shadow-xs active:scale-95 transition-all flex items-center gap-1"
-            >
-              <Plus className="w-3.5 h-3.5 stroke-[3]" />
-              <span>Post</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Segmented Feed Switcher & Opportunities Trigger */}
-        <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/90 p-1.5 flex items-center justify-between shadow-2xs sticky top-16 z-20">
+        {/* Mobile Feed Switcher (Only visible on small screens where top desktop navbar is hidden) */}
+        <div className="lg:hidden bg-white rounded-2xl border border-slate-200/90 p-1.5 flex items-center justify-between shadow-2xs sticky top-14 z-20">
           <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={() => setActiveTab('forYou')}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 activeTab === 'forYou'
                   ? 'bg-slate-900 text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
@@ -257,24 +196,21 @@ export default function FeedPage() {
             </button>
             <Link
               href="/marketplace"
-              className="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"
             >
               Marketplace
             </Link>
           </div>
 
-          <div className="flex items-center gap-2 pr-1">
-            {/* Find Opportunities Trigger */}
+          <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={() => setIsFindOppOpen(true)}
-              className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-900 hover:bg-red-50 hover:text-[#F21C29] flex items-center gap-1 transition-all"
+              className="px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-900 hover:bg-red-50 hover:text-[#F21C29] flex items-center gap-1 transition-all"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#F21C29]" />
-              <span className="hidden sm:inline">Find Opportunities</span>
-              <ChevronRight className="w-3.5 h-3.5" />
+              <span className="text-[11px]">Opportunities</span>
             </button>
-
             <button
               type="button"
               onClick={() => {
@@ -284,27 +220,13 @@ export default function FeedPage() {
                 fetchInterleavedFeeds();
               }}
               disabled={refreshing}
-              className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
-              title="Refresh feed"
+              className="p-1.5 text-slate-500 hover:text-slate-800 rounded-xl hover:bg-slate-100 transition-all"
+              title="Refresh"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-[#F21C29]' : ''}`} />
             </button>
           </div>
         </div>
-
-        {/* Mobile Feed Parity Highlights: Boss of the Week */}
-        {bossOfTheWeek && (
-          <BossOfTheWeekCard
-            boss={bossOfTheWeek}
-            onFollow={handleFollowBoss}
-            isFollowing={isFollowingBoss}
-          />
-        )}
-
-        {/* Partners Deals Horizontal Rail */}
-        {deals.length > 0 && (
-          <PartnersDealsSection deals={deals} />
-        )}
 
         {/* Timeline Posts & Interleaved Sections */}
         {loading ? (

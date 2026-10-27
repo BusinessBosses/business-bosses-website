@@ -366,15 +366,15 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   return (
     <article className="bg-white rounded-3xl border border-slate-200/90 shadow-xs p-4 sm:p-5 transition-all hover:shadow-md hover:border-slate-300 relative group">
-      {/* Header */}
+      {/* Header: Mockup Match (Avatar, Name, Company/Role · Time, Connect Pill) */}
       <div className="flex items-start justify-between mb-3.5 relative">
-        <div className="flex items-start space-x-3">
+        <div className="flex items-start space-x-3 min-w-0">
           {/* Avatar with Ranking Badge */}
           <Link
             href={getUserProfileUrl({ username: post.author.username, uid: post.author.id })}
-            className="relative block group/avatar transition-transform hover:scale-105"
+            className="relative block group/avatar transition-transform hover:scale-105 shrink-0"
           >
-            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-slate-100 flex-shrink-0 ring-1 ring-slate-200 group-hover/avatar:ring-[#F21C29]">
+            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-[#7A2222] text-white flex-shrink-0 flex items-center justify-center font-black text-sm ring-1 ring-slate-200 group-hover/avatar:ring-[#F21C29]">
               {post.author.avatarUrl ? (
                 <Image
                   src={post.author.avatarUrl}
@@ -383,9 +383,9 @@ export const PostCard: React.FC<PostCardProps> = ({
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center font-bold text-slate-500 text-sm">
-                  {post.author.name.charAt(0)}
-                </div>
+                <span>
+                  {post.author.name ? post.author.name.charAt(0).toUpperCase() : 'B'}
+                </span>
               )}
             </div>
             {/* Mobile Ranking Badge Indicator */}
@@ -421,18 +421,14 @@ export const PostCard: React.FC<PostCardProps> = ({
               )}
             </div>
 
-            {/* Subtitle: Username & Relative Time */}
-            <div className="flex items-center space-x-1.5 text-xs text-slate-500 mt-0.5">
-              {post.author.username && (
-                <Link
-                  href={getUserProfileUrl({ username: post.author.username, uid: post.author.id })}
-                  className="hover:text-slate-800 transition-colors"
-                >
-                  @{post.author.username}
-                </Link>
-              )}
-              {post.author.username && <span>•</span>}
-              <time title={post.createdAt}>{formatTimeAgo(post.timestamp)}</time>
+            {/* Subtitle: "Bakare Logistics · 2h" style from mockup */}
+            <div className="flex items-center space-x-1.5 text-xs text-slate-500 mt-0.5 truncate">
+              <span className="truncate">
+                {post.author.businessName ||
+                  (post.author.username ? `@${post.author.username}` : 'Business Boss')}
+              </span>
+              <span>·</span>
+              <time className="shrink-0" title={post.createdAt}>{formatTimeAgo(post.timestamp)}</time>
             </div>
 
             {/* Mobile Parity: Visit My Biz-Center Link if author has a shop */}
@@ -455,28 +451,28 @@ export const PostCard: React.FC<PostCardProps> = ({
         </div>
 
         {/* Right side: Quick Connect, Category badge & Options */}
-        <div className="flex items-center space-x-2">
-          {/* Quick Connect button if other user's post */}
+        <div className="flex items-center space-x-2 shrink-0">
+          {/* Quick Connect button if other user's post (Mockup Style) */}
           {!isOwnPost && post.author.id && (
             <button
               onClick={handleToggleConnect}
               disabled={connecting}
               title={isConnected ? 'Connected' : 'Connect with user'}
-              className={`p-1.5 sm:px-2.5 sm:py-1 rounded-full text-xs font-semibold flex items-center gap-1 transition-all ${
+              className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
                 isConnected
-                  ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  : 'bg-red-50 text-[#F21C29] hover:bg-red-100 border border-red-200'
+                  ? 'bg-slate-100 text-slate-600'
+                  : 'bg-white hover:bg-red-50 text-[#E51927] border border-red-200 shadow-2xs'
               }`}
             >
               {isConnected ? (
                 <>
                   <UserCheck className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Connected</span>
+                  <span>Connected</span>
                 </>
               ) : (
                 <>
                   <UserPlus className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Connect</span>
+                  <span>Connect</span>
                 </>
               )}
             </button>
@@ -687,92 +683,53 @@ export const PostCard: React.FC<PostCardProps> = ({
         </div>
       )}
 
-      {/* Actions Footer (Mobile Parity: Like, Comment, Coin Tip, Views, Repost, Bookmark, Share) */}
-      <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-slate-500 text-xs sm:text-sm">
-        <div className="flex items-center space-x-3 sm:space-x-4">
-          {/* Like */}
+      {/* Actions Footer: Clean Mockup Match ("24 likes   6 comments   318 views" + Red "Reply" Button) */}
+      <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+        {/* Left: Clean metric counters with interactive quick like toggle */}
+        <div className="flex items-center space-x-3 text-slate-500 font-medium">
           <button
             onClick={handleToggleLike}
-            className={`flex items-center space-x-1.5 transition-colors ${
+            className={`transition-colors cursor-pointer flex items-center space-x-1 ${
               liked ? 'text-red-500 font-bold' : 'hover:text-red-500'
             }`}
+            title="Like post"
           >
-            <Heart className={`w-4 h-4 sm:w-5 sm:h-5 ${liked ? 'fill-red-500 text-red-500' : ''}`} />
-            <span>{likesCount}</span>
+            <span>{likesCount} likes</span>
           </button>
-
-          {/* Comment */}
+          <span>·</span>
           <button
             onClick={() => onOpenComments?.(post)}
-            className="flex items-center space-x-1.5 hover:text-[#F21C29] transition-colors"
+            className="hover:text-slate-800 transition-colors cursor-pointer"
           >
-            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span>{post.commentsCount || 0}</span>
+            {post.commentsCount || 0} comments
           </button>
-
-          {/* Coin Tip */}
-          <button
-            onClick={handleToggleCoin}
-            disabled={isOwnPost || coinProcessing}
-            className={`flex items-center space-x-1.5 transition-colors ${
-              isOwnPost
-                ? 'opacity-60 cursor-not-allowed hover:text-inherit'
-                : coined
-                ? 'text-amber-500 font-bold'
-                : 'hover:text-amber-500'
-            }`}
-            title={isOwnPost ? 'You cannot tip your own post' : 'Tip 1 Boss Coin'}
-          >
-            <Coins className={`w-4 h-4 sm:w-5 sm:h-5 ${coined ? 'fill-amber-400 text-amber-500' : ''}`} />
-            <span>{coinsCount}</span>
-          </button>
-
-          {/* Views Count (Parity with Mobile userpost_tile.dart) */}
-          <div
-            className="flex items-center space-x-1 text-slate-400 hover:text-slate-600 transition-colors"
-            title={`${post.views || 0} views`}
-          >
-            <Eye className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-            <span className="font-semibold text-xs">{formatCount(post.views)}</span>
-          </div>
-
-          {/* Repost */}
-          <button
-            onClick={handleToggleRepost}
-            disabled={isOwnPost}
-            className={`flex items-center space-x-1.5 transition-colors ${
-              isOwnPost
-                ? 'opacity-60 cursor-not-allowed hover:text-inherit'
-                : reposted
-                ? 'text-emerald-600 font-bold'
-                : 'hover:text-emerald-600'
-            }`}
-            title={isOwnPost ? 'You cannot repost your own post' : reposted ? 'Undo Repost' : 'Repost'}
-          >
-            <Repeat2 className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span>{repostsCount}</span>
-          </button>
+          <span>·</span>
+          <span className="text-slate-400">
+            {formatCount(post.views)} views
+          </span>
         </div>
 
-        <div className="flex items-center space-x-2 sm:space-x-3">
-          {/* Bookmark */}
-          <button
-            onClick={handleToggleBookmark}
-            className={`p-1.5 rounded-full hover:bg-slate-50 transition-colors ${
-              bookmarked ? 'text-[#F7C844]' : 'hover:text-[#F7C844]'
-            }`}
-            title="Bookmark"
-          >
-            <Bookmark className={`w-4 h-4 sm:w-5 sm:h-5 ${bookmarked ? 'fill-[#F7C844]' : ''}`} />
-          </button>
+        {/* Right: Red "Reply" Button as in Mockup */}
+        <div className="flex items-center space-x-3">
+          {/* Quick Tip Coin if non-author */}
+          {!isOwnPost && (
+            <button
+              onClick={handleToggleCoin}
+              disabled={coinProcessing}
+              className={`text-xs font-bold transition-colors cursor-pointer ${
+                coined ? 'text-amber-500' : 'text-slate-400 hover:text-amber-500'
+              }`}
+              title="Tip 1 Boss Coin"
+            >
+              {coined ? '★ Tipped' : 'Tip Coin'}
+            </button>
+          )}
 
-          {/* Share */}
           <button
-            onClick={handleShare}
-            className="p-1.5 rounded-full hover:bg-slate-50 hover:text-slate-800 transition-colors"
-            title="Share"
+            onClick={() => onOpenComments?.(post)}
+            className="text-xs font-bold text-[#E51927] hover:text-[#d01421] transition-colors cursor-pointer"
           >
-            <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            Reply
           </button>
         </div>
       </div>

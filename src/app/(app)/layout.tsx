@@ -29,7 +29,7 @@ export default function AppLayout({
       <LeftUserProfileRail onOpenCreatePost={() => setIsCreatePostOpen(true)} />
       
       {/* 2. Center Content Stream */}
-      <div className="flex-1 flex flex-col min-w-0 lg:pl-[260px] xl:pr-[300px]">
+      <div className="flex-1 flex flex-col min-w-0 lg:pl-[280px] xl:pr-[320px]">
         {/* Top Header Bar with navigation pills & triggers */}
         <AppTopHeader 
           onOpenCreatePost={() => setIsCreatePostOpen(true)}

@@ -24,6 +24,7 @@ interface LeftUserProfile {
   name: string;
   username: string;
   headline?: string;
+  bio?: string;
   avatarUrl?: string;
   coinsCount: number;
   followersCount: number;
@@ -156,6 +157,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
         name: user.fullname || user.name || 'Chioma Eze',
         username: user.username || 'chioma',
         headline: headline,
+        bio: user.bio || user.about || 'Ready-to-wear and bespoke outfits for weddings and events. Looking for fabric suppliers.',
         avatarUrl: user.profilePicture || user.image || user.photoUrl || undefined,
         coinsCount: coins,
         followersCount: followers,
@@ -185,7 +187,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
   };
 
   return (
-    <aside className="hidden lg:flex flex-col w-[260px] fixed top-0 left-0 h-screen overflow-y-auto no-scrollbar bg-slate-50 border-r border-slate-200/80 p-4 z-30 select-none">
+    <aside className="hidden lg:flex flex-col w-[280px] fixed top-0 left-0 h-screen overflow-y-auto no-scrollbar bg-slate-50 border-r border-slate-200/80 p-4 z-30 select-none">
       {/* Brand Header */}
       <div className="mb-4 px-1 pt-1 flex items-center justify-between">
         <Link href="/feed" className="flex items-center space-x-2 group">
@@ -258,7 +260,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
               </Link>
 
               <p className="text-[11px] text-slate-600 mt-2 line-clamp-3 leading-relaxed">
-                Ready-to-wear and bespoke outfits for weddings and events. Looking for fabric suppliers.
+                {profile.bio || 'Ready-to-wear and bespoke outfits for weddings and events. Looking for fabric suppliers.'}
               </p>
 
               {/* 3 Stats: Followers, Following, Reach Score */}

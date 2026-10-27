@@ -190,7 +190,7 @@ export default function RightContextRail() {
   };
 
   return (
-    <aside className="hidden xl:flex flex-col w-[300px] fixed right-0 top-0 h-screen border-l border-slate-200/90 bg-slate-50 p-4 overflow-y-auto no-scrollbar space-y-4 z-20 select-none">
+    <aside className="hidden xl:flex flex-col w-[320px] fixed right-0 top-0 h-screen border-l border-slate-200/90 bg-slate-50 p-4 overflow-y-auto no-scrollbar space-y-4 z-20 select-none">
       
       {/* 1. Pro Membership Card matching Mockup Spec */}
       {!isProUser && (
