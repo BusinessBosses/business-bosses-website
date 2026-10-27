@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import UnifiedProfileView from '../components/profile/UnifiedProfileView';
+import AppLayout from './(app)/layout';
 
 export default function NotFound() {
   const [profileUsername, setProfileUsername] = useState<string | null>(null);
@@ -20,7 +21,11 @@ export default function NotFound() {
   }, []);
 
   if (profileUsername) {
-    return <UnifiedProfileView initialUsername={profileUsername} />;
+    return (
+      <AppLayout>
+        <UnifiedProfileView initialUsername={profileUsername} />
+      </AppLayout>
+    );
   }
 
   if (isChecking) {
