@@ -43,7 +43,8 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   const [error, setError] = useState('');
 
   // Current authenticated user
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>(() => authService.getUser());
+  const [loadingUser, setLoadingUser] = useState<boolean>(!authService.getUser()?.name);
 
   // YouTube Link state
   const [showYtInput, setShowYtInput] = useState(false);
@@ -79,9 +80,13 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   const loadCurrentUser = async () => {
     try {
       const u = await authService.getCurrentUser();
-      setUser(u);
+      if (u) {
+        setUser(u);
+      }
     } catch {
       // ignore
+    } finally {
+      setLoadingUser(false);
     }
   };
 
@@ -352,30 +357,42 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
               {/* User Tile Header (Mobile Parity: UserDetailsWidget & CreatePostUserTile) */}
               <div className="flex items-center space-x-3">
-                <div className="relative w-10 h-10 rounded-full overflow-hidden bg-[#7A2222] text-white flex items-center justify-center font-black text-sm shrink-0 ring-1 ring-slate-200 shadow-2xs">
-                  {avatarUrl ? (
-                    <SafeImage src={avatarUrl} alt={userName} fill className="object-cover" />
-                  ) : (
-                    <span>{userInitial}</span>
-                  )}
-                </div>
+                {loadingUser && !user?.name ? (
+                  <>
+                    <div className="w-10 h-10 rounded-full bg-slate-200 animate-pulse shrink-0" />
+                    <div className="min-w-0 space-y-1.5 flex-1">
+                      <div className="h-4 w-28 bg-slate-200 rounded animate-pulse" />
+                      <div className="h-3 w-40 bg-slate-100 rounded animate-pulse" />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden bg-[#7A2222] text-white flex items-center justify-center font-black text-sm shrink-0 ring-1 ring-slate-200 shadow-2xs">
+                      {avatarUrl ? (
+                        <SafeImage src={avatarUrl} alt={userName} fill className="object-cover" />
+                      ) : (
+                        <span>{userInitial}</span>
+                      )}
+                    </div>
 
-                <div className="min-w-0">
-                  <div className="flex items-center space-x-1.5">
-                    <span className="text-sm font-bold text-slate-900 truncate">
-                      {userName}
-                    </span>
-                    {isSubscribed && (
-                      <span className="bg-[#F7C844] text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded shadow-2xs shrink-0 flex items-center gap-0.5">
-                        <Crown className="w-2.5 h-2.5" />
-                        <span>PRO</span>
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-[11px] text-slate-500 font-medium">
-                    Posting publicly to Business Bosses
-                  </p>
-                </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center space-x-1.5">
+                        <span className="text-sm font-bold text-slate-900 truncate">
+                          {userName}
+                        </span>
+                        {isSubscribed && (
+                          <span className="bg-[#F7C844] text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded shadow-2xs shrink-0 flex items-center gap-0.5">
+                            <Crown className="w-2.5 h-2.5" />
+                            <span>PRO</span>
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-slate-500 font-medium">
+                        Posting publicly to Business Bosses
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Text Area (Mobile Parity: TextInput with rounded-2xl bg-slate-50) */}

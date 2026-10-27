@@ -168,13 +168,34 @@ export const authService = {
    * Get current authenticated user profile
    */
   async getCurrentUser(): Promise<any> {
+    // 1. Return memory or cached profile immediately if available
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = localStorage.getItem('bb_user_profile') || localStorage.getItem('user');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && (parsed.name || parsed.username)) {
+            // Still background fetch to keep fresh
+            this.fetchAndCacheUser().catch(() => {});
+            return parsed;
+          }
+        }
+      } catch {}
+    }
+
+    return await this.fetchAndCacheUser();
+  },
+
+  async fetchAndCacheUser(): Promise<any> {
     try {
       const res = await apiClient.get('/users/me');
-      if (res.data?.success && res.data?.data) {
-        return res.data.data;
-      }
-      if (res.data?.uid || res.data?.id) {
-        return res.data;
+      const data = res.data?.data || (res.data?.uid || res.data?.id ? res.data : null);
+      if (data) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('bb_user_profile', JSON.stringify(data));
+          localStorage.setItem('user', JSON.stringify(data));
+        }
+        return data;
       }
     } catch (err) {
       console.warn('Could not retrieve current user profile from /users/me', err);
@@ -185,8 +206,14 @@ export const authService = {
     if (uid) {
       try {
         const userRes = await apiClient.get(`/users/${uid}`);
-        if (userRes.data?.data) return userRes.data.data;
-        if (userRes.data) return userRes.data;
+        const data = userRes.data?.data || userRes.data;
+        if (data) {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('bb_user_profile', JSON.stringify(data));
+            localStorage.setItem('user', JSON.stringify(data));
+          }
+          return data;
+        }
       } catch (fallbackErr) {
         console.warn('Could not retrieve user by uid fallback', fallbackErr);
       }
