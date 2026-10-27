@@ -367,7 +367,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
               <span>Settings</span>
             </Link>
             <Link
-              href="/magazine"
+              href="/performance"
               className="flex items-center space-x-1.5 hover:text-slate-900 transition-colors"
             >
               <TrendingUp className="w-4 h-4 text-slate-500" />

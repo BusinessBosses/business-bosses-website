@@ -33,7 +33,7 @@ const navItems = [
   { label: 'Inbox', href: '/inbox', icon: MessageSquare },
   { label: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
   { label: 'Requests', href: '/requests', icon: Handshake },
-  { label: 'Performance', href: '/magazine', icon: TrendingUp },
+  { label: 'Performance', href: '/performance', icon: TrendingUp },
   { label: 'Monetization', href: '/subscription', icon: CreditCard },
   { label: 'Profile', href: '/profile', icon: User },
   { label: 'Settings', href: '/settings', icon: Settings },
