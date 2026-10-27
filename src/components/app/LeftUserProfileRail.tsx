@@ -295,12 +295,13 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
               <div className="mt-3.5 grid grid-cols-2 gap-2">
                 <Link
                   href={getUserProfileUrl({ username: profile.username, uid: profile.uid })}
+                  prefetch={false}
                   className="py-2 px-2 text-center text-xs font-bold rounded-xl border border-red-200 text-[#E51927] hover:bg-red-50/50 transition-colors shadow-2xs"
                 >
                   View profile
                 </Link>
                 <Link
-                  href="/proscreens/biz-center/views/ManageInventory/ManageInventory"
+                  href="/marketplace"
                   className="py-2 px-2 text-center text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-2xs"
                 >
                   My Biz

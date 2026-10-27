@@ -158,9 +158,16 @@ export default function RightContextRail() {
 
   const fetchLatestMagazine = async () => {
     try {
-      const res = await apiClient.get('/magazine/latest');
-      if (res.data?.success && res.data?.data) {
-        setLatestMagazine(res.data.data);
+      const res = await apiClient.get('/magazines?page=1&limit=1');
+      const latestIssue = res.data?.data?.[0] || res.data?.rows?.[0] || res.data?.[0];
+      if (latestIssue) {
+        setLatestMagazine({
+          id: latestIssue.id,
+          title: latestIssue.title || 'Digital Magazine',
+          issueNumber: latestIssue.issue_number || latestIssue.issueNumber || 'Latest Issue',
+          coverImageUrl: latestIssue.cover_image_url || latestIssue.coverImageUrl || '/magazine_cover.png',
+          pdfUrl: latestIssue.pdf_url || latestIssue.pdfUrl,
+        });
       } else {
         setLatestMagazine({
           id: 'mag-1',
@@ -260,6 +267,7 @@ export default function RightContextRail() {
                 >
                   <Link
                     href={getUserProfileUrl({ username: boss.username, uid: boss.uid })}
+                    prefetch={false}
                     className="flex items-center space-x-2.5 min-w-0 flex-1 mr-2 group"
                   >
                     <div className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-100 border border-slate-200 shrink-0 flex items-center justify-center font-bold text-xs text-slate-700">

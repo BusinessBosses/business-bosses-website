@@ -34,12 +34,32 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
   const displayItems = hasLoadedDeals
     ? deals.slice(0, 4).map((deal, idx) => {
         const palette = STYLE_PALETTE[idx % STYLE_PALETTE.length];
+        const rawUrl = (deal.companyUrl || '').trim();
+        let finalUrl = '/partners';
+        let isExternal = false;
+
+        if (rawUrl) {
+          if (/^https?:\/\//i.test(rawUrl)) {
+            finalUrl = rawUrl;
+            isExternal = true;
+          } else if (rawUrl.startsWith('/')) {
+            finalUrl = rawUrl;
+            isExternal = false;
+          } else if (/^[\w.-]+\.[a-zA-Z]{2,}/.test(rawUrl) || rawUrl.startsWith('t.me') || rawUrl.startsWith('wa.me')) {
+            finalUrl = `https://${rawUrl}`;
+            isExternal = true;
+          } else {
+            finalUrl = '/partners';
+            isExternal = false;
+          }
+        }
+
         return {
           id: deal.id,
           title: deal.companyName,
           badge: deal.partnershipType || deal.category || 'Exclusive deal',
-          url: deal.companyUrl || '/partners',
-          isExternal: Boolean(deal.companyUrl && deal.companyUrl.startsWith('http')),
+          url: finalUrl,
+          isExternal,
           icon: palette.icon,
           iconBg: palette.bg,
           photo: deal.companyPhoto,

@@ -60,6 +60,7 @@ export const BossOfTheWeekCard: React.FC<BossOfTheWeekCardProps> = ({
         {/* Boss Info Row: Teal Avatar with Monogram + Name, Username & Bio */}
         <Link
           href={getUserProfileUrl({ username: boss.username, uid: boss.uid })}
+          prefetch={false}
           className="flex items-start gap-3.5 group/profile block mb-4"
         >
           {/* Avatar with deep teal circle matching Mockup */}

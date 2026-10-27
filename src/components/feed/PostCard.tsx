@@ -372,6 +372,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           {/* Avatar with Ranking Badge */}
           <Link
             href={getUserProfileUrl({ username: post.author.username, uid: post.author.id })}
+            prefetch={false}
             className="relative block group/avatar transition-transform hover:scale-105 shrink-0"
           >
             <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-[#7A2222] text-white flex-shrink-0 flex items-center justify-center font-black text-sm ring-1 ring-slate-200 group-hover/avatar:ring-[#F21C29]">
@@ -404,6 +405,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             <div className="flex items-center space-x-1.5 flex-wrap">
               <Link
                 href={getUserProfileUrl({ username: post.author.username, uid: post.author.id })}
+                prefetch={false}
                 className="font-bold text-slate-900 text-sm sm:text-base leading-tight hover:text-[#F21C29] transition-colors"
               >
                 {post.author.name}
@@ -435,11 +437,8 @@ export const PostCard: React.FC<PostCardProps> = ({
             {post.author.hasShop && (
               <div className="mt-1">
                 <Link
-                  href={
-                    post.author.id
-                      ? `/proscreens/biz-center/views/ManageInventory/ManageInventory?userId=${post.author.id}`
-                      : '/marketplace'
-                  }
+                  href={getUserProfileUrl({ username: post.author.username, uid: post.author.id })}
+                  prefetch={false}
                   className="inline-flex items-center text-xs font-bold text-[#095DED] hover:underline gap-0.5"
                 >
                   <span>Visit My Biz-Center</span>
