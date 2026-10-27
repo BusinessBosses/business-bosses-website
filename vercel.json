@@ -3,6 +3,10 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/profile/settings",
+      "destination": "/profile/settings"
+    },
+    {
       "source": "/profile/:username",
       "destination": "/profile/"
     }

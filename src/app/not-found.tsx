@@ -12,7 +12,7 @@ export default function NotFound() {
     if (typeof window !== 'undefined') {
       const pathname = window.location.pathname;
       const match = pathname.match(/^\/profile\/([^/?#]+)/);
-      if (match && match[1] && match[1] !== '_' && match[1] !== 'index') {
+      if (match && match[1] && match[1] !== '_' && match[1] !== 'index' && match[1] !== 'settings') {
         setProfileUsername(decodeURIComponent(match[1]));
       }
       setIsChecking(false);
