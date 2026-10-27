@@ -25,9 +25,9 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { apiClient } from '../../../../lib/apiClient';
 import { authService } from '../../../../services/authService';
 import { postService } from '../../../../services/postService';
+import { userService } from '../../../../services/userService';
 import { formatThousands } from '../../../../common/functions/formatThousands';
 
 const CURRENCY_LIST = [
@@ -93,8 +93,7 @@ export default function ProfileSettingsPage() {
         return;
       }
 
-      const res = await apiClient.get(`/users/${uid}`);
-      const userData = res.data?.data || res.data;
+      const userData = await userService.getUserById(uid);
       if (userData) {
         setCurrentUser(userData);
         setName(userData.name || userData.fullname || '');
@@ -148,7 +147,7 @@ export default function ProfileSettingsPage() {
         preferredCurrency,
       };
 
-      await apiClient.put(`/users/${uid}`, payload);
+      await userService.updateProfile(uid, payload);
       toast.success('Profile settings updated successfully!');
       // Update local storage representation
       if (typeof window !== 'undefined') {
@@ -176,7 +175,7 @@ export default function ProfileSettingsPage() {
     if (!uid) return;
 
     try {
-      await apiClient.put(`/users/${uid}`, { preferredCurrency: curr });
+      await userService.updatePreferredCurrency(uid, curr);
       toast.success(`Preferred currency set to ${curr}`);
     } catch (err) {
       console.error('Failed to persist currency change', err);
@@ -200,7 +199,7 @@ export default function ProfileSettingsPage() {
 
     try {
       setUpdatingPassword(true);
-      await apiClient.post('/users/update-password', {
+      await userService.updatePassword({
         oldPassword,
         newPassword,
       });
@@ -228,7 +227,7 @@ export default function ProfileSettingsPage() {
 
     try {
       setIsDeleting(true);
-      await apiClient.delete(`/users/${uid}`);
+      await userService.deleteAccount(uid);
       toast.success('Your account has been deleted');
       authService.signOut();
       window.location.href = '/login';
