@@ -588,7 +588,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
             </Link>
 
             <Link
-              href="/settings"
+              href="/profile/settings"
               className="p-5 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:bg-slate-50 transition-all flex items-start gap-4"
             >
               <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 border border-slate-200">
@@ -671,7 +671,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                     </div>
 
                     <Link
-                      href="/settings"
+                      href="/profile/settings"
                       className="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
                       title="Settings"
                     >

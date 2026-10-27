@@ -338,7 +338,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
 
             {/* Complete your profile CTA */}
             <Link
-              href="/settings"
+              href="/profile/settings"
               className="flex items-center space-x-1.5 px-3 py-2 bg-red-50/70 hover:bg-red-100/70 text-[#E51927] border border-red-100 rounded-2xl text-xs font-bold transition-colors mt-2"
             >
               <Star className="w-3.5 h-3.5 fill-[#E51927]" />
