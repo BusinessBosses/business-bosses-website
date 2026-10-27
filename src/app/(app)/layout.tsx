@@ -60,7 +60,13 @@ export default function AppLayout({
       <CreatePostModal
         isOpen={isCreatePostOpen}
         onClose={() => setIsCreatePostOpen(false)}
-        onPostCreated={() => window.location.reload()}
+        onPostCreated={() => {
+          if (window.location.pathname === '/feed') {
+            window.location.reload();
+          } else {
+            window.location.href = '/feed';
+          }
+        }}
       />
 
       <SellOptionsModal

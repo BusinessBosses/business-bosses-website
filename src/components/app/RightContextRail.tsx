@@ -102,8 +102,8 @@ export default function RightContextRail() {
   const fetchSuggestedBosses = async () => {
     setLoadingBosses(true);
     try {
-      const res = await apiClient.get('/users/all?page=0&size=10');
-      const rawUsers = res.data?.data?.users || res.data?.data?.rows || res.data?.data || [];
+      const res = await apiClient.get('/users?page=0&size=10');
+      const rawUsers = res.data?.data?.rows || res.data?.data?.users || (Array.isArray(res.data?.data) ? res.data.data : []);
       if (Array.isArray(rawUsers)) {
         const currentUid = authService.getUserId();
         const mapped: SuggestedBoss[] = rawUsers
@@ -111,11 +111,11 @@ export default function RightContextRail() {
           .slice(0, 4)
           .map((u: any) => ({
             uid: String(u.uid || u.id),
-            name: u.fullname || u.name || u.username || 'Boss Member',
+            name: u.name || u.fullname || u.username || 'Boss Member',
             username: u.username,
             avatarUrl: u.profilePicture || u.image || u.photoUrl || '',
-            businessName: u.businessName,
-            industry: u.industry || u.occupation || 'Consultant',
+            businessName: u.companyName || u.businessName,
+            industry: u.industry || u.category || u.occupation || 'Consultant',
             isPro: Boolean(u.isSubscribed || u.isBossPro),
           }));
         setSuggestedBosses(mapped);

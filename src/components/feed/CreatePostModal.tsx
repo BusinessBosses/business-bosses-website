@@ -126,8 +126,9 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
       }
 
       const payload: any = {
-        text: content.trim(),
         title: content.trim(),
+        text: content.trim(),
+        timestamp: Date.now(),
       };
 
       if (uploadedUrls.length > 0) {

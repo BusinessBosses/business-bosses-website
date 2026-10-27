@@ -109,9 +109,9 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
 
           {/* Notifications */}
           <Link
-            href="/inbox"
+            href="/notifications"
             className="p-1.5 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors relative"
-            title="Inbox & Notifications"
+            title="Notifications"
           >
             <Bell className="w-4 h-4" />
             <span className="absolute top-1.5 right-1.5 flex h-2 w-2">

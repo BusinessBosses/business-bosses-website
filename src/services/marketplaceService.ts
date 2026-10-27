@@ -61,9 +61,15 @@ export const marketplaceService = {
         params.push(`location=${encodeURIComponent(location.trim())}`);
       }
 
-      const queryString = params.join('&');
-      goodsPath += queryString;
-      servicesPath += queryString;
+      const queryString = params.length > 0 ? params.join('&') : '';
+      if (queryString) {
+        goodsPath += queryString;
+        servicesPath += queryString;
+      } else {
+        // Strip trailing ? if no params
+        goodsPath = '/goods/search';
+        servicesPath = '/services/search';
+      }
 
       const [goodsRes, servicesRes] = await Promise.all([
         apiClient.get(goodsPath).catch(() => ({ data: { data: { rows: [] } } })),
@@ -75,7 +81,7 @@ export const marketplaceService = {
       const servicesRows: any[] =
         servicesRes.data?.data?.rows || (Array.isArray(servicesRes.data?.data) ? servicesRes.data.data : []);
 
-      const products: MarketItem[] = goodsRows.map((g: any) => ({
+      let products: MarketItem[] = goodsRows.map((g: any) => ({
         id: g.id,
         userId: g.userId,
         shopId: g.shopId,
@@ -93,7 +99,7 @@ export const marketplaceService = {
         user: g.user,
       }));
 
-      const services: MarketItem[] = servicesRows.map((s: any) => ({
+      let services: MarketItem[] = servicesRows.map((s: any) => ({
         id: s.id,
         userId: s.userId,
         shopId: s.shopId,
@@ -110,6 +116,27 @@ export const marketplaceService = {
         shop: s.shop,
         user: s.user,
       }));
+
+      // Apply client-side location & category fallback filter if specified (matching mobile MarketController)
+      if (location && location.trim() && location !== 'All Locations') {
+        const normLoc = location.trim().toLowerCase();
+        products = products.filter(
+          (p) => p.location && p.location.toLowerCase().includes(normLoc)
+        );
+        services = services.filter(
+          (s) => s.location && s.location.toLowerCase().includes(normLoc)
+        );
+      }
+
+      if (category && category.trim() && category !== 'All') {
+        const normCat = category.trim().toLowerCase();
+        products = products.filter(
+          (p) => p.category && p.category.toLowerCase().includes(normCat)
+        );
+        services = services.filter(
+          (s) => s.category && s.category.toLowerCase().includes(normCat)
+        );
+      }
 
       const combined = [...products, ...services];
       combined.sort((a, b) => {
