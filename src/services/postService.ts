@@ -3,10 +3,14 @@ import { Post } from '../components/feed/PostCard';
 import { authService } from './authService';
 
 export interface CreatePostPayload {
-  text: string;
+  title?: string;
+  text?: string;
   image?: string;
   images?: string[];
   ytUrl?: string;
+  isPolled?: boolean;
+  options?: string[];
+  timestamp?: number;
 }
 
 export const postService = {
