@@ -13,8 +13,11 @@ export interface BossOfTheWeekData {
 export interface PartnerDealData {
   id: string;
   companyName: string;
+  companyDescription?: string;
   companyPhoto?: string;
   companyUrl?: string;
+  partnershipType?: string;
+  category?: string;
 }
 
 export const feedHighlightService = {
@@ -57,8 +60,11 @@ export const feedHighlightService = {
         return rows.map((item: any) => ({
           id: String(item.id || item._id),
           companyName: item.companyName || item.name || 'Partner',
+          companyDescription: item.companyDescription || undefined,
           companyPhoto: item.companyPhoto || item.user?.photoUrl || undefined,
           companyUrl: item.companyUrl || item.user?.website || undefined,
+          partnershipType: item.partnershipType || undefined,
+          category: item.category || item.user?.industry || undefined,
         }));
       }
       return [];
