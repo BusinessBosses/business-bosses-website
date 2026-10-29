@@ -81,4 +81,24 @@ export const chatService = {
       console.error('Failed to mark seen', e);
     }
   },
+
+  /**
+   * Calculate total unread messages count for the given user from their chat messages.
+   * Counts all incoming messages where seen is false and receiverUid matches the current user.
+   */
+  async getUnreadCount(currentUid?: string): Promise<number> {
+    try {
+      const chats = await this.getChats(0, 100);
+      if (!chats || chats.length === 0) return 0;
+      
+      const unread = chats.filter((msg) => {
+        const isReceiver = currentUid ? msg.receiverUid === currentUid : true;
+        return isReceiver && !msg.seen;
+      });
+      return unread.length;
+    } catch (e) {
+      console.error('Failed to calculate unread chat count', e);
+      return 0;
+    }
+  },
 };

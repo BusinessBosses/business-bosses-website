@@ -14,6 +14,7 @@ import {
   Plus
 } from 'lucide-react';
 import { authService } from '../../services/authService';
+import { chatService } from '../../services/chatService';
 
 interface AppTopHeaderProps {
   onOpenCreatePost?: () => void;
@@ -25,7 +26,8 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
   const [coinsCount, setCoinsCount] = useState<number | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [initial, setInitial] = useState<string>('B');
-  const [unreadInboxCount, setUnreadInboxCount] = useState<number>(3);
+  const [unreadInboxCount, setUnreadInboxCount] = useState<number>(0);
+  const [unreadNotifCount, setUnreadNotifCount] = useState<number>(0);
 
   useEffect(() => {
     loadUser();
@@ -49,9 +51,16 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
         if (pic) setAvatarUrl(pic);
         const name = user.fullname || user.name || user.username || 'B';
         setInitial(name.charAt(0).toUpperCase());
+
+        // Notifications unread count from user record
         if (typeof user.unReadCount === 'number') {
-          setUnreadInboxCount(user.unReadCount);
+          setUnreadNotifCount(user.unReadCount);
         }
+
+        // Accurately compute unread inbox messages count
+        const myUid = user.uid || user.id || '';
+        const unreadChats = await chatService.getUnreadCount(myUid);
+        setUnreadInboxCount(unreadChats);
       }
     } catch (e) {
       // ignore
@@ -69,6 +78,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
   const isMarketplace = pathname === '/marketplace';
   const isBossUp = pathname === '/boss-up';
   const isInbox = pathname === '/inbox';
+  const isNotifications = pathname === '/notifications';
 
   return (
     <>
@@ -114,9 +124,11 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
             title="Notifications"
           >
             <Bell className="w-4 h-4" />
-            <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E51927]"></span>
-            </span>
+            {unreadNotifCount > 0 && (
+              <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E51927]"></span>
+              </span>
+            )}
           </Link>
 
           {/* Profile Avatar */}
@@ -192,9 +204,30 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
           >
             <MessageSquare className="w-3.5 h-3.5 text-slate-500" />
             <span>Inbox</span>
-            <span className="w-4 h-4 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
-              {unreadInboxCount}
-            </span>
+            {unreadInboxCount > 0 && (
+              <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
+                {unreadInboxCount > 99 ? '99+' : unreadInboxCount}
+              </span>
+            )}
+          </Link>
+
+          {/* Notifications Pill */}
+          <Link
+            href="/notifications"
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all ${
+              isNotifications
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+            }`}
+            title="Notifications"
+          >
+            <Bell className="w-3.5 h-3.5 text-slate-500" />
+            <span>Alerts</span>
+            {unreadNotifCount > 0 && (
+              <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
+                {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
+              </span>
+            )}
           </Link>
 
           {/* Quick Create '+' Button */}

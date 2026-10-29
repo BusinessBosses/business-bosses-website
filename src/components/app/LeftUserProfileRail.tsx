@@ -12,7 +12,8 @@ import {
   ExternalLink,
   ChevronRight,
   LogOut,
-  Sparkles
+  Sparkles,
+  Bell
 } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { apiClient } from '../../lib/apiClient';
@@ -358,21 +359,31 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             <span>Create Post</span>
           </button>
 
-          {/* Quick Footer Links: Settings & Performance */}
+          {/* Quick Footer Links: Settings, Notifications & Performance */}
           <div className="pt-1 flex items-center justify-between px-2 text-xs font-bold text-slate-600">
             <Link
               href="/settings"
-              className="flex items-center space-x-1.5 hover:text-slate-900 transition-colors"
+              className="flex items-center space-x-1 hover:text-slate-900 transition-colors"
+              title="Settings"
             >
               <Settings className="w-4 h-4 text-slate-500" />
               <span>Settings</span>
             </Link>
             <Link
+              href="/notifications"
+              className="flex items-center space-x-1 hover:text-slate-900 transition-colors"
+              title="Notifications"
+            >
+              <Bell className="w-4 h-4 text-slate-500" />
+              <span>Alerts</span>
+            </Link>
+            <Link
               href="/performance"
-              className="flex items-center space-x-1.5 hover:text-slate-900 transition-colors"
+              className="flex items-center space-x-1 hover:text-slate-900 transition-colors"
+              title="Performance"
             >
               <TrendingUp className="w-4 h-4 text-slate-500" />
-              <span>Performance</span>
+              <span>Stats</span>
             </Link>
           </div>
         </div>

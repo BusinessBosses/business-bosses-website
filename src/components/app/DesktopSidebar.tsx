@@ -16,6 +16,7 @@ import {
   User,
   LogOut,
   Sparkles,
+  Bell,
 } from 'lucide-react';
 import { authService } from '../../services/authService';
 
@@ -31,6 +32,7 @@ const navItems = [
   { label: 'Feed', href: '/feed', icon: Flame },
   { label: 'Boss Up', href: '/boss-up', icon: Sparkles },
   { label: 'Inbox', href: '/inbox', icon: MessageSquare },
+  { label: 'Notifications', href: '/notifications', icon: Bell },
   { label: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
   { label: 'Requests', href: '/requests', icon: Handshake },
   { label: 'Performance', href: '/performance', icon: TrendingUp },

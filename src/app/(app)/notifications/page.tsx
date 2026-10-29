@@ -15,28 +15,8 @@ import {
   ExternalLink
 } from 'lucide-react';
 import moment from 'moment';
-import { apiClient } from '../../../lib/apiClient';
 import { authService } from '../../../services/authService';
-
-interface NotificationItem {
-  notificationId: string;
-  dataId?: string;
-  senderUid?: string;
-  message: string;
-  title: string;
-  timestamp: number;
-  receiverUid?: string;
-  isRead?: boolean;
-  notificationType?: string;
-  username?: string;
-  image?: string;
-}
-
-interface QuoteData {
-  id?: number | string;
-  message?: string;
-  by?: string;
-}
+import { notificationService, NotificationItem, QuoteData } from '../../../services/notificationService';
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
@@ -53,16 +33,10 @@ export default function NotificationsPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await apiClient.get('/notification?page=0&size=50');
-      if (res.data?.success) {
-        const rows: NotificationItem[] = res.data.data?.notifications?.rows || 
-          (Array.isArray(res.data.data?.notifications) ? res.data.data.notifications : []);
-        setNotifications(rows);
-        if (res.data.data?.quote) {
-          setQuote(res.data.data.quote);
-        }
-      } else {
-        setError(res.data?.message || 'Could not load notifications');
+      const data = await notificationService.getNotifications(0, 50);
+      setNotifications(data.notifications);
+      if (data.quote) {
+        setQuote(data.quote);
       }
     } catch (err: any) {
       console.warn('Failed to load notifications', err);
