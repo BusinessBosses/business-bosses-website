@@ -375,7 +375,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
               title="Notifications"
             >
               <Bell className="w-4 h-4 text-slate-500" />
-              <span>Alerts</span>
+              <span>Notifications</span>
             </Link>
             <Link
               href="/performance"
@@ -383,7 +383,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
               title="Performance"
             >
               <TrendingUp className="w-4 h-4 text-slate-500" />
-              <span>Stats</span>
+              <span>Performance</span>
             </Link>
           </div>
         </div>

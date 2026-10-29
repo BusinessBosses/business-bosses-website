@@ -222,7 +222,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
             title="Notifications"
           >
             <Bell className="w-3.5 h-3.5 text-slate-500" />
-            <span>Alerts</span>
+            <span>Notifications</span>
             {unreadNotifCount > 0 && (
               <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
                 {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
