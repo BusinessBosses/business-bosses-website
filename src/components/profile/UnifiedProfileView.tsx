@@ -42,6 +42,7 @@ import PostCard, { Post } from '../feed/PostCard';
 import CommentsModal from '../feed/CommentsModal';
 import { formatThousands } from '../../common/functions/formatThousands';
 import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
+import MyBizHubView from './MyBizHubView';
 
 interface ProfileViewProps {
   initialUsername?: string;
@@ -482,7 +483,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                   : 'text-slate-500 hover:text-slate-800'
               }`}
             >
-              My Biz Hub
+              My Biz
             </button>
           </div>
         </div>
@@ -492,117 +493,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
       {/* MY BIZ HUB SEGMENT (Parity with Mobile BottomNavScreen / Shop)   */}
       {/* ============================================================== */}
       {isMe && activeSegment === 'myBiz' ? (
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-sm">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                Biz Centre
-              </h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Manage your store catalog, appointments, orders, and rewards
-              </p>
-            </div>
-            <Link
-              href="/subscription"
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-xs"
-            >
-              <Sparkles className="w-4 h-4 fill-slate-950" />
-              <span>{isPro ? 'Pro Active' : 'Upgrade to Pro'}</span>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Link
-              href="/marketplace"
-              className="p-5 rounded-2xl border border-slate-200/80 hover:border-red-300 hover:bg-red-50/20 transition-all flex items-start gap-4"
-            >
-              <div className="w-11 h-11 rounded-xl bg-red-50 text-[#F21C29] flex items-center justify-center shrink-0 border border-red-100">
-                <ShoppingBag className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-extrabold text-slate-900 text-sm">Products & Services</h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  List items, configure service booking hours, and fulfill customer orders.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              href="/requests"
-              className="p-5 rounded-2xl border border-slate-200/80 hover:border-blue-300 hover:bg-blue-50/20 transition-all flex items-start gap-4"
-            >
-              <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
-                <FileText className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-extrabold text-slate-900 text-sm">Buyer Requests</h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Post inquiries and match with verified providers across your sector.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              href="/subscription"
-              className="p-5 rounded-2xl border border-slate-200/80 hover:border-amber-300 hover:bg-amber-50/20 transition-all flex items-start gap-4"
-            >
-              <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
-                <Coins className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-extrabold text-slate-900 text-sm">Coins & Rewards</h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  <span className="font-bold text-amber-700">{formatThousands(coins)} Coins</span> available to boost visibility and unlock perks.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              href="/boss-up"
-              className="p-5 rounded-2xl border border-slate-200/80 hover:border-emerald-300 hover:bg-emerald-50/20 transition-all flex items-start gap-4"
-            >
-              <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
-                <TrendingUp className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-extrabold text-slate-900 text-sm">Boss Up Deals</h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Partner with growth accelerators, discounts, and member opportunities.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              href="/inbox"
-              className="p-5 rounded-2xl border border-slate-200/80 hover:border-purple-300 hover:bg-purple-50/20 transition-all flex items-start gap-4"
-            >
-              <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 border border-purple-100">
-                <MessageSquare className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-extrabold text-slate-900 text-sm">Direct Inquiries</h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Chat with buyers, manage negotiations, and respond to incoming inquiries.
-                </p>
-              </div>
-            </Link>
-
-            <Link
-              href="/profile/settings"
-              className="p-5 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:bg-slate-50 transition-all flex items-start gap-4"
-            >
-              <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 border border-slate-200">
-                <Settings className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-extrabold text-slate-900 text-sm">Account Settings</h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Update business phone, category, notification alerts, and password.
-                </p>
-              </div>
-            </Link>
-          </div>
-        </div>
+        <MyBizHubView userId={profile?.uid || profile?.id || ''} isPro={isPro} />
       ) : (
         /* ============================================================== */
         /* MAIN PROFILE VIEW (Both My Profile & Public Profile Parity)     */
