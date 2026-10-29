@@ -18,7 +18,8 @@ import {
   MapPin,
   Send,
   Eye,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Edit2
 } from 'lucide-react';
 import Image from '../../../components/common/SafeImage';
 import { toast } from 'react-toastify';
@@ -64,6 +65,7 @@ export default function BuyerRequestsPage() {
 
   // Modals
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingRequest, setEditingRequest] = useState<BuyerRequest | null>(null);
   const [selectedRequestForApply, setSelectedRequestForApply] = useState<BuyerRequest | null>(null);
   const [selectedRequestForDetail, setSelectedRequestForDetail] = useState<BuyerRequest | null>(null);
 
@@ -504,13 +506,27 @@ export default function BuyerRequestsPage() {
                               <span>Share</span>
                             </button>
                             {isMyRequest && (
-                              <button
-                                onClick={(e) => handleDeleteRequest(e, request.id)}
-                                className="w-full px-3 py-2 text-left text-red-600 hover:bg-red-50 flex items-center space-x-2"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                                <span>Delete</span>
-                              </button>
+                              <>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setEditingRequest(request);
+                                    setIsCreateOpen(true);
+                                    setOpenMenuId(null);
+                                  }}
+                                  className="w-full px-3 py-2 text-left text-slate-700 hover:bg-slate-50 flex items-center space-x-2"
+                                >
+                                  <Edit2 className="w-3.5 h-3.5 text-slate-500" />
+                                  <span>Edit</span>
+                                </button>
+                                <button
+                                  onClick={(e) => handleDeleteRequest(e, request.id)}
+                                  className="w-full px-3 py-2 text-left text-red-600 hover:bg-red-50 flex items-center space-x-2"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                  <span>Delete</span>
+                                </button>
+                              </>
                             )}
                           </div>
                         )}
@@ -614,10 +630,14 @@ export default function BuyerRequestsPage() {
 
       </div>
 
-      {/* Create Request Modal */}
+      {/* Create / Edit Request Modal */}
       <CreateBuyerRequestModal
         isOpen={isCreateOpen}
-        onClose={() => setIsCreateOpen(false)}
+        initialRequest={editingRequest}
+        onClose={() => {
+          setIsCreateOpen(false);
+          setEditingRequest(null);
+        }}
         onSuccess={() => fetchRequests()}
       />
 

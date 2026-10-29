@@ -38,6 +38,8 @@ export interface CreateBuyerRequestPayload {
   title: string;
   description: string;
   category: string;
+  request_type?: string;
+  location?: string;
   budget_start?: number;
   budget_end?: number;
   deadline?: string;
@@ -65,6 +67,14 @@ export const buyerRequestService = {
    */
   async createBuyerRequest(payload: CreateBuyerRequestPayload): Promise<any> {
     const res = await apiClient.post('/buyer-request', payload);
+    return res.data;
+  },
+
+  /**
+   * Update an existing buyer request
+   */
+  async updateBuyerRequest(id: string | number, payload: Partial<CreateBuyerRequestPayload>): Promise<any> {
+    const res = await apiClient.put(`/buyer-request/${id}`, payload);
     return res.data;
   },
 
