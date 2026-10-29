@@ -851,8 +851,8 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
               <Link
                 href={
-                  user?.id || user?.uid
-                    ? `/performance?userId=${user.id || user.uid}`
+                  profile?.id || profile?.uid
+                    ? `/performance?userId=${profile.id || profile.uid}`
                     : '/performance'
                 }
                 className="p-2 rounded-xl hover:bg-white hover:shadow-xs transition-all cursor-pointer text-center group block"

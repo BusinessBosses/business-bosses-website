@@ -12,6 +12,11 @@ import NextImage, { ImageProps as NextImageProps } from 'next/image';
  * Images will only download when the user scrolls near them,
  * drastically reducing bandwidth usage from Backblaze / S3 storage.
  */
-export default function SafeImage({ loading = 'lazy', decoding = 'async', ...props }: NextImageProps) {
-  return <NextImage unoptimized loading={loading} decoding={decoding} {...props} />;
+export default function SafeImage({ loading = 'lazy', decoding = 'async', src, ...props }: NextImageProps) {
+  // Automatically upgrade any http:// image URLs to https:// to prevent mixed-content warnings
+  const safeSrc = typeof src === 'string' && src.startsWith('http://')
+    ? src.replace(/^http:\/\//i, 'https://')
+    : src;
+
+  return <NextImage unoptimized loading={loading} decoding={decoding} src={safeSrc} {...props} />;
 }
