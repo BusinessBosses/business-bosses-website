@@ -53,11 +53,39 @@ export default function PerformancePage() {
   const loadPerformance = async () => {
     setLoading(true);
     try {
-      const user = await authService.getCurrentUser();
-      setCurrentUser(user);
+      let targetUid: string | null = null;
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        targetUid = params.get('userId') || params.get('id');
+      }
 
-      if (user?.uid) {
-        const impact = await performanceService.getUserImpact(user.uid);
+      const myUser = await authService.getCurrentUser();
+      
+      let targetUser = myUser;
+      if (targetUid && targetUid !== myUser?.uid && targetUid !== myUser?.id) {
+        try {
+          const fetched = await performanceService.getUserImpact(targetUid);
+          setImpactData(fetched);
+          setCurrentUser({
+            uid: targetUid,
+            name: fetched?.shop?.name || fetched?.user?.name || 'Business Boss',
+            industry: fetched?.shop?.category || fetched?.user?.industry,
+            location: fetched?.shop?.location || fetched?.user?.location,
+            hasShop: fetched?.hasShop,
+            reachScore: fetched?.totalReachPoints,
+            isMe: false,
+          });
+          setLoading(false);
+          return;
+        } catch (fetchErr) {
+          console.warn('Could not load target user impact, falling back to current user', fetchErr);
+        }
+      }
+
+      setCurrentUser(myUser);
+      if (myUser?.uid || myUser?.id) {
+        const uid = myUser.uid || myUser.id;
+        const impact = await performanceService.getUserImpact(uid);
         setImpactData(impact);
       }
     } catch (err) {

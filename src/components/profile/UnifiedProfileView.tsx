@@ -849,14 +849,22 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                 </span>
               </button>
 
-              <div className="p-2">
-                <span className="block text-base sm:text-lg font-black text-[#F21C29]">
+              <Link
+                href={
+                  user?.id || user?.uid
+                    ? `/performance?userId=${user.id || user.uid}`
+                    : '/performance'
+                }
+                className="p-2 rounded-xl hover:bg-white hover:shadow-xs transition-all cursor-pointer text-center group block"
+                title="View Reach Score & Leaderboard Performance"
+              >
+                <span className="block text-base sm:text-lg font-black text-[#F21C29] group-hover:scale-105 transition-transform">
                   {formatThousands(connectionStats.reachScore)}
                 </span>
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider group-hover:text-slate-800 transition-colors">
                   Reach Score
                 </span>
-              </div>
+              </Link>
             </div>
 
             {/* ============================================================== */}
