@@ -48,14 +48,11 @@ const CATEGORIES = [
   'Vehicle & Transportation',
 ];
 
-type FilterType = 'All' | 'Active' | 'Has Offers' | 'Closing Soon';
-
 export default function BuyerRequestsPage() {
   const [requests, setRequests] = useState<BuyerRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedFilter, setSelectedFilter] = useState<FilterType>('All');
   const [activeTab, setActiveTab] = useState<'all' | 'my'>('all');
   
   // Category carousel scroll
@@ -264,19 +261,6 @@ export default function BuyerRequestsPage() {
       const authorId = r.userId || r.user_id || r.user?.uid;
       return currentUserId && authorId === currentUserId;
     }
-    // Sub-filter match
-    if (selectedFilter === 'Active') {
-      if (!r.deadline) return true;
-      return new Date(r.deadline).getTime() >= Date.now();
-    }
-    if (selectedFilter === 'Has Offers') {
-      return (r.offerCount || 0) > 0;
-    }
-    if (selectedFilter === 'Closing Soon') {
-      if (!r.deadline) return false;
-      const diffDays = (new Date(r.deadline).getTime() - Date.now()) / (1000 * 3600 * 24);
-      return diffDays >= 0 && diffDays <= 7;
-    }
     return true;
   });
 
@@ -314,7 +298,7 @@ export default function BuyerRequestsPage() {
           </div>
         </div>
 
-        {/* Top Controls: All / My Tabs & Filter Pills */}
+        {/* Top Controls: All / My Tabs */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           {/* Main Segmented Toggle */}
           <div className="flex items-center p-1 bg-white border border-slate-200 rounded-xl shadow-xs">
@@ -338,23 +322,6 @@ export default function BuyerRequestsPage() {
             >
               My Requests
             </button>
-          </div>
-
-          {/* Quick Filter Status Pills (All, Active, Has Offers, Closing Soon) */}
-          <div className="flex items-center space-x-1.5 overflow-x-auto no-scrollbar text-xs">
-            {(['All', 'Active', 'Has Offers', 'Closing Soon'] as FilterType[]).map((f) => (
-              <button
-                key={f}
-                onClick={() => setSelectedFilter(f)}
-                className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                  selectedFilter === f
-                    ? 'bg-red-50 text-[#F21C29] border border-red-200 shadow-2xs'
-                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200/80'
-                }`}
-              >
-                {f}
-              </button>
-            ))}
           </div>
         </div>
 
