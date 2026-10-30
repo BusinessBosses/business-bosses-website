@@ -17,7 +17,6 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [error, setError] = useState('');
   const [showForgotModal, setShowForgotModal] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,14 +33,11 @@ function LoginForm() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      const msg = 'Please fill in all fields.';
-      setError(msg);
-      toast.error(msg);
+      toast.error('Please fill in all fields.');
       return;
     }
 
     setLoading(true);
-    setError('');
 
     try {
       const response = await authService.signIn({ email, password });
@@ -56,7 +52,6 @@ function LoginForm() {
         }, 500);
       } else {
         const errorMsg = response.message || 'Login failed. Please check your credentials.';
-        setError(errorMsg);
         toast.error(errorMsg);
       }
     } catch (err: any) {
@@ -70,7 +65,6 @@ function LoginForm() {
         }, 500);
       } else {
         const errorMsg = err.response?.data?.message || err.response?.data?.error || 'An error occurred during login. Please try again.';
-        setError(errorMsg);
         toast.error(errorMsg);
       }
     } finally {
@@ -81,7 +75,6 @@ function LoginForm() {
   const handleGoogleSignIn = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       setGoogleLoading(true);
-      setError('');
       try {
         let userEmail = '';
         try {
@@ -109,13 +102,11 @@ function LoginForm() {
           }, 500);
         } else {
           const errorMsg = response.message || 'Google sign-in failed. Please try again.';
-          setError(errorMsg);
           toast.error(errorMsg);
         }
       } catch (err: any) {
         console.error('Google sign-in error:', err);
         const errorMsg = err.response?.data?.message || err.response?.data?.error || 'Google sign-in failed. Please try again.';
-        setError(errorMsg);
         toast.error(errorMsg);
       } finally {
         setGoogleLoading(false);
@@ -168,12 +159,6 @@ function LoginForm() {
             Join for Free
           </Link>
         </div>
-
-        {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 text-red-600 text-sm p-3.5 rounded-2xl flex items-center">
-            {error}
-          </div>
-        )}
 
         {/* Google Sign In Button */}
         <button

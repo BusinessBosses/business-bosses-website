@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Mail, KeyRound, Lock, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import { X, Mail, KeyRound, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { toast } from 'react-toastify';
 
@@ -24,18 +24,16 @@ export default function ForgotPasswordModal({
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   if (!isOpen) return null;
 
   const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) {
-      setError('Please enter your email address.');
+      toast.error('Please enter your email address.');
       return;
     }
     setLoading(true);
-    setError('');
 
     try {
       const response = await authService.requestOtp(email.trim());
@@ -44,13 +42,11 @@ export default function ForgotPasswordModal({
         setStep('otp');
       } else {
         const msg = response.message || 'Failed to send verification code. Please check your email.';
-        setError(msg);
         toast.error(msg);
       }
     } catch (err: any) {
       console.error('Request OTP error:', err);
       const msg = err.response?.data?.message || err.response?.data?.error || 'Could not send verification code.';
-      setError(msg);
       toast.error(msg);
     } finally {
       setLoading(false);
@@ -60,11 +56,10 @@ export default function ForgotPasswordModal({
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!otp.trim() || otp.trim().length < 4) {
-      setError('Please enter a valid verification code.');
+      toast.error('Please enter a valid verification code.');
       return;
     }
     setLoading(true);
-    setError('');
 
     try {
       const response = await authService.verifyOtp({
@@ -76,13 +71,11 @@ export default function ForgotPasswordModal({
         setStep('new_password');
       } else {
         const msg = response.message || 'Invalid or expired verification code.';
-        setError(msg);
         toast.error(msg);
       }
     } catch (err: any) {
       console.error('Verify OTP error:', err);
       const msg = err.response?.data?.message || err.response?.data?.error || 'Invalid or expired code.';
-      setError(msg);
       toast.error(msg);
     } finally {
       setLoading(false);
@@ -92,16 +85,15 @@ export default function ForgotPasswordModal({
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPassword.trim() || newPassword.length < 6) {
-      setError('Password must be at least 6 characters.');
+      toast.error('Password must be at least 6 characters.');
       return;
     }
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match.');
+      toast.error('Passwords do not match.');
       return;
     }
 
     setLoading(true);
-    setError('');
 
     try {
       const response = await authService.resetPassword({
@@ -113,13 +105,11 @@ export default function ForgotPasswordModal({
         setStep('success');
       } else {
         const msg = response.message || 'Could not reset password. Please try again.';
-        setError(msg);
         toast.error(msg);
       }
     } catch (err: any) {
       console.error('Reset password error:', err);
       const msg = err.response?.data?.message || err.response?.data?.error || 'Password update failed.';
-      setError(msg);
       toast.error(msg);
     } finally {
       setLoading(false);
@@ -128,7 +118,6 @@ export default function ForgotPasswordModal({
 
   const handleClose = () => {
     setStep('email');
-    setError('');
     setOtp('');
     setNewPassword('');
     setConfirmPassword('');
@@ -151,13 +140,6 @@ export default function ForgotPasswordModal({
             <X className="w-5 h-5" />
           </button>
         </div>
-
-        {error && (
-          <div className="mt-4 p-3 rounded-xl bg-red-50 border border-red-200 flex items-start space-x-2 text-xs text-red-600">
-            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-            <span>{error}</span>
-          </div>
-        )}
 
         {/* Step 1: Request OTP */}
         {step === 'email' && (

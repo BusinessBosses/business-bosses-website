@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import CircularProgress from "@mui/material/CircularProgress";
-import Alert from "@mui/material/Alert";
 import Tooltip from "@mui/material/Tooltip";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -17,6 +16,7 @@ import TitleIcon from "@mui/icons-material/Title";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import LinkIcon from "@mui/icons-material/Link";
+import { toast } from "react-toastify";
 
 interface SubmitNewsModalProps {
   open: boolean;
@@ -36,14 +36,12 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
 
   const editorRef = React.useRef<HTMLDivElement>(null);
   const [uploadingImage, setUploadingImage] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const [isDragOver, setIsDragOver] = React.useState(false);
+    const [isDragOver, setIsDragOver] = React.useState(false);
 
   // Sync editor content on open / close
   React.useEffect(() => {
     if (!open) {
-      setErrorMessage(null);
-    } else {
+          } else {
       setTimeout(() => {
         if (editorRef.current && !editorRef.current.innerHTML.trim() && htmlContent) {
           editorRef.current.innerHTML = htmlContent;
@@ -73,8 +71,7 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
     }
 
     setUploadingImage(true);
-    setErrorMessage(null);
-
+    
     const formData = new FormData();
     formData.append("file", file);
 
@@ -112,7 +109,7 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
       console.error("Backend upload fallback also failed:", fallbackErr);
     }
 
-    setErrorMessage("Failed to upload image. Please try again or paste a public image URL.");
+    toast.error("Failed to upload image. Please try again or paste a public image URL.");
     setUploadingImage(false);
   };
 
@@ -135,25 +132,24 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null);
-
+    
     const editorBody = editorRef.current?.innerHTML?.trim() || htmlContent.trim();
     const plainTextBody = editorRef.current?.innerText?.trim() || "";
 
     if (!memberAuthor.trim()) {
-      setErrorMessage("Founder or business name is required.");
+      toast.error("Founder or business name is required.");
       return;
     }
     if (!memberTitle.trim()) {
-      setErrorMessage("News headline/title is required.");
+      toast.error("News headline/title is required.");
       return;
     }
     if (!memberImageUrl.trim()) {
-      setErrorMessage("An article cover image is compulsory before submitting.");
+      toast.error("An article cover image is compulsory before submitting.");
       return;
     }
     if (!plainTextBody && !memberSummary.trim()) {
-      setErrorMessage("Please write your news article story.");
+      toast.error("Please write your news article story.");
       return;
     }
 
@@ -230,12 +226,7 @@ export default function SubmitNewsModal({ open, onClose, onSubmit, submitting }:
       {/* Form Content (Scrollable Body) */}
       <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0, overflow: "hidden" }}>
         <Box sx={{ px: { xs: 3, md: 5 }, py: 3.5, display: "flex", flexDirection: "column", gap: 3, overflowY: "auto", flex: 1 }}>
-          {errorMessage && (
-            <Alert severity="error" sx={{ borderRadius: "14px", fontSize: "13px", fontWeight: 600 }}>
-              {errorMessage}
-            </Alert>
-          )}
-
+          
           {/* Row 1: Founder/Business & Headline */}
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 2fr" }, gap: 2.5 }}>
             <Box>

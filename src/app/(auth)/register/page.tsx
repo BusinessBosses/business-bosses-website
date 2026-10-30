@@ -26,7 +26,6 @@ export default function RegisterPage() {
 
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [error, setError] = useState('');
   const router = useRouter();
 
   // Debounced live username availability check
@@ -67,49 +66,36 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullname.trim() || !username.trim() || !email.trim() || !password.trim()) {
-      const msg = 'Please fill in all fields.';
-      setError(msg);
-      toast.error(msg);
+      toast.error('Please fill in all fields.');
       return;
     }
 
     if (usernameStatus === 'taken') {
-      const msg = 'Username is already taken. Please choose another.';
-      setError(msg);
-      toast.error(msg);
+      toast.error('Username is already taken. Please choose another.');
       return;
     }
 
     if (emailStatus === 'taken') {
-      const msg = 'Email is already registered. Please log in.';
-      setError(msg);
-      toast.error(msg);
+      toast.error('Email is already registered. Please log in.');
       return;
     }
 
     if (password.length < 6) {
-      const msg = 'Password must be at least 6 characters.';
-      setError(msg);
-      toast.error(msg);
+      toast.error('Password must be at least 6 characters.');
       return;
     }
 
     if (confirmPassword && password !== confirmPassword) {
-      const msg = 'Passwords do not match.';
-      setError(msg);
-      toast.error(msg);
+      toast.error('Passwords do not match.');
       return;
     }
 
     if (!agreeToTerms) {
-      const msg = 'Please agree to the Terms of Service and Privacy Policy to continue.';
-      setError(msg);
-      toast.error(msg);
+      toast.error('Please agree to the Terms of Service and Privacy Policy to continue.');
       return;
     }
 
     setLoading(true);
-    setError('');
 
     try {
       const response = await authService.signUp({
@@ -136,7 +122,6 @@ export default function RegisterPage() {
         }
       } else {
         const errorMsg = response.message || 'Registration failed. Please try again.';
-        setError(errorMsg);
         toast.error(errorMsg);
       }
     } catch (err: any) {
@@ -150,7 +135,6 @@ export default function RegisterPage() {
         }, 600);
       } else {
         const errorMsg = err.response?.data?.message || err.response?.data?.error || 'Registration failed. Please check your details.';
-        setError(errorMsg);
         toast.error(errorMsg);
       }
     } finally {
@@ -161,7 +145,6 @@ export default function RegisterPage() {
   const handleGoogleSignUp = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       setGoogleLoading(true);
-      setError('');
       try {
         let userEmail = '';
         try {
@@ -189,13 +172,11 @@ export default function RegisterPage() {
           }, 500);
         } else {
           const errorMsg = response.message || 'Google sign-up failed. Please try again.';
-          setError(errorMsg);
           toast.error(errorMsg);
         }
       } catch (err: any) {
         console.error('Google sign-up error:', err);
         const errorMsg = err.response?.data?.message || err.response?.data?.error || 'Google sign-up failed. Please try again.';
-        setError(errorMsg);
         toast.error(errorMsg);
       } finally {
         setGoogleLoading(false);
@@ -249,12 +230,6 @@ export default function RegisterPage() {
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#F21C29]" />
             </div>
           </div>
-
-          {error && (
-            <div className="mb-5 bg-red-50 border border-red-200 text-red-600 text-sm p-3.5 rounded-2xl flex items-center">
-              {error}
-            </div>
-          )}
 
           {/* Google Sign Up Button */}
           <button

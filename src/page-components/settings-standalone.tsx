@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -8,7 +9,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Alert from "@mui/material/Alert";
 import Chip from "@mui/material/Chip";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -27,15 +27,13 @@ export default function SettingsStandalone() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [email, setEmail] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
-
+  
   const handleConfirmDelete = () => {
     if (!email || !email.includes("@")) {
-      setErrorMsg("Please enter a valid email address to proceed.");
+      toast.error("Please enter a valid email address to proceed.");
       return;
     }
-    setErrorMsg("");
-    setIsSubmitting(true);
+        setIsSubmitting(true);
 
     // Simulate API call
     setTimeout(() => {
@@ -240,12 +238,7 @@ export default function SettingsStandalone() {
             Are you absolutely sure you want to proceed? Please enter the email address linked to your account to confirm this request.
           </Typography>
 
-          {errorMsg && (
-            <Alert severity="error" sx={{ mb: 2, fontSize: "13px" }}>
-              {errorMsg}
-            </Alert>
-          )}
-
+          
           <TextField
             fullWidth
             size="small"
