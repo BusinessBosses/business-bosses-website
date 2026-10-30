@@ -29,7 +29,21 @@ export interface ShopOrdersSummary {
   pending: number;
   paid: number;
   cancelled: number;
+  completed?: number;
+  processed?: number;
+  online?: number;
+  in_person?: number;
+  pickup?: number;
   totalOrders: number;
+}
+
+export interface ShopGraphData {
+  totalSales: number;
+  xAxis: string;
+  graphData: Array<{
+    date: string;
+    totalAmount: number;
+  }>;
 }
 
 export interface ShopOrderItem {
@@ -125,14 +139,20 @@ export const shopService = {
   /**
    * Get shop order breakdown/chart metrics (GET /dashboard/shop-orders/:shopId)
    */
-  async getShopOrdersSummary(shopId: string): Promise<ShopOrdersSummary> {
+  async getShopOrdersSummary(shopId: string, date?: string): Promise<ShopOrdersSummary> {
     try {
-      const res = await apiClient.get(`/dashboard/shop-orders/${shopId}`);
+      const url = date ? `/dashboard/shop-orders/${shopId}?date=${date}` : `/dashboard/shop-orders/${shopId}`;
+      const res = await apiClient.get(url);
       const data = res.data?.data || res.data || {};
       return {
         pending: Number(data.pending || 0),
         paid: Number(data.paid || 0),
         cancelled: Number(data.cancelled || 0),
+        completed: Number(data.completed || 0),
+        processed: Number(data.processed || 0),
+        online: Number(data.online || 0),
+        in_person: Number(data.in_person || 0),
+        pickup: Number(data.pickup || 0),
         totalOrders: Number(data.totalOrders || (Number(data.pending || 0) + Number(data.paid || 0) + Number(data.cancelled || 0))),
       };
     } catch {
@@ -140,17 +160,57 @@ export const shopService = {
         pending: 0,
         paid: 0,
         cancelled: 0,
+        completed: 0,
+        processed: 0,
+        online: 0,
+        in_person: 0,
+        pickup: 0,
         totalOrders: 0,
       };
     }
   },
 
   /**
-   * Get shop orders list (GET /orders/shop-orders/:shopId)
+   * Get shop performance graph data (GET /dashboard/shop-graph-data/:shopId)
    */
-  async getShopOrders(shopId: string, page = 0, limit = 20): Promise<ShopOrderItem[]> {
+  async getShopGraphData(shopId: string, date?: string): Promise<ShopGraphData> {
+    try {
+      const url = date ? `/dashboard/shop-graph-data/${shopId}?date=${date}` : `/dashboard/shop-graph-data/${shopId}`;
+      const res = await apiClient.get(url);
+      const data = res.data?.data || res.data || {};
+      return {
+        totalSales: Number(data.totalSales || 0),
+        xAxis: data.xAxis || 'day',
+        graphData: Array.isArray(data.graphData) ? data.graphData : [],
+      };
+    } catch {
+      return {
+        totalSales: 0,
+        xAxis: 'day',
+        graphData: [],
+      };
+    }
+  },
+
+  /**
+   * Get shop orders list (Sales Leads) (GET /orders/shop-orders/:shopId)
+   */
+  async getShopOrders(shopId: string, page = 0, limit = 50): Promise<ShopOrderItem[]> {
     try {
       const res = await apiClient.get(`/orders/shop-orders/${shopId}?page=${page}&limit=${limit}`);
+      const rows = res.data?.data?.rows || res.data?.rows || res.data?.data || [];
+      return Array.isArray(rows) ? rows : [];
+    } catch {
+      return [];
+    }
+  },
+
+  /**
+   * Get user placed orders (My Purchases / Orders) (GET /orders/user-orders/:userId)
+   */
+  async getUserOrders(userId: string, page = 0, limit = 50): Promise<ShopOrderItem[]> {
+    try {
+      const res = await apiClient.get(`/orders/user-orders/${userId}?page=${page}&limit=${limit}`);
       const rows = res.data?.data?.rows || res.data?.rows || res.data?.data || [];
       return Array.isArray(rows) ? rows : [];
     } catch {

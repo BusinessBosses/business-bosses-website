@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import {
   Store,
@@ -26,8 +26,26 @@ import {
   MapPin,
   Calendar,
   Sparkles,
+  PieChart as PieChartIcon,
+  BarChart3,
+  Filter,
+  DollarSign,
+  ArrowUpRight,
+  Check,
+  X,
+  CreditCard,
+  ShoppingBasket,
+  SlidersHorizontal,
 } from 'lucide-react';
-import { shopService, Shop, ShopStatistics, ShopOrdersSummary, ShopOrderItem, ShopClient } from '../../services/shopService';
+import {
+  shopService,
+  Shop,
+  ShopStatistics,
+  ShopOrdersSummary,
+  ShopOrderItem,
+  ShopClient,
+  ShopGraphData,
+} from '../../services/shopService';
 import { formatThousands, formatCurrency } from '../../common/functions/formatThousands';
 import SellOptionsModal from '../marketplace/SellOptionsModal';
 
@@ -36,10 +54,18 @@ interface MyBizHubViewProps {
   isPro?: boolean;
 }
 
+type DateFilterOption = 'all_time' | 'today' | 'last_7_days' | 'last_30_days';
+
 export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [shop, setShop] = useState<Shop | null>(null);
+
+  // Date Filter matching mobile shopController.filterData()
+  const [dateFilter, setDateFilter] = useState<DateFilterOption>('all_time');
+  const [dateFilterOpen, setDateFilterOpen] = useState<boolean>(false);
+
+  // Statistics & Graph
   const [stats, setStats] = useState<ShopStatistics>({
     views: 0,
     clientCount: 0,
@@ -51,7 +77,17 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
     pending: 0,
     paid: 0,
     cancelled: 0,
+    completed: 0,
+    processed: 0,
+    online: 0,
+    in_person: 0,
+    pickup: 0,
     totalOrders: 0,
+  });
+  const [graphData, setGraphData] = useState<ShopGraphData>({
+    totalSales: 0,
+    xAxis: 'day',
+    graphData: [],
   });
 
   // Hub Sub-tabs: 'overview' | 'inventory' | 'orders' | 'clients'
@@ -62,9 +98,11 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
   const [services, setServices] = useState<any[]>([]);
   const [inventoryTab, setInventoryTab] = useState<'products' | 'services'>('products');
 
-  // Orders list
-  const [orders, setOrders] = useState<ShopOrderItem[]>([]);
-  const [orderFilter, setOrderFilter] = useState<'all' | 'pending' | 'paid' | 'cancelled'>('all');
+  // Orders: Dual-Mode matching Mobile (Sales Leads received vs My Purchases placed)
+  const [orderSection, setOrderSection] = useState<'sales' | 'purchases'>('sales');
+  const [salesOrders, setSalesOrders] = useState<ShopOrderItem[]>([]);
+  const [purchasedOrders, setPurchasedOrders] = useState<ShopOrderItem[]>([]);
+  const [orderStatusFilter, setOrderStatusFilter] = useState<'all' | 'pending' | 'paid' | 'completed' | 'cancelled'>('all');
 
   // Clients list
   const [clients, setClients] = useState<ShopClient[]>([]);
@@ -73,33 +111,38 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
   const [sellModalOpen, setSellModalOpen] = useState<boolean>(false);
   const [sellModalTab, setSellModalTab] = useState<0 | 1>(0);
 
-  const loadBizData = useCallback(async () => {
+  const loadBizData = useCallback(async (selectedFilter: DateFilterOption = 'all_time') => {
     if (!userId) return;
     try {
       const userShop = await shopService.getUserShop(userId);
       setShop(userShop);
 
-      const [statData, prodData, servData] = await Promise.all([
+      const [statData, prodData, servData, myOrdersData] = await Promise.all([
         shopService.getShopStatistics(userId),
         shopService.getUserProducts(userId),
         shopService.getUserServices(userId),
+        shopService.getUserOrders(userId),
       ]);
       setStats(statData);
       setProducts(prodData);
       setServices(servData);
+      setPurchasedOrders(myOrdersData);
 
       if (userShop?.id) {
-        const [ordersSum, ordersList, clientsList] = await Promise.all([
-          shopService.getShopOrdersSummary(userShop.id),
+        const filterParam = selectedFilter === 'all_time' ? undefined : selectedFilter;
+        const [ordersSum, ordersList, clientsList, graphRes] = await Promise.all([
+          shopService.getShopOrdersSummary(userShop.id, filterParam),
           shopService.getShopOrders(userShop.id),
           shopService.getShopClients(userShop.id),
+          shopService.getShopGraphData(userShop.id, filterParam),
         ]);
         setOrderSummary(ordersSum);
-        setOrders(ordersList);
+        setSalesOrders(ordersList);
         setClients(clientsList);
+        setGraphData(graphRes);
       }
     } catch (e) {
-      console.error('Failed to load Biz Centre data:', e);
+      console.error('Failed to load My Biz data:', e);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -107,12 +150,17 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
   }, [userId]);
 
   useEffect(() => {
-    loadBizData();
-  }, [loadBizData]);
+    loadBizData(dateFilter);
+  }, [loadBizData, dateFilter]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await loadBizData();
+    await loadBizData(dateFilter);
+  };
+
+  const handleDateFilterChange = (filter: DateFilterOption) => {
+    setDateFilter(filter);
+    setDateFilterOpen(false);
   };
 
   const handleDeleteProduct = async (id: string | number) => {
@@ -134,20 +182,62 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
   const handleUpdateOrderStatus = async (orderId: string | number, newStatus: string) => {
     const ok = await shopService.updateOrderStatus(orderId, newStatus);
     if (ok) {
-      setOrders((prev) =>
+      setSalesOrders((prev) =>
         prev.map((o) => (o.id === orderId ? { ...o, status: newStatus as any } : o))
       );
       if (shop?.id) {
-        const sum = await shopService.getShopOrdersSummary(shop.id);
+        const sum = await shopService.getShopOrdersSummary(
+          shop.id,
+          dateFilter === 'all_time' ? undefined : dateFilter
+        );
         setOrderSummary(sum);
       }
     }
   };
 
-  const filteredOrders = orders.filter((o) => {
-    if (orderFilter === 'all') return true;
-    return o.status?.toLowerCase() === orderFilter;
-  });
+  const activeOrdersList = orderSection === 'sales' ? salesOrders : purchasedOrders;
+
+  const filteredOrders = useMemo(() => {
+    return activeOrdersList.filter((o) => {
+      if (orderStatusFilter === 'all') return true;
+      return o.status?.toLowerCase() === orderStatusFilter;
+    });
+  }, [activeOrdersList, orderStatusFilter]);
+
+  // Breakdown calculation for SVG Pie Chart
+  const pieSlices = useMemo(() => {
+    const total = orderSummary.totalOrders || 0;
+    if (total === 0) return [];
+
+    const segments = [
+      { key: 'paid', label: 'Paid', count: orderSummary.paid || 0, color: '#10B981' },
+      { key: 'pending', label: 'Pending', count: orderSummary.pending || 0, color: '#F59E0B' },
+      { key: 'completed', label: 'Completed', count: orderSummary.completed || 0, color: '#3B82F6' },
+      { key: 'cancelled', label: 'Cancelled', count: orderSummary.cancelled || 0, color: '#EF4444' },
+    ].filter((s) => s.count > 0);
+
+    let cumulativePercent = 0;
+    return segments.map((slice) => {
+      const percent = (slice.count / total) * 100;
+      const startPercent = cumulativePercent;
+      cumulativePercent += percent;
+      return {
+        ...slice,
+        percent,
+        startPercent,
+        endPercent: cumulativePercent,
+      };
+    });
+  }, [orderSummary]);
+
+  const currencySymbol = shop?.currency || 'USD';
+
+  const filterLabel = {
+    all_time: 'All Time',
+    today: 'Today',
+    last_7_days: 'Last 7 Days',
+    last_30_days: 'Last 30 Days',
+  }[dateFilter];
 
   if (loading) {
     return (
@@ -158,8 +248,6 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
       </div>
     );
   }
-
-  const currencySymbol = shop?.currency || 'USD';
 
   return (
     <div className="space-y-6">
@@ -217,6 +305,46 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
           </div>
 
           <div className="flex items-center gap-2.5 self-start md:self-auto flex-wrap">
+            {/* Mobile Date Filter Parity Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setDateFilterOpen(!dateFilterOpen)}
+                className="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-bold text-xs hover:bg-slate-50 transition-colors flex items-center gap-2 shadow-2xs"
+              >
+                <Filter className="w-3.5 h-3.5 text-[#F21C29]" />
+                <span>{filterLabel}</span>
+              </button>
+              {dateFilterOpen && (
+                <div className="absolute right-0 mt-1.5 w-44 bg-white rounded-2xl border border-slate-200 shadow-xl py-1.5 z-20">
+                  <div className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400 border-b border-slate-100">
+                    Filter Data By
+                  </div>
+                  {(['today', 'last_7_days', 'last_30_days', 'all_time'] as const).map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => handleDateFilterChange(opt)}
+                      className={`w-full px-3.5 py-2 text-left text-xs font-bold flex items-center justify-between hover:bg-slate-50 transition-colors ${
+                        dateFilter === opt ? 'text-[#F21C29] bg-red-50/40' : 'text-slate-700'
+                      }`}
+                    >
+                      <span>
+                        {opt === 'today'
+                          ? 'Today'
+                          : opt === 'last_7_days'
+                          ? 'Last 7 Days'
+                          : opt === 'last_30_days'
+                          ? 'Last 30 Days'
+                          : 'All Time'}
+                      </span>
+                      {dateFilter === opt && <Check className="w-3.5 h-3.5 text-[#F21C29]" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button
               type="button"
               onClick={handleRefresh}
@@ -285,7 +413,7 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Orders & Leads ({orders.length})</span>
+            <span>Leads & Orders ({salesOrders.length + purchasedOrders.length})</span>
           </button>
           <button
             type="button"
@@ -297,7 +425,7 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
             }`}
           >
             <Users className="w-3.5 h-3.5" />
-            <span>Clients ({clients.length})</span>
+            <span>Customers ({clients.length})</span>
           </button>
         </div>
       </div>
@@ -317,9 +445,9 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
                 </div>
               </div>
               <p className="text-xl sm:text-2xl font-black text-slate-900">
-                {formatCurrency(stats.totalAmount, currencySymbol)}
+                {formatCurrency(graphData.totalSales || stats.totalAmount, currencySymbol)}
               </p>
-              <p className="text-[11px] text-slate-400 mt-1">Recorded revenue</p>
+              <p className="text-[11px] text-slate-400 mt-1">Recorded revenue ({filterLabel})</p>
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-xs">
@@ -361,6 +489,195 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
                 {formatThousands(stats.views || shop?.views || 0)}
               </p>
               <p className="text-[11px] text-slate-400 mt-1">Catalog views</p>
+            </div>
+          </div>
+
+          {/* ============================================================== */}
+          {/* MOBILE PARITY: LEADS BREAKDOWN & FINANCIAL PROJECTION WIDGETS  */}
+          {/* ============================================================== */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Leads Breakdown (Pie Chart Representation) */}
+            <div className="bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <PieChartIcon className="w-4 h-4 text-[#F21C29]" />
+                    <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
+                      Leads <span className="text-slate-400 font-normal">— Breakdown</span>
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOrderSection('sales');
+                      setActiveSubTab('orders');
+                    }}
+                    className="px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-bold flex items-center gap-1 transition-colors"
+                  >
+                    <span>View All Leads</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {orderSummary.totalOrders === 0 ? (
+                  <div className="py-10 text-center text-slate-400">
+                    <p className="text-xs font-bold">No order leads recorded yet for this timeframe</p>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Share your Biz link to start receiving client orders</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row items-center gap-6 py-2">
+                    {/* SVG Pie Chart */}
+                    <div className="relative w-36 h-36 shrink-0">
+                      <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+                        {pieSlices.map((slice) => {
+                          const strokeDasharray = `${slice.percent} ${100 - slice.percent}`;
+                          const strokeDashoffset = -slice.startPercent;
+                          return (
+                            <circle
+                              key={slice.key}
+                              cx="18"
+                              cy="18"
+                              r="15.915"
+                              fill="transparent"
+                              stroke={slice.color}
+                              strokeWidth="4"
+                              strokeDasharray={strokeDasharray}
+                              strokeDashoffset={strokeDashoffset}
+                              className="transition-all duration-500"
+                            />
+                          );
+                        })}
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <span className="text-xl font-black text-slate-900">{orderSummary.totalOrders}</span>
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Leads</span>
+                      </div>
+                    </div>
+
+                    {/* Breakdown Legend */}
+                    <div className="grid grid-cols-2 gap-3 w-full">
+                      <div className="p-2.5 rounded-xl bg-emerald-50/50 border border-emerald-100">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                          <span className="text-[11px] font-bold text-slate-600">Paid Leads</span>
+                        </div>
+                        <span className="text-sm font-black text-slate-900">{orderSummary.paid}</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-amber-50/50 border border-amber-100">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="w-2 h-2 rounded-full bg-amber-500" />
+                          <span className="text-[11px] font-bold text-slate-600">Pending</span>
+                        </div>
+                        <span className="text-sm font-black text-slate-900">{orderSummary.pending}</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-blue-50/50 border border-blue-100">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="w-2 h-2 rounded-full bg-blue-500" />
+                          <span className="text-[11px] font-bold text-slate-600">Completed</span>
+                        </div>
+                        <span className="text-sm font-black text-slate-900">{orderSummary.completed || 0}</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-red-50/50 border border-red-100">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="w-2 h-2 rounded-full bg-red-500" />
+                          <span className="text-[11px] font-bold text-slate-600">Cancelled</span>
+                        </div>
+                        <span className="text-sm font-black text-slate-900">{orderSummary.cancelled}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Delivery method breakdown footer */}
+              {(orderSummary.online || orderSummary.in_person || orderSummary.pickup) ? (
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <span>Delivery Channels:</span>
+                  <div className="flex items-center gap-3">
+                    {orderSummary.online ? <span>Online: {orderSummary.online}</span> : null}
+                    {orderSummary.in_person ? <span>In-person: {orderSummary.in_person}</span> : null}
+                    {orderSummary.pickup ? <span>Pickup: {orderSummary.pickup}</span> : null}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
+            {/* Financial Projection Table & Sales Activity */}
+            <div className="bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4 text-emerald-600" />
+                    <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
+                      Financial Projection
+                    </h3>
+                  </div>
+                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                    {filterLabel}
+                  </span>
+                </div>
+
+                <div className="border border-slate-200 rounded-2xl overflow-hidden mb-4">
+                  <div className="grid grid-cols-2 divide-x divide-slate-200 bg-slate-50 text-xs font-extrabold text-slate-700 py-2.5 px-4">
+                    <span>Leads Metric</span>
+                    <span className="text-right">Projected Value</span>
+                  </div>
+                  <div className="divide-y divide-slate-100 text-xs">
+                    <div className="grid grid-cols-2 py-3 px-4 items-center">
+                      <span className="font-bold text-slate-900">Leads from All Orders</span>
+                      <span className="text-right font-black text-emerald-700 text-sm">
+                        {formatCurrency(graphData.totalSales || stats.totalAmount, currencySymbol)}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 py-3 px-4 items-center bg-slate-50/40">
+                      <span className="text-slate-600">Average Order Size</span>
+                      <span className="text-right font-bold text-slate-900">
+                        {orderSummary.totalOrders > 0
+                          ? formatCurrency(
+                              (graphData.totalSales || stats.totalAmount) / orderSummary.totalOrders,
+                              currencySymbol
+                            )
+                          : formatCurrency(0, currencySymbol)}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 py-3 px-4 items-center">
+                      <span className="text-slate-600">Tracked Expenses</span>
+                      <span className="text-right font-bold text-slate-500">
+                        {formatCurrency(stats.totalExpenses, currencySymbol)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Timeline Graph Points if available */}
+                {graphData.graphData.length > 0 && (
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">
+                      Recent Performance Timeline
+                    </span>
+                    <div className="flex items-end gap-1.5 h-16 w-full pt-2">
+                      {graphData.graphData.slice(-10).map((pt, i) => {
+                        const maxVal = Math.max(...graphData.graphData.map((g) => g.totalAmount), 1);
+                        const heightPct = Math.max(10, Math.min(100, (pt.totalAmount / maxVal) * 100));
+                        return (
+                          <div key={i} className="flex-1 flex flex-col items-center gap-1 group relative">
+                            <div
+                              style={{ height: `${heightPct}%` }}
+                              className="w-full rounded-t-sm bg-gradient-to-t from-red-600 to-[#F21C29] group-hover:from-emerald-600 group-hover:to-emerald-500 transition-colors"
+                            />
+                            <span className="text-[9px] text-slate-400 font-bold truncate max-w-[28px]">
+                              {pt.date.slice(-5)}
+                            </span>
+                            <div className="absolute -top-7 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-md whitespace-nowrap z-20">
+                              {formatCurrency(pt.totalAmount, currencySymbol)}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -628,19 +945,48 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
       )}
 
       {/* ============================================================== */}
-      {/* TAB 3: ORDERS & LEADS                                          */}
+      {/* TAB 3: LEADS & ORDERS (DUAL TAB: SALES LEADS VS MY ORDERS)      */}
       {/* ============================================================== */}
       {activeSubTab === 'orders' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between flex-wrap gap-3 bg-white rounded-2xl border border-slate-200/80 p-3.5">
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-              {(['all', 'pending', 'paid', 'cancelled'] as const).map((filter) => (
+          {/* Main Dual Selector: Sales Leads received vs My Purchases placed */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-2 sm:p-2.5 flex items-center justify-between flex-wrap gap-2 shadow-xs">
+            <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+              <button
+                type="button"
+                onClick={() => setOrderSection('sales')}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  orderSection === 'sales'
+                    ? 'bg-white text-slate-900 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <ShoppingBag className="w-3.5 h-3.5" />
+                <span>Sales Leads ({salesOrders.length})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setOrderSection('purchases')}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  orderSection === 'purchases'
+                    ? 'bg-white text-slate-900 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <ShoppingBasket className="w-3.5 h-3.5" />
+                <span>My Orders ({purchasedOrders.length})</span>
+              </button>
+            </div>
+
+            {/* Status Pills Filter */}
+            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
+              {(['all', 'pending', 'paid', 'completed', 'cancelled'] as const).map((filter) => (
                 <button
                   key={filter}
                   type="button"
-                  onClick={() => setOrderFilter(filter)}
+                  onClick={() => setOrderStatusFilter(filter)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition-all shrink-0 ${
-                    orderFilter === filter
+                    orderStatusFilter === filter
                       ? 'bg-slate-900 text-white'
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
@@ -649,23 +995,28 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
                 </button>
               ))}
             </div>
-            <span className="text-xs text-slate-400 font-bold">
-              Showing {filteredOrders.length} orders
-            </span>
           </div>
 
           {filteredOrders.length === 0 ? (
             <div className="bg-white rounded-3xl border border-slate-200/80 p-12 text-center text-slate-400">
               <ShoppingBag className="w-10 h-10 mx-auto text-slate-300 mb-2" />
-              <p className="text-sm font-bold text-slate-700">No {orderFilter !== 'all' ? orderFilter : ''} orders found</p>
+              <p className="text-sm font-bold text-slate-700">
+                No {orderStatusFilter !== 'all' ? orderStatusFilter : ''}{' '}
+                {orderSection === 'sales' ? 'sales leads' : 'purchased orders'} found
+              </p>
               <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
-                Incoming orders and booking requests from clients will be tracked and managed here.
+                {orderSection === 'sales'
+                  ? 'Orders placed by customers on your store listings will appear here.'
+                  : 'Items and services you have ordered across the marketplace will be tracked here.'}
               </p>
             </div>
           ) : (
             <div className="space-y-3">
               {filteredOrders.map((order) => {
-                const clientName = order.client?.name || order.user?.name || 'Customer';
+                const partnerName =
+                  orderSection === 'sales'
+                    ? order.client?.name || order.user?.name || 'Customer'
+                    : 'Store Seller';
                 const statusColor =
                   order.status === 'paid' || order.status === 'completed'
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
@@ -680,15 +1031,18 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
                   >
                     <div className="flex items-start gap-3.5">
                       <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700 shrink-0 font-bold text-sm">
-                        {clientName.slice(0, 1).toUpperCase()}
+                        {partnerName.slice(0, 1).toUpperCase()}
                       </div>
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="font-extrabold text-slate-900 text-sm">{clientName}</h4>
+                          <h4 className="font-extrabold text-slate-900 text-sm">{partnerName}</h4>
                           <span
                             className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${statusColor}`}
                           >
                             {order.status || 'Pending'}
+                          </span>
+                          <span className="text-[11px] text-slate-400">
+                            {orderSection === 'sales' ? 'Customer Lead' : 'Your Purchase'}
                           </span>
                         </div>
                         <p className="text-xs text-slate-500 mt-0.5">
@@ -706,7 +1060,7 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
                       <span className="text-base font-black text-slate-900">
                         {formatCurrency(order.totalAmount || order.amount || 0, currencySymbol)}
                       </span>
-                      {order.status !== 'paid' && (
+                      {orderSection === 'sales' && order.status !== 'paid' && (
                         <div className="flex items-center gap-1.5">
                           <button
                             type="button"
@@ -800,7 +1154,7 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
         initialTab={sellModalTab}
         onClose={() => setSellModalOpen(false)}
         onSuccess={() => {
-          loadBizData();
+          loadBizData(dateFilter);
         }}
       />
     </div>
