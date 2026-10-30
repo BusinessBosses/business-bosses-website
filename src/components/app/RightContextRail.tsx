@@ -23,6 +23,7 @@ import { authService } from '../../services/authService';
 import { feedHighlightService } from '../../services/feedHighlightService';
 import { toast } from 'react-toastify';
 import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
+import SuggestedFollowsModal from '../feed/SuggestedFollowsModal';
 
 interface Community {
   id: string;
@@ -56,6 +57,7 @@ export default function RightContextRail() {
   const [loadingCommunities, setLoadingCommunities] = useState<boolean>(true);
   const [loadingBosses, setLoadingBosses] = useState<boolean>(true);
   const [followingMap, setFollowingMap] = useState<Record<string, boolean>>({});
+  const [suggestedModalOpen, setSuggestedModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     checkCurrentUser();
@@ -235,12 +237,13 @@ export default function RightContextRail() {
           <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-900">
             WHO TO CONNECT WITH
           </h4>
-          <Link
-            href="/feed"
-            className="text-xs font-bold text-[#E51927] hover:underline"
+          <button
+            type="button"
+            onClick={() => setSuggestedModalOpen(true)}
+            className="text-xs font-bold text-[#E51927] hover:underline cursor-pointer"
           >
             View all
-          </Link>
+          </button>
         </div>
 
         {loadingBosses ? (
@@ -373,6 +376,16 @@ export default function RightContextRail() {
         <Link href="/apply-featured" className="hover:text-slate-900 transition-colors">Get Featured</Link>
         <Link href="/profile/settings" className="hover:text-slate-900 transition-colors">Settings</Link>
       </div>
+
+      {/* Suggested Follows Modal */}
+      <SuggestedFollowsModal
+        isOpen={suggestedModalOpen}
+        onClose={() => setSuggestedModalOpen(false)}
+        initialFollowingMap={followingMap}
+        onFollowToggled={(uid, isFollowing) => {
+          setFollowingMap((prev) => ({ ...prev, [uid]: isFollowing }));
+        }}
+      />
 
     </aside>
   );
