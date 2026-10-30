@@ -43,6 +43,8 @@ import CommentsModal from '../feed/CommentsModal';
 import { formatThousands } from '../../common/functions/formatThousands';
 import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
 import MyBizHubView from './MyBizHubView';
+import PublicBizCenterView from './PublicBizCenterView';
+import { shopService, Shop } from '../../services/shopService';
 
 interface ProfileViewProps {
   initialUsername?: string;
@@ -65,8 +67,9 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Profile Segments: Profile (User details/tabs) vs My Biz (Biz Centre / Inventory)
-  const [activeSegment, setActiveSegment] = useState<'profile' | 'myBiz'>('profile');
+  // Profile Segments: Profile (User details/tabs) vs My Biz / Biz-Center
+  const [activeSegment, setActiveSegment] = useState<'profile' | 'bizCenter'>('profile');
+  const [userShop, setUserShop] = useState<Shop | null>(null);
   const [activeTab, setActiveTab] = useState<'about' | 'posts' | 'requests' | 'deals'>('about');
 
   // Related data
@@ -127,8 +130,9 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
       // 1. By username
       if (targetUsername && targetUsername !== '_') {
+        const cleanName = targetUsername.replace(/^@+/, '').trim();
         try {
-          const res = await apiClient.get(`/users/username/${encodeURIComponent(targetUsername)}`);
+          const res = await apiClient.get(`/users/username/${encodeURIComponent(cleanName)}`);
           fetchedUser = res.data?.data || res.data;
         } catch (e) {
           console.warn('Could not find user by username, checking fallback', e);
@@ -175,12 +179,15 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
       const uid = fetchedUser.uid || fetchedUser.id;
 
       if (uid) {
-        // Parallel data loading: posts, buyer requests, partner deals, connections & reach
+        // Parallel data loading: posts, buyer requests, partner deals, connections & reach, and shop
         await Promise.allSettled([
           loadPosts(uid, myUid),
           loadBuyerRequests(uid),
           loadDeals(uid),
           loadConnectionStats(uid, myUid),
+          shopService.getUserShop(uid).then((s) => {
+            if (s) setUserShop(s);
+          }),
         ]);
       }
     } catch (err: any) {
@@ -458,9 +465,9 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   return (
     <div className="w-full max-w-4xl mx-auto pb-20">
       {/* ============================================================== */}
-      {/* TOP SEGMENT SWITCHER (For own profile: Profile vs My Biz)       */}
+      {/* TOP SEGMENT SWITCHER (Profile vs My Biz / Biz-Center)            */}
       {/* ============================================================== */}
-      {isMe && (
+      {(isMe || userShop) && (
         <div className="flex justify-center mb-6">
           <div className="inline-flex p-1 bg-slate-200/80 rounded-2xl shadow-inner">
             <button
@@ -476,24 +483,32 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
             </button>
             <button
               type="button"
-              onClick={() => setActiveSegment('myBiz')}
+              onClick={() => setActiveSegment('bizCenter')}
               className={`px-6 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
-                activeSegment === 'myBiz'
+                activeSegment === 'bizCenter'
                   ? 'bg-white text-slate-900 shadow-xs'
                   : 'text-slate-500 hover:text-slate-800'
               }`}
             >
-              My Biz
+              {isMe ? 'My Biz' : 'Biz-Center'}
             </button>
           </div>
         </div>
       )}
 
       {/* ============================================================== */}
-      {/* MY BIZ HUB SEGMENT (Parity with Mobile BottomNavScreen / Shop)   */}
+      {/* BIZ-CENTER SEGMENT (Parity with Mobile BottomNavScreen / Shop)   */}
       {/* ============================================================== */}
-      {isMe && activeSegment === 'myBiz' ? (
-        <MyBizHubView userId={profile?.uid || profile?.id || ''} isPro={isPro} />
+      {activeSegment === 'bizCenter' ? (
+        isMe ? (
+          <MyBizHubView userId={profile?.uid || profile?.id || ''} isPro={isPro} />
+        ) : (
+          <PublicBizCenterView
+            user={profile}
+            shop={userShop}
+            onBackToProfile={() => setActiveSegment('profile')}
+          />
+        )
       ) : (
         /* ============================================================== */
         /* MAIN PROFILE VIEW (Both My Profile & Public Profile Parity)     */
@@ -595,6 +610,17 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                         </>
                       )}
                     </button>
+
+                    {userShop && (
+                      <button
+                        type="button"
+                        onClick={() => setActiveSegment('bizCenter')}
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-[#F21C29] hover:from-red-700 hover:to-[#D01420] text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs"
+                      >
+                        <Store className="w-3.5 h-3.5" />
+                        <span>Visit Biz-Center</span>
+                      </button>
+                    )}
 
                     <Link
                       href={`/inbox`}
