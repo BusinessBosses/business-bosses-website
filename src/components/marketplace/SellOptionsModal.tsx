@@ -16,13 +16,13 @@ import {
   Sparkles,
   Loader2,
   Trash2,
-  Check,
-  AlertCircle,
   HelpCircle,
 } from 'lucide-react';
+import { toast } from 'react-toastify';
 import { apiClient } from '../../lib/apiClient';
 import { authService } from '../../services/authService';
 import { postService } from '../../services/postService';
+import { shopService } from '../../services/shopService';
 
 interface CreateListingModalProps {
   isOpen: boolean;
@@ -59,8 +59,6 @@ export default function CreateListingModal({
   const [currentTab, setCurrentTab] = useState<0 | 1>(initialTab);
   const [loading, setLoading] = useState<boolean>(false);
   const [uploadingImage, setUploadingImage] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   // Common Fields
   const [title, setTitle] = useState<string>('');
@@ -102,8 +100,6 @@ export default function CreateListingModal({
     setDeliveryDays('3-5');
     setDurationMinutes('60');
     setServiceType('One-time');
-    setErrorMsg(null);
-    setSuccessMsg(null);
   };
 
   if (!isOpen) return null;
@@ -113,12 +109,11 @@ export default function CreateListingModal({
     if (!files || files.length === 0) return;
 
     if (images.length + files.length > 5) {
-      setErrorMsg('You can upload a maximum of 5 images per listing.');
+      toast.error('You can upload a maximum of 5 images per listing.');
       return;
     }
 
     setUploadingImage(true);
-    setErrorMsg(null);
     try {
       const uploadedUrls: string[] = [];
       for (let i = 0; i < files.length; i++) {
@@ -129,7 +124,7 @@ export default function CreateListingModal({
       setImages((prev) => [...prev, ...uploadedUrls]);
     } catch (err: any) {
       console.error('Image upload failed', err);
-      setErrorMsg('Failed to upload image. Please check file format and size.');
+      toast.error('Failed to upload image. Please check file format and size.');
     } finally {
       setUploadingImage(false);
       if (fileInputRef.current) {
@@ -151,40 +146,42 @@ export default function CreateListingModal({
 
     // Validations
     if (!title.trim()) {
-      setErrorMsg('Please enter a title / name for your listing.');
+      toast.error('Please enter a title / name for your listing.');
       return;
     }
     if (!price.trim() || isNaN(Number(price)) || Number(price) <= 0) {
-      setErrorMsg('Please enter a valid price greater than 0.');
+      toast.error('Please enter a valid price greater than 0.');
       return;
     }
     if (!category) {
-      setErrorMsg('Please select a category.');
+      toast.error('Please select a category.');
       return;
     }
     if (!description.trim()) {
-      setErrorMsg('Please provide a description.');
+      toast.error('Please provide a description.');
       return;
     }
 
     setLoading(true);
-    setErrorMsg(null);
 
     try {
       const user = await authService.getCurrentUser();
       const uid = user?.uid || authService.getUserId();
-
-      // Retrieve user's shop if available, or generate a fallback shopId
-      let shopId: string | null = null;
-      try {
-        const shopRes = await apiClient.get(`/shops/user-shops/${uid}`);
-        const shopList = shopRes.data?.data?.rows || shopRes.data?.data || [];
-        if (Array.isArray(shopList) && shopList.length > 0) {
-          shopId = shopList[0].id || shopList[0].shopId;
-        }
-      } catch (shopErr) {
-        console.warn('Could not retrieve user shop', shopErr);
+      if (!uid) {
+        toast.error('Please log in to publish a listing.');
+        setLoading(false);
+        return;
       }
+
+      // Ensure valid shopId from Shop table (auto-provision personal shop if not yet created)
+      const shopId = await shopService.ensureUserShop({
+        uid,
+        name: user?.name,
+        username: user?.username,
+        email: user?.email,
+        photoUrl: user?.photoUrl,
+        location: location.trim() || user?.location,
+      });
 
       const numericPrice = parseFloat(price);
       const numericDiscount = discount ? parseFloat(discount) : 0;
@@ -192,67 +189,70 @@ export default function CreateListingModal({
       if (currentTab === 0) {
         // PRODUCT LISTING: POST /goods
         const productPayload = {
+          userId: uid,
+          shopId: shopId,
           name: title.trim(),
           price: numericPrice,
           discount: numericDiscount,
           currency: currency,
           category: category,
-          location: location.trim() || undefined,
+          location: location.trim() || user?.location || 'Global',
           description: description.trim(),
-          image: images[0] || undefined,
-          images: images,
+          image: images[0] || 'https://placehold.co/600x600/F21C29/FFFFFF?text=Product',
+          images: images.length > 0 ? images : ['https://placehold.co/600x600/F21C29/FFFFFF?text=Product'],
+          itemType: 'product',
+          isActive: true,
           quantity: parseInt(quantity) || 1,
           deliveryDuration: deliveryDays,
-          shopId: shopId || `user-shop-${uid}`,
-          userId: uid,
           promote: shouldBoost,
         };
 
         const res = await apiClient.post('/goods', productPayload);
         if (res.data?.success || res.status === 200 || res.status === 201) {
-          setSuccessMsg('Product listing published successfully!');
-          setTimeout(() => {
-            if (onSuccess) onSuccess();
-            onClose();
-          }, 1200);
+          toast.success('Product listing published successfully!');
+          if (onSuccess) onSuccess();
+          onClose();
         } else {
-          throw new Error(res.data?.message || 'Failed to create product listing.');
+          throw new Error(res.data?.error || res.data?.message || 'Failed to create product listing.');
         }
       } else {
         // SERVICE LISTING: POST /services
         const servicePayload = {
+          userId: uid,
+          shopId: shopId,
           name: title.trim(),
           price: numericPrice,
           discount: numericDiscount,
           currency: currency,
           category: category,
-          location: location.trim() || undefined,
+          location: location.trim() || user?.location || 'Global',
           description: description.trim(),
-          image: images[0] || undefined,
-          images: images,
+          image: images[0] || 'https://placehold.co/600x600/F21C29/FFFFFF?text=Service',
+          images: images.length > 0 ? images : ['https://placehold.co/600x600/F21C29/FFFFFF?text=Service'],
+          itemType: 'service',
+          isActive: true,
           serviceDuration: parseInt(durationMinutes) || 60,
           serviceType: serviceType,
-          shopId: shopId || `user-shop-${uid}`,
-          userId: uid,
           promote: shouldBoost,
         };
 
         const res = await apiClient.post('/services', servicePayload);
         if (res.data?.success || res.status === 200 || res.status === 201) {
-          setSuccessMsg('Service listing published successfully!');
-          setTimeout(() => {
-            if (onSuccess) onSuccess();
-            onClose();
-          }, 1200);
+          toast.success('Service listing published successfully!');
+          if (onSuccess) onSuccess();
+          onClose();
         } else {
-          throw new Error(res.data?.message || 'Failed to create service listing.');
+          throw new Error(res.data?.error || res.data?.message || 'Failed to create service listing.');
         }
       }
     } catch (err: any) {
       console.error('Create listing error', err);
-      setErrorMsg(
-        err.response?.data?.message || err.message || 'Error publishing listing. Please check your details.'
-      );
+      const message =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        err.message ||
+        'Error publishing listing. Please check your details.';
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -328,20 +328,6 @@ export default function CreateListingModal({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-4">
-          {errorMsg && (
-            <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs font-bold text-red-600 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>{errorMsg}</span>
-            </div>
-          )}
-
-          {successMsg && (
-            <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-700 flex items-center gap-2">
-              <Check className="w-4 h-4 shrink-0" />
-              <span>{successMsg}</span>
-            </div>
-          )}
-
           {/* 1. Title / Name */}
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1.5">

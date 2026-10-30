@@ -112,6 +112,46 @@ export const shopService = {
   },
 
   /**
+   * Ensure user has a valid shop ID, auto-provisioning a default showcase shop if needed
+   */
+  async ensureUserShop(user: { uid: string; name?: string; username?: string; email?: string; photoUrl?: string; location?: string }): Promise<string> {
+    if (!user || !user.uid) {
+      throw new Error('User authentication required to post a listing.');
+    }
+
+    // 1. Try to fetch existing shop
+    const existingShop = await this.getUserShop(user.uid);
+    if (existingShop && existingShop.id) {
+      return existingShop.id;
+    }
+
+    // 2. Auto-provision shop for user
+    const shopName = user.name || user.username ? `${user.name || user.username}'s Store` : `Store ${user.uid.slice(0, 6)}`;
+    const shopPayload = {
+      userId: user.uid,
+      name: `${shopName} ${Date.now().toString().slice(-4)}`,
+      description: 'Official storefront & showcase on Business Bosses',
+      location: user.location || 'Global',
+      image: user.photoUrl || 'https://placehold.co/400x400/F21C29/FFFFFF?text=Shop',
+      details: 'Showcase shop for marketplace products and professional services',
+      email: user.email || 'user@businessbosses.co.uk',
+      paymentMethods: [
+        {
+          paymentMethod: 'Direct Payment',
+          details: 'Standard settlement or direct buyer arrangement',
+        },
+      ],
+    };
+
+    const res = await apiClient.post('/shops', shopPayload);
+    const created = res.data?.data;
+    if (created && created.id) {
+      return created.id;
+    }
+    throw new Error(res.data?.message || 'Failed to initialize storefront. Please try again.');
+  },
+
+  /**
    * Get shop statistics metrics (GET /dashboard/shop-statistics/:userId)
    */
   async getShopStatistics(userId: string): Promise<ShopStatistics> {
