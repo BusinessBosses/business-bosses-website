@@ -366,8 +366,8 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             <span>Create Post</span>
           </button>
 
-          {/* Quick Footer Links: Settings, Notifications & Performance */}
-          <div className="pt-1 flex items-center justify-between px-2 text-xs font-bold text-slate-600">
+          {/* Quick Footer Links: Settings & Performance */}
+          <div className="pt-1 flex items-center justify-around px-2 text-xs font-bold text-slate-600">
             <Link
               href="/settings"
               className="flex items-center space-x-1 hover:text-slate-900 transition-colors"
@@ -375,21 +375,6 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             >
               <Settings className="w-4 h-4 text-slate-500" />
               <span>Settings</span>
-            </Link>
-            <Link
-              href="/notifications"
-              className="flex items-center space-x-1.5 hover:text-slate-900 transition-colors relative"
-              title="Notifications"
-            >
-              <div className="relative">
-                <Bell className="w-4 h-4 text-slate-500" />
-                {unreadNotifCount > 0 && (
-                  <span className="absolute -top-1.5 -right-2 min-w-3.5 h-3.5 px-0.5 rounded-full bg-[#E51927] text-white text-[9px] font-black flex items-center justify-center leading-none">
-                    {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
-                  </span>
-                )}
-              </div>
-              <span>Notifications</span>
             </Link>
             <Link
               href="/performance"
