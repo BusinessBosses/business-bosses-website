@@ -16,6 +16,7 @@ import {
   Bell
 } from 'lucide-react';
 import { authService } from '../../services/authService';
+import { notificationService } from '../../services/notificationService';
 import { apiClient } from '../../lib/apiClient';
 import { formatThousands } from '../../common/functions/formatThousands';
 import { getUserProfileUrl } from '../../common/functions/getUserProfileUrl';
@@ -46,6 +47,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
   const [profile, setProfile] = useState<LeftUserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [unreadNotifCount, setUnreadNotifCount] = useState<number>(0);
 
   useEffect(() => {
     const authenticated = authService.isAuthenticated();
@@ -64,6 +66,11 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
         setLoading(false);
         return;
       }
+
+      // Check unread notifications count
+      notificationService.getUnreadCount(user.unReadCount).then((cnt) => {
+        setUnreadNotifCount(cnt);
+      }).catch(() => {});
 
       const uid = user.uid || user.id;
 
@@ -371,10 +378,17 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             </Link>
             <Link
               href="/notifications"
-              className="flex items-center space-x-1 hover:text-slate-900 transition-colors"
+              className="flex items-center space-x-1.5 hover:text-slate-900 transition-colors relative"
               title="Notifications"
             >
-              <Bell className="w-4 h-4 text-slate-500" />
+              <div className="relative">
+                <Bell className="w-4 h-4 text-slate-500" />
+                {unreadNotifCount > 0 && (
+                  <span className="absolute -top-1.5 -right-2 min-w-3.5 h-3.5 px-0.5 rounded-full bg-[#E51927] text-white text-[9px] font-black flex items-center justify-center leading-none">
+                    {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
+                  </span>
+                )}
+              </div>
               <span>Notifications</span>
             </Link>
             <Link

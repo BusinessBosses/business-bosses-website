@@ -61,6 +61,27 @@ export const notificationService = {
   },
 
   /**
+   * Get unread notifications count for the current user.
+   * Checks user record first or falls back to checking unread items in notifications.
+   */
+  async getUnreadCount(fallbackUnReadCount?: number): Promise<number> {
+    try {
+      if (typeof fallbackUnReadCount === 'number' && fallbackUnReadCount > 0) {
+        return fallbackUnReadCount;
+      }
+      // If user unReadCount is undefined or 0, also check the live notifications list
+      const res = await this.getNotifications(0, 30);
+      if (res && Array.isArray(res.notifications)) {
+        const unreadItems = res.notifications.filter((n) => n.isRead === false);
+        return unreadItems.length;
+      }
+      return fallbackUnReadCount ?? 0;
+    } catch (e) {
+      return fallbackUnReadCount ?? 0;
+    }
+  },
+
+  /**
    * Delete a notification by ID
    */
   async deleteNotification(notificationId: string): Promise<any> {

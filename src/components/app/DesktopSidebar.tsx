@@ -19,6 +19,8 @@ import {
   Bell,
 } from 'lucide-react';
 import { authService } from '../../services/authService';
+import { chatService } from '../../services/chatService';
+import { notificationService } from '../../services/notificationService';
 
 interface UserProfile {
   name: string;
@@ -45,6 +47,8 @@ export default function DesktopSidebar() {
   const pathname = usePathname();
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [unreadNotifCount, setUnreadNotifCount] = useState<number>(0);
+  const [unreadInboxCount, setUnreadInboxCount] = useState<number>(0);
 
   useEffect(() => {
     const authenticated = authService.isAuthenticated();
@@ -71,6 +75,17 @@ export default function DesktopSidebar() {
             ? user.coins
             : 0,
       });
+
+      // Load unread notification count
+      const notifCount = typeof user.unReadCount === 'number' && user.unReadCount > 0 
+        ? user.unReadCount 
+        : await notificationService.getUnreadCount(user.unReadCount);
+      setUnreadNotifCount(notifCount);
+
+      // Load unread inbox count
+      const myUid = user.uid || user.id || '';
+      const unreadChats = await chatService.getUnreadCount(myUid);
+      setUnreadInboxCount(unreadChats);
     }
   };
 
@@ -124,24 +139,43 @@ export default function DesktopSidebar() {
             pathname === item.href ||
             (item.href !== '/feed' && pathname.startsWith(item.href));
 
+          const isNotifications = item.label === 'Notifications';
+          const isInbox = item.label === 'Inbox';
+
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all group ${
+              className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all group ${
                 isActive
                   ? 'bg-red-50 text-[#F21C29] font-bold shadow-sm'
                   : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold'
               }`}
             >
-              <Icon
-                className={`w-5 h-5 transition-transform group-hover:scale-105 ${
-                  isActive
-                    ? 'stroke-[2.5] text-[#F21C29]'
-                    : 'stroke-2 text-slate-400 group-hover:text-slate-600'
-                }`}
-              />
-              <span className="text-sm tracking-tight">{item.label}</span>
+              <div className="flex items-center space-x-3">
+                <Icon
+                  className={`w-5 h-5 transition-transform group-hover:scale-105 ${
+                    isActive
+                      ? 'stroke-[2.5] text-[#F21C29]'
+                      : 'stroke-2 text-slate-400 group-hover:text-slate-600'
+                  }`}
+                />
+                <span className="text-sm tracking-tight">{item.label}</span>
+              </div>
+
+              {/* Notification unread badge */}
+              {isNotifications && unreadNotifCount > 0 && (
+                <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none shadow-xs">
+                  {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
+                </span>
+              )}
+
+              {/* Inbox unread badge */}
+              {isInbox && unreadInboxCount > 0 && (
+                <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none shadow-xs">
+                  {unreadInboxCount > 99 ? '99+' : unreadInboxCount}
+                </span>
+              )}
             </Link>
           );
         })}

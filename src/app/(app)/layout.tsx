@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import LeftUserProfileRail from '../../components/app/LeftUserProfileRail';
 import MobileBottomNav from '../../components/app/MobileBottomNav';
 import AppTopHeader from '../../components/app/AppTopHeader';
@@ -17,6 +18,9 @@ export default function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isInbox = pathname === '/inbox' || pathname?.startsWith('/inbox/');
+
   const [isPostOptionsOpen, setIsPostOptionsOpen] = useState(false);
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   const [isSellOpen, setIsSellOpen] = useState(false);
@@ -29,14 +33,14 @@ export default function AppLayout({
       <LeftUserProfileRail onOpenCreatePost={() => setIsCreatePostOpen(true)} />
       
       {/* 2. Center Content Stream */}
-      <div className="flex-1 flex flex-col min-w-0 lg:pl-[280px] xl:pr-[320px]">
+      <div className={`flex-1 flex flex-col min-w-0 lg:pl-[280px] ${isInbox ? 'xl:pr-0' : 'xl:pr-[320px]'}`}>
         {/* Top Header Bar with navigation pills & triggers */}
         <AppTopHeader 
           onOpenCreatePost={() => setIsCreatePostOpen(true)}
           onOpenOpportunities={() => setIsFindOppOpen(true)}
         />
         
-        <main className="flex-1 w-full mx-auto pb-24 lg:pb-8 pt-1 lg:pt-2 px-3 sm:px-4 md:px-6 relative">
+        <main className={`flex-1 w-full mx-auto relative ${isInbox ? 'pb-20 lg:pb-2 pt-0 px-2 sm:px-3 md:px-4 max-w-[1600px]' : 'pb-24 lg:pb-8 pt-1 lg:pt-2 px-3 sm:px-4 md:px-6'}`}>
           {children}
         </main>
         
@@ -44,9 +48,9 @@ export default function AppLayout({
         <MobileBottomNav onOpenCreate={() => setIsPostOptionsOpen(true)} />
       </div>
 
-      {/* 3. Right Context Rail (Pro Membership, Who To Connect With, Communities, Magazine) */}
-      <RightContextRail />
-      <SmartchatWidget />
+      {/* 3. Right Context Rail (Pro Membership, Who To Connect With, Communities, Magazine) - hidden on inbox for full-width workspace */}
+      {!isInbox && <RightContextRail />}
+      {!isInbox && <SmartchatWidget />}
 
       {/* Center Action Sheet & Handlers */}
       <PostOptionsModal

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { chatService } from '../../services/chatService';
+import { notificationService } from '../../services/notificationService';
 
 interface AppTopHeaderProps {
   onOpenCreatePost?: () => void;
@@ -52,10 +53,11 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
         const name = user.fullname || user.name || user.username || 'B';
         setInitial(name.charAt(0).toUpperCase());
 
-        // Notifications unread count from user record
-        if (typeof user.unReadCount === 'number') {
-          setUnreadNotifCount(user.unReadCount);
-        }
+        // Notifications unread count from user record & notification service
+        const notifCount = typeof user.unReadCount === 'number' && user.unReadCount > 0 
+          ? user.unReadCount 
+          : await notificationService.getUnreadCount(user.unReadCount);
+        setUnreadNotifCount(notifCount);
 
         // Accurately compute unread inbox messages count
         const myUid = user.uid || user.id || '';
@@ -125,8 +127,8 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
           >
             <Bell className="w-4 h-4" />
             {unreadNotifCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E51927]"></span>
+              <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none shadow-xs">
+                {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
               </span>
             )}
           </Link>

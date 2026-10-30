@@ -73,12 +73,25 @@ export const chatService = {
     }
   },
 
-  async markAsSeen(chatId: string): Promise<any> {
+  async markAsSeen(senderUid: string): Promise<any> {
     try {
-      const res = await apiClient.put('/chats/seen', { chatId });
+      const res = await apiClient.put('/chats/seen', { senderUid });
       return res.data;
     } catch (e) {
       console.error('Failed to mark seen', e);
+    }
+  },
+
+  /**
+   * Delete a conversation thread with a partner
+   */
+  async deleteChat(chatPartyId: string): Promise<any> {
+    try {
+      // First try REST if available
+      const res = await apiClient.delete(`/chats/party/${chatPartyId}`).catch(() => null);
+      return res?.data;
+    } catch (e) {
+      console.error('Failed to delete chat', e);
     }
   },
 
