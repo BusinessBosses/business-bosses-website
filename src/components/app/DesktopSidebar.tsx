@@ -34,13 +34,12 @@ const navItems = [
   { label: 'Feed', href: '/feed', icon: Flame },
   { label: 'Boss Up', href: '/boss-up', icon: Sparkles },
   { label: 'Inbox', href: '/inbox', icon: MessageSquare },
-  { label: 'Notifications', href: '/notifications', icon: Bell },
   { label: 'Marketplace', href: '/marketplace', icon: ShoppingBag },
   { label: 'Requests', href: '/requests', icon: Handshake },
   { label: 'Performance', href: '/performance', icon: TrendingUp },
   { label: 'Monetization', href: '/subscription', icon: CreditCard },
   { label: 'Profile', href: '/profile', icon: User },
-  { label: 'Settings', href: '/settings', icon: Settings },
+  { label: 'Settings', href: '/profile/settings', icon: Settings },
 ];
 
 export default function DesktopSidebar() {

@@ -72,6 +72,17 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   const [userShop, setUserShop] = useState<Shop | null>(null);
   const [activeTab, setActiveTab] = useState<'about' | 'posts' | 'requests' | 'deals'>('about');
 
+  // Check URL query on mount for direct tab/segment navigation (e.g. /profile?tab=biz)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab') || urlParams.get('segment');
+      if (tabParam === 'biz' || tabParam === 'bizCenter' || tabParam === 'shop' || tabParam === 'mybiz') {
+        setActiveSegment('bizCenter');
+      }
+    }
+  }, []);
+
   // Related data
   const [posts, setPosts] = useState<Post[]>([]);
   const [requests, setRequests] = useState<BuyerRequest[]>([]);
@@ -514,37 +525,11 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
         /* MAIN PROFILE VIEW (Both My Profile & Public Profile Parity)     */
         /* ============================================================== */
         <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-          {/* Cover Banner */}
-          <div className="h-44 sm:h-56 w-full bg-gradient-to-r from-slate-950 via-[#2A1016] to-[#F21C29] relative">
-            {profile?.coverPhoto && (
-              <img src={profile.coverPhoto} alt="Cover" loading="lazy" decoding="async" className="w-full h-full object-cover" />
-            )}
-            {/* Share / Copy Profile Button */}
-            <button
-              type="button"
-              onClick={handleShareProfile}
-              className="absolute top-4 right-4 p-2.5 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-xs text-white transition-all shadow-md flex items-center gap-1.5 text-xs font-bold"
-              title="Share profile link"
-            >
-              {copiedLink ? (
-                <>
-                  <Check className="w-4 h-4 text-emerald-400" />
-                  <span className="hidden sm:inline text-emerald-400">Link Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Share2 className="w-4 h-4" />
-                  <span className="hidden sm:inline">Share</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Profile Header Details */}
-          <div className="px-5 sm:px-8 pb-6">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between -mt-16 sm:-mt-20 gap-4 mb-4">
-              {/* Avatar with Gold Star & Boss of the Week Ring */}
-              <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full border-4 border-white bg-slate-100 overflow-hidden shadow-lg shrink-0">
+          {/* Profile Header Details (Clean white card matching mobile app, no cover banner) */}
+          <div className="p-5 sm:p-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              {/* Avatar with Gold Star & Pro Member Badge */}
+              <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-slate-100 bg-slate-100 overflow-hidden shadow-sm shrink-0">
                 {profile?.photoUrl ? (
                   <SafeImage
                     src={profile.photoUrl}
@@ -567,18 +552,38 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                 )}
               </div>
 
-              {/* Action Buttons: Connect / Message or Settings */}
-              <div className="flex items-center gap-2.5">
+              {/* Action Buttons: Connect / Message / Settings / Share */}
+              <div className="flex items-center gap-2.5 flex-wrap">
+                {/* Share / Copy Profile Button */}
+                <button
+                  type="button"
+                  onClick={handleShareProfile}
+                  className="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-2xs flex items-center gap-1.5 text-xs font-bold"
+                  title="Share profile link"
+                >
+                  {copiedLink ? (
+                    <>
+                      <Check className="w-4 h-4 text-emerald-500" />
+                      <span className="hidden sm:inline text-emerald-600">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="w-4 h-4" />
+                      <span className="hidden sm:inline">Share</span>
+                    </>
+                  )}
+                </button>
+
                 {isMe ? (
                   <>
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200/80 text-amber-700 text-xs font-bold shadow-2xs">
+                    <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 border border-amber-200/80 text-amber-700 text-xs font-bold shadow-2xs">
                       <Coins className="w-4 h-4 text-amber-500" />
                       <span>{formatThousands(coins)} Coins</span>
                     </div>
 
                     <Link
                       href="/profile/settings"
-                      className="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+                      className="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-2xs"
                       title="Settings"
                     >
                       <Settings className="w-4 h-4" />

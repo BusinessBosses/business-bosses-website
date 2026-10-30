@@ -371,7 +371,7 @@ export default function RightContextRail() {
         <Link href="/privacypolicy" className="hover:text-slate-900 transition-colors">Privacy</Link>
         <Link href="/becomeapartner" className="hover:text-slate-900 transition-colors">Partners</Link>
         <Link href="/apply-featured" className="hover:text-slate-900 transition-colors">Get Featured</Link>
-        <Link href="/settings" className="hover:text-slate-900 transition-colors">Settings</Link>
+        <Link href="/profile/settings" className="hover:text-slate-900 transition-colors">Settings</Link>
       </div>
 
     </aside>

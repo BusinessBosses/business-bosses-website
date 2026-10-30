@@ -244,10 +244,14 @@ export const bossUpService = {
         imageString = 'https://api.businessbosses.co.uk/appfiles/1698854755_13_download_(1).png';
       }
 
+      // Ensure timestamp is strictly in the past (e.g. 5 seconds ago) so database
+      // query `timestamp: { [Op.lt]: Date.now() }` immediately includes this new entry
+      const pastTimestamp = Date.now() - 5000;
+
       const payload = {
         title: body.title,
         description: body.description,
-        timestamp: Date.now(),
+        timestamp: pastTimestamp,
         industryId: body.industryId,
         ytUrl: body.ytUrl || null,
         images: imageString,

@@ -210,38 +210,33 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
 
       {isAuth && profile ? (
         <div className="space-y-3.5">
-          {/* Main User Card with Soft Rose Top Banner */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs overflow-hidden">
-            {/* Top Pink Banner Area with Floating Avatar & Coins Pill */}
-            <div className="relative bg-[#FFF0F2] h-20 px-4 pt-3 flex items-start justify-between">
+          {/* Main User Card (Clean white card matching mobile app, no cover banner) */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs overflow-hidden p-4">
+            {/* Top Row with Avatar & Coins Pill */}
+            <div className="flex items-center justify-between gap-3">
               {/* Circular Avatar / Monogram */}
-              <div className="absolute -bottom-6 left-4">
-                <Link
-                  href={getUserProfileUrl({ username: profile.username, uid: profile.uid })}
-                  className="relative block w-14 h-14 rounded-full overflow-hidden bg-[#99154B] text-white ring-4 ring-white shadow-xs group"
-                >
-                  {profile.avatarUrl ? (
-                    <Image
-                      src={profile.avatarUrl}
-                      alt={profile.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center font-bold text-base tracking-wide bg-[#8B1538]">
-                      {getInitials(profile.name)}
-                    </div>
-                  )}
-                </Link>
-              </div>
-
-              {/* Empty spacer so coins push to right */}
-              <div />
+              <Link
+                href={getUserProfileUrl({ username: profile.username, uid: profile.uid })}
+                className="relative block w-14 h-14 rounded-full overflow-hidden bg-[#99154B] text-white ring-2 ring-slate-100 shadow-xs group shrink-0"
+              >
+                {profile.avatarUrl ? (
+                  <Image
+                    src={profile.avatarUrl}
+                    alt={profile.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center font-bold text-base tracking-wide bg-[#8B1538]">
+                    {getInitials(profile.name)}
+                  </div>
+                )}
+              </Link>
 
               {/* Coins Pill */}
               <Link
                 href="/subscription"
-                className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-amber-50/90 hover:bg-amber-100/90 border border-amber-200 rounded-full transition-colors shadow-2xs"
+                className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 bg-amber-50/90 hover:bg-amber-100/90 border border-amber-200 rounded-full transition-colors shadow-2xs"
                 title="Your Coins"
               >
                 <div className="w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] flex items-center justify-center leading-none">
@@ -254,7 +249,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             </div>
 
             {/* Profile Info Body */}
-            <div className="pt-8 px-4 pb-4">
+            <div className="pt-3">
               <Link
                 href={getUserProfileUrl({ username: profile.username, uid: profile.uid })}
                 className="block group"
@@ -309,7 +304,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
                   View profile
                 </Link>
                 <Link
-                  href="/marketplace"
+                  href="/profile?tab=biz"
                   className="py-2 px-2 text-center text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-2xs"
                 >
                   My Biz
@@ -369,7 +364,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
           {/* Quick Footer Links: Settings & Performance */}
           <div className="pt-1 flex items-center justify-around px-2 text-xs font-bold text-slate-600">
             <Link
-              href="/settings"
+              href="/profile/settings"
               className="flex items-center space-x-1 hover:text-slate-900 transition-colors"
               title="Settings"
             >

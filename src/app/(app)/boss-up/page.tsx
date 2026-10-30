@@ -28,6 +28,7 @@ import BossUpInfoModal from '../../../components/bossUp/BossUpInfoModal';
 import LearningHubModal from '../../../components/bossUp/LearningHubModal';
 import { getUserProfileUrl } from '../../../common/functions/getUserProfileUrl';
 import { toast } from 'react-toastify';
+import { authService } from '../../../services/authService';
 
 interface AppDownloadModalInfo {
   title: string;
@@ -66,8 +67,14 @@ export default function BossUpPage() {
   const [learningHubModalOpen, setLearningHubModalOpen] = useState(false);
   const [commentPost, setCommentPost] = useState<Post | null>(null);
 
+  // Current authenticated user state for challenge eligibility checks
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
   useEffect(() => {
     loadCategories();
+    authService.getCurrentUser().then((user) => {
+      if (user) setCurrentUser(user);
+    }).catch(() => {});
   }, []);
 
   const loadCategories = async () => {
@@ -137,6 +144,66 @@ export default function BossUpPage() {
     if (!activeChallenge) return;
     setIsJoined(!isJoined);
     await bossUpService.toggleJoinIndustry(activeChallenge.industryId);
+  };
+
+  /**
+   * Helper to verify if the user is blocked from posting multiple entries
+   * Strict parity with Flutter mobile app (bossup_screen.dart L609-678)
+   */
+  const checkPostEligibility = (challenge: BossUpCategory): { canPost: boolean; reason?: string } => {
+    const uid = currentUser?.uid || authService.getUserId();
+    const isBossOfTheWeek = challenge.industryId === '-MsUOGcOT9oRXGakCcJv';
+
+    // 1. Mobile Check for Boss of the Week Challenge:
+    // User can only post once in 2 weeks (1209600000 ms cooldown)
+    if (isBossOfTheWeek) {
+      const now = Date.now();
+      const previousStamp = Number(currentUser?.bossOfTheWeekTimeStamp || 0);
+      if (previousStamp && previousStamp + 1209600000 > now) {
+        return {
+          canPost: false,
+          reason: 'You may have posted in Boss Up Challenge in the past 2 weeks. You can only post once every 2 weeks.',
+        };
+      }
+    }
+
+    // 2. Mobile Check for Industry Specific Challenges:
+    // User can only post once in a challenge based on user.postChallenges
+    if (!isBossOfTheWeek && currentUser?.postChallenges) {
+      const postChallengesList = Array.isArray(currentUser.postChallenges)
+        ? currentUser.postChallenges
+        : typeof currentUser.postChallenges === 'string'
+        ? currentUser.postChallenges.split(';')
+        : [];
+      if (postChallengesList.includes(challenge.industryId)) {
+        return {
+          canPost: false,
+          reason: 'You can only post once in a challenge',
+        };
+      }
+    }
+
+    // 3. Fallback: Check if the user already has a live entry in this active challenge
+    if (uid && challengePosts.some((post) => String(post.author?.id) === String(uid))) {
+      return {
+        canPost: false,
+        reason: isBossOfTheWeek
+          ? 'You have already submitted an entry for this week.'
+          : 'You can only post once in a challenge',
+      };
+    }
+
+    return { canPost: true };
+  };
+
+  const handleEnterClick = () => {
+    if (!activeChallenge) return;
+    const { canPost, reason } = checkPostEligibility(activeChallenge);
+    if (!canPost) {
+      toast.error(reason || 'You have already entered this challenge.');
+      return;
+    }
+    setCreateEntryModalOpen(true);
   };
 
   // If viewing a specific Challenge (Parity with mobile BossUpSection)
@@ -210,13 +277,31 @@ export default function BossUpPage() {
                     </p>
                   )}
                 </div>
-                <button
-                  onClick={() => setCreateEntryModalOpen(true)}
-                  className="px-4 py-2 bg-[#F21C29] hover:bg-[#D01420] text-white text-xs font-bold rounded-xl shadow-xs transition-all shrink-0 flex items-center gap-1.5"
-                >
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Enter</span>
-                </button>
+                {(() => {
+                  const { canPost } = checkPostEligibility(activeChallenge);
+                  return (
+                    <button
+                      onClick={handleEnterClick}
+                      className={`px-4 py-2 text-white text-xs font-bold rounded-xl shadow-xs transition-all shrink-0 flex items-center gap-1.5 ${
+                        canPost
+                          ? 'bg-[#F21C29] hover:bg-[#D01420]'
+                          : 'bg-slate-400 hover:bg-slate-500 cursor-pointer'
+                      }`}
+                    >
+                      {canPost ? (
+                        <>
+                          <Sparkles className="w-3.5 h-3.5" />
+                          <span>Enter</span>
+                        </>
+                      ) : (
+                        <>
+                          <Check className="w-3.5 h-3.5" />
+                          <span>Entered</span>
+                        </>
+                      )}
+                    </button>
+                  );
+                })()}
               </div>
 
               {/* Stats Bar */}
@@ -302,7 +387,7 @@ export default function BossUpPage() {
                   Be the first business to enter this challenge and get promoted!
                 </p>
                 <button
-                  onClick={() => setCreateEntryModalOpen(true)}
+                  onClick={handleEnterClick}
                   className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F21C29] text-white text-xs font-bold hover:bg-[#d91925] transition-colors"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
@@ -362,6 +447,9 @@ export default function BossUpPage() {
           category={activeChallenge}
           onSuccess={() => {
             handleChallengeClick(activeChallenge);
+            authService.fetchAndCacheUser().then((u) => {
+              if (u) setCurrentUser(u);
+            }).catch(() => {});
           }}
         />
 
