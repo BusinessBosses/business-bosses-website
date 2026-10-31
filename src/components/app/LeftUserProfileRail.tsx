@@ -44,8 +44,44 @@ interface LeftUserProfileRailProps {
 }
 
 export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfileRailProps) {
-  const [profile, setProfile] = useState<LeftUserProfile | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  // Initialize synchronously with cached profile if available to avoid fresh loading skeleton flash
+  const [profile, setProfile] = useState<LeftUserProfile | null>(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const cached = localStorage.getItem('bb_user_profile') || localStorage.getItem('user');
+      if (cached) {
+        const u = JSON.parse(cached);
+        const uid = u.uid || u.id;
+        if (uid) {
+          const role = u.occupation || u.industry || u.category || u.companyName || '';
+          return {
+            uid,
+            name: u.fullname || u.name || 'User',
+            username: u.username || 'user',
+            headline: role ? `@${u.username || 'user'} · ${role}` : `@${u.username || 'user'}`,
+            bio: u.bio || u.description || '',
+            avatarUrl: u.profilePicture || u.image || u.photoUrl || undefined,
+            coinsCount: Number(u.coinscount || u.coinsCount || u.coins || 0),
+            followersCount: Number(u.connectionCount || 0),
+            followingCount: Number(u.connectedCount || 0),
+            reachScore: Number(u.reachScore || 0),
+            postsCount: 0,
+            requestsCount: 0,
+            savedCount: 0,
+            completionPercentage: 75,
+            hasShop: Boolean(u.hasShop || u.shopId),
+          };
+        }
+      }
+    } catch {}
+    return null;
+  });
+
+  const [loading, setLoading] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    const hasCached = !!(localStorage.getItem('bb_user_profile') || localStorage.getItem('user'));
+    return !hasCached;
+  });
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [unreadNotifCount, setUnreadNotifCount] = useState<number>(0);
 

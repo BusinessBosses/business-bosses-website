@@ -23,12 +23,50 @@ import {
   Eye,
   EyeOff,
   Sparkles,
+  Building2,
+  Briefcase,
+  Globe,
+  Instagram,
+  Twitter,
+  MapPin,
+  Award,
+  Package,
+  Plus,
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { authService } from '../../../../services/authService';
 import { postService } from '../../../../services/postService';
 import { userService } from '../../../../services/userService';
 import { formatThousands } from '../../../../common/functions/formatThousands';
+import { POPULAR_COUNTRIES } from '../../../../components/buyerRequests/CreateBuyerRequestModal';
+
+const CATEGORIES = [
+  'Agriculture, Food & Beverage',
+  'Business Services & Consulting',
+  'Learning & Education',
+  'Construction & Real Estate',
+  'Fashion & Beauty',
+  'Finance & Legal',
+  'Healthcare & Wellness',
+  'Home, Gardens & Outdoors',
+  'Jewellery & Timepieces',
+  'Media & Entertainment',
+  'Security, Safety & Equipment',
+  'Technology, Games & Electronic',
+  'Vehicle & Transportation',
+  'Other',
+];
+
+const AGE_RANGES = ['18-24', '25-34', '35-44', '45-54', '55-64', '64+'];
+const GENDERS = ['Male', 'Female', 'Other'];
+const MATCH_TYPES = [
+  { value: 'buyer', label: 'Buyer (Looking for products to buy)' },
+  { value: 'seller', label: 'Seller (Selling products / items)' },
+  { value: 'supplier', label: 'Supplier (Wholesale / Raw materials)' },
+  { value: 'partner', label: 'Partner (Joint ventures / Co-founders)' },
+  { value: 'investor', label: 'Investor (Seeking funding or deals)' },
+  { value: 'mentor', label: 'Mentor / Advisor (Guidance & coaching)' },
+];
 
 const CURRENCY_LIST = [
   { code: 'USD', name: 'US Dollar', symbol: '$' },
@@ -47,20 +85,55 @@ const CURRENCY_LIST = [
 export default function ProfileSettingsPage() {
   const router = useRouter();
 
-  // User Profile State
-  const [loading, setLoading] = useState<boolean>(true);
-  const [savingProfile, setSavingProfile] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  // Initial cached user for instant rendering without flash
+  const cachedUser = typeof window !== 'undefined'
+    ? (() => {
+        try {
+          const s = localStorage.getItem('bb_user_profile') || localStorage.getItem('user');
+          return s ? JSON.parse(s) : null;
+        } catch {
+          return null;
+        }
+      })()
+    : null;
 
-  // Form Fields
-  const [name, setName] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [bio, setBio] = useState<string>('');
-  const [avatarUrl, setAvatarUrl] = useState<string>('');
+  // User Profile State
+  const [loading, setLoading] = useState<boolean>(!cachedUser);
+  const [savingProfile, setSavingProfile] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<any>(cachedUser);
+
+  // Personal Info Fields
+  const [name, setName] = useState<string>(cachedUser?.name || cachedUser?.fullname || '');
+  const [surname, setSurname] = useState<string>(cachedUser?.surname || '');
+  const [username, setUsername] = useState<string>(cachedUser?.username || '');
+  const [email, setEmail] = useState<string>(cachedUser?.email || '');
+  const [phone, setPhone] = useState<string>(cachedUser?.phone || cachedUser?.phoneNumber || '');
+  const [bio, setBio] = useState<string>(cachedUser?.bio || cachedUser?.description || '');
+  const [avatarUrl, setAvatarUrl] = useState<string>(cachedUser?.photoUrl || cachedUser?.avatarUrl || cachedUser?.profilePicture || '');
+  const [gender, setGender] = useState<string>(cachedUser?.gender || 'Male');
+  const [ageRange, setAgeRange] = useState<string>(cachedUser?.ageRange || '25-34');
+
+  // Business & Match Fields (Mobile Parity)
+  const [companyName, setCompanyName] = useState<string>(cachedUser?.companyName || '');
+  const [industry, setIndustry] = useState<string>(cachedUser?.industry || cachedUser?.category || 'Business Services & Consulting');
+  const [location, setLocation] = useState<string>(cachedUser?.location || '');
+  const [website, setWebsite] = useState<string>(cachedUser?.website || '');
+  const [instagram, setInstagram] = useState<string>(cachedUser?.instagram || '');
+  const [twitter, setTwitter] = useState<string>(cachedUser?.twitter || '');
+  const [matchType, setMatchType] = useState<string>(cachedUser?.matchType || 'partner');
+
+  // Products & Services & Achievements
+  const [productsandservices, setProductsandservices] = useState<string[]>(
+    Array.isArray(cachedUser?.productsandservices) ? cachedUser.productsandservices : []
+  );
+  const [newProductInput, setNewProductInput] = useState<string>('');
+  const [achievements, setAchievements] = useState<string[]>(
+    Array.isArray(cachedUser?.achievements) ? cachedUser.achievements : []
+  );
+  const [newAchievementInput, setNewAchievementInput] = useState<string>('');
+
   const [uploadingAvatar, setUploadingAvatar] = useState<boolean>(false);
-  const [preferredCurrency, setPreferredCurrency] = useState<string>('USD');
+  const [preferredCurrency, setPreferredCurrency] = useState<string>(cachedUser?.preferredCurrency || 'USD');
 
   // Modals & Panels
   const [currencyModalOpen, setCurrencyModalOpen] = useState<boolean>(false);
@@ -85,7 +158,6 @@ export default function ProfileSettingsPage() {
 
   const loadUserProfile = async () => {
     try {
-      setLoading(true);
       const uid = authService.getUserId();
       if (!uid) {
         toast.info('Please sign in to view your settings');
@@ -97,16 +169,46 @@ export default function ProfileSettingsPage() {
       if (userData) {
         setCurrentUser(userData);
         setName(userData.name || userData.fullname || '');
+        setSurname(userData.surname || '');
         setUsername(userData.username || '');
         setEmail(userData.email || '');
         setPhone(userData.phone || userData.phoneNumber || '');
         setBio(userData.bio || userData.description || '');
         setAvatarUrl(userData.photoUrl || userData.avatarUrl || userData.profilePicture || '');
         setPreferredCurrency(userData.preferredCurrency || 'USD');
+        setGender(userData.gender || 'Male');
+        setAgeRange(userData.ageRange || '25-34');
+        setCompanyName(userData.companyName || '');
+        setIndustry(userData.industry || userData.category || 'Business Services & Consulting');
+        setLocation(userData.location || '');
+        setWebsite(userData.website || '');
+        setInstagram(userData.instagram || '');
+        setTwitter(userData.twitter || '');
+        setMatchType(userData.matchType || 'partner');
+
+        if (Array.isArray(userData.productsandservices)) {
+          setProductsandservices(userData.productsandservices);
+        } else if (typeof userData.productsandservices === 'string' && userData.productsandservices) {
+          setProductsandservices(userData.productsandservices.split('+').filter(Boolean));
+        }
+
+        if (Array.isArray(userData.achievements)) {
+          setAchievements(userData.achievements);
+        } else if (typeof userData.achievements === 'string' && userData.achievements) {
+          setAchievements(userData.achievements.split('+').filter(Boolean));
+        }
+
+        // Cache freshest copy
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('bb_user_profile', JSON.stringify(userData));
+          localStorage.setItem('user', JSON.stringify(userData));
+        }
       }
     } catch (err: any) {
       console.error('Failed to load user profile for settings', err);
-      toast.error('Failed to load profile details');
+      if (!currentUser) {
+        toast.error('Failed to load profile details');
+      }
     } finally {
       setLoading(false);
     }
@@ -131,6 +233,44 @@ export default function ProfileSettingsPage() {
     }
   };
 
+  const handleAddProduct = () => {
+    const trimmed = newProductInput.trim();
+    if (!trimmed) return;
+    if (productsandservices.length >= 7) {
+      toast.info('You can add up to 7 products and services');
+      return;
+    }
+    if (productsandservices.includes(trimmed)) {
+      toast.info('Item is already in your list');
+      return;
+    }
+    setProductsandservices([...productsandservices, trimmed]);
+    setNewProductInput('');
+  };
+
+  const handleRemoveProduct = (indexToRemove: number) => {
+    setProductsandservices(productsandservices.filter((_, idx) => idx !== indexToRemove));
+  };
+
+  const handleAddAchievement = () => {
+    const trimmed = newAchievementInput.trim();
+    if (!trimmed) return;
+    if (achievements.length >= 3) {
+      toast.info('You can add up to 3 achievements');
+      return;
+    }
+    if (achievements.includes(trimmed)) {
+      toast.info('Achievement already added');
+      return;
+    }
+    setAchievements([...achievements, trimmed]);
+    setNewAchievementInput('');
+  };
+
+  const handleRemoveAchievement = (indexToRemove: number) => {
+    setAchievements(achievements.filter((_, idx) => idx !== indexToRemove));
+  };
+
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     const uid = currentUser?.id || currentUser?.uid || authService.getUserId();
@@ -140,9 +280,22 @@ export default function ProfileSettingsPage() {
       setSavingProfile(true);
       const payload: any = {
         name: name.trim(),
+        surname: surname.trim(),
         username: username.trim(),
         phone: phone.trim(),
         bio: bio.trim(),
+        companyName: companyName.trim(),
+        industry,
+        category: industry,
+        location: location.trim(),
+        website: website.trim(),
+        instagram: instagram.trim(),
+        twitter: twitter.trim(),
+        gender,
+        ageRange,
+        matchType,
+        productsandservices,
+        achievements,
         photoUrl: avatarUrl,
         preferredCurrency,
       };
@@ -152,12 +305,16 @@ export default function ProfileSettingsPage() {
       // Update local storage representation
       if (typeof window !== 'undefined') {
         const stored = localStorage.getItem('user');
+        let updatedUser = { ...(currentUser || {}), ...payload };
         if (stored) {
           try {
             const parsed = JSON.parse(stored);
-            localStorage.setItem('user', JSON.stringify({ ...parsed, ...payload }));
+            updatedUser = { ...parsed, ...payload };
           } catch {}
         }
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        localStorage.setItem('bb_user_profile', JSON.stringify(updatedUser));
+        setCurrentUser(updatedUser);
       }
     } catch (err: any) {
       console.error('Failed to save profile settings', err);
@@ -344,7 +501,7 @@ export default function ProfileSettingsPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                    Full Name *
+                    First Name *
                   </label>
                   <div className="relative">
                     <input
@@ -352,7 +509,22 @@ export default function ProfileSettingsPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      placeholder="e.g. Alex Morgan"
+                      placeholder="e.g. Alex"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Surname / Last Name
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={surname}
+                      onChange={(e) => setSurname(e.target.value)}
+                      placeholder="e.g. Morgan"
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
                     />
                   </div>
@@ -405,20 +577,272 @@ export default function ProfileSettingsPage() {
                     />
                   </div>
                 </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Gender
+                  </label>
+                  <select
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                  >
+                    {GENDERS.map((g) => (
+                      <option key={g} value={g}>{g}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Age Range
+                  </label>
+                  <select
+                    value={ageRange}
+                    onChange={(e) => setAgeRange(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                  >
+                    {AGE_RANGES.map((ar) => (
+                      <option key={ar} value={ar}>{ar}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Location / Country
+                  </label>
+                  <input
+                    type="text"
+                    list="settings-country-list"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="e.g. United Kingdom, Nigeria, United States..."
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                  />
+                  <datalist id="settings-country-list">
+                    {POPULAR_COUNTRIES.map((c) => (
+                      <option key={c} value={c} />
+                    ))}
+                  </datalist>
+                </div>
               </div>
 
               {/* Bio Field */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  About / Business Bio
+                  About / Personal Bio
                 </label>
                 <textarea
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   rows={3}
-                  placeholder="Tell customers and partners about your venture or services..."
+                  maxLength={150}
+                  placeholder="Tell customers and partners about your venture or background (up to 150 characters)..."
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all resize-none"
                 />
+                <div className="text-right text-[11px] text-slate-400 mt-0.5">
+                  {bio.length}/150 characters
+                </div>
+              </div>
+
+              {/* Section Divider: Business & Networking */}
+              <div className="pt-4 border-t border-slate-100 space-y-4">
+                <div className="flex items-center space-x-2">
+                  <Building2 className="w-5 h-5 text-[#E51927]" />
+                  <div>
+                    <h3 className="font-extrabold text-sm text-slate-900">Business & Professional Profile</h3>
+                    <p className="text-xs text-slate-500">Connect with buyers, sellers, suppliers, and partners across the community</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Company Name
+                    </label>
+                    <input
+                      type="text"
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="e.g. Eze Couture Ltd"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Industry / Profession Category
+                    </label>
+                    <select
+                      value={industry}
+                      onChange={(e) => setIndustry(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                    >
+                      {CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Networking Match Goal
+                    </label>
+                    <select
+                      value={matchType}
+                      onChange={(e) => setMatchType(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                    >
+                      {MATCH_TYPES.map((m) => (
+                        <option key={m.value} value={m.value}>{m.label}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Company Website
+                    </label>
+                    <input
+                      type="url"
+                      value={website}
+                      onChange={(e) => setWebsite(e.target.value)}
+                      placeholder="https://yourwebsite.com"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Instagram Handle / URL
+                    </label>
+                    <input
+                      type="text"
+                      value={instagram}
+                      onChange={(e) => setInstagram(e.target.value)}
+                      placeholder="@yourbrand or full link"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      X / Twitter Handle / URL
+                    </label>
+                    <input
+                      type="text"
+                      value={twitter}
+                      onChange={(e) => setTwitter(e.target.value)}
+                      placeholder="@yourbrand or full link"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Products & Services List (Mobile Parity) */}
+                <div className="pt-2">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-bold text-slate-700">
+                      Products & Services <span className="text-slate-400 font-normal">({productsandservices.length}/7)</span>
+                    </label>
+                  </div>
+                  <div className="flex gap-2 mb-2">
+                    <input
+                      type="text"
+                      value={newProductInput}
+                      onChange={(e) => setNewProductInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddProduct();
+                        }
+                      }}
+                      placeholder="Add a product or service you offer..."
+                      className="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddProduct}
+                      className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl flex items-center space-x-1 transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add</span>
+                    </button>
+                  </div>
+                  {productsandservices.length > 0 && (
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {productsandservices.map((item, idx) => (
+                        <span
+                          key={idx}
+                          className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200"
+                        >
+                          <Package className="w-3 h-3 mr-1.5 text-slate-500" />
+                          <span>{item}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveProduct(idx)}
+                            className="ml-1.5 text-slate-400 hover:text-red-500"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Achievements List (Mobile Parity) */}
+                <div className="pt-2">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-bold text-slate-700">
+                      Achievements & Milestones <span className="text-slate-400 font-normal">({achievements.length}/3)</span>
+                    </label>
+                  </div>
+                  <div className="flex gap-2 mb-2">
+                    <input
+                      type="text"
+                      value={newAchievementInput}
+                      onChange={(e) => setNewAchievementInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddAchievement();
+                        }
+                      }}
+                      placeholder="e.g. Featured in Forbes 30 Under 30, $1M Revenue..."
+                      className="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E51927]/20 focus:border-[#E51927] transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddAchievement}
+                      className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl flex items-center space-x-1 transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add</span>
+                    </button>
+                  </div>
+                  {achievements.length > 0 && (
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {achievements.map((item, idx) => (
+                        <span
+                          key={idx}
+                          className="inline-flex items-center px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-medium border border-amber-200"
+                        >
+                          <Award className="w-3 h-3 mr-1.5 text-amber-600" />
+                          <span>{item}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveAchievement(idx)}
+                            className="ml-1.5 text-amber-600 hover:text-red-500"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center justify-end pt-2">

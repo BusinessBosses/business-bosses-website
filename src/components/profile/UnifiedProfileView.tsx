@@ -62,9 +62,51 @@ interface ConnectedUser {
 }
 
 export default function UnifiedProfileView({ initialUsername, initialUid }: ProfileViewProps) {
-  const [currentUser, setCurrentUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  // Try to initialize from cached user profile immediately if viewing own profile
+  const [currentUser, setCurrentUser] = useState<any>(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const cached = localStorage.getItem('bb_user_profile') || localStorage.getItem('user');
+      return cached ? JSON.parse(cached) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [profile, setProfile] = useState<any>(() => {
+    if (typeof window === 'undefined') return null;
+    // If not visiting an explicit target profile, or matches own username/uid, initialize immediately
+    const myUid = localStorage.getItem('userId') || localStorage.getItem('bb_user_uid');
+    const cached = localStorage.getItem('bb_user_profile') || localStorage.getItem('user');
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        const matchesUid = !initialUid || initialUid === myUid || initialUid === parsed.uid || initialUid === parsed.id;
+        const matchesUser = !initialUsername || initialUsername === parsed.username || initialUsername === `@${parsed.username}`;
+        if (matchesUid && matchesUser) {
+          return parsed;
+        }
+      } catch {}
+    }
+    return null;
+  });
+
+  const [loading, setLoading] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    const myUid = localStorage.getItem('userId') || localStorage.getItem('bb_user_uid');
+    const cached = localStorage.getItem('bb_user_profile') || localStorage.getItem('user');
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        const matchesUid = !initialUid || initialUid === myUid || initialUid === parsed.uid || initialUid === parsed.id;
+        const matchesUser = !initialUsername || initialUsername === parsed.username || initialUsername === `@${parsed.username}`;
+        if (matchesUid && matchesUser) {
+          return false; // Render instantly with cached profile!
+        }
+      } catch {}
+    }
+    return true;
+  });
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Profile Segments: Profile (User details/tabs) vs My Biz / Biz-Center
@@ -112,7 +154,10 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   }, [initialUsername, initialUid]);
 
   const loadProfile = async () => {
-    setLoading(true);
+    // Only flash global spinner if we don't already have profile loaded in state
+    if (!profile) {
+      setLoading(true);
+    }
     setErrorMsg(null);
     try {
       const myUser = await authService.getCurrentUser();

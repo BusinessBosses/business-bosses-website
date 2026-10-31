@@ -22,9 +22,23 @@ export interface UserProfileData {
 
 export interface UpdateUserProfilePayload {
   name?: string;
+  surname?: string;
   username?: string;
   phone?: string;
+  email?: string;
   bio?: string;
+  companyName?: string;
+  industry?: string;
+  category?: string;
+  location?: string;
+  website?: string;
+  instagram?: string;
+  twitter?: string;
+  ageRange?: string;
+  gender?: string;
+  matchType?: string;
+  achievements?: string[];
+  productsandservices?: string[];
   photoUrl?: string;
   preferredCurrency?: string;
 }
