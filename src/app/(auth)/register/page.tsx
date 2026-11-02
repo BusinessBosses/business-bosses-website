@@ -26,7 +26,17 @@ export default function RegisterPage() {
 
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [checkingExistingAuth, setCheckingExistingAuth] = useState(true);
   const router = useRouter();
+
+  // If already authenticated, redirect to feed immediately
+  useEffect(() => {
+    if (authService.isAuthenticated()) {
+      window.location.replace('/feed');
+      return;
+    }
+    setCheckingExistingAuth(false);
+  }, []);
 
   // Debounced live username availability check
   useEffect(() => {
@@ -111,14 +121,14 @@ export default function RegisterPage() {
       if (response.success) {
         toast.success('Account created successfully! Redirecting...');
         if (token) {
-          authService.setToken(token, uid);
+          authService.setToken(token, uid, response.data?.user);
           setTimeout(() => {
-            router.push('/feed');
-          }, 600);
+            window.location.replace('/feed');
+          }, 300);
         } else {
           setTimeout(() => {
-            router.push('/login?registered=true');
-          }, 600);
+            window.location.replace('/login?registered=true');
+          }, 400);
         }
       } else {
         const errorMsg = response.message || 'Registration failed. Please try again.';
@@ -162,14 +172,15 @@ export default function RegisterPage() {
         });
 
         const token = authService.extractToken(response);
-        const uid = response.data?.uid || response.uid || response.data?.user?.uid;
+        const userData = response.data?.user || (response.data?.email ? response.data : null);
+        const uid = response.data?.uid || response.uid || userData?.uid || userData?.id;
 
         if (response.success && token) {
-          authService.setToken(token, uid);
+          authService.setToken(token, uid, userData);
           toast.success('Signed up with Google! Redirecting...');
           setTimeout(() => {
-            window.location.href = '/feed';
-          }, 500);
+            window.location.replace('/feed');
+          }, 300);
         } else {
           const errorMsg = response.message || 'Google sign-up failed. Please try again.';
           toast.error(errorMsg);
@@ -187,6 +198,14 @@ export default function RegisterPage() {
       toast.error('Google sign-up was cancelled or encountered an error.');
     },
   });
+
+  if (checkingExistingAuth) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center bg-[#F4F4F4] p-4">
+        <div className="w-8 h-8 border-3 border-[#F21C29] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-[#F4F4F4] p-4 sm:p-6">

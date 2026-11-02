@@ -123,15 +123,22 @@ export const authService = {
   /**
    * Save session token
    */
-  setToken(token: string, uid?: string): void {
+  setToken(token: string, uid?: string, user?: any): void {
     if (typeof window === 'undefined') return;
     localStorage.setItem(StorageEnum.AccessToken, token);
     localStorage.setItem('bb_access_token', token);
+    localStorage.setItem('accessToken', token);
     localStorage.setItem('hasLoggedInBefore', 'true');
     if (uid) {
       localStorage.setItem(StorageEnum.UserId, uid);
       localStorage.setItem('userId', uid);
       localStorage.setItem('bb_user_uid', uid);
+    }
+    if (user && typeof user === 'object') {
+      try {
+        localStorage.setItem('bb_user_profile', JSON.stringify(user));
+        localStorage.setItem('user', JSON.stringify(user));
+      } catch {}
     }
   },
 
@@ -244,7 +251,13 @@ export const authService = {
   signOut(): void {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(StorageEnum.AccessToken);
+    localStorage.removeItem(StorageEnum.UserId);
     localStorage.removeItem('bb_access_token');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('bb_user_uid');
+    localStorage.removeItem('bb_user_profile');
+    localStorage.removeItem('user');
     window.location.href = '/login';
   },
 };

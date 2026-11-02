@@ -18,8 +18,20 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [showForgotModal, setShowForgotModal] = useState(false);
+  const [checkingExistingAuth, setCheckingExistingAuth] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // If already authenticated and session is not explicitly expired, redirect to feed immediately
+  useEffect(() => {
+    const isExpired = searchParams?.get('expired') === 'true';
+    if (!isExpired && authService.isAuthenticated()) {
+      const redirectUrl = searchParams?.get('redirect') || '/feed';
+      window.location.replace(redirectUrl);
+      return;
+    }
+    setCheckingExistingAuth(false);
+  }, [searchParams]);
 
   useEffect(() => {
     if (searchParams?.get('expired') === 'true') {
@@ -42,14 +54,16 @@ function LoginForm() {
     try {
       const response = await authService.signIn({ email, password });
       const token = authService.extractToken(response);
-      const uid = response.data?.uid || response.uid || response.data?.user?.uid;
+      const userData = response.data?.user || (response.data?.email ? response.data : null);
+      const uid = response.data?.uid || response.uid || userData?.uid || userData?.id;
 
       if (response.success && token) {
-        authService.setToken(token, uid);
+        authService.setToken(token, uid, userData);
         toast.success('Signed in successfully! Redirecting...');
+        const redirectUrl = searchParams?.get('redirect') || '/feed';
         setTimeout(() => {
-          window.location.href = '/feed';
-        }, 500);
+          window.location.replace(redirectUrl);
+        }, 300);
       } else {
         const errorMsg = response.message || 'Login failed. Please check your credentials.';
         toast.error(errorMsg);
@@ -60,9 +74,10 @@ function LoginForm() {
         console.warn('API unavailable, bypassing login for demo mode');
         authService.setToken('mock-jwt-token-12345');
         toast.success('Signed in successfully! Redirecting...');
+        const redirectUrl = searchParams?.get('redirect') || '/feed';
         setTimeout(() => {
-          window.location.href = '/feed';
-        }, 500);
+          window.location.replace(redirectUrl);
+        }, 300);
       } else {
         const errorMsg = err.response?.data?.message || err.response?.data?.error || 'An error occurred during login. Please try again.';
         toast.error(errorMsg);
@@ -92,14 +107,16 @@ function LoginForm() {
         });
 
         const token = authService.extractToken(response);
-        const uid = response.data?.uid || response.uid || response.data?.user?.uid;
+        const userData = response.data?.user || (response.data?.email ? response.data : null);
+        const uid = response.data?.uid || response.uid || userData?.uid || userData?.id;
 
         if (response.success && token) {
-          authService.setToken(token, uid);
+          authService.setToken(token, uid, userData);
           toast.success('Signed in with Google! Redirecting...');
+          const redirectUrl = searchParams?.get('redirect') || '/feed';
           setTimeout(() => {
-            window.location.href = '/feed';
-          }, 500);
+            window.location.replace(redirectUrl);
+          }, 300);
         } else {
           const errorMsg = response.message || 'Google sign-in failed. Please try again.';
           toast.error(errorMsg);
@@ -117,6 +134,14 @@ function LoginForm() {
       toast.error('Google sign-in was cancelled or encountered an error.');
     },
   });
+
+  if (checkingExistingAuth) {
+    return (
+      <div className="w-full flex items-center justify-center p-8">
+        <div className="w-8 h-8 border-3 border-[#F21C29] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-lg mx-auto">
