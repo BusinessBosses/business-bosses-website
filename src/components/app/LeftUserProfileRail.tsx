@@ -234,11 +234,16 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
     <aside className="hidden lg:flex flex-col w-[280px] fixed top-0 left-0 h-screen overflow-y-auto no-scrollbar bg-slate-50 border-r border-slate-200/80 p-4 z-30 select-none">
       {/* Brand Header */}
       <div className="mb-4 px-1 pt-1 flex items-center justify-between">
-        <Link href="/feed" className="flex items-center space-x-2 group">
-          <div className="w-8 h-8 rounded-full bg-[#E51927] flex items-center justify-center shadow-xs">
-            <span className="font-black text-white text-base tracking-tighter">B</span>
+        <Link href="/feed" className="flex items-center space-x-2.5 group">
+          <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 shadow-xs">
+            <Image
+              src="/app_logo_2.png"
+              alt="Business Bosses"
+              fill
+              className="object-contain"
+            />
           </div>
-          <span className="text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-slate-800 transition-colors">
+          <span className="text-xl font-black tracking-tight text-slate-900 group-hover:text-slate-800 transition-colors">
             Business<span className="text-[#E51927]">Bosses</span>
           </span>
         </Link>
@@ -330,20 +335,15 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
                 </div>
               </div>
 
-              {/* Action Buttons: View profile & My Biz */}
-              <div className="mt-3.5 grid grid-cols-2 gap-2">
+              {/* View full profile > link matching updated mockup */}
+              <div className="mt-3.5 pt-2 border-t border-slate-100">
                 <Link
                   href={getUserProfileUrl({ username: profile.username, uid: profile.uid })}
                   prefetch={false}
-                  className="py-2 px-2 text-center text-xs font-bold rounded-xl border border-red-200 text-[#E51927] hover:bg-red-50/50 transition-colors shadow-2xs"
+                  className="flex items-center justify-between py-1 px-1 text-xs font-bold text-slate-800 hover:text-[#E51927] transition-colors group"
                 >
-                  View profile
-                </Link>
-                <Link
-                  href="/profile?tab=biz"
-                  className="py-2 px-2 text-center text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-2xs"
-                >
-                  My Biz
+                  <span className="font-bold">View full profile</span>
+                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#E51927] group-hover:translate-x-0.5 transition-all" />
                 </Link>
               </div>
             </div>
@@ -378,9 +378,9 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             {/* Complete your profile CTA */}
             <Link
               href="/profile/settings"
-              className="flex items-center space-x-1.5 px-3 py-2 bg-red-50/70 hover:bg-red-100/70 text-[#E51927] border border-red-100 rounded-2xl text-xs font-bold transition-colors mt-2"
+              className="flex items-center space-x-1.5 px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80 rounded-2xl text-xs font-bold transition-colors mt-2"
             >
-              <Star className="w-3.5 h-3.5 fill-[#E51927]" />
+              <Star className="w-3.5 h-3.5 text-[#E51927] fill-[#E51927]" />
               <span>Complete your profile · {profile.completionPercentage}%</span>
             </Link>
           </div>

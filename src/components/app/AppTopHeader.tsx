@@ -86,9 +86,14 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
     <>
       {/* 1. Mobile Header (Screen < 1024px) */}
       <header className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 h-14 flex items-center justify-between px-3.5 shadow-xs">
-        <Link href="/feed" className="flex items-center space-x-1.5">
-          <div className="w-7 h-7 rounded-full bg-[#E51927] flex items-center justify-center shadow-xs">
-            <span className="font-black text-white text-sm">B</span>
+        <Link href="/feed" className="flex items-center space-x-2">
+          <div className="relative w-7 h-7 rounded-full overflow-hidden shrink-0 shadow-xs">
+            <Image
+              src="/app_logo_2.png"
+              alt="Business Bosses"
+              fill
+              className="object-contain"
+            />
           </div>
           <span className="text-lg font-black tracking-tight text-slate-900">
             Business<span className="text-[#E51927]">Bosses</span>
@@ -153,14 +158,14 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
         </div>
       </header>
 
-      {/* 2. Desktop Navigation Bar (Exact Mockup Match: For you, Marketplace, Boss Up, Inbox 3, +, Find Opportunities >) */}
-      <div className="hidden lg:flex items-center justify-between w-full max-w-4xl mx-auto pt-4 pb-2 px-3 sm:px-4">
-        {/* Left Nav Pills */}
-        <div className="flex items-center space-x-2">
+      {/* 2. Desktop Navigation Slider Bar (For you, Marketplace, Boss Up, Inbox, Notifications, +, Find Opportunities >) */}
+      <div className="hidden lg:flex items-center justify-between w-full max-w-4xl mx-auto pt-4 pb-2 px-3 sm:px-4 gap-3">
+        {/* Horizontal Slider Rail */}
+        <div className="flex items-center space-x-2 overflow-x-auto no-scrollbar scroll-smooth py-1 min-w-0 flex-1">
           {/* For you */}
           <Link
             href="/feed"
-            className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+            className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
               isFeed
                 ? 'bg-slate-900 text-white shadow-xs'
                 : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
@@ -172,7 +177,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
           {/* Marketplace */}
           <Link
             href="/marketplace"
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all ${
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
               isMarketplace
                 ? 'bg-slate-900 text-white shadow-xs'
                 : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
@@ -185,7 +190,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
           {/* Boss Up */}
           <Link
             href="/boss-up"
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all ${
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
               isBossUp
                 ? 'bg-slate-900 text-white shadow-xs'
                 : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
@@ -198,7 +203,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
           {/* Inbox with Pill Count Badge */}
           <Link
             href="/inbox"
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all ${
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
               isInbox
                 ? 'bg-slate-900 text-white shadow-xs'
                 : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
@@ -216,7 +221,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
           {/* Notifications Pill */}
           <Link
             href="/notifications"
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all ${
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
               isNotifications
                 ? 'bg-slate-900 text-white shadow-xs'
                 : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
@@ -236,7 +241,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
           <button
             type="button"
             onClick={() => onOpenCreatePost && onOpenCreatePost()}
-            className="w-8 h-8 rounded-full bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold flex items-center justify-center text-sm shadow-2xs transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold flex items-center justify-center text-sm shadow-2xs transition-colors cursor-pointer shrink-0"
             title="Create Post or Request"
           >
             <Plus className="w-4 h-4" />
@@ -247,7 +252,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
         <button
           type="button"
           onClick={() => onOpenOpportunities && onOpenOpportunities()}
-          className="flex items-center space-x-1 text-xs font-bold text-slate-800 hover:text-[#E51927] transition-colors cursor-pointer"
+          className="flex items-center space-x-1 text-xs font-bold text-slate-800 hover:text-[#E51927] transition-colors cursor-pointer shrink-0"
         >
           <span>Find Opportunities</span>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />

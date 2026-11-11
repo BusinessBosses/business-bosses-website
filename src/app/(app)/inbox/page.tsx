@@ -954,7 +954,7 @@ export default function InboxPage() {
                         <div
                           className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-3.5 text-xs sm:text-sm shadow-xs transition-all ${
                             isMine
-                              ? 'bg-[#F21C29] text-white rounded-br-xs'
+                              ? 'bg-slate-900 text-white rounded-br-xs'
                               : 'bg-white text-slate-800 border border-slate-200/90 rounded-bl-xs'
                           }`}
                         >
@@ -1124,8 +1124,9 @@ export default function InboxPage() {
 
         {/* ============================================================== */}
         {/* COLUMN 3: Desktop Contact & Biz-Center Details Panel           */}
+        {/* Note: Never display current user's own profile on the right   */}
         {/* ============================================================== */}
-        {showDetailsPanel && activePartnerId && activePartner && (
+        {showDetailsPanel && activePartnerId && activePartner && activePartnerId !== myUid && (
           <div className="hidden lg:flex w-72 xl:w-80 flex-col shrink-0 bg-white overflow-y-auto no-scrollbar border-l border-slate-100 p-5 space-y-5">
             {/* User Header Profile Card */}
             <div className="text-center space-y-2">
@@ -1240,7 +1241,7 @@ export default function InboxPage() {
 
                 <Link
                   href={getUserProfileUrl({ username: partnerUsername, uid: activePartnerId }) + '#biz-center'}
-                  className="w-full py-2 px-3 rounded-xl bg-[#F21C29] hover:bg-[#D01420] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+                  className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
                 >
                   <span>Visit Biz-Center</span>
                   <ExternalLink className="w-3 h-3" />

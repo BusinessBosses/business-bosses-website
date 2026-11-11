@@ -204,19 +204,20 @@ export default function RightContextRail() {
       {/* 1. Pro Membership Card matching Mockup Spec */}
       {!isProUser && (
         <div className="bg-white border border-slate-200/90 rounded-3xl p-4 shadow-2xs">
-          <div className="flex items-center justify-between mb-2">
+          <Link
+            href="/subscription"
+            className="flex items-center justify-between mb-2 group cursor-pointer"
+          >
             <div className="flex items-center space-x-2">
               <div className="w-7 h-7 rounded-lg bg-[#E51927] text-white flex items-center justify-center font-bold shadow-2xs">
                 <Crown className="w-3.5 h-3.5 text-white stroke-[2.5]" />
               </div>
-              <h3 className="font-black text-xs uppercase tracking-wider text-slate-900 leading-tight">
+              <h3 className="font-black text-xs uppercase tracking-wider text-slate-900 group-hover:text-[#E51927] transition-colors leading-tight">
                 PRO<br />MEMBERSHIP
               </h3>
             </div>
-            <span className="text-[10px] font-bold text-slate-700 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full">
-              Boost Reach
-            </span>
-          </div>
+            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-0.5 transition-all" />
+          </Link>
 
           <p className="text-xs text-slate-500 mb-3 leading-relaxed font-medium">
             Climb the leaderboard, access verified supplier deals, and unlock AI tools.
@@ -224,7 +225,7 @@ export default function RightContextRail() {
 
           <Link
             href="/subscription"
-            className="w-full bg-[#E51927] hover:bg-[#CF1522] text-white text-xs font-bold py-2.5 px-3 rounded-2xl transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95"
+            className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 px-3 rounded-2xl transition-all shadow-xs flex items-center justify-center gap-1.5 active:scale-95"
           >
             <span>Upgrade to Pro</span>
           </Link>
@@ -233,18 +234,16 @@ export default function RightContextRail() {
 
       {/* 2. WHO TO CONNECT WITH */}
       <div className="bg-white border border-slate-200/90 rounded-3xl p-4 shadow-2xs space-y-3">
-        <div className="flex items-center justify-between px-0.5">
-          <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-900">
+        <button
+          type="button"
+          onClick={() => setSuggestedModalOpen(true)}
+          className="w-full flex items-center justify-between px-0.5 group cursor-pointer text-left"
+        >
+          <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-900 group-hover:text-[#E51927] transition-colors">
             WHO TO CONNECT WITH
           </h4>
-          <button
-            type="button"
-            onClick={() => setSuggestedModalOpen(true)}
-            className="text-xs font-bold text-[#E51927] hover:underline cursor-pointer"
-          >
-            View all
-          </button>
-        </div>
+          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-0.5 transition-all" />
+        </button>
 
         {loadingBosses ? (
           <div className="space-y-2.5">
@@ -315,17 +314,15 @@ export default function RightContextRail() {
 
       {/* 3. BOSS UP COMMUNITIES */}
       <div className="bg-white border border-slate-200/90 rounded-3xl p-4 shadow-2xs space-y-3">
-        <div className="flex items-center justify-between px-0.5">
-          <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-900">
+        <Link
+          href="/boss-up"
+          className="w-full flex items-center justify-between px-0.5 group cursor-pointer"
+        >
+          <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-900 group-hover:text-[#E51927] transition-colors">
             BOSS UP COMMUNITIES
           </h4>
-          <Link
-            href="/boss-up"
-            className="text-xs font-bold text-[#E51927] hover:underline"
-          >
-            View all
-          </Link>
-        </div>
+          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-0.5 transition-all" />
+        </Link>
 
         {/* Clean Join a Challenge CTA card matching Mockup */}
         <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl text-center">
@@ -336,14 +333,20 @@ export default function RightContextRail() {
 
       {/* 4. DIGITAL MAGAZINE */}
       <div className="bg-white border border-slate-200/90 rounded-3xl p-4 shadow-2xs space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-extrabold uppercase text-slate-900 tracking-wider">
+        <Link
+          href="/magazine"
+          className="w-full flex items-center justify-between group cursor-pointer"
+        >
+          <span className="text-xs font-extrabold uppercase text-slate-900 group-hover:text-[#E51927] tracking-wider transition-colors">
             DIGITAL MAGAZINE
           </span>
-          <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">
-            {latestMagazine?.issueNumber || 'September 2026'}
-          </span>
-        </div>
+          <div className="flex items-center space-x-1.5">
+            <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">
+              {latestMagazine?.issueNumber || 'September 2026'}
+            </span>
+            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-0.5 transition-all" />
+          </div>
+        </Link>
 
         <div className="flex gap-3 items-center pt-1">
           <div className="w-10 h-14 bg-slate-900 text-white rounded-lg flex flex-col items-center justify-between p-1.5 shrink-0 shadow-xs border-b-2 border-b-[#E51927]">
