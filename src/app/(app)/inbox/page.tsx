@@ -303,6 +303,13 @@ export default function InboxPage() {
 
     let isCancelled = false;
     const fetchPartnerDetails = async () => {
+      // Never fetch own profile as partner details
+      if (activePartnerId === myUid) {
+        setPartnerProfile(null);
+        setPartnerShop(null);
+        return;
+      }
+
       setLoadingPartnerProfile(true);
       try {
         const [prof, sh] = await Promise.all([
@@ -310,7 +317,13 @@ export default function InboxPage() {
           shopService.getUserShop(activePartnerId).catch(() => null),
         ]);
         if (!isCancelled) {
-          setPartnerProfile(prof);
+          // Extra guard: If backend returned current user's profile, discard it
+          const profUid = prof?.uid || prof?.id;
+          if (profUid && myUid && String(profUid) === String(myUid)) {
+            setPartnerProfile(null);
+          } else {
+            setPartnerProfile(prof);
+          }
           setPartnerShop(sh);
         }
       } catch {
@@ -624,7 +637,11 @@ export default function InboxPage() {
     return <p className="leading-relaxed whitespace-pre-wrap break-words">{text}</p>;
   };
 
-  const resolvedPartner = partnerProfile || activePartner;
+  // Resolve partner details: strictly ensure that if partnerProfile resolved to currentUser, fallback to activePartner
+  const resolvedPartner =
+    partnerProfile && (!myUid || String(partnerProfile.uid || partnerProfile.id) !== String(myUid))
+      ? partnerProfile
+      : activePartner;
   const partnerName = resolvedPartner?.name || resolvedPartner?.fullname || activePartner?.partnerName || 'Business Boss';
   const partnerUsername = resolvedPartner?.username || activePartner?.username;
   const partnerPhoto = resolvedPartner?.photoUrl || resolvedPartner?.profilePicture || activePartner?.partnerPhoto;
