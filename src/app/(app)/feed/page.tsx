@@ -180,54 +180,6 @@ export default function FeedPage() {
         {/* Partners' Deals Section (Exact Mockup Match) */}
         {deals.length > 0 && <PartnersDealsSection deals={deals} />}
 
-        {/* Mobile Feed Switcher (Only visible on small screens where top desktop navbar is hidden) */}
-        <div className="lg:hidden bg-white rounded-2xl border border-slate-200/90 p-1.5 flex items-center justify-between shadow-2xs sticky top-14 z-20">
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => setActiveTab('forYou')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                activeTab === 'forYou'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              For you
-            </button>
-            <Link
-              href="/marketplace"
-              className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"
-            >
-              Marketplace
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => setIsFindOppOpen(true)}
-              className="px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-900 hover:bg-red-50 hover:text-[#F21C29] flex items-center gap-1 transition-all"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#F21C29]" />
-              <span className="text-[11px]">Opportunities</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setRefreshing(true);
-                fetchInitialPosts();
-                fetchHighlights();
-                fetchInterleavedFeeds();
-              }}
-              disabled={refreshing}
-              className="p-1.5 text-slate-500 hover:text-slate-800 rounded-xl hover:bg-slate-100 transition-all"
-              title="Refresh"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-[#F21C29]' : ''}`} />
-            </button>
-          </div>
-        </div>
-
         {/* Timeline Posts & Interleaved Sections */}
         {loading ? (
           <div className="space-y-4 py-4">
