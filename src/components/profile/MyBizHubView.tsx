@@ -365,13 +365,6 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
               <Plus className="w-4 h-4" />
               <span>Add Listing</span>
             </button>
-            <Link
-              href="/subscription"
-              className="px-4 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors shadow-xs flex items-center gap-1.5"
-            >
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>{isPro ? 'Pro Active' : 'Upgrade Pro'}</span>
-            </Link>
           </div>
         </div>
 

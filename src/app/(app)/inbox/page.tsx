@@ -67,8 +67,8 @@ export default function InboxPage() {
   const [uploadingImage, setUploadingImage] = useState<boolean>(false);
   const [selectedBuyerRequest, setSelectedBuyerRequest] = useState<any | null>(null);
 
-  // Desktop Side Details Panel
-  const [showDetailsPanel, setShowDetailsPanel] = useState<boolean>(true);
+  // Desktop Side Details Panel (Default hidden when standard right rail is active)
+  const [showDetailsPanel, setShowDetailsPanel] = useState<boolean>(false);
   const [partnerProfile, setPartnerProfile] = useState<any | null>(null);
   const [partnerShop, setPartnerShop] = useState<Shop | null>(null);
   const [loadingPartnerProfile, setLoadingPartnerProfile] = useState<boolean>(false);

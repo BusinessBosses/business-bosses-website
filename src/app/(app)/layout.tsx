@@ -33,7 +33,7 @@ export default function AppLayout({
       <LeftUserProfileRail onOpenCreatePost={() => setIsCreatePostOpen(true)} />
       
       {/* 2. Center Content Stream */}
-      <div className={`flex-1 flex flex-col min-w-0 lg:pl-[280px] ${isInbox ? 'xl:pr-0' : 'xl:pr-[320px]'}`}>
+      <div className="flex-1 flex flex-col min-w-0 lg:pl-[280px] xl:pr-[320px]">
         {/* Top Header Bar with navigation pills & triggers */}
         <AppTopHeader 
           onOpenCreatePost={() => setIsCreatePostOpen(true)}
@@ -48,8 +48,8 @@ export default function AppLayout({
         <MobileBottomNav onOpenCreate={() => setIsPostOptionsOpen(true)} />
       </div>
 
-      {/* 3. Right Context Rail (Pro Membership, Who To Connect With, Communities, Magazine) - hidden on inbox for full-width workspace */}
-      {!isInbox && <RightContextRail />}
+      {/* 3. Right Context Rail (Who To Connect With, Communities, Magazine) */}
+      <RightContextRail />
       {!isInbox && <SmartchatWidget />}
 
       {/* Center Action Sheet & Handlers */}
