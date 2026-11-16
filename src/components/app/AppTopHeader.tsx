@@ -158,73 +158,76 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
         </div>
       </header>
 
-      {/* 2. Desktop Navigation Slider Bar (For you, Marketplace, Boss Up, Inbox, Notifications, +, Find Opportunities >) */}
+      {/* 2. Desktop Navigation Slider Bar (Tabs: For you, Marketplace, Boss Up, Inbox; plus Notifications, +, Find Opportunities >) */}
       <div className="hidden lg:flex items-center justify-between w-full max-w-4xl mx-auto pt-4 pb-2 px-3 sm:px-4 gap-3">
-        {/* Horizontal Slider Rail */}
-        <div className="flex items-center space-x-2 overflow-x-auto no-scrollbar scroll-smooth py-1 min-w-0 flex-1">
-          {/* For you */}
-          <Link
-            href="/feed"
-            className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-              isFeed
-                ? 'bg-slate-900 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-            }`}
-          >
-            For you
-          </Link>
+        {/* Horizontal Navigation Rail */}
+        <div className="flex items-center space-x-2.5 overflow-x-auto no-scrollbar scroll-smooth py-1 min-w-0 flex-1">
+          {/* Segmented Navigation Tabs Container */}
+          <div className="inline-flex items-center p-1 bg-slate-200/80 rounded-2xl shadow-inner shrink-0">
+            {/* For you */}
+            <Link
+              href="/feed"
+              className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
+                isFeed
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              For you
+            </Link>
 
-          {/* Marketplace */}
-          <Link
-            href="/marketplace"
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-              isMarketplace
-                ? 'bg-slate-900 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-            }`}
-          >
-            <ShoppingBag className="w-3.5 h-3.5 text-slate-500" />
-            <span>Marketplace</span>
-          </Link>
+            {/* Marketplace */}
+            <Link
+              href="/marketplace"
+              className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
+                isMarketplace
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <ShoppingBag className={`w-3.5 h-3.5 ${isMarketplace ? 'text-slate-900' : 'text-slate-500'}`} />
+              <span>Marketplace</span>
+            </Link>
 
-          {/* Boss Up */}
-          <Link
-            href="/boss-up"
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-              isBossUp
-                ? 'bg-slate-900 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5 text-slate-500" />
-            <span>Boss Up</span>
-          </Link>
+            {/* Boss Up */}
+            <Link
+              href="/boss-up"
+              className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
+                isBossUp
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Sparkles className={`w-3.5 h-3.5 ${isBossUp ? 'text-[#E51927]' : 'text-slate-500'}`} />
+              <span>Boss Up</span>
+            </Link>
 
-          {/* Inbox with Pill Count Badge */}
-          <Link
-            href="/inbox"
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-              isInbox
-                ? 'bg-slate-900 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-            }`}
-          >
-            <MessageSquare className="w-3.5 h-3.5 text-slate-500" />
-            <span>Inbox</span>
-            {unreadInboxCount > 0 && (
-              <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
-                {unreadInboxCount > 99 ? '99+' : unreadInboxCount}
-              </span>
-            )}
-          </Link>
+            {/* Inbox with Pill Count Badge */}
+            <Link
+              href="/inbox"
+              className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
+                isInbox
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <MessageSquare className={`w-3.5 h-3.5 ${isInbox ? 'text-slate-900' : 'text-slate-500'}`} />
+              <span>Inbox</span>
+              {unreadInboxCount > 0 && (
+                <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
+                  {unreadInboxCount > 99 ? '99+' : unreadInboxCount}
+                </span>
+              )}
+            </Link>
+          </div>
 
           {/* Notifications Pill */}
           <Link
             href="/notifications"
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
               isNotifications
                 ? 'bg-slate-900 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs'
             }`}
             title="Notifications"
           >

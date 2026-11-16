@@ -201,7 +201,31 @@ export default function RightContextRail() {
   return (
     <aside className="hidden xl:flex flex-col w-[320px] fixed right-0 top-0 h-screen border-l border-slate-200/90 bg-slate-50 p-4 overflow-y-auto no-scrollbar space-y-4 z-20 select-none">
       
-      {/* 1. WHO TO CONNECT WITH */}
+      {/* 1. Pro Membership Card */}
+      {!isProUser && (
+        <div className="bg-white border border-slate-200/90 rounded-3xl p-4 shadow-2xs">
+          <Link
+            href="/subscription"
+            className="flex items-center justify-between mb-2 group cursor-pointer"
+          >
+            <div className="flex items-center space-x-2">
+              <div className="w-7 h-7 rounded-lg bg-[#E51927] text-white flex items-center justify-center font-bold shadow-2xs">
+                <Crown className="w-3.5 h-3.5 text-white stroke-[2.5]" />
+              </div>
+              <h3 className="font-black text-xs uppercase tracking-wider text-slate-900 group-hover:text-[#E51927] transition-colors leading-tight">
+                PRO<br />MEMBERSHIP
+              </h3>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-0.5 transition-all" />
+          </Link>
+
+          <p className="text-xs text-slate-500 leading-relaxed font-medium">
+            Climb the leaderboard, access verified supplier deals, and unlock AI tools.
+          </p>
+        </div>
+      )}
+
+      {/* 2. WHO TO CONNECT WITH */}
       <div className="bg-white border border-slate-200/90 rounded-3xl p-4 shadow-2xs space-y-3">
         <button
           type="button"
