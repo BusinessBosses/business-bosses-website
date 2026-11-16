@@ -10,7 +10,8 @@ interface MobileBottomNavProps {
 }
 
 export default function MobileBottomNav({ onOpenCreate }: MobileBottomNavProps) {
-  const pathname = usePathname();
+  const rawPath = usePathname();
+  const pathname = rawPath?.replace(/\/+$/, '') || '';
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 h-16 flex items-center justify-around px-2 pb-safe shadow-lg">

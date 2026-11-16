@@ -76,11 +76,12 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
     return count.toString();
   };
 
-  const isFeed = pathname === '/feed' || pathname === '/' || pathname === '';
-  const isMarketplace = pathname === '/marketplace' || pathname?.startsWith('/marketplace/');
-  const isBossUp = pathname === '/boss-up' || pathname?.startsWith('/boss-up/');
-  const isInbox = pathname === '/inbox' || pathname?.startsWith('/inbox/');
-  const isNotifications = pathname === '/notifications' || pathname?.startsWith('/notifications/');
+  const normalizedPath = pathname?.replace(/\/+$/, '') || '';
+  const isFeed = normalizedPath === '/feed' || normalizedPath === '';
+  const isMarketplace = normalizedPath.startsWith('/marketplace');
+  const isBossUp = normalizedPath.startsWith('/boss-up');
+  const isInbox = normalizedPath.startsWith('/inbox');
+  const isNotifications = normalizedPath.startsWith('/notifications');
 
   return (
     <>
