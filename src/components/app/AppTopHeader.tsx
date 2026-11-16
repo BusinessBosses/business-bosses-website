@@ -158,85 +158,96 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
         </div>
       </header>
 
-      {/* 2. Desktop Navigation Slider Bar (Tabs: For you, Marketplace, Boss Up, Inbox; plus Notifications, +, Find Opportunities >) */}
-      <div className="hidden lg:flex items-center justify-between w-full max-w-4xl mx-auto pt-4 pb-2 px-3 sm:px-4 gap-3">
-        {/* Horizontal Navigation Rail */}
-        <div className="flex items-center space-x-2.5 overflow-x-auto no-scrollbar scroll-smooth py-1 min-w-0 flex-1">
-          {/* Segmented Navigation Tabs Container */}
-          <div className="inline-flex items-center p-1 bg-slate-200/80 rounded-2xl shadow-inner shrink-0">
-            {/* For you */}
-            <Link
-              href="/feed"
-              className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
-                isFeed
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              For you
-            </Link>
+      {/* 2. Desktop Navigation Tab Bar (Clean underlines matching screenshot & mobile: For you, Marketplace, Boss Up, Inbox, Notifications; plus +, Find Opportunities >) */}
+      <div className="hidden lg:flex items-center justify-between w-full max-w-4xl mx-auto pt-4 pb-0 px-3 sm:px-4 gap-4 border-b border-slate-200/80">
+        {/* Horizontal Tabs Rail */}
+        <div className="flex items-center space-x-6 overflow-x-auto no-scrollbar scroll-smooth min-w-0 flex-1">
+          {/* For you */}
+          <Link
+            href="/feed"
+            className={`relative pb-3 text-sm font-bold transition-all shrink-0 flex items-center ${
+              isFeed
+                ? 'text-slate-950 font-black'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <span>For you</span>
+            {isFeed && (
+              <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#E51927] rounded-full" />
+            )}
+          </Link>
 
-            {/* Marketplace */}
-            <Link
-              href="/marketplace"
-              className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
-                isMarketplace
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <ShoppingBag className={`w-3.5 h-3.5 ${isMarketplace ? 'text-slate-900' : 'text-slate-500'}`} />
-              <span>Marketplace</span>
-            </Link>
+          {/* Marketplace */}
+          <Link
+            href="/marketplace"
+            className={`relative pb-3 text-sm font-bold transition-all shrink-0 flex items-center space-x-1.5 ${
+              isMarketplace
+                ? 'text-slate-950 font-black'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <ShoppingBag className={`w-4 h-4 ${isMarketplace ? 'text-slate-900' : 'text-slate-400'}`} />
+            <span>Marketplace</span>
+            {isMarketplace && (
+              <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#E51927] rounded-full" />
+            )}
+          </Link>
 
-            {/* Boss Up */}
-            <Link
-              href="/boss-up"
-              className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
-                isBossUp
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Sparkles className={`w-3.5 h-3.5 ${isBossUp ? 'text-[#E51927]' : 'text-slate-500'}`} />
-              <span>Boss Up</span>
-            </Link>
+          {/* Boss Up */}
+          <Link
+            href="/boss-up"
+            className={`relative pb-3 text-sm font-bold transition-all shrink-0 flex items-center space-x-1.5 ${
+              isBossUp
+                ? 'text-slate-950 font-black'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <Sparkles className={`w-4 h-4 ${isBossUp ? 'text-[#E51927]' : 'text-slate-400'}`} />
+            <span>Boss Up</span>
+            {isBossUp && (
+              <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#E51927] rounded-full" />
+            )}
+          </Link>
 
-            {/* Inbox with Pill Count Badge */}
-            <Link
-              href="/inbox"
-              className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
-                isInbox
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <MessageSquare className={`w-3.5 h-3.5 ${isInbox ? 'text-slate-900' : 'text-slate-500'}`} />
-              <span>Inbox</span>
-              {unreadInboxCount > 0 && (
-                <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
-                  {unreadInboxCount > 99 ? '99+' : unreadInboxCount}
-                </span>
-              )}
-            </Link>
-          </div>
+          {/* Inbox with Pill Count Badge */}
+          <Link
+            href="/inbox"
+            className={`relative pb-3 text-sm font-bold transition-all shrink-0 flex items-center space-x-1.5 ${
+              isInbox
+                ? 'text-slate-950 font-black'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <MessageSquare className={`w-4 h-4 ${isInbox ? 'text-slate-900' : 'text-slate-400'}`} />
+            <span>Inbox</span>
+            {unreadInboxCount > 0 && (
+              <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
+                {unreadInboxCount > 99 ? '99+' : unreadInboxCount}
+              </span>
+            )}
+            {isInbox && (
+              <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#E51927] rounded-full" />
+            )}
+          </Link>
 
-          {/* Notifications Pill */}
+          {/* Notifications Tab with Badge */}
           <Link
             href="/notifications"
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 ${
+            className={`relative pb-3 text-sm font-bold transition-all shrink-0 flex items-center space-x-1.5 ${
               isNotifications
-                ? 'bg-slate-900 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs'
+                ? 'text-slate-950 font-black'
+                : 'text-slate-500 hover:text-slate-800'
             }`}
-            title="Notifications"
           >
-            <Bell className="w-3.5 h-3.5 text-slate-500" />
+            <Bell className={`w-4 h-4 ${isNotifications ? 'text-slate-900' : 'text-slate-400'}`} />
             <span>Notifications</span>
             {unreadNotifCount > 0 && (
               <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
                 {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
               </span>
+            )}
+            {isNotifications && (
+              <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#E51927] rounded-full" />
             )}
           </Link>
 
@@ -244,10 +255,10 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
           <button
             type="button"
             onClick={() => onOpenCreatePost && onOpenCreatePost()}
-            className="w-8 h-8 rounded-full bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold flex items-center justify-center text-sm shadow-2xs transition-colors cursor-pointer shrink-0"
+            className="mb-2 w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200/80 text-slate-700 font-bold flex items-center justify-center text-xs shadow-2xs transition-colors cursor-pointer shrink-0"
             title="Create Post or Request"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
           </button>
         </div>
 
@@ -255,10 +266,10 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
         <button
           type="button"
           onClick={() => onOpenOpportunities && onOpenOpportunities()}
-          className="flex items-center space-x-1 text-xs font-bold text-slate-800 hover:text-[#E51927] transition-colors cursor-pointer shrink-0"
+          className="pb-3 flex items-center space-x-1 text-sm font-bold text-slate-900 hover:text-[#E51927] transition-colors cursor-pointer shrink-0"
         >
           <span>Find Opportunities</span>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+          <ChevronRight className="w-4 h-4 text-slate-900" />
         </button>
       </div>
     </>
