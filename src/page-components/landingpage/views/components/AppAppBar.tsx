@@ -19,6 +19,7 @@ import Assets from "../../../../assets";
 import RoutesPath from "../../../../constants/Routes";
 import { useRouter, usePathname } from "next/navigation";
 import LandingPageforPartners from "../../LandingPageforPartners";
+import { authService } from "../../../../services/authService";
 
 interface AppAppBarProps {
   mode: PaletteMode;
@@ -27,8 +28,13 @@ interface AppAppBarProps {
 
 export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const [open, setOpen] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  React.useEffect(() => {
+    setIsLoggedIn(authService.isAuthenticated());
+  }, []);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -159,40 +165,62 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               alignItems: "center",
             }}
           >
-            <Button
-              sx={{
-                backgroundColor: "white",
-                color: "#000",
-                borderRadius: "8px",
-                px: 4,
-                textTransform: "none",
-                "&:hover": {
-                  backgroundColor: "#f0f0f0",
-                },
-              }}
-              variant="text"
-              size="small"
-              href="https://businessbosses.onelink.me/xLWk/36a2ff16"
-            >
-              Sign in
-            </Button>
-            <Button
-              href="https://businessbosses.onelink.me/xLWk/36a2ff16"
-              sx={{
-                backgroundColor: "#e11d48",
-                color: "#fff",
-                borderRadius: "8px",
-                px: 4,
-                fontWeight: 600,
-                textTransform: "none",
-                "&:hover": {
-                  backgroundColor: "#be123c",
-                },
-              }}
-              size="small"
-            >
-              Get Started
-            </Button>
+            {isLoggedIn ? (
+              <Button
+                onClick={() => router.push("/feed")}
+                sx={{
+                  backgroundColor: "#e11d48",
+                  color: "#fff",
+                  borderRadius: "8px",
+                  px: 4,
+                  fontWeight: 600,
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "#be123c",
+                  },
+                }}
+                size="small"
+              >
+                Go to Feed
+              </Button>
+            ) : (
+              <>
+                <Button
+                  sx={{
+                    backgroundColor: "white",
+                    color: "#000",
+                    borderRadius: "8px",
+                    px: 4,
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "#f0f0f0",
+                    },
+                  }}
+                  variant="text"
+                  size="small"
+                  onClick={() => router.push("/login")}
+                >
+                  Sign in
+                </Button>
+                <Button
+                  onClick={() => router.push("/register")}
+                  sx={{
+                    backgroundColor: "#e11d48",
+                    color: "#fff",
+                    borderRadius: "8px",
+                    px: 4,
+                    fontWeight: 600,
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "#be123c",
+                    },
+                  }}
+                  size="small"
+                >
+                  Get Started
+                </Button>
+              </>
+            )}
           </Box>
           <Box sx={{ display: { sm: "flex", md: "none" } }}>
             <IconButton
@@ -235,43 +263,75 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
                 <MenuItem onClick={() => router.push(RoutesPath.news)}>
                   News
                 </MenuItem>
-                <MenuItem>
-                  <Button
-                    sx={{
-                      backgroundColor: "#e11d48",
-                      color: "#fff",
-                      borderRadius: "8px",
-                      fontWeight: 600,
-                      textTransform: "none",
-                      "&:hover": {
-                        backgroundColor: "#be123c",
-                      },
-                    }}
-                    fullWidth
-                    href="https://businessbosses.onelink.me/xLWk/36a2ff16"
-                  >
-                    Get Started
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button
-                    sx={{
-                      backgroundColor: "white",
-                      color: "#000",
-                      borderRadius: "8px",
-                      border: "1px solid #e5e7eb",
-                      textTransform: "none",
-                      "&:hover": {
-                        backgroundColor: "#f0f0f0",
-                      },
-                    }}
-                    variant="outlined"
-                    fullWidth
-                    href="https://businessbosses.onelink.me/xLWk/36a2ff16"
-                  >
-                    Sign in
-                  </Button>
-                </MenuItem>
+                {isLoggedIn ? (
+                  <MenuItem>
+                    <Button
+                      sx={{
+                        backgroundColor: "#e11d48",
+                        color: "#fff",
+                        borderRadius: "8px",
+                        fontWeight: 600,
+                        textTransform: "none",
+                        "&:hover": {
+                          backgroundColor: "#be123c",
+                        },
+                      }}
+                      fullWidth
+                      onClick={() => {
+                        setOpen(false);
+                        router.push("/feed");
+                      }}
+                    >
+                      Go to Feed
+                    </Button>
+                  </MenuItem>
+                ) : (
+                  <>
+                    <MenuItem>
+                      <Button
+                        sx={{
+                          backgroundColor: "#e11d48",
+                          color: "#fff",
+                          borderRadius: "8px",
+                          fontWeight: 600,
+                          textTransform: "none",
+                          "&:hover": {
+                            backgroundColor: "#be123c",
+                          },
+                        }}
+                        fullWidth
+                        onClick={() => {
+                          setOpen(false);
+                          router.push("/register");
+                        }}
+                      >
+                        Get Started
+                      </Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <Button
+                        sx={{
+                          backgroundColor: "white",
+                          color: "#000",
+                          borderRadius: "8px",
+                          border: "1px solid #e5e7eb",
+                          textTransform: "none",
+                          "&:hover": {
+                            backgroundColor: "#f0f0f0",
+                          },
+                        }}
+                        variant="outlined"
+                        fullWidth
+                        onClick={() => {
+                          setOpen(false);
+                          router.push("/login");
+                        }}
+                      >
+                        Sign in
+                      </Button>
+                    </MenuItem>
+                  </>
+                )}
               </Box>
             </Drawer>
           </Box>
