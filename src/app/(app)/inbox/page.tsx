@@ -569,7 +569,7 @@ export default function InboxPage() {
             <button
               type="button"
               onClick={() => setSelectedBuyerRequest(reqData)}
-              className="mt-3 w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-[#F21C29] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
+              className="mt-3 w-full py-2 px-3 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
             >
               <span>View Full Request Details</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -971,7 +971,7 @@ export default function InboxPage() {
                         <div
                           className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-3.5 text-xs sm:text-sm shadow-xs transition-all ${
                             isMine
-                              ? 'bg-slate-900 text-white rounded-br-xs'
+                              ? 'bg-slate-100 text-slate-800 border border-slate-200/90 rounded-br-xs'
                               : 'bg-white text-slate-800 border border-slate-200/90 rounded-bl-xs'
                           }`}
                         >
@@ -999,15 +999,15 @@ export default function InboxPage() {
                           {/* Meta: Timestamp + Delivery ticks */}
                           <div
                             className={`flex items-center justify-end gap-1 mt-1.5 text-[9px] font-medium ${
-                              isMine ? 'text-white/80' : 'text-slate-400'
+                              isMine ? 'text-slate-500' : 'text-slate-400'
                             }`}
                           >
                             <span>{formatTimestamp(msg.timestamp)}</span>
                             {isMine &&
                               (msg.seen ? (
-                                <CheckCheck className="w-3 h-3 text-white" />
+                                <CheckCheck className="w-3 h-3 text-[#E51927]" />
                               ) : (
-                                <Check className="w-3 h-3 text-white/80" />
+                                <Check className="w-3 h-3 text-slate-400" />
                               ))}
                           </div>
                         </div>
@@ -1258,7 +1258,7 @@ export default function InboxPage() {
 
                 <Link
                   href={getUserProfileUrl({ username: partnerUsername, uid: activePartnerId }) + '#biz-center'}
-                  className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+                  className="w-full py-2 px-3 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
                 >
                   <span>Visit Biz-Center</span>
                   <ExternalLink className="w-3 h-3" />
@@ -1442,7 +1442,7 @@ export default function InboxPage() {
               <button
                 type="button"
                 onClick={() => setSelectedBuyerRequest(null)}
-                className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-all cursor-pointer"
               >
                 Close
               </button>

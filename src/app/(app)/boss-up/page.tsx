@@ -354,7 +354,7 @@ export default function BossUpPage() {
               onClick={() => setActiveTab('posts')}
               className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
                 activeTab === 'posts'
-                  ? 'bg-slate-900 text-white shadow-xs'
+                  ? 'bg-slate-200 text-slate-800 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -364,7 +364,7 @@ export default function BossUpPage() {
               onClick={() => setActiveTab('members')}
               className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
                 activeTab === 'members'
-                  ? 'bg-slate-900 text-white shadow-xs'
+                  ? 'bg-slate-200 text-slate-800 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -508,7 +508,7 @@ export default function BossUpPage() {
 
       case 'partner':
         // Mobile: Get.to(() => BossUpPartner()) -> external partner perks & deals
-        window.open('https://businessbosses.news/our-partners/', '_blank');
+        window.location.href = '/partners';
         break;
 
       case 'mentor':

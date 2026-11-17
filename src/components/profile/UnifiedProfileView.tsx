@@ -621,10 +621,14 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
                 {isMe ? (
                   <>
-                    <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 border border-amber-200/80 text-amber-700 text-xs font-bold shadow-2xs">
+                    <Link
+                      href="/coins"
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100/90 border border-amber-200/80 text-amber-700 text-xs font-bold shadow-2xs transition-colors cursor-pointer"
+                      title="View Coins Balance & History"
+                    >
                       <Coins className="w-4 h-4 text-amber-500" />
                       <span>{formatThousands(coins)} Coins</span>
-                    </div>
+                    </Link>
 
                     <Link
                       href="/profile/settings"
@@ -674,7 +678,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
                     <Link
                       href={`/inbox`}
-                      className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs"
+                      className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs"
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
                       <span>Message</span>
@@ -825,11 +829,11 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                 className="p-2 rounded-xl hover:bg-white hover:shadow-xs transition-all cursor-pointer text-center group block"
                 title="View Reach Score & Leaderboard Performance"
               >
-                <span className="block text-base sm:text-lg font-black text-[#F21C29] group-hover:scale-105 transition-transform">
+                <span className="block text-base sm:text-lg font-black text-slate-900 group-hover:scale-105 transition-transform">
                   {formatThousands(connectionStats.reachScore)}
                 </span>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider group-hover:text-slate-800 transition-colors">
-                  Reach Score
+                  Reach
                 </span>
               </Link>
             </div>
@@ -1253,7 +1257,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
               <button
                 type="button"
                 onClick={() => setConnectionsModalTab(null)}
-                className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all"
+                className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-all"
               >
                 Done
               </button>

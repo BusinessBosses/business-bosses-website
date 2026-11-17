@@ -205,7 +205,7 @@ export default function PublicBizCenterView({
             <div className="flex items-center gap-2.5">
               <Link
                 href={`/inbox`}
-                className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-2 shadow-xs transition-colors"
+                className="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs flex items-center gap-2 shadow-xs transition-colors"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span>Message Seller</span>
@@ -424,7 +424,7 @@ export default function PublicBizCenterView({
                             e.stopPropagation();
                             handleOpenItem(s, 'service');
                           }}
-                          className="px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors"
+                          className="px-3 py-1.5 rounded-xl bg-slate-200 text-slate-800 text-xs font-bold hover:bg-slate-300 transition-colors"
                         >
                           Book Service
                         </button>

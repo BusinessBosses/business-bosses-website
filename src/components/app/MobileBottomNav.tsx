@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Flame, Sparkles, Plus, ShoppingBag, User } from 'lucide-react';
+import { Flame, Users, Plus, ShoppingBag, User } from 'lucide-react';
 
 interface MobileBottomNavProps {
   onOpenCreate?: () => void;
@@ -37,7 +37,7 @@ export default function MobileBottomNav({ onOpenCreate }: MobileBottomNavProps) 
             : 'text-slate-500 hover:text-slate-700 font-medium'
         }`}
       >
-        <Sparkles
+        <Users
           className={`w-5 h-5 ${
             pathname === '/boss-up' ? 'stroke-[2.5]' : 'stroke-2'
           }`}

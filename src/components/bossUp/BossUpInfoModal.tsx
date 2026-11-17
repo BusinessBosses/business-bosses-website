@@ -80,7 +80,7 @@ export default function BossUpInfoModal({
 
         <button
           onClick={onClose}
-          className="mt-6 w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-xs"
+          className="mt-6 w-full py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-all shadow-xs"
         >
           Got It
         </button>

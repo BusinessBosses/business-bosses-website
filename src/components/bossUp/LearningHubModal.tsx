@@ -139,7 +139,7 @@ export default function LearningHubModal({
                 </div>
                 <button
                   onClick={() => setInfoOpen(false)}
-                  className="mt-5 w-full py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors"
+                  className="mt-5 w-full py-2 rounded-xl bg-slate-200 text-slate-800 text-xs font-bold hover:bg-slate-300 transition-colors"
                 >
                   Got It
                 </button>

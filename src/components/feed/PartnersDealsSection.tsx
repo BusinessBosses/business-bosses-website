@@ -32,7 +32,7 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
   const hasLoadedDeals = deals && deals.length > 0;
 
   const displayItems = hasLoadedDeals
-    ? deals.slice(0, 4).map((deal, idx) => {
+    ? deals.slice(0, 8).map((deal, idx) => {
         const palette = STYLE_PALETTE[idx % STYLE_PALETTE.length];
         const rawUrl = (deal.companyUrl || '').trim();
         let finalUrl = '/partners';
@@ -110,15 +110,17 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-3.5">
-      {/* Header: Partners' Deals on the left, Partner with us on the right */}
+      {/* Header: Partners' Deals on the left with chevron leading to partners, Partner with us on the right */}
       <div className="flex items-center justify-between px-0.5">
         <Link
           href="/partners"
-          className="group flex items-center gap-1.5 transition-colors"
+          className="group flex items-center gap-1.5 transition-colors cursor-pointer"
+          title="View all partner deals"
         >
           <span className="font-extrabold text-slate-900 text-sm sm:text-base group-hover:text-[#E51927] transition-colors">
             Partners&apos; Deals
           </span>
+          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#E51927] group-hover:translate-x-0.5 transition-all" />
         </Link>
 
         <Link
@@ -129,7 +131,7 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
         </Link>
       </div>
 
-      {/* 4 Clean Deal Cards matching Mockup Grid with real loaded partner deals */}
+      {/* Deals Cards matching Mockup Grid with real loaded partner deals */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
         {displayItems.map((item) => {
           const Icon = item.icon;

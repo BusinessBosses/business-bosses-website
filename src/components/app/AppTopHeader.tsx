@@ -8,7 +8,7 @@ import {
   Search, 
   Bell, 
   ShoppingBag, 
-  Sparkles, 
+  Users, 
   MessageSquare, 
   ChevronRight,
   Plus
@@ -97,16 +97,16 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
             />
           </div>
           <span className="text-lg font-black tracking-tight text-slate-900">
-            Business<span className="text-[#E51927]">Bosses</span>
+            Business Bosses
           </span>
         </Link>
 
         <div className="flex items-center space-x-2.5">
           {/* Live Coins Pill */}
           <Link
-            href="/subscription"
-            className="flex items-center space-x-1.5 px-2.5 py-1 bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 rounded-full transition-colors"
-            title="Your Coins"
+            href="/coins"
+            className="flex items-center space-x-1.5 px-2.5 py-1 bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 rounded-full transition-colors cursor-pointer"
+            title="View Coins Balance & History"
           >
             <div className="w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] flex items-center justify-center leading-none">
               B
@@ -204,7 +204,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
                   : 'text-slate-500 font-medium hover:text-slate-800'
               }`}
             >
-              <Sparkles className={`w-4 h-4 ${isBossUp ? 'text-[#E51927]' : 'text-slate-400'}`} />
+              <Users className={`w-4 h-4 ${isBossUp ? 'text-[#E51927]' : 'text-slate-400'}`} />
               <span>Boss Up</span>
               {isBossUp && (
                 <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#E51927] rounded-full" />

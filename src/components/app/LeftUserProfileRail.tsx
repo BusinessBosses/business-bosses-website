@@ -244,7 +244,7 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             />
           </div>
           <span className="text-xl font-black tracking-tight text-slate-900 group-hover:text-slate-800 transition-colors">
-            Business<span className="text-[#E51927]">Bosses</span>
+            Business Bosses
           </span>
         </Link>
       </div>
@@ -276,9 +276,9 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
 
               {/* Coins Pill */}
               <Link
-                href="/subscription"
-                className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 bg-amber-50/90 hover:bg-amber-100/90 border border-amber-200 rounded-full transition-colors shadow-2xs"
-                title="Your Coins"
+                href="/coins"
+                className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 bg-amber-50/90 hover:bg-amber-100/90 border border-amber-200 rounded-full transition-colors shadow-2xs cursor-pointer"
+                title="View Coins Balance & History"
               >
                 <div className="w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] flex items-center justify-center leading-none">
                   B
@@ -326,11 +326,11 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
                   </span>
                 </div>
                 <div>
-                  <span className="block text-sm font-black text-[#E51927] leading-none">
+                  <span className="block text-sm font-black text-slate-900 leading-none">
                     {formatThousands(profile.reachScore)}
                   </span>
                   <span className="block text-[9px] font-black uppercase text-slate-400 tracking-wider mt-1">
-                    Reach Score
+                    Reach
                   </span>
                 </div>
               </div>

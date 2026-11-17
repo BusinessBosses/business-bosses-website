@@ -184,7 +184,7 @@ export default function OrderBookingModal({ isOpen, onClose, item }: OrderModalP
               <button
                 type="button"
                 onClick={onClose}
-                className="w-full max-w-xs mx-auto py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs transition-colors shadow-xs"
+                className="w-full max-w-xs mx-auto py-2.5 px-4 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-xl text-xs transition-colors shadow-xs"
               >
                 Close &amp; Return to Marketplace
               </button>

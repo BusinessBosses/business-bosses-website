@@ -306,7 +306,7 @@ export default function BuyerRequestsPage() {
               onClick={() => setActiveTab('all')}
               className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'all'
-                  ? 'bg-slate-900 text-white shadow-xs'
+                  ? 'bg-slate-200 text-slate-800 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -316,7 +316,7 @@ export default function BuyerRequestsPage() {
               onClick={() => setActiveTab('my')}
               className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'my'
-                  ? 'bg-slate-900 text-white shadow-xs'
+                  ? 'bg-slate-200 text-slate-800 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -340,7 +340,7 @@ export default function BuyerRequestsPage() {
             </div>
             <button 
               type="submit"
-              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl transition-colors font-bold text-xs sm:text-sm cursor-pointer"
+              className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl transition-colors font-bold text-xs sm:text-sm cursor-pointer"
             >
               Search
             </button>

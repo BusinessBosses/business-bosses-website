@@ -431,7 +431,7 @@ export default function PerformancePage() {
                 onClick={() => setLeaderboardTab('global')}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   leaderboardTab === 'global'
-                    ? 'bg-slate-900 text-white'
+                    ? 'bg-slate-200 text-slate-800'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -442,7 +442,7 @@ export default function PerformancePage() {
                 onClick={() => setLeaderboardTab('industry')}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   leaderboardTab === 'industry'
-                    ? 'bg-slate-900 text-white'
+                    ? 'bg-slate-200 text-slate-800'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -453,7 +453,7 @@ export default function PerformancePage() {
                 onClick={() => setLeaderboardTab('country')}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   leaderboardTab === 'country'
-                    ? 'bg-slate-900 text-white'
+                    ? 'bg-slate-200 text-slate-800'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
