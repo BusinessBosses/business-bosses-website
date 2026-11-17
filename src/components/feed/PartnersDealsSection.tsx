@@ -35,7 +35,7 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
     ? deals.slice(0, 8).map((deal, idx) => {
         const palette = STYLE_PALETTE[idx % STYLE_PALETTE.length];
         const rawUrl = (deal.companyUrl || '').trim();
-        let finalUrl = '/partners';
+        let finalUrl = '/deals';
         let isExternal = false;
 
         if (rawUrl) {
@@ -49,7 +49,7 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
             finalUrl = `https://${rawUrl}`;
             isExternal = true;
           } else {
-            finalUrl = '/partners';
+            finalUrl = '/deals';
             isExternal = false;
           }
         }
@@ -110,10 +110,10 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-3.5">
-      {/* Header: Partners' Deals on the left with chevron leading to partners, Partner with us on the right */}
+      {/* Header: Partners' Deals on the left with chevron leading to deals, Partner with us on the right */}
       <div className="flex items-center justify-between px-0.5">
         <Link
-          href="/partners"
+          href="/deals"
           className="group flex items-center gap-1.5 transition-colors cursor-pointer"
           title="View all partner deals"
         >

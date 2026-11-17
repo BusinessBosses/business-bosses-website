@@ -508,7 +508,7 @@ export default function BossUpPage() {
 
       case 'partner':
         // Mobile: Get.to(() => BossUpPartner()) -> external partner perks & deals
-        window.location.href = '/partners';
+        window.location.href = '/deals';
         break;
 
       case 'mentor':
