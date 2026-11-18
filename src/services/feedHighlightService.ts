@@ -52,20 +52,22 @@ export const feedHighlightService = {
   async getPartnerDeals(): Promise<PartnerDealData[]> {
     try {
       const res = await apiClient.get('/partner/all', {
-        params: { page: 0, size: 10 },
+        params: { page: 0, size: 50 },
       });
       // The API returns { data: { count, rows: [...] } }
       const rows = res.data?.data?.rows || (Array.isArray(res.data?.data) ? res.data.data : []);
       if (Array.isArray(rows)) {
-        return rows.map((item: any) => ({
-          id: String(item.id || item._id),
-          companyName: item.companyName || item.name || 'Partner',
-          companyDescription: item.companyDescription || undefined,
-          companyPhoto: item.companyPhoto || item.user?.photoUrl || undefined,
-          companyUrl: item.companyUrl || item.user?.website || undefined,
-          partnershipType: item.partnershipType || undefined,
-          category: item.category || item.user?.industry || undefined,
-        }));
+        return rows
+          .filter((item: any) => Number(item.id) !== 5 && item.approved) // Mobile parity: approved only, exclude id 5
+          .map((item: any) => ({
+            id: String(item.id || item._id),
+            companyName: item.companyName || item.name || 'Partner',
+            companyDescription: item.companyDescription || undefined,
+            companyPhoto: item.companyPhoto || item.user?.photoUrl || undefined,
+            companyUrl: item.companyUrl || item.user?.website || undefined,
+            partnershipType: item.partnershipType || undefined,
+            category: item.category || item.user?.industry || undefined,
+          }));
       }
       return [];
     } catch (err) {

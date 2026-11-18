@@ -36,12 +36,10 @@ export default function PartnerDealsPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [deals, user] = await Promise.all([
-        partnerService.getPartners(0, 50),
-        authService.getCurrentUser().catch(() => null),
-      ]);
-      setPartners(deals);
+      const user = await authService.getCurrentUser().catch(() => null);
       setCurrentUser(user);
+      const deals = await partnerService.getPartners(0, 100, user?.uid || user?.id);
+      setPartners(deals);
     } catch (err) {
       console.warn('Error loading partner deals', err);
     } finally {

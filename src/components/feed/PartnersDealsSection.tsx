@@ -131,27 +131,33 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
         </Link>
       </div>
 
-      {/* Deals Cards matching Mockup Grid with real loaded partner deals */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+      {/* Single-line horizontal scroll matching mobile app deals_section.dart */}
+      <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto no-scrollbar pb-1">
         {displayItems.map((item) => {
           const Icon = item.icon;
           const cardContent = (
-            <div className="bg-white hover:bg-slate-50/80 border border-slate-200/90 hover:border-slate-300 rounded-2xl p-3 sm:p-3.5 transition-all flex flex-col justify-between space-y-3 shadow-2xs group h-full">
-              {item.photo ? (
-                <div className="w-8 h-8 rounded-xl overflow-hidden ring-1 ring-slate-200 shrink-0 group-hover:scale-105 transition-transform bg-slate-50 flex items-center justify-center">
-                  <Image
-                    src={item.photo}
-                    alt={item.title}
-                    width={32}
-                    height={32}
-                    className="w-full h-full object-cover"
-                  />
+            <div className="w-[140px] sm:w-[160px] shrink-0 bg-white hover:bg-slate-50/80 border border-slate-200/90 hover:border-slate-300 rounded-2xl p-3 sm:p-3.5 transition-all flex flex-col justify-between space-y-3 shadow-2xs group h-full">
+              <div className="flex items-start justify-between">
+                {item.photo ? (
+                  <div className="w-9 h-9 rounded-xl overflow-hidden ring-1 ring-slate-200 shrink-0 group-hover:scale-105 transition-transform bg-slate-50 flex items-center justify-center">
+                    <Image
+                      src={item.photo}
+                      alt={item.title}
+                      width={36}
+                      height={36}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className={`w-9 h-9 rounded-xl ${item.iconBg} text-white flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform shrink-0`}>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                )}
+
+                <div className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-[#F21C29] transition-colors">
+                  <ChevronRight className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
                 </div>
-              ) : (
-                <div className={`w-8 h-8 rounded-xl ${item.iconBg} text-white flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform shrink-0`}>
-                  <Icon className="w-4 h-4" />
-                </div>
-              )}
+              </div>
 
               <div>
                 <h4 className="font-extrabold text-xs text-slate-900 group-hover:text-[#E51927] transition-colors leading-snug line-clamp-2">
@@ -171,7 +177,7 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block h-full"
+                className="block shrink-0"
               >
                 {cardContent}
               </a>
@@ -182,7 +188,7 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
             <Link
               key={item.id}
               href={item.url}
-              className="block h-full"
+              className="block shrink-0"
             >
               {cardContent}
             </Link>
