@@ -254,11 +254,20 @@ export const authService = {
     localStorage.removeItem(StorageEnum.UserId);
     localStorage.removeItem('bb_access_token');
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('bb_user_uid');
     localStorage.removeItem('bb_user_profile');
     localStorage.removeItem('user');
+    sessionStorage.clear();
     window.location.href = '/login';
+  },
+
+  /**
+   * Alias for signOut()
+   */
+  removeToken(): void {
+    this.signOut();
   },
 };
 

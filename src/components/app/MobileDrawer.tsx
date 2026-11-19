@@ -54,8 +54,7 @@ export default function MobileDrawer({
   if (!isOpen) return null;
 
   const handleLogout = () => {
-    authService.removeToken();
-    window.location.href = '/login';
+    authService.signOut();
   };
 
   const navLinks = [

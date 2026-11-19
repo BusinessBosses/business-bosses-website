@@ -247,6 +247,16 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             Business Bosses
           </span>
         </Link>
+        {isAuth && (
+          <button
+            type="button"
+            onClick={() => authService.signOut()}
+            className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+            title="Log Out"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        )}
       </div>
 
       {isAuth && profile ? (
@@ -397,11 +407,11 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             <span>Create Post</span>
           </button>
 
-          {/* Quick Footer Links: Settings & Performance */}
-          <div className="pt-1 flex items-center justify-around px-2 text-xs font-bold text-slate-600">
+          {/* Quick Footer Links: Settings, Performance & Log Out */}
+          <div className="pt-1 flex items-center justify-between px-1 text-xs font-bold text-slate-600">
             <Link
               href="/profile/settings"
-              className="flex items-center space-x-1 hover:text-slate-900 transition-colors"
+              className="flex items-center space-x-1 hover:text-slate-900 transition-colors py-1 px-1.5 rounded-lg hover:bg-slate-100"
               title="Settings"
             >
               <Settings className="w-4 h-4 text-slate-500" />
@@ -409,12 +419,21 @@ export default function LeftUserProfileRail({ onOpenCreatePost }: LeftUserProfil
             </Link>
             <Link
               href="/performance"
-              className="flex items-center space-x-1 hover:text-slate-900 transition-colors"
+              className="flex items-center space-x-1 hover:text-slate-900 transition-colors py-1 px-1.5 rounded-lg hover:bg-slate-100"
               title="Performance"
             >
               <TrendingUp className="w-4 h-4 text-slate-500" />
               <span>Performance</span>
             </Link>
+            <button
+              type="button"
+              onClick={() => authService.signOut()}
+              className="flex items-center space-x-1 text-red-600 hover:text-red-700 transition-colors py-1 px-1.5 rounded-lg hover:bg-red-50 cursor-pointer"
+              title="Log Out"
+            >
+              <LogOut className="w-4 h-4 text-red-600" />
+              <span>Log Out</span>
+            </button>
           </div>
         </div>
       ) : loading ? (

@@ -190,7 +190,7 @@ function LoginForm() {
           type="button"
           onClick={() => handleGoogleSignIn()}
           disabled={loading || googleLoading}
-          className="w-full mb-6 py-3 px-4 bg-white hover:bg-slate-50 text-slate-900 font-bold rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition-all flex items-center justify-center space-x-3 disabled:opacity-60 cursor-pointer text-sm"
+          className="w-full mb-6 h-[54px] bg-white hover:bg-slate-50 text-slate-800 font-bold rounded-[10px] border border-[#F21C29] transition-all flex items-center justify-center space-x-3 disabled:opacity-60 cursor-pointer text-sm"
         >
           {googleLoading ? (
             <div className="w-5 h-5 border-2 border-[#F21C29] border-t-transparent rounded-full animate-spin" />
@@ -214,79 +214,76 @@ function LoginForm() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>Continue with Google</span>
+              <span>Login with Google</span>
             </>
           )}
         </button>
 
-        <div className="relative flex items-center justify-center mb-6">
-          <div className="border-t border-slate-200/80 w-full"></div>
-          <span className="bg-white px-3 text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center leading-tight">
-            OR<br />SIGN IN<br />WITH<br />EMAIL
+        {/* "Or" Separator matching app */}
+        <div className="flex items-center justify-center my-6">
+          <div className="border-t border-slate-300 flex-1"></div>
+          <span className="px-4 text-sm font-normal text-slate-500">
+            Or
           </span>
-          <div className="border-t border-slate-200/80 w-full"></div>
+          <div className="border-t border-slate-300 flex-1"></div>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-[11px] font-black text-slate-800 mb-1.5 uppercase tracking-wider" htmlFor="email">
-              EMAIL
+            <label className="block text-sm font-bold text-slate-800 mb-2" htmlFor="email">
+              Email
             </label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 stroke-[1.8]" />
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full pl-12 pr-4 py-3 bg-[#F4F4F4] border border-transparent rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all text-sm font-medium text-slate-900 placeholder:text-slate-400"
+                className="w-full px-4 h-[55px] bg-[#F4F4F4] border-0 rounded-[10px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F21C29] transition-all text-sm font-semibold text-slate-900 placeholder:text-[#8C8C8C] placeholder:font-semibold"
                 required
               />
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-[11px] font-black text-slate-800 uppercase tracking-wider" htmlFor="password">
-                PASSWORD
-              </label>
-              <button
-                type="button"
-                onClick={() => setShowForgotModal(true)}
-                className="text-xs font-bold text-[#F21C29] hover:underline cursor-pointer"
-              >
-                Forgot Password?
-              </button>
-            </div>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 stroke-[1.8]" />
+            <div className="relative mt-2">
               <input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full pl-12 pr-12 py-3 bg-[#F4F4F4] border border-transparent rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F21C29] focus:border-transparent transition-all text-sm font-medium text-slate-900 placeholder:text-slate-400"
+                className="w-full pl-4 pr-12 h-[55px] bg-[#F4F4F4] border-0 rounded-[10px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F21C29] transition-all text-sm font-semibold text-slate-900 placeholder:text-[#8C8C8C] placeholder:font-semibold"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer p-1"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8C8C8C] hover:text-slate-700 focus:outline-none cursor-pointer p-1"
               >
                 {showPassword ? <EyeOff className="w-5 h-5 stroke-[1.8]" /> : <Eye className="w-5 h-5 stroke-[1.8]" />}
               </button>
             </div>
           </div>
 
+          <div className="flex justify-end pt-2 pb-3">
+            <button
+              type="button"
+              onClick={() => setShowForgotModal(true)}
+              className="text-sm font-bold text-slate-800 underline hover:text-[#F21C29] transition-colors cursor-pointer"
+            >
+              Forgot Password?
+            </button>
+          </div>
+
           <button
             type="submit"
             disabled={loading || googleLoading}
-            className="w-full py-3.5 bg-[#F21C29] hover:bg-[#D01420] text-white rounded-2xl font-bold transition-all shadow-sm hover:shadow-md flex items-center justify-center disabled:opacity-70 mt-5 text-sm cursor-pointer active:scale-[0.99]"
+            className="w-full h-[57px] bg-[#F21C29] hover:bg-[#D01420] text-white rounded-[10px] font-bold text-base transition-all shadow-sm flex items-center justify-center disabled:opacity-70 cursor-pointer active:scale-[0.99]"
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
             ) : (
               'Login'
             )}
