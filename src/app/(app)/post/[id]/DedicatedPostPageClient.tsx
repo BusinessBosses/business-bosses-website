@@ -12,7 +12,20 @@ import { toast } from 'react-toastify';
 export default function DedicatedPostPageClient({ initialId }: { initialId?: string }) {
   const params = useParams();
   const router = useRouter();
-  const postId = initialId || (params?.id as string);
+  
+  // Extract postId from prop, params, or URL path directly (SPA fallback resilience)
+  let extractedId = initialId || (params?.id as string);
+  if ((!extractedId || extractedId === '_') && typeof window !== 'undefined') {
+    const match = window.location.pathname.match(/\/post\/([^/?#]+)/);
+    if (match && match[1] && match[1] !== '_') {
+      extractedId = decodeURIComponent(match[1]);
+    } else {
+      const urlParams = new URLSearchParams(window.location.search);
+      extractedId = urlParams.get('id') || urlParams.get('postId') || '';
+    }
+  }
+
+  const postId = extractedId;
 
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
