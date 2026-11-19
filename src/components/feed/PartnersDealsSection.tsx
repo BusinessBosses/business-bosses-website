@@ -136,36 +136,34 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
         {displayItems.map((item) => {
           const Icon = item.icon;
           const cardContent = (
-            <div className="w-[140px] sm:w-[160px] shrink-0 bg-white hover:bg-slate-50/80 border border-slate-200/90 hover:border-slate-300 rounded-2xl p-3 sm:p-3.5 transition-all flex flex-col justify-between space-y-3 shadow-2xs group h-full">
-              <div className="flex items-start justify-between">
+            <div className="w-[125px] sm:w-[135px] shrink-0 bg-slate-50/80 hover:bg-slate-100/90 border border-slate-100 rounded-2xl p-3 transition-all flex flex-col items-center text-center space-y-2 shadow-2xs group h-full">
+              {/* Image Circle with top-right diagonal arrow badge */}
+              <div className="relative">
                 {item.photo ? (
-                  <div className="w-9 h-9 rounded-xl overflow-hidden ring-1 ring-slate-200 shrink-0 group-hover:scale-105 transition-transform bg-slate-50 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-slate-200 shrink-0 group-hover:scale-105 transition-transform bg-white flex items-center justify-center">
                     <Image
                       src={item.photo}
                       alt={item.title}
-                      width={36}
-                      height={36}
+                      width={48}
+                      height={48}
                       className="w-full h-full object-cover"
                     />
                   </div>
                 ) : (
-                  <div className={`w-9 h-9 rounded-xl ${item.iconBg} text-white flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform shrink-0`}>
-                    <Icon className="w-4 h-4" />
+                  <div className={`w-12 h-12 rounded-full ${item.iconBg} text-white flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform shrink-0`}>
+                    <Icon className="w-5 h-5" />
                   </div>
                 )}
-
-                <div className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-[#F21C29] transition-colors">
-                  <ChevronRight className="w-3 h-3 text-slate-500 group-hover:text-white transition-colors" />
+                {/* Diagonal Arrow indicator matching app */}
+                <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-white border border-slate-200 shadow-2xs flex items-center justify-center">
+                  <ExternalLink className="w-2.5 h-2.5 text-slate-500" />
                 </div>
               </div>
 
-              <div>
-                <h4 className="font-extrabold text-xs text-slate-900 group-hover:text-[#E51927] transition-colors leading-snug line-clamp-2">
+              <div className="w-full">
+                <h4 className="font-extrabold text-[11px] text-slate-900 group-hover:text-[#E51927] transition-colors leading-tight line-clamp-2">
                   {item.title}
                 </h4>
-                <p className="text-[10px] text-slate-400 font-semibold mt-1 truncate">
-                  {item.badge}
-                </p>
               </div>
             </div>
           );

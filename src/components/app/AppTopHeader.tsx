@@ -11,8 +11,10 @@ import {
   Users, 
   MessageSquare, 
   ChevronRight,
-  Plus
+  Plus,
+  Menu
 } from 'lucide-react';
+import MobileDrawer from './MobileDrawer';
 import { authService } from '../../services/authService';
 import { chatService } from '../../services/chatService';
 import { notificationService } from '../../services/notificationService';
@@ -29,6 +31,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
   const [initial, setInitial] = useState<string>('B');
   const [unreadInboxCount, setUnreadInboxCount] = useState<number>(0);
   const [unreadNotifCount, setUnreadNotifCount] = useState<number>(0);
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   useEffect(() => {
     loadUser();
@@ -86,78 +89,53 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
   return (
     <>
       {/* 1. Top Header Bar (Search & Quick Actions on Mobile, Brand/Search on Desktop) */}
-      <header className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 h-14 flex items-center justify-between px-3.5 shadow-xs">
-        <Link href="/feed" className="flex items-center space-x-2">
-          <div className="relative w-7 h-7 rounded-full overflow-hidden shrink-0 shadow-xs">
-            <Image
-              src="/app_logo_2.png"
-              alt="Business Bosses"
-              fill
-              className="object-contain"
-            />
-          </div>
-          <span className="text-lg font-black tracking-tight text-slate-900">
-            Business Bosses
-          </span>
+      <header className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-100 h-14 flex items-center justify-between px-3.5 gap-2.5">
+        {/* Mobile Search Input Pill (Matching App home_appbar.dart) */}
+        <Link
+          href="/marketplace"
+          className="flex-1 flex items-center justify-between bg-white border border-slate-900/80 rounded-full px-3.5 py-1.5 hover:border-slate-950 transition-colors shadow-2xs"
+        >
+          <span className="text-xs text-slate-500 font-medium">Search</span>
+          <Search className="w-4 h-4 text-slate-700 stroke-[2.5]" />
         </Link>
 
-        <div className="flex items-center space-x-2.5">
-          {/* Live Coins Pill */}
+        <div className="flex items-center space-x-2 shrink-0">
+          {/* Live Coins Pill (matching app: gold circle with white B + number) */}
           <Link
             href="/coins"
-            className="flex items-center space-x-1.5 px-2.5 py-1 bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 rounded-full transition-colors cursor-pointer"
+            className="flex items-center space-x-1.5 px-2.5 py-1 bg-amber-50/90 hover:bg-amber-100 border border-amber-200/80 rounded-full transition-colors cursor-pointer"
             title="View Coins Balance & History"
           >
-            <div className="w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] flex items-center justify-center leading-none">
+            <div className="w-4 h-4 rounded-full bg-[#F59E0B] text-white font-black text-[10px] flex items-center justify-center leading-none shadow-2xs">
               B
             </div>
-            <span className="text-xs font-black text-amber-900">
+            <span className="text-xs font-black text-slate-900">
               {formatCoins(coinsCount)}
             </span>
           </Link>
 
-          {/* Search */}
-          <Link
-            href="/marketplace"
-            className="p-1.5 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
-            title="Search Marketplace & Bosses"
+          {/* Hamburger Drawer Menu Button (matching app 3 horizontal lines) */}
+          <button
+            type="button"
+            onClick={() => setIsDrawerOpen(true)}
+            className="p-1 text-slate-900 hover:text-black rounded-lg hover:bg-slate-100 transition-colors relative"
+            aria-label="Open Menu"
           >
-            <Search className="w-4 h-4" />
-          </Link>
-
-          {/* Notifications */}
-          <Link
-            href="/notifications"
-            className="p-1.5 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors relative"
-            title="Notifications"
-          >
-            <Bell className="w-4 h-4" />
+            <Menu className="w-6 h-6 stroke-[2.2]" />
             {unreadNotifCount > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none shadow-xs">
-                {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
-              </span>
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#E51927]" />
             )}
-          </Link>
-
-          {/* Profile Avatar */}
-          <Link
-            href="/profile"
-            className="w-7 h-7 rounded-full bg-slate-100 ring-1 ring-slate-200 overflow-hidden flex items-center justify-center shrink-0"
-          >
-            {avatarUrl ? (
-              <Image
-                src={avatarUrl}
-                alt="Profile"
-                width={28}
-                height={28}
-                className="object-cover w-full h-full"
-              />
-            ) : (
-              <span className="text-xs font-bold text-slate-700">{initial}</span>
-            )}
-          </Link>
+          </button>
         </div>
       </header>
+
+      {/* Mobile Navigation Drawer */}
+      <MobileDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        coinsCount={coinsCount}
+        unreadNotifCount={unreadNotifCount}
+      />
 
       {/* 2. Top Navigation Tabs Bar (Visible on both Mobile & Desktop - Exact Mockup & App Screenshot Match) */}
       <div className="w-full bg-white border-b border-slate-200/90 sticky top-14 lg:static z-30">
