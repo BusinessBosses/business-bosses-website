@@ -168,7 +168,7 @@ function LoginForm() {
       </div>
 
       {/* Main Card (Crisp clean white card matching mobile app) */}
-      <div className="bg-white rounded-[28px] shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-slate-200/80 p-6 sm:p-7">
+      <div className="bg-white rounded-none sm:rounded-[28px] shadow-none sm:shadow-[0_4px_25px_rgba(0,0,0,0.06)] border-0 sm:border sm:border-slate-200/80 p-0 sm:p-7">
         {/* Toggle Tabs (Matching Mobile Log In with small red dot vs Join for Free) */}
         <div className="flex items-center mb-6 space-x-10">
           <div className="flex flex-col items-center">
@@ -310,7 +310,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-white sm:bg-[#F8FAFC] py-4 sm:py-8">
+    <div className="w-full bg-white sm:bg-[#F8FAFC] py-4 sm:py-8 px-4 sm:px-0">
       <Suspense fallback={<div className="w-8 h-8 border-3 border-[#F21C29] border-t-transparent rounded-full animate-spin" />}>
         <LoginForm />
       </Suspense>
