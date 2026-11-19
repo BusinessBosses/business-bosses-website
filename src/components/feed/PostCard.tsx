@@ -239,7 +239,8 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   // Handle Share
   const handleShare = async () => {
-    const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/feed` : '';
+    const postPath = post.type === 'forum' ? `/boss-up/${post.id}/` : `/post/${post.id}/`;
+    const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}${postPath}` : '';
     if (navigator.share) {
       try {
         await navigator.share({
@@ -257,7 +258,8 @@ export const PostCard: React.FC<PostCardProps> = ({
   };
 
   const handleCopyLink = () => {
-    const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/feed` : '';
+    const postPath = post.type === 'forum' ? `/boss-up/${post.id}/` : `/post/${post.id}/`;
+    const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}${postPath}` : '';
     navigator.clipboard?.writeText(shareUrl);
     toast.success('Post link copied to clipboard!');
     setMenuOpen(false);

@@ -288,6 +288,123 @@ export const postService = {
   },
 
   /**
+   * Fetch a single post by ID (with fallback to forum lookup if needed)
+   */
+  async getPostById(postId: string): Promise<Post | null> {
+    try {
+      const res = await apiClient.get(`/post/get-post/${postId}`).catch(() => null);
+      const data = res?.data?.data || res?.data;
+      if (data && (data.postId || data.id)) {
+        const item = data;
+        const currentUid = authService.getUserId();
+        const ts = Number(item.timestamp) || (item.createdAt ? new Date(item.createdAt).getTime() : Date.now());
+        const user = item.user || item.author || {};
+        const forum = item.forum || {};
+        const industry = item.industry?.industry || forum.industry?.industry || user.industry || undefined;
+
+        let postImages: string[] = [];
+        if (Array.isArray(item.images) && item.images.length > 0) {
+          postImages = item.images.filter(Boolean);
+        } else if (typeof item.images === 'string' && item.images.trim()) {
+          postImages = item.images.split(';').map((s: string) => s.trim()).filter(Boolean);
+        } else if (item.photoUrl) {
+          postImages = [item.photoUrl];
+        } else if (item.image) {
+          postImages = [item.image];
+        }
+
+        const coinsCount = Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount) || 0;
+        const viewsCount = Number(item.views) || 0;
+
+        return {
+          id: String(item.postId || item.id),
+          author: {
+            id: String(item.userId || user.uid || user.id || ''),
+            name: user.name || user.fullname || user.username || 'Business Boss',
+            username: user.username || undefined,
+            avatarUrl: user.photoUrl || user.avatar || user.profilePicture || '',
+            isPro: !!(user.isSubscribed || user.isBossPro),
+            hasShop: !!(user.hasShop || item.hasShop),
+            bio: user.bio || undefined,
+          },
+          content: item.title || item.text || item.content || item.description || '',
+          images: postImages,
+          createdAt: new Date(ts).toLocaleDateString(),
+          category: industry && industry !== 'General Business' ? industry : undefined,
+          type: 'post',
+          likesCount: Array.isArray(item.likes) ? item.likes.length : Number(item.likesCount) || 0,
+          commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount) || 0,
+          comments: Array.isArray(item.comments) ? item.comments : undefined,
+          coinsCount: coinsCount,
+          views: viewsCount,
+          repostsCount: Array.isArray(item.reposts) ? item.reposts.length : Number(item.repostsCount) || 0,
+          isLiked: currentUid && Array.isArray(item.likes) ? item.likes.some((l: any) => String(l.userId || l.uid || l) === currentUid) : false,
+          isCoined: currentUid && Array.isArray(item.coins) ? item.coins.some((c: any) => String(c.userId || c.uid || c) === currentUid) : false,
+          isBookmarked: false,
+          isReposted: false,
+          isPolled: !!item.isPolled,
+          options: Array.isArray(item.options) ? item.options : undefined,
+          pollvotes: Array.isArray(item.pollvotes) ? item.pollvotes : undefined,
+          isRanked: !!item.isRanked,
+          timestamp: ts,
+        };
+      }
+
+      // Fallback: check forum endpoint
+      const forumRes = await apiClient.get(`/forum/get/${postId}`).catch(() => null);
+      const forumData = forumRes?.data?.data || forumRes?.data;
+      if (forumData && (forumData.forumId || forumData.id)) {
+        const item = forumData;
+        const currentUid = authService.getUserId();
+        const ts = Number(item.timestamp) || (item.createdAt ? new Date(item.createdAt).getTime() : Date.now());
+        const user = item.user || {};
+
+        let postImages: string[] = [];
+        if (Array.isArray(item.images) && item.images.length > 0) {
+          postImages = item.images.filter(Boolean);
+        } else if (typeof item.images === 'string' && item.images.trim()) {
+          postImages = item.images.split(';').map((s: string) => s.trim()).filter(Boolean);
+        } else if (item.photoUrl) {
+          postImages = [item.photoUrl];
+        } else if (item.image) {
+          postImages = [item.image];
+        }
+
+        return {
+          id: String(item.forumId || item.id),
+          author: {
+            id: String(item.userId || user.uid || user.id || ''),
+            name: user.name || user.fullname || user.username || 'Business Boss',
+            username: user.username || undefined,
+            avatarUrl: user.photoUrl || user.avatar || user.profilePicture || '',
+            isPro: !!(user.isSubscribed || user.isBossPro),
+            hasShop: !!user.hasShop,
+            bio: user.bio || undefined,
+          },
+          content: item.title ? `${item.title}\n\n${item.description || ''}` : item.description || '',
+          images: postImages,
+          createdAt: new Date(ts).toLocaleDateString(),
+          category: 'Boss Up',
+          type: 'forum',
+          likesCount: Array.isArray(item.likes) ? item.likes.length : Number(item.likesCount) || 0,
+          commentsCount: Array.isArray(item.comments) ? item.comments.length : Number(item.commentsCount) || 0,
+          comments: Array.isArray(item.comments) ? item.comments : undefined,
+          coinsCount: Array.isArray(item.coins) ? item.coins.length : Number(item.coinsCount) || 0,
+          views: Number(item.views) || 0,
+          isLiked: currentUid && Array.isArray(item.likes) ? item.likes.some((l: any) => String(l.userId || l.uid || l) === currentUid) : false,
+          isCoined: currentUid && Array.isArray(item.coins) ? item.coins.some((c: any) => String(c.userId || c.uid || c) === currentUid) : false,
+          timestamp: ts,
+        };
+      }
+
+      return null;
+    } catch (e) {
+      console.error('Failed to get post by id', e);
+      return null;
+    }
+  },
+
+  /**
    * Disconnect from a user
    */
   async disconnectUser(userId: string): Promise<any> {

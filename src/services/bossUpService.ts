@@ -65,6 +65,33 @@ export const bossUpService = {
   },
 
   /**
+   * Fetch category by ID
+   */
+  async getCategoryById(industryId: string): Promise<BossUpCategory | null> {
+    try {
+      const res = await apiClient.get(`/industry/get/${industryId}`);
+      const data = res.data?.data || res.data?.message;
+      if (!data) return null;
+
+      return {
+        industryId: String(data.industryId || industryId),
+        categoryId: data.categoryId,
+        industry: data.industry || data.name || '',
+        photo: data.photo || '',
+        description: data.description || '',
+        award: data.award || 'Win',
+        startAt: data.startAt || null,
+        endedAt: data.endedAt || null,
+        criteria: data.criteria || '',
+        joinedUsersCount: Array.isArray(data.joinedUsers) ? data.joinedUsers.length : 0,
+      };
+    } catch (e) {
+      console.error('Failed to get industry by id', e);
+      return null;
+    }
+  },
+
+  /**
    * Fetch Learning industries (Learn New Skills)
    * Mobile parity: Constants.LEARNINGID = '-Mos1VMnV53H7AZa0W8p'
    */
