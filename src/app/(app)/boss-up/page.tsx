@@ -26,6 +26,7 @@ import CreateBossUpModal from '../../../components/bossUp/CreateBossUpModal';
 import PreviousWinnersModal from '../../../components/bossUp/PreviousWinnersModal';
 import BossUpInfoModal from '../../../components/bossUp/BossUpInfoModal';
 import LearningHubModal from '../../../components/bossUp/LearningHubModal';
+import SuggestedFollowsModal from '../../../components/feed/SuggestedFollowsModal';
 import { getUserProfileUrl } from '../../../common/functions/getUserProfileUrl';
 import { toast } from 'react-toastify';
 import { authService } from '../../../services/authService';
@@ -60,11 +61,12 @@ export default function BossUpPage() {
   const [totalPostsCount, setTotalPostsCount] = useState<number>(0);
   const [isJoined, setIsJoined] = useState<boolean>(false);
 
-  // Parity Modals: Entry, Winners, Info, Comments, Learning
+  // Parity Modals: Entry, Winners, Info, Comments, Learning, Network (Suggested Bosses)
   const [createEntryModalOpen, setCreateEntryModalOpen] = useState(false);
   const [winnersModalOpen, setWinnersModalOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [learningHubModalOpen, setLearningHubModalOpen] = useState(false);
+  const [networkModalOpen, setNetworkModalOpen] = useState(false);
   const [commentPost, setCommentPost] = useState<Post | null>(null);
 
   // Current authenticated user state for challenge eligibility checks
@@ -533,33 +535,37 @@ export default function BossUpPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      {/* Top App Bar - Exact Mobile Parity */}
-      <div className="sticky top-0 z-30 bg-white border-b border-black/5 px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      {/* Top App Bar - Exact Mobile Parity (bossup_challenge.dart:73-140) */}
+      <div className="sticky top-0 z-30 bg-white border-b border-black/5 px-4 sm:px-6 py-3 flex items-center justify-between">
         <h1 className="text-lg font-bold text-slate-900 tracking-tight">
           Boss Up
         </h1>
 
         <div className="flex items-center gap-3">
-          {/* Network Action (Search / Connect) */}
-          <Link
-            href="/feed"
-            className="flex flex-col items-center justify-center text-slate-700 hover:text-slate-900 transition-colors"
-            title="Network"
+          {/* Network Action (Search / Connect) matching Flutter collaborator icon + text */}
+          <button
+            type="button"
+            onClick={() => setNetworkModalOpen(true)}
+            className="flex flex-col items-center justify-center text-slate-700 hover:text-slate-900 transition-transform active:scale-95 cursor-pointer"
+            title="Connect with people (Network)"
           >
             <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center">
-              <Users className="w-3.5 h-3.5 text-slate-700" />
+              <Users className="w-3.5 h-3.5 text-slate-700 stroke-[2.2]" />
             </div>
-            <span className="text-[10px] font-semibold mt-0.5">Network</span>
-          </Link>
+            <span className="text-[10px] font-semibold text-slate-800 mt-0.5">Network</span>
+          </button>
 
-          {/* Grow Pro Button */}
-          <Link
-            href="/subscription"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-[#F21C29] transition-colors"
-          >
-            <Sparkles className="w-3.5 h-3.5 fill-[#F21C29]" />
-            <span className="text-xs font-bold">Grow</span>
-          </Link>
+          {/* Grow Pro Button matching Flutter growfilled.svg pill (bossup_challenge.dart:104-138) */}
+          {(!currentUser || !currentUser.isSubscribed) && (
+            <Link
+              href="/subscription"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FCF0F0] hover:bg-[#FCE7E6] text-[#F21C29] transition-transform active:scale-95 shadow-2xs"
+              title="Upgrade to Pro (Grow)"
+            >
+              <Sparkles className="w-3.5 h-3.5 fill-[#F21C29] text-[#F21C29]" />
+              <span className="text-sm font-bold text-[#F21C29] leading-none">Grow</span>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -918,6 +924,12 @@ export default function BossUpPage() {
         onSelectCategory={(category) => {
           handleChallengeClick(category);
         }}
+      />
+
+      {/* Network Modal (Parity with complete_searching_screen.dart & collaborator.svg) */}
+      <SuggestedFollowsModal
+        isOpen={networkModalOpen}
+        onClose={() => setNetworkModalOpen(false)}
       />
     </div>
   );
