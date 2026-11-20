@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SafeImage from '../common/SafeImage';
+import MobileDrawer from '../app/MobileDrawer';
 import {
   Settings,
   MapPin,
@@ -34,6 +35,9 @@ import {
   HelpCircle,
   X,
   Search,
+  Menu,
+  MoreVertical,
+  Pencil,
 } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { buyerRequestService, BuyerRequest } from '../../services/buyerRequestService';
@@ -148,6 +152,8 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   const [connecting, setConnecting] = useState<boolean>(false);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [loadingContent, setLoadingContent] = useState<boolean>(false);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
+  const [isPublicOptionsMenuOpen, setIsPublicOptionsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     loadProfile();
@@ -521,10 +527,157 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   return (
     <div className="w-full max-w-4xl mx-auto pb-20">
       {/* ============================================================== */}
-      {/* TOP SEGMENT SWITCHER (Profile vs My Biz / Biz-Center)            */}
+      {/* MOBILE TOP APP BAR (Exact mobile parity: my_profile_screen.dart*/}
+      {/* / public_profile_screen.dart)                                  */}
+      {/* ============================================================== */}
+      <div className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-100 px-3.5 h-14 flex items-center justify-between -mx-3 sm:-mx-4 -mt-1 mb-2">
+        {isMe ? (
+          <>
+            {/* Left: Help / Analyze Button */}
+            <Link
+              href="/performance"
+              className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:text-slate-900 transition-colors"
+              title="Help & Analysis"
+            >
+              <HelpCircle className="w-5 h-5 stroke-[2]" />
+            </Link>
+
+            {/* Center: Cupertino-style Segmented Control (Profile vs My Biz) */}
+            <div className="inline-flex p-1 bg-slate-100 rounded-xl shadow-inner">
+              <button
+                type="button"
+                onClick={() => setActiveSegment('profile')}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  activeSegment === 'profile'
+                    ? 'bg-white text-slate-900 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                Profile
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveSegment('bizCenter')}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  activeSegment === 'bizCenter'
+                    ? 'bg-white text-slate-900 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                My Biz
+              </button>
+            </div>
+
+            {/* Right: Drawer Hamburger Menu Button */}
+            <button
+              type="button"
+              onClick={() => setIsMobileDrawerOpen(true)}
+              className="w-9 h-9 rounded-full flex items-center justify-center text-slate-800 hover:bg-slate-100 transition-colors relative"
+              aria-label="Open Menu"
+            >
+              <Menu className="w-6 h-6 stroke-[2.2]" />
+            </button>
+          </>
+        ) : (
+          <>
+            {/* Public Profile: Back button, Name/Segmented, 3-dots */}
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== 'undefined' && window.history.length > 1) {
+                  window.history.back();
+                } else {
+                  window.location.href = '/feed';
+                }
+              }}
+              className="w-9 h-9 rounded-full flex items-center justify-center text-slate-800 hover:bg-slate-100 transition-colors"
+              aria-label="Back"
+            >
+              <ArrowLeft className="w-5 h-5 stroke-[2.2]" />
+            </button>
+
+            {userShop ? (
+              <div className="inline-flex p-1 bg-slate-100 rounded-xl shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => setActiveSegment('profile')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    activeSegment === 'profile'
+                      ? 'bg-white text-slate-900 shadow-xs'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  Profile
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveSegment('bizCenter')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    activeSegment === 'bizCenter'
+                      ? 'bg-white text-slate-900 shadow-xs'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  Biz-Center
+                </button>
+              </div>
+            ) : (
+              <h2 className="font-extrabold text-sm sm:text-base text-slate-900 truncate max-w-[200px]">
+                {displayName}
+              </h2>
+            )}
+
+            {/* Public Options / Share 3-dots */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsPublicOptionsMenuOpen(!isPublicOptionsMenuOpen)}
+                className="w-9 h-9 rounded-full flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors"
+                aria-label="More Options"
+              >
+                <MoreVertical className="w-5 h-5" />
+              </button>
+
+              {isPublicOptionsMenuOpen && (
+                <div className="absolute right-0 top-10 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 py-1.5 z-50 animate-in fade-in zoom-in-95">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleShareProfile();
+                      setIsPublicOptionsMenuOpen(false);
+                    }}
+                    className="w-full px-4 py-2 text-left text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                  >
+                    <Share2 className="w-4 h-4 text-slate-400" />
+                    <span>Share Profile</span>
+                  </button>
+                  <Link
+                    href={`/inbox`}
+                    onClick={() => setIsPublicOptionsMenuOpen(false)}
+                    className="w-full px-4 py-2 text-left text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                  >
+                    <MessageSquare className="w-4 h-4 text-slate-400" />
+                    <span>Send Message</span>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Mobile Drawer (Toggled from profile top bar) */}
+      <MobileDrawer
+        isOpen={isMobileDrawerOpen}
+        onClose={() => setIsMobileDrawerOpen(false)}
+        coinsCount={coins}
+      />
+
+      {/* ============================================================== */}
+      {/* DESKTOP SEGMENT SWITCHER (Profile vs My Biz / Biz-Center)       */}
       {/* ============================================================== */}
       {(isMe || userShop) && (
-        <div className="flex justify-center mb-6">
+        <div className="hidden lg:flex justify-center mb-6">
           <div className="inline-flex p-1 bg-slate-200/80 rounded-2xl shadow-inner">
             <button
               type="button"
@@ -570,8 +723,220 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
         /* MAIN PROFILE VIEW (Both My Profile & Public Profile Parity)     */
         /* ============================================================== */
         <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-          {/* Profile Header Details (Clean white card matching mobile app, no cover banner) */}
-          <div className="p-5 sm:p-8">
+          {/* ============================================================== */}
+          {/* MOBILE PROFILE HEADER (Exact UserProfileTile Parity)            */}
+          {/* ============================================================== */}
+          <div className="lg:hidden p-4 border-b border-slate-100">
+            <div className="flex items-start gap-3.5 mb-3">
+              {/* Avatar circle (96x96) + Boss of the week badge */}
+              <div className="flex flex-col items-center shrink-0">
+                <div className="relative w-20 h-20 rounded-full border border-slate-100 bg-slate-100 overflow-hidden shadow-2xs">
+                  {profile?.photoUrl ? (
+                    <SafeImage
+                      src={profile.photoUrl}
+                      alt={displayName}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-200 text-slate-600 font-black text-2xl">
+                      {displayName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                {profile?.isRanked && (
+                  <div className="flex flex-col items-center mt-1">
+                    <div className="w-8 h-8 rounded-full bg-white shadow-md border border-slate-100 p-1.5 flex items-center justify-center">
+                      <img src="/icons/bosseek.svg" alt="Boss of the Week" className="w-5 h-5" />
+                    </div>
+                    <span className="text-[9px] font-bold text-slate-700 leading-tight mt-0.5">
+                      Boss of the week
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* User Details Column */}
+              <div className="min-w-0 flex-1 pt-0.5">
+                {/* Match Type Pill */}
+                {profile?.matchType && (
+                  <Link
+                    href="/matching"
+                    className="inline-flex items-center gap-0.5 text-[#095DED] text-xs font-bold mb-1 hover:underline"
+                  >
+                    <span>Find Your Match</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </Link>
+                )}
+
+                {/* Name + Verified Badge */}
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <h1 className="text-base sm:text-lg font-black text-slate-900 truncate">
+                    {displayName}
+                  </h1>
+                  {isPro && (
+                    <img
+                      src="/icons/premiumbadge.svg"
+                      alt="Pro Member"
+                      className="w-3.5 h-3.5 shrink-0"
+                    />
+                  )}
+                </div>
+
+                {/* Category | Company */}
+                <div className="text-xs font-bold text-slate-700 truncate mb-0.5">
+                  {profile?.category || ''}
+                  {profile?.category && profile?.companyName ? ' | ' : ''}
+                  {profile?.companyName || ''}
+                </div>
+
+                {/* Location */}
+                {profile?.location && (
+                  <p className="text-xs text-slate-500 truncate mb-2">
+                    {profile.location}
+                  </p>
+                )}
+
+                {/* Upgrade to Pro Button if not subscribed */}
+                {!isPro && (
+                  <Link
+                    href="/subscription"
+                    className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#F21C29] hover:bg-[#D01420] text-white text-xs font-bold shadow-xs transition-transform active:scale-95"
+                  >
+                    Upgrade to Pro
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            {/* Mobile 3 Stats Columns */}
+            <div className="grid grid-cols-3 gap-2 py-2 border-t border-slate-100 text-center">
+              <button
+                type="button"
+                onClick={() => handleOpenConnectionsModal('followers')}
+                className="py-1"
+              >
+                <span className="block text-base font-black text-slate-900 leading-tight">
+                  {connectionStats.followers >= 1000
+                    ? `${(connectionStats.followers / 1000).toFixed(1).replace(/\.0$/, '')}k`
+                    : connectionStats.followers}
+                </span>
+                <span className="text-[11px] font-bold text-slate-500">
+                  Followers
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleOpenConnectionsModal('following')}
+                className="py-1 border-x border-slate-100"
+              >
+                <span className="block text-base font-black text-slate-900 leading-tight">
+                  {connectionStats.following >= 1000
+                    ? `${(connectionStats.following / 1000).toFixed(1).replace(/\.0$/, '')}k`
+                    : connectionStats.following}
+                </span>
+                <span className="text-[11px] font-bold text-slate-500">
+                  Following
+                </span>
+              </button>
+
+              <Link
+                href={
+                  profile?.id || profile?.uid
+                    ? `/performance?userId=${profile.id || profile.uid}`
+                    : '/performance'
+                }
+                className="py-1 block"
+              >
+                <span className="block text-base font-black text-slate-900 leading-tight">
+                  {connectionStats.reachScore >= 1000
+                    ? `${(connectionStats.reachScore / 1000).toFixed(1).replace(/\.0$/, '')}k`
+                    : connectionStats.reachScore}
+                </span>
+                <span className="text-[11px] font-bold text-slate-500">
+                  Reach Score
+                </span>
+              </Link>
+            </div>
+
+            {/* Mobile Outline Button Header (Edit / Earn / Invite for My Profile; Follow / Message / Share for Public Profile) */}
+            <div className="grid grid-cols-3 gap-2 pt-3">
+              {isMe ? (
+                <>
+                  <Link
+                    href="/profile/settings"
+                    className="flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl border border-[#F21C29] text-[#F21C29] hover:bg-red-50 text-xs font-bold transition-colors"
+                  >
+                    <Pencil className="w-3.5 h-3.5" />
+                    <span>Edit</span>
+                  </Link>
+
+                  <Link
+                    href="/coins"
+                    className="flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl border border-[#F21C29] text-[#F21C29] hover:bg-red-50 text-xs font-bold transition-colors"
+                  >
+                    <div className="w-3.5 h-3.5 rounded-full bg-amber-500 text-white font-black text-[9px] flex items-center justify-center leading-none">
+                      B
+                    </div>
+                    <span>Earn</span>
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={handleShareProfile}
+                    className="flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl border border-[#F21C29] text-[#F21C29] hover:bg-red-50 text-xs font-bold transition-colors"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>{copiedLink ? 'Copied' : 'Invite'}</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={handleToggleConnect}
+                    disabled={connecting}
+                    className={`flex items-center justify-center gap-1 py-2 px-1 rounded-xl text-xs font-bold transition-all ${
+                      isConnected
+                        ? 'border border-[#F21C29] text-[#F21C29] bg-white hover:bg-red-50'
+                        : 'bg-[#F21C29] text-white hover:bg-[#D01420]'
+                    }`}
+                  >
+                    {connecting ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : isConnected ? (
+                      <span>Following</span>
+                    ) : (
+                      <span>Follow</span>
+                    )}
+                  </button>
+
+                  <Link
+                    href={`/inbox`}
+                    className="flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl border border-[#F21C29] text-[#F21C29] hover:bg-red-50 text-xs font-bold transition-colors"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    <span>Message</span>
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={handleShareProfile}
+                    className="flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl border border-[#F21C29] text-[#F21C29] hover:bg-red-50 text-xs font-bold transition-colors"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>{copiedLink ? 'Copied' : 'Share'}</span>
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* ============================================================== */}
+          {/* DESKTOP PROFILE HEADER DETAILS (Preserved for Large Screens)     */}
+          {/* ============================================================== */}
+          <div className="hidden lg:block p-5 sm:p-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               {/* Avatar with Gold Star & Pro Member Badge */}
               <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-slate-100 bg-slate-100 overflow-hidden shadow-sm shrink-0">
@@ -789,10 +1154,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
               </div>
             </div>
 
-            {/* ============================================================== */}
-            {/* 3-TILE INTERACTIVE STATS BAR (Followers, Following, Reach)     */}
-            {/* Clickable tiles that open the Connections List Modal            */}
-            {/* ============================================================== */}
+            {/* Desktop 3-Tile Stats Bar */}
             <div className="grid grid-cols-3 gap-2.5 sm:gap-4 p-3 bg-slate-50/80 rounded-2xl border border-slate-100 mb-6 text-center">
               <button
                 type="button"
@@ -837,15 +1199,16 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                 </span>
               </Link>
             </div>
+          </div>
 
             {/* ============================================================== */}
             {/* TABS (Mobile Parity: About, Posts, Requests, Deals)              */}
             {/* ============================================================== */}
-            <div className="border-t border-b border-slate-100 flex gap-6 text-xs sm:text-sm font-bold">
+            <div className="bg-[#F9F9F9] border-t border-b border-slate-200/80 flex gap-6 px-4 text-xs sm:text-sm font-bold">
               <button
                 type="button"
                 onClick={() => setActiveTab('about')}
-                className={`py-3.5 border-b-2 transition-colors ${
+                className={`py-3 border-b-2 transition-colors ${
                   activeTab === 'about'
                     ? 'border-[#F21C29] text-[#F21C29]'
                     : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -856,7 +1219,7 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
               <button
                 type="button"
                 onClick={() => setActiveTab('posts')}
-                className={`py-3.5 border-b-2 transition-colors ${
+                className={`py-3 border-b-2 transition-colors ${
                   activeTab === 'posts'
                     ? 'border-[#F21C29] text-[#F21C29]'
                     : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -864,22 +1227,24 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
               >
                 Posts ({posts.length})
               </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('requests')}
-                className={`py-3.5 border-b-2 transition-colors ${
-                  activeTab === 'requests'
-                    ? 'border-[#F21C29] text-[#F21C29]'
-                    : 'border-transparent text-slate-500 hover:text-slate-800'
-                }`}
-              >
-                Requests ({requests.length})
-              </button>
+              {requests.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('requests')}
+                  className={`py-3 border-b-2 transition-colors ${
+                    activeTab === 'requests'
+                      ? 'border-[#F21C29] text-[#F21C29]'
+                      : 'border-transparent text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  Requests ({requests.length})
+                </button>
+              )}
               {deals.length > 0 && (
                 <button
                   type="button"
                   onClick={() => setActiveTab('deals')}
-                  className={`py-3.5 border-b-2 transition-colors ${
+                  className={`py-3 border-b-2 transition-colors ${
                     activeTab === 'deals'
                       ? 'border-[#F21C29] text-[#F21C29]'
                       : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -893,69 +1258,144 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
             {/* ============================================================== */}
             {/* TAB BODY                                                       */}
             {/* ============================================================== */}
-            <div className="pt-6">
+            <div className="pt-4 px-4 sm:px-6">
               {loadingContent ? (
                 <div className="py-12 flex justify-center text-slate-400">
                   <Loader2 className="w-6 h-6 animate-spin text-[#F21C29]" />
                 </div>
               ) : activeTab === 'about' ? (
-                <div className="space-y-5 max-w-2xl text-xs sm:text-sm">
-                  {/* About Business description */}
-                  <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-100">
-                    <h4 className="font-black text-slate-900 text-sm mb-1">About Business</h4>
-                    <p className="text-slate-600 leading-relaxed whitespace-pre-wrap">
-                      {profile?.about || profile?.bio || 'No business description provided yet.'}
+                <div className="space-y-4 max-w-2xl text-xs sm:text-sm pb-6">
+                  {/* Bio (Exact profileinfodisplay parity) */}
+                  {profile?.bio ? (
+                    <p className="text-slate-800 text-sm font-semibold leading-relaxed whitespace-pre-wrap">
+                      {profile.bio}
                     </p>
-                  </div>
-
-                  {/* Interests matching feature parity */}
-                  {interestLabel && (
-                    <div className="p-4 sm:p-5 rounded-2xl bg-red-50/60 border border-red-100 flex items-center justify-between">
-                      <div>
-                        <span className="text-[10px] font-black uppercase tracking-wider text-[#F21C29] block mb-0.5">
-                          Network Objective & Interest
-                        </span>
-                        <h4 className="font-extrabold text-slate-900 text-sm">{interestLabel}</h4>
-                      </div>
-                      <Target className="w-5 h-5 text-[#F21C29]" />
-                    </div>
+                  ) : (
+                    <p className="text-slate-400 text-xs italic">
+                      No bio provided yet.
+                    </p>
                   )}
 
-                  {/* Achievements and Winner Badges */}
+                  {/* Social Links (Matching profileinfodisplay row) */}
+                  <div className="flex flex-wrap items-center gap-2 pt-1 pb-2">
+                    {profile?.website && (
+                      <a
+                        href={profile.website.startsWith('http') ? profile.website : `https://${profile.website}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-slate-700 hover:text-[#F21C29] font-medium underline"
+                      >
+                        <LinkIcon className="w-3.5 h-3.5" />
+                        <span>{profile.website.replace(/^https?:\/\//, '')}</span>
+                      </a>
+                    )}
+                    {profile?.twitter && (
+                      <a
+                        href={`https://twitter.com/${profile.twitter.replace('@', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors"
+                        title="Twitter / X"
+                      >
+                        <Twitter className="w-3.5 h-3.5 fill-current" />
+                      </a>
+                    )}
+                    {profile?.instagram && (
+                      <a
+                        href={`https://instagram.com/${profile.instagram.replace('@', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors"
+                        title="Instagram"
+                      >
+                        <Instagram className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Achievements Cards (Exact WinnerCard design parity) */}
                   {hasAchievements && (
-                    <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-100">
-                      <h4 className="font-black text-slate-900 text-sm mb-3">Platform Achievements</h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div className="pt-2">
+                      <h3 className="text-base font-bold text-slate-800 mb-2.5">
+                        Achievements
+                      </h3>
+                      <div className="space-y-2.5">
                         {bossCount > 0 && (
-                          <div className="p-3 bg-white rounded-xl border border-slate-200 text-center">
-                            <span className="text-xl font-black text-[#F21C29] block">{bossCount}</span>
-                            <span className="text-[10px] font-bold text-slate-600">Boss of Week</span>
+                          <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 p-3.5 text-white shadow-md flex items-center justify-between">
+                            <span className="font-black text-xs sm:text-sm tracking-wider uppercase">
+                              BOSS OF THE WEEK
+                            </span>
+                            <div className="bg-white/95 rounded-full px-2.5 py-0.5 text-slate-900 font-black text-xs flex items-center gap-1 shadow-xs">
+                              <span className="text-amber-500">🏆</span>
+                              <span>×{bossCount}</span>
+                            </div>
                           </div>
                         )}
                         {mentorCount > 0 && (
-                          <div className="p-3 bg-white rounded-xl border border-slate-200 text-center">
-                            <span className="text-xl font-black text-blue-600 block">{mentorCount}</span>
-                            <span className="text-[10px] font-bold text-slate-600">Top Mentor</span>
+                          <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-400 via-sky-500 to-cyan-500 p-3.5 text-white shadow-md flex items-center justify-between">
+                            <span className="font-black text-xs sm:text-sm tracking-wider uppercase">
+                              MENTOR OF THE WEEK
+                            </span>
+                            <div className="bg-white/95 rounded-full px-2.5 py-0.5 text-slate-900 font-black text-xs flex items-center gap-1 shadow-xs">
+                              <span className="text-blue-500">🎓</span>
+                              <span>×{mentorCount}</span>
+                            </div>
                           </div>
                         )}
                         {backerCount > 0 && (
-                          <div className="p-3 bg-white rounded-xl border border-slate-200 text-center">
-                            <span className="text-xl font-black text-emerald-600 block">{backerCount}</span>
-                            <span className="text-[10px] font-bold text-slate-600">Top Backer</span>
+                          <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-600 p-3.5 text-white shadow-md flex items-center justify-between">
+                            <span className="font-black text-xs sm:text-sm tracking-wider uppercase">
+                              BACKER OF THE WEEK
+                            </span>
+                            <div className="bg-white/95 rounded-full px-2.5 py-0.5 text-slate-900 font-black text-xs flex items-center gap-1 shadow-xs">
+                              <span className="text-emerald-500">📈</span>
+                              <span>×{backerCount}</span>
+                            </div>
                           </div>
                         )}
                         {ambassadorCount > 0 && (
-                          <div className="p-3 bg-white rounded-xl border border-slate-200 text-center">
-                            <span className="text-xl font-black text-purple-600 block">{ambassadorCount}</span>
-                            <span className="text-[10px] font-bold text-slate-600">Ambassador</span>
+                          <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-rose-400 via-pink-500 to-fuchsia-600 p-3.5 text-white shadow-md flex items-center justify-between">
+                            <span className="font-black text-xs sm:text-sm tracking-wider uppercase">
+                              AMBASSADOR
+                            </span>
+                            <div className="bg-white/95 rounded-full px-2.5 py-0.5 text-slate-900 font-black text-xs flex items-center gap-1 shadow-xs">
+                              <span className="text-pink-500">🤝</span>
+                              <span>×{ambassadorCount}</span>
+                            </div>
                           </div>
                         )}
                       </div>
                     </div>
                   )}
 
-                  {/* Verified Pro Tier Callout */}
-                  <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                  {/* Interests Section (Matching profileinfodisplay) */}
+                  {(isMe || interestLabel) && (
+                    <div className="pt-2">
+                      <h3 className="text-base font-bold text-slate-800 mb-2">
+                        Interests
+                      </h3>
+                      {interestLabel ? (
+                        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                          <div>
+                            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
+                              Networking Goal
+                            </span>
+                            <span className="text-xs sm:text-sm font-bold text-slate-900">
+                              {interestLabel}
+                            </span>
+                          </div>
+                          <Target className="w-5 h-5 text-[#F21C29]" />
+                        </div>
+                      ) : (
+                        <p className="text-xs text-slate-400 italic">
+                          No interests selected yet.
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Pro Member Callout */}
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
                     <div>
                       <h4 className="font-black text-slate-900 text-sm">Verified Pro Member</h4>
                       <p className="text-slate-500 text-xs mt-0.5">
@@ -981,29 +1421,67 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                       <div className="w-12 h-12 rounded-2xl bg-slate-100 mx-auto flex items-center justify-center mb-2">
                         <FileText className="w-6 h-6 text-slate-400" />
                       </div>
-                      <p className="text-sm font-bold text-slate-700">No posts shared yet</p>
+                      <p className="text-sm font-bold text-slate-700">No Posts Found</p>
                       <p className="text-xs text-slate-400 mt-1">
-                        Updates and articles published by this user will appear here.
+                        Posts and updates published by this user will appear here.
                       </p>
                     </div>
                   ) : (
-                    <div className="space-y-4">
-                      {posts.map((post) => (
-                        <PostCard
-                          key={post.id}
-                          post={post}
-                          onOpenComments={(p) => setCommentPost(p)}
-                          onPostUpdated={(updated) => {
-                            setPosts((prev) =>
-                              prev.map((item) => (item.id === updated.id ? updated : item))
-                            );
-                          }}
-                          onPostDeleted={(postId) => {
-                            setPosts((prev) => prev.filter((item) => item.id !== postId));
-                          }}
-                        />
-                      ))}
-                    </div>
+                    <>
+                      {/* Mobile View: 2-column Grid matching profilepostsdisplay.dart & post_grid_item.dart */}
+                      <div className="grid grid-cols-2 gap-2 lg:hidden pb-10">
+                        {posts.map((post) => (
+                          <div
+                            key={post.id}
+                            onClick={() => setCommentPost(post)}
+                            className="aspect-square bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 relative cursor-pointer group shadow-2xs"
+                          >
+                            {post.images && post.images.length > 0 ? (
+                              <img
+                                src={post.images[0]}
+                                alt={post.content || 'Post thumbnail'}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                              />
+                            ) : (
+                              <div className="w-full h-full p-3 bg-white flex flex-col justify-between text-left">
+                                <p className="text-xs text-slate-800 line-clamp-4 font-normal leading-relaxed">
+                                  {post.content || 'Post update'}
+                                </p>
+                                <div className="text-[10px] text-slate-400 font-medium">
+                                  {post.views || 0} views
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Multi-image indicator */}
+                            {post.images && post.images.length > 1 && (
+                              <div className="absolute top-2 right-2 bg-black/60 text-white rounded-md px-1.5 py-0.5 text-[9px] font-bold">
+                                1/{post.images.length}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Desktop View: Full Post Cards */}
+                      <div className="hidden lg:block space-y-4">
+                        {posts.map((post) => (
+                          <PostCard
+                            key={post.id}
+                            post={post}
+                            onOpenComments={(p) => setCommentPost(p)}
+                            onPostUpdated={(updated) => {
+                              setPosts((prev) =>
+                                prev.map((item) => (item.id === updated.id ? updated : item))
+                              );
+                            }}
+                            onPostDeleted={(postId) => {
+                              setPosts((prev) => prev.filter((item) => item.id !== postId));
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </>
                   )}
                 </div>
               ) : activeTab === 'requests' ? (
@@ -1089,7 +1567,6 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
               )}
             </div>
           </div>
-        </div>
       )}
 
       {/* ============================================================== */}
