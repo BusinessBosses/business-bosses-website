@@ -684,54 +684,75 @@ export const PostCard: React.FC<PostCardProps> = ({
         </div>
       )}
 
-      {/* Actions Footer: Clean Mockup Match ("24 likes   6 comments   318 views" + Red "Reply" Button) */}
+      {/* Actions Footer: Direct Flutter App userpost_tile.dart Parity (Icon-Text Buttons) */}
       <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
-        {/* Left: Clean metric counters with interactive quick like toggle */}
-        <div className="flex items-center space-x-3 text-slate-500 font-medium">
+        {/* Left: Like (Heart), Comments, Coins, Views */}
+        <div className="flex items-center space-x-2 sm:space-x-4">
+          {/* Like */}
           <button
             onClick={handleToggleLike}
-            className={`transition-colors cursor-pointer flex items-center space-x-1 ${
-              liked ? 'text-red-500 font-bold' : 'hover:text-red-500'
+            disabled={likeProcessing}
+            className={`flex items-center space-x-1.5 py-1 px-1.5 rounded-lg transition-colors cursor-pointer ${
+              liked
+                ? 'text-[#F21C29]'
+                : 'text-slate-700 hover:text-[#F21C29] hover:bg-red-50/50'
             }`}
-            title="Like post"
+            title="Like"
           >
-            <span>{likesCount} likes</span>
+            <Heart
+              className={`w-4 h-4 ${
+                liked
+                  ? 'fill-[#F21C29] stroke-[#F21C29]'
+                  : 'stroke-slate-700 stroke-[2]'
+              }`}
+            />
+            <span className="font-bold text-xs">{likesCount}</span>
           </button>
-          <span>·</span>
+
+          {/* Comment */}
           <button
             onClick={() => onOpenComments?.(post)}
-            className="hover:text-slate-800 transition-colors cursor-pointer"
+            className="flex items-center space-x-1.5 py-1 px-1.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
+            title="Comments"
           >
-            {post.commentsCount || 0} comments
+            <MessageCircle className="w-4 h-4 stroke-slate-700 stroke-[2]" />
+            <span className="font-bold text-xs">{post.commentsCount || 0}</span>
           </button>
-          <span>·</span>
-          <span className="text-slate-400">
-            {formatCount(post.views)} views
-          </span>
+
+          {/* Coin Tip */}
+          <button
+            onClick={handleToggleCoin}
+            disabled={coinProcessing || isOwnPost}
+            className={`flex items-center space-x-1.5 py-1 px-1.5 rounded-lg transition-colors ${
+              isOwnPost ? 'cursor-default opacity-80' : 'cursor-pointer hover:bg-amber-50/60'
+            } ${coined ? 'text-amber-600' : 'text-slate-700'}`}
+            title={isOwnPost ? 'Your post' : coined ? 'Coined' : 'Tip 1 Boss Coin'}
+          >
+            <div className="w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] flex items-center justify-center leading-none shadow-2xs">
+              B
+            </div>
+            <span className="font-bold text-xs">{coinsCount}</span>
+          </button>
+
+          {/* Views Counter */}
+          <div className="flex items-center space-x-1 text-slate-500 py-1 px-1" title="Views">
+            <Eye className="w-4 h-4 stroke-slate-500 stroke-[1.8]" />
+            <span className="font-semibold text-xs">{formatCount(post.views)}</span>
+          </div>
         </div>
 
-        {/* Right: Red "Reply" Button as in Mockup */}
-        <div className="flex items-center space-x-3">
-          {/* Quick Tip Coin if non-author */}
-          {!isOwnPost && (
-            <button
-              onClick={handleToggleCoin}
-              disabled={coinProcessing}
-              className={`text-xs font-bold transition-colors cursor-pointer ${
-                coined ? 'text-amber-500' : 'text-slate-400 hover:text-amber-500'
-              }`}
-              title="Tip 1 Boss Coin"
-            >
-              {coined ? '★ Tipped' : 'Tip Coin'}
-            </button>
-          )}
-
+        {/* Right: Share icon button & Relative Time */}
+        <div className="flex items-center space-x-2.5">
           <button
-            onClick={() => onOpenComments?.(post)}
-            className="text-xs font-bold text-[#E51927] hover:text-[#d01421] transition-colors cursor-pointer"
+            onClick={handleShare}
+            className="p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+            title="Share or Repost"
           >
-            Reply
+            <Share2 className="w-4 h-4 stroke-slate-700 stroke-[2]" />
           </button>
+          <time className="text-slate-400 font-medium text-[11px]" title={post.createdAt}>
+            {formatTimeAgo(post.timestamp)}
+          </time>
         </div>
       </div>
 

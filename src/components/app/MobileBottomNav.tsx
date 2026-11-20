@@ -40,7 +40,7 @@ export default function MobileBottomNav({ onOpenCreate }: MobileBottomNavProps) 
   }, [pathname]);
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200/80 h-16 flex items-center justify-around px-2 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200/80 h-[68px] flex items-center justify-around px-2 pb-safe shadow-[0_-4px_25px_rgba(0,0,0,0.06)]">
       {/* 1. Home (Filled red house icon when active, outline when inactive) */}
       <Link
         href="/feed"
@@ -118,8 +118,8 @@ export default function MobileBottomNav({ onOpenCreate }: MobileBottomNavProps) 
       >
         {avatarUrl ? (
           <div
-            className={`w-6 h-6 rounded-full overflow-hidden border ${
-              isProfile ? 'border-[#F21C29] ring-1 ring-[#F21C29]' : 'border-slate-800'
+            className={`w-7 h-7 rounded-full overflow-hidden border ${
+              isProfile ? 'border-[#F21C29] ring-2 ring-[#F21C29]/30' : 'border-slate-300'
             }`}
           >
             <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />

@@ -141,11 +141,11 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
       <div className="w-full bg-white border-b border-slate-200/90 sticky top-14 lg:static z-30">
         <div className="flex items-center justify-between w-full max-w-4xl mx-auto px-3 sm:px-4 gap-3">
           {/* Horizontal Tabs Rail */}
-          <div className="flex items-center space-x-6 overflow-x-auto no-scrollbar scroll-smooth min-w-0 flex-1 py-1">
+          <div className="flex items-center space-x-6 overflow-x-auto no-scrollbar scroll-smooth min-w-0 flex-1">
             {/* For you */}
             <Link
               href="/feed"
-              className={`relative py-2.5 text-sm transition-colors shrink-0 flex items-center ${
+              className={`relative py-3 text-sm transition-colors shrink-0 flex items-center ${
                 isFeed
                   ? 'text-slate-950 font-bold'
                   : 'text-slate-500 font-medium hover:text-slate-800'
@@ -160,96 +160,26 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
             {/* Marketplace */}
             <Link
               href="/marketplace"
-              className={`relative py-2.5 text-sm transition-colors shrink-0 flex items-center space-x-1.5 ${
+              className={`relative py-3 text-sm transition-colors shrink-0 flex items-center space-x-1.5 ${
                 isMarketplace
                   ? 'text-slate-950 font-bold'
                   : 'text-slate-500 font-medium hover:text-slate-800'
               }`}
             >
-              <ShoppingBag className={`w-4 h-4 ${isMarketplace ? 'text-slate-900' : 'text-slate-400'}`} />
               <span>Marketplace</span>
               {isMarketplace && (
                 <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#E51927] rounded-full" />
               )}
             </Link>
-
-            {/* Boss Up */}
-            <Link
-              href="/boss-up"
-              className={`relative py-2.5 text-sm transition-colors shrink-0 flex items-center space-x-1.5 ${
-                isBossUp
-                  ? 'text-slate-950 font-bold'
-                  : 'text-slate-500 font-medium hover:text-slate-800'
-              }`}
-            >
-              <Users className={`w-4 h-4 ${isBossUp ? 'text-[#E51927]' : 'text-slate-400'}`} />
-              <span>Boss Up</span>
-              {isBossUp && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#E51927] rounded-full" />
-              )}
-            </Link>
-
-            {/* Inbox with Pill Count Badge */}
-            <Link
-              href="/inbox"
-              className={`relative py-2.5 text-sm transition-colors shrink-0 flex items-center space-x-1.5 ${
-                isInbox
-                  ? 'text-slate-950 font-bold'
-                  : 'text-slate-500 font-medium hover:text-slate-800'
-              }`}
-            >
-              <MessageSquare className={`w-4 h-4 ${isInbox ? 'text-slate-900' : 'text-slate-400'}`} />
-              <span>Inbox</span>
-              {unreadInboxCount > 0 && (
-                <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
-                  {unreadInboxCount > 99 ? '99+' : unreadInboxCount}
-                </span>
-              )}
-              {isInbox && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#E51927] rounded-full" />
-              )}
-            </Link>
-
-            {/* Notifications Tab with Badge */}
-            <Link
-              href="/notifications"
-              className={`relative py-2.5 text-sm transition-colors shrink-0 flex items-center space-x-1.5 ${
-                isNotifications
-                  ? 'text-slate-950 font-bold'
-                  : 'text-slate-500 font-medium hover:text-slate-800'
-              }`}
-            >
-              <Bell className={`w-4 h-4 ${isNotifications ? 'text-slate-900' : 'text-slate-400'}`} />
-              <span>Notifications</span>
-              {unreadNotifCount > 0 && (
-                <span className="min-w-4 h-4 px-1 rounded-full bg-[#E51927] text-white text-[10px] font-black flex items-center justify-center leading-none">
-                  {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
-                </span>
-              )}
-              {isNotifications && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#E51927] rounded-full" />
-              )}
-            </Link>
-
-            {/* Quick Create '+' Button */}
-            <button
-              type="button"
-              onClick={() => onOpenCreatePost && onOpenCreatePost()}
-              className="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200/80 text-slate-700 font-bold flex items-center justify-center text-xs shadow-2xs transition-colors cursor-pointer shrink-0"
-              title="Create Post or Request"
-            >
-              <Plus className="w-3.5 h-3.5" />
-            </button>
           </div>
 
           {/* Right side 'Find Opportunities >' */}
           <button
             type="button"
             onClick={() => onOpenOpportunities && onOpenOpportunities()}
-            className="py-2.5 flex items-center space-x-1 text-sm font-bold text-slate-900 hover:text-[#E51927] transition-colors cursor-pointer shrink-0"
+            className="py-3 flex items-center space-x-1 text-sm font-bold text-slate-900 hover:text-[#E51927] transition-colors cursor-pointer shrink-0"
           >
-            <span className="hidden sm:inline">Find Opportunities</span>
-            <span className="sm:hidden">Opportunities</span>
+            <span className="inline">Find Opportunities</span>
             <ChevronRight className="w-4 h-4 text-slate-900" />
           </button>
         </div>
