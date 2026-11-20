@@ -133,6 +133,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
       <MobileDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+        onOpenCreate={onOpenCreatePost}
         coinsCount={coinsCount}
         unreadNotifCount={unreadNotifCount}
       />
