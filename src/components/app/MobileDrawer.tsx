@@ -107,8 +107,8 @@ export default function MobileDrawer({
         onClick={onClose}
       />
 
-      {/* Drawer */}
-      <div className="fixed inset-y-0 right-0 w-[290px] sm:w-[320px] bg-white shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-200">
+      {/* Drawer: slides in from the left, positioned on the left (matching mobile app rtlOpening: false) */}
+      <div className="fixed inset-y-0 left-0 w-[290px] sm:w-[320px] bg-white shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-200">
         {/* Header (Logo + "Business Bosses" in crimson + Close Icon, matching drawercontent.dart:253-305) */}
         <div className="p-4 border-b border-slate-100 flex items-center justify-between">
           <Link href="/feed" onClick={onClose} className="flex items-center space-x-2">
