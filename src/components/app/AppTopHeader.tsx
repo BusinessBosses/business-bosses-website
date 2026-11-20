@@ -152,8 +152,8 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities, on
         unreadNotifCount={unreadNotifCount}
       />
 
-      {/* 2. Top Navigation Tabs Bar: Mobile shows App-style (For you, Marketplace, Find Opportunities); Desktop (PC) preserves full desktop navigation */}
-      <div className="w-full bg-white border-b border-slate-200/90 sticky top-14 lg:static z-30">
+      {/* 2. Top Navigation Tabs Bar: Mobile shows App-style on feed/marketplace (For you, Marketplace, Find Opportunities); Desktop (PC) preserves full desktop navigation */}
+      <div className={`w-full bg-white border-b border-slate-200/90 ${isBossUp ? 'hidden lg:block' : 'sticky top-14 lg:static'} z-30`}>
         <div className="flex items-center justify-between w-full max-w-4xl mx-auto px-3 sm:px-4 gap-3">
           {/* Mobile-only Top Rail (For you & Marketplace) */}
           <div className="lg:hidden flex items-center space-x-6 overflow-x-auto no-scrollbar scroll-smooth min-w-0 flex-1">
