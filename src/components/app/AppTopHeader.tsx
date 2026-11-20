@@ -89,8 +89,8 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities, on
 
   return (
     <>
-      {/* 1. Top Header Bar (Search & Quick Actions on Mobile, Brand/Search on Desktop) */}
-      <header className="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-100 h-14 flex items-center justify-between px-3.5 gap-2.5">
+      {/* 1. Top Header Bar (Search & Quick Actions on Mobile, Brand/Search on Desktop) - hidden on Boss Up page where mobile has its own dedicated header */}
+      <header className={`lg:hidden sticky top-0 z-40 bg-white border-b border-slate-100 h-14 ${isBossUp ? 'hidden' : 'flex'} items-center justify-between px-3.5 gap-2.5`}>
         {/* Mobile Search Input Pill (Matching App home_appbar.dart) */}
         <Link
           href="/marketplace"
