@@ -8,10 +8,12 @@ import { MarketItem } from '../../services/marketplaceService';
 
 interface FeedFeaturedListingsSectionProps {
   services: any[];
+  onSelectItem?: (item: any) => void;
 }
 
 export default function FeedFeaturedListingsSection({
   services,
+  onSelectItem,
 }: FeedFeaturedListingsSectionProps) {
   if (!services || services.length === 0) return null;
 
@@ -43,55 +45,75 @@ export default function FeedFeaturedListingsSection({
 
       {/* Horizontal Carousel */}
       <div className="p-3.5 overflow-x-auto flex space-x-3.5 no-scrollbar">
-        {services.slice(0, 8).map((srv) => (
-          <Link
-            key={srv.id}
-            href={`/marketplace`}
-            className="w-[200px] shrink-0 bg-white border border-slate-200/90 rounded-xl overflow-hidden hover:shadow-md transition-all group flex flex-col justify-between"
-          >
-            <div>
-              <div className="relative w-full h-28 bg-slate-100 overflow-hidden">
-                {srv.thumbnailUrl ? (
-                  <Image
-                    src={srv.thumbnailUrl}
-                    alt={srv.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-300">
-                    <ShoppingBag className="w-8 h-8" />
-                  </div>
-                )}
-                {srv.category && (
-                  <span className="absolute top-2 left-2 text-[9px] font-bold uppercase bg-white/90 backdrop-blur-xs text-slate-800 px-1.5 py-0.5 rounded shadow-xs">
-                    {srv.category}
-                  </span>
-                )}
-              </div>
+        {services.slice(0, 10).map((srv) => {
+          const cardContent = (
+            <div className="w-[140px] sm:w-[170px] shrink-0 bg-white border border-slate-200/90 rounded-xl overflow-hidden hover:shadow-md transition-all group flex flex-col justify-between text-left cursor-pointer">
+              <div>
+                <div className="relative w-full h-24 sm:h-28 bg-slate-100 overflow-hidden">
+                  {srv.thumbnailUrl ? (
+                    <Image
+                      src={srv.thumbnailUrl}
+                      alt={srv.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-slate-300">
+                      <ShoppingBag className="w-8 h-8" />
+                    </div>
+                  )}
+                  {srv.category && (
+                    <span className="absolute top-2 left-2 text-[9px] font-bold uppercase bg-white/90 backdrop-blur-xs text-slate-800 px-1.5 py-0.5 rounded shadow-xs">
+                      {srv.category}
+                    </span>
+                  )}
+                </div>
 
-              <div className="p-2.5">
-                <h4 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-[#F21C29] transition-colors">
-                  {srv.title}
-                </h4>
-                <div className="flex items-center space-x-1 mt-1 text-[11px] text-slate-500">
-                  <Star className="w-3 h-3 text-[#F7C844] fill-[#F7C844]" />
-                  <span>{srv.rating || '5.0'}</span>
-                  <span>({srv.reviewsCount || 1})</span>
+                <div className="p-2 sm:p-2.5">
+                  <h4 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-[#F21C29] transition-colors">
+                    {srv.title}
+                  </h4>
+                  <div className="flex items-center space-x-1 mt-1 text-[11px] text-slate-500">
+                    <Star className="w-3 h-3 text-[#F7C844] fill-[#F7C844]" />
+                    <span>{srv.rating || '5.0'}</span>
+                    <span>({srv.reviewsCount || 1})</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="p-2.5 pt-0 flex items-center justify-between border-t border-slate-100 mt-1">
-              <span className="text-[10px] text-slate-400 truncate max-w-[90px]">
-                {srv.seller?.name || 'Pro Seller'}
-              </span>
-              <span className="text-xs font-black text-[#F21C29]">
-                {srv.price ? (srv.price.startsWith('£') || srv.price.startsWith('$') ? srv.price : `£${srv.price}`) : 'Quote'}
-              </span>
+              <div className="p-2 sm:p-2.5 pt-0 flex items-center justify-between border-t border-slate-100 mt-1">
+                <span className="text-[10px] text-slate-400 truncate max-w-[80px]">
+                  {srv.seller?.name || 'Pro Seller'}
+                </span>
+                <span className="text-xs font-black text-[#F21C29]">
+                  {srv.price ? (srv.price.startsWith('£') || srv.price.startsWith('$') ? srv.price : `£${srv.price}`) : 'Quote'}
+                </span>
+              </div>
             </div>
-          </Link>
-        ))}
+          );
+
+          if (onSelectItem) {
+            return (
+              <div
+                key={srv.id}
+                onClick={() => onSelectItem(srv)}
+                className="shrink-0"
+              >
+                {cardContent}
+              </div>
+            );
+          }
+
+          return (
+            <Link
+              key={srv.id}
+              href="/marketplace"
+              className="shrink-0"
+            >
+              {cardContent}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

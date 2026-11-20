@@ -38,6 +38,7 @@ export default function AppLayout({
         <AppTopHeader 
           onOpenCreatePost={() => setIsCreatePostOpen(true)}
           onOpenOpportunities={() => setIsFindOppOpen(true)}
+          onOpenSell={() => setIsSellOpen(true)}
         />
         
         <main className={`flex-1 w-full mx-auto relative ${isInbox ? 'pb-20 lg:pb-2 pt-0 px-2 sm:px-3 md:px-4 max-w-[1600px]' : 'pb-24 lg:pb-8 pt-1 lg:pt-2 px-3 sm:px-4 md:px-6'}`}>

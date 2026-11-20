@@ -22,9 +22,10 @@ import { notificationService } from '../../services/notificationService';
 interface AppTopHeaderProps {
   onOpenCreatePost?: () => void;
   onOpenOpportunities?: () => void;
+  onOpenSell?: () => void;
 }
 
-export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: AppTopHeaderProps) {
+export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities, onOpenSell }: AppTopHeaderProps) {
   const pathname = usePathname();
   const [coinsCount, setCoinsCount] = useState<number | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -113,6 +114,19 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities }: 
               {formatCoins(coinsCount)}
             </span>
           </Link>
+
+          {/* Red + Sell Button (Marketplace only - matching mobile marketplace_screen.dart:525-555) */}
+          {isMarketplace && (
+            <button
+              type="button"
+              onClick={() => onOpenSell ? onOpenSell() : (window.location.href = '/marketplace?action=sell')}
+              className="flex items-center space-x-1 px-2.5 py-1.5 bg-[#FF1E39] hover:bg-[#E01730] text-white rounded-md text-xs font-bold transition-transform active:scale-95 shadow-xs shrink-0"
+              title="Sell product or service"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span>Sell</span>
+            </button>
+          )}
 
           {/* Hamburger Drawer Menu Button (matching app 3 horizontal lines) */}
           <button

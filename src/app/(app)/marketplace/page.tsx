@@ -25,7 +25,9 @@ import {
 import ImageLightboxModal from '../../../components/feed/ImageLightboxModal';
 import SellOptionsModal from '../../../components/marketplace/SellOptionsModal';
 import OrderBookingModal from '../../../components/marketplace/OrderBookingModal';
+import FeaturedListingsBanner from '../../../components/marketplace/FeaturedListingsBanner';
 import { getUserProfileUrl } from '../../../common/functions/getUserProfileUrl';
+import { formatThousands } from '../../../common/functions/formatThousands';
 
 const CATEGORIES = [
   'All',
@@ -244,10 +246,10 @@ export default function MarketplacePage() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                   isSelected
-                    ? 'bg-[#F21C29] text-white shadow-2xs'
-                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                    ? 'bg-[#EEEEEE] text-black font-bold'
+                    : 'bg-white text-slate-700 hover:bg-slate-100'
                 }`}
               >
                 {cat}
@@ -256,7 +258,15 @@ export default function MarketplacePage() {
           })}
         </div>
 
-        {/* Grid of Products & Services matching mobile MasonryGridView / InventoryCard */}
+        {/* Featured Listings Slide Banner matching mobile _buildFeaturedListingSlide / proshopdeals.dart */}
+        {selectedCategory === 'All' && !searchQuery && items.length > 0 && (
+          <FeaturedListingsBanner
+            items={items.filter((it) => (it.user as any)?.isSubscribed || it.images.length > 0)}
+            onSelectItem={(item) => setSelectedItem(item)}
+          />
+        )}
+
+        {/* Grid of Products & Services matching mobile MasonryGridView / InventoryCard / ServiceCard */}
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
@@ -274,6 +284,10 @@ export default function MarketplacePage() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 pt-1">
             {filteredItems.map((item) => {
               const coverImg = item.images && item.images.length > 0 ? item.images[0] : null;
+              const currencySymbol = item.currency === 'USD' ? '$' : item.currency === 'GBP' ? '£' : (item.currency || '£');
+              const rating = typeof item.user?.averageRating === 'number'
+                ? item.user.averageRating.toFixed(1)
+                : '5.0';
 
               return (
                 <div
@@ -316,49 +330,40 @@ export default function MarketplacePage() {
 
                     {/* Content details matching mobile InventoryCard/ServiceCard */}
                     <div className="p-3 space-y-1">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="text-sm font-black text-slate-900 truncate">
-                          {item.price > 0
-                            ? `${item.currency || '£'}${item.price.toLocaleString()}`
-                            : 'Quote'}
-                        </span>
-                        {item.location && (
-                          <span className="text-[10px] text-slate-400 font-semibold truncate max-w-[80px]">
-                            {item.location}
-                          </span>
-                        )}
-                      </div>
-
-                      <h4 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-[#F21C29] transition-colors">
+                      <h4 className="text-xs sm:text-[13px] font-bold text-slate-900 line-clamp-1 group-hover:text-[#F21C29] transition-colors">
                         {item.name}
                       </h4>
 
+                      {/* Price Row: CoinPriceLabel style */}
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs sm:text-sm font-bold text-slate-950">
+                          {item.price > 0
+                            ? `${currencySymbol}${formatThousands(item.price)}`
+                            : 'Quote'}
+                        </span>
+                      </div>
+
+                      {/* Description */}
                       <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
                         {item.description || item.name}
                       </p>
                     </div>
                   </div>
 
-                  {/* Seller / Shop footer with mobile Order button */}
+                  {/* Footer Row matching InventoryCard: [Location, Star Rating, Order/Book button] */}
                   <div className="p-3 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between text-[11px]">
-                    <div className="flex items-center space-x-1.5 min-w-0">
-                      <div className="relative w-5 h-5 rounded-full overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
-                        {item.shop?.image || item.user?.photoUrl ? (
-                          <Image
-                            src={item.shop?.image || item.user?.photoUrl || ''}
-                            alt="Seller"
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center font-bold text-[9px] text-slate-500">
-                            {(item.shop?.name || item.user?.name || 'B').charAt(0)}
-                          </div>
-                        )}
+                    <div className="flex items-center space-x-2 text-slate-600 font-semibold text-[11px] truncate">
+                      {item.location && (
+                        <div className="flex items-center space-x-1 shrink-0">
+                          <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                          <span className="truncate max-w-[65px]">{item.location}</span>
+                        </div>
+                      )}
+
+                      <div className="flex items-center space-x-0.5 shrink-0">
+                        <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                        <span className="text-slate-800 font-bold">{rating}</span>
                       </div>
-                      <span className="text-slate-600 truncate font-semibold text-[10px]">
-                        {item.shop?.name || item.user?.name || 'Verified Shop'}
-                      </span>
                     </div>
 
                     <button
@@ -367,7 +372,7 @@ export default function MarketplacePage() {
                         setActiveOrderItem(item);
                         setOrderModalOpen(true);
                       }}
-                      className="px-3 py-1.5 text-xs font-bold text-white bg-[#F21C29] hover:bg-[#D01420] rounded-xl shadow-2xs transition-all shrink-0 active:scale-95"
+                      className="px-2.5 py-1 text-[11px] font-bold text-[#F21C29] border border-[#F21C29] hover:bg-red-50 rounded-md transition-all shrink-0 active:scale-95"
                     >
                       {item.type === 'service' ? 'Book' : 'Order'}
                     </button>
