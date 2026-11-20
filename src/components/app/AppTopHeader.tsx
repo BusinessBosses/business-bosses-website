@@ -84,13 +84,14 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities, on
   const isFeed = normalizedPath === '/feed' || normalizedPath === '';
   const isMarketplace = normalizedPath.startsWith('/marketplace');
   const isBossUp = normalizedPath.startsWith('/boss-up');
+  const isProfile = normalizedPath.startsWith('/profile');
   const isInbox = normalizedPath.startsWith('/inbox');
   const isNotifications = normalizedPath.startsWith('/notifications');
 
   return (
     <>
-      {/* 1. Top Header Bar (Search & Quick Actions on Mobile, Brand/Search on Desktop) - hidden on Boss Up page where mobile has its own dedicated header */}
-      <header className={`lg:hidden sticky top-0 z-40 bg-white border-b border-slate-100 h-14 ${isBossUp ? 'hidden' : 'flex'} items-center justify-between px-3.5 gap-2.5`}>
+      {/* 1. Top Header Bar (Search & Quick Actions on Mobile, Brand/Search on Desktop) - hidden on Boss Up and Profile pages where mobile has its own dedicated header */}
+      <header className={`lg:hidden sticky top-0 z-40 bg-white border-b border-slate-100 h-14 ${isBossUp || isProfile ? 'hidden' : 'flex'} items-center justify-between px-3.5 gap-2.5`}>
         {/* Mobile Search Input Pill (Matching App home_appbar.dart) */}
         <Link
           href="/marketplace"
@@ -153,7 +154,7 @@ export default function AppTopHeader({ onOpenCreatePost, onOpenOpportunities, on
       />
 
       {/* 2. Top Navigation Tabs Bar: Mobile shows App-style on feed/marketplace (For you, Marketplace, Find Opportunities); Desktop (PC) preserves full desktop navigation */}
-      <div className={`w-full bg-white border-b border-slate-200/90 ${isBossUp ? 'hidden lg:block' : 'sticky top-14 lg:static'} z-30`}>
+      <div className={`w-full bg-white border-b border-slate-200/90 ${isBossUp || isProfile ? 'hidden lg:block' : 'sticky top-14 lg:static'} z-30`}>
         <div className="flex items-center justify-between w-full max-w-4xl mx-auto px-3 sm:px-4 gap-3">
           {/* Mobile-only Top Rail (For you & Marketplace) */}
           <div className="lg:hidden flex items-center space-x-6 overflow-x-auto no-scrollbar scroll-smooth min-w-0 flex-1">
