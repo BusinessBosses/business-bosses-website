@@ -535,9 +535,9 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
           <>
             {/* Left: Help / Analyze Button */}
             <Link
-              href="/performance"
+              href="/help"
               className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:text-slate-900 transition-colors"
-              title="Help & Analysis"
+              title="Help"
             >
               <HelpCircle className="w-5 h-5 stroke-[2]" />
             </Link>
