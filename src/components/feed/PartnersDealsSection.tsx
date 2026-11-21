@@ -110,8 +110,8 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-3.5">
-      {/* Header: Partners' Deals on the left with chevron leading to deals, Partner with us on the right */}
-      <div className="flex items-center justify-between px-0.5">
+      {/* Header: Partners' Deals on the right with chevron leading to deals */}
+      <div className="flex items-center justify-end px-0.5">
         <Link
           href="/deals"
           className="group flex items-center gap-1.5 transition-colors cursor-pointer"
@@ -121,13 +121,6 @@ export const PartnersDealsSection: React.FC<PartnersDealsSectionProps> = ({ deal
             Partners&apos; Deals
           </span>
           <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#E51927] group-hover:translate-x-0.5 transition-all" />
-        </Link>
-
-        <Link
-          href="/becomeapartner"
-          className="text-xs font-bold text-[#E51927] hover:underline transition-colors"
-        >
-          Partner with us
         </Link>
       </div>
 

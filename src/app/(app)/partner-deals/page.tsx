@@ -127,13 +127,12 @@ export default function PartnerDealsPage() {
               Access verified perks, supplier discounts, and exclusive business resources.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => setIsPostModalOpen(true)}
-            className="px-4 py-2 rounded-xl bg-[#F21C29] hover:bg-[#D01420] text-white font-bold text-xs shrink-0 transition-colors shadow-xs"
+          <Link
+            href="/becomeapartner"
+            className="px-4 py-2 rounded-xl bg-[#F21C29] hover:bg-[#D01420] text-white font-bold text-xs shrink-0 transition-colors shadow-xs text-center inline-block"
           >
-            Post a Deal
-          </button>
+            Partner with us
+          </Link>
         </div>
 
         {/* Category Filter Chips with Scroll & Arrow */}
@@ -224,7 +223,7 @@ export default function PartnerDealsPage() {
                           {partner.companyName}
                         </h3>
                         {partner.category && (
-                          <span className="inline-block mt-0.5 text-[10px] font-bold text-[#F21C29] bg-red-50 border border-red-100 px-2 py-0.5 rounded-full">
+                          <span className="inline-block mt-0.5 text-[10px] font-bold text-slate-600 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full">
                             {partner.category}
                           </span>
                         )}
