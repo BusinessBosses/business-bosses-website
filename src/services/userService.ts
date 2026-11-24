@@ -126,6 +126,19 @@ export const userService = {
       throw err;
     }
   },
+
+  /**
+   * Get users invited by current user
+   */
+  async getInvitedUsers(): Promise<any[]> {
+    try {
+      const res = await apiClient.get('/users/invites');
+      return res.data?.data || res.data || [];
+    } catch (err) {
+      console.warn('Failed to get invited users', err);
+      return [];
+    }
+  },
 };
 
 export default userService;

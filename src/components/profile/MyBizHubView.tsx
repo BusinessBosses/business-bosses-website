@@ -36,7 +36,9 @@ import {
   CreditCard,
   ShoppingBasket,
   SlidersHorizontal,
+  Share2,
 } from 'lucide-react';
+import { toast } from 'react-toastify';
 import {
   shopService,
   Shop,
@@ -97,6 +99,35 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
   const [products, setProducts] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
   const [inventoryTab, setInventoryTab] = useState<'products' | 'services'>('products');
+
+  const handleShareBizCenter = async () => {
+    if (typeof window === 'undefined') return;
+    const storeUrl = `${window.location.origin}/profile/${userId}?tab=biz`;
+    const storeTitle = shop?.name || 'My Biz Center';
+    const storeText = `Check out ${storeTitle} on Business Bosses`;
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: storeTitle,
+          text: storeText,
+          url: storeUrl,
+        });
+        return;
+      } catch (err: any) {
+        if (err?.name === 'AbortError') return;
+      }
+    }
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(storeUrl);
+        toast.success('Biz Center store link copied!');
+      } catch {
+        toast.error('Could not copy link');
+      }
+    }
+  };
 
   // Orders: Dual-Mode matching Mobile (Sales Leads received vs My Purchases placed)
   const [orderSection, setOrderSection] = useState<'sales' | 'purchases'>('sales');
@@ -344,6 +375,16 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
                 </div>
               )}
             </div>
+
+            <button
+              type="button"
+              onClick={handleShareBizCenter}
+              className="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-bold text-xs hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-2xs"
+              title="Share Biz Center link"
+            >
+              <Share2 className="w-3.5 h-3.5 text-[#F21C29]" />
+              <span>Share Store</span>
+            </button>
 
             <button
               type="button"

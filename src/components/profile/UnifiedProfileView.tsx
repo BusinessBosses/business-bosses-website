@@ -434,12 +434,30 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
     }
   };
 
-  const handleShareProfile = () => {
+  const handleShareProfile = async () => {
     if (typeof window === 'undefined') return;
     const shareUrl = window.location.href;
-    navigator.clipboard.writeText(shareUrl);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2500);
+    const shareTitle = profile?.name ? `${profile.name} on Business Bosses` : 'Business Bosses Profile';
+    const shareText = `Check out ${profile?.name || 'this profile'} on Business Bosses!`;
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+        });
+        return;
+      } catch (err: any) {
+        if (err?.name === 'AbortError') return;
+      }
+    }
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    }
   };
 
   if (loading) {
@@ -568,15 +586,49 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
               </button>
             </div>
 
-            {/* Right: Drawer Hamburger Menu Button */}
-            <button
-              type="button"
-              onClick={() => setIsMobileDrawerOpen(true)}
-              className="w-9 h-9 rounded-full flex items-center justify-center text-slate-800 hover:bg-slate-100 transition-colors relative"
-              aria-label="Open Menu"
-            >
-              <Menu className="w-6 h-6 stroke-[2.2]" />
-            </button>
+            {/* Right: Actions (Share Biz Center on My Biz, and Drawer Menu) */}
+            <div className="flex items-center gap-1.5">
+              {activeSegment === 'bizCenter' && (
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const storeUrl = typeof window !== 'undefined'
+                      ? `${window.location.origin}/profile/${profileUsername || currentUserId}?tab=biz`
+                      : '';
+                    const storeTitle = userShop?.name || `${displayName}'s Biz Center`;
+                    if (typeof navigator !== 'undefined' && navigator.share) {
+                      try {
+                        await navigator.share({
+                          title: storeTitle,
+                          text: `Check out ${storeTitle} on Business Bosses`,
+                          url: storeUrl,
+                        });
+                        return;
+                      } catch (err: any) {
+                        if (err?.name === 'AbortError') return;
+                      }
+                    }
+                    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                      await navigator.clipboard.writeText(storeUrl);
+                      toast.success('Biz Center link copied!');
+                    }
+                  }}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-[#F21C29] hover:bg-red-50 transition-colors"
+                  aria-label="Share Biz Center"
+                  title="Share Biz Center"
+                >
+                  <Share2 className="w-5 h-5 stroke-[2.2]" />
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setIsMobileDrawerOpen(true)}
+                className="w-9 h-9 rounded-full flex items-center justify-center text-slate-800 hover:bg-slate-100 transition-colors relative"
+                aria-label="Open Menu"
+              >
+                <Menu className="w-6 h-6 stroke-[2.2]" />
+              </button>
+            </div>
           </>
         ) : (
           <>
@@ -882,14 +934,13 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                     <span>Earn</span>
                   </Link>
 
-                  <button
-                    type="button"
-                    onClick={handleShareProfile}
+                  <Link
+                    href="/invite"
                     className="flex items-center justify-center gap-1.5 py-2 px-1 rounded-xl border border-[#F21C29] text-[#F21C29] hover:bg-red-50 text-xs font-bold transition-colors"
                   >
                     <Share2 className="w-3.5 h-3.5" />
-                    <span>{copiedLink ? 'Copied' : 'Invite'}</span>
-                  </button>
+                    <span>Invite</span>
+                  </Link>
                 </>
               ) : (
                 <>
