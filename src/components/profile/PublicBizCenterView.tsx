@@ -55,16 +55,33 @@ export default function PublicBizCenterView({
       if (!uid) return;
       try {
         setLoading(true);
-        const [fetchedShop, userProducts, userServices] = await Promise.all([
-          initialShop ? Promise.resolve(initialShop) : shopService.getUserShop(uid),
+        // 1. Resolve shop by user ID first
+        const fetchedShop = initialShop ? initialShop : await shopService.getUserShop(uid);
+        const shopId = fetchedShop?.id;
+
+        // 2. Fetch products & services (support both user-specific and shop-specific queries)
+        const [userProducts, userServices, shopProducts, shopServices] = await Promise.all([
           shopService.getUserProducts(uid),
           shopService.getUserServices(uid),
+          shopId ? shopService.getShopProducts(shopId) : Promise.resolve([]),
+          shopId ? shopService.getShopServices(shopId) : Promise.resolve([]),
         ]);
+
+        // Merge and deduplicate by item ID
+        const mergedProductsMap = new Map();
+        [...userProducts, ...shopProducts].forEach((item) => {
+          if (item && item.id) mergedProductsMap.set(String(item.id), item);
+        });
+
+        const mergedServicesMap = new Map();
+        [...userServices, ...shopServices].forEach((item) => {
+          if (item && item.id) mergedServicesMap.set(String(item.id), item);
+        });
 
         if (isMounted) {
           setShop(fetchedShop);
-          setProducts(userProducts);
-          setServices(userServices);
+          setProducts(Array.from(mergedProductsMap.values()));
+          setServices(Array.from(mergedServicesMap.values()));
         }
       } catch (err) {
         console.error('Failed to load Biz-Center data:', err);

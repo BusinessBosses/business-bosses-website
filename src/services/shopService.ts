@@ -298,6 +298,32 @@ export const shopService = {
   },
 
   /**
+   * Get products by shop ID (GET /goods/shop-products/:shopId)
+   */
+  async getShopProducts(shopId: string, page = 0, limit = 50): Promise<any[]> {
+    try {
+      const res = await apiClient.get(`/goods/shop-products/${shopId}?page=${page}&limit=${limit}`);
+      const rows = res.data?.data?.rows || res.data?.rows || res.data?.data || [];
+      return Array.isArray(rows) ? rows : [];
+    } catch {
+      return [];
+    }
+  },
+
+  /**
+   * Get services by shop ID (GET /services/shop-services/:shopId)
+   */
+  async getShopServices(shopId: string, page = 0, limit = 50): Promise<any[]> {
+    try {
+      const res = await apiClient.get(`/services/shop-services/${shopId}?page=${page}&limit=${limit}`);
+      const rows = res.data?.data?.rows || res.data?.rows || res.data?.data || [];
+      return Array.isArray(rows) ? rows : [];
+    } catch {
+      return [];
+    }
+  },
+
+  /**
    * Delete product (DELETE /goods/:id)
    */
   async deleteProduct(id: string | number): Promise<boolean> {

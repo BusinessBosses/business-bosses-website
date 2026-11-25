@@ -102,7 +102,7 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
 
   const handleShareBizCenter = async () => {
     if (typeof window === 'undefined') return;
-    const storeUrl = `${window.location.origin}/profile/${userId}?tab=biz`;
+    const storeUrl = `${window.location.origin}/profile/${encodeURIComponent(userId)}?tab=biz`;
     const storeTitle = shop?.name || 'My Biz Center';
     const storeText = `Check out ${storeTitle} on Business Bosses`;
 

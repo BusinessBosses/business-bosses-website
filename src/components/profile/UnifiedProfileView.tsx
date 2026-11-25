@@ -183,7 +183,13 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
         if (!targetUsername && !targetUid) {
           const match = window.location.pathname.match(/\/profile\/([^/?#]+)/);
           if (match && match[1] && match[1] !== '_' && match[1] !== 'index') {
-            targetUsername = decodeURIComponent(match[1]);
+            const rawParam = decodeURIComponent(match[1]);
+            // If the route param is an alphanumeric UID (or UUID/hex/digits), check if it's UID vs username
+            if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawParam)) {
+              targetUid = rawParam;
+            } else {
+              targetUsername = rawParam;
+            }
           }
         }
       }
@@ -198,6 +204,14 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
           fetchedUser = res.data?.data || res.data;
         } catch (e) {
           console.warn('Could not find user by username, checking fallback', e);
+        }
+
+        // If username lookup failed, try looking up as UID in case the URL was /profile/:uid
+        if (!fetchedUser && !targetUid) {
+          try {
+            const res = await apiClient.get(`/users/${encodeURIComponent(cleanName)}`);
+            fetchedUser = res.data?.data || res.data;
+          } catch {}
         }
       }
 
@@ -592,8 +606,9 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                 <button
                   type="button"
                   onClick={async () => {
+                    const identifier = profileUsername || profileUid || myUsername || myUid;
                     const storeUrl = typeof window !== 'undefined'
-                      ? `${window.location.origin}/profile/${profileUsername || currentUserId}?tab=biz`
+                      ? `${window.location.origin}/profile/${encodeURIComponent(identifier)}?tab=biz`
                       : '';
                     const storeTitle = userShop?.name || `${displayName}'s Biz Center`;
                     if (typeof navigator !== 'undefined' && navigator.share) {
@@ -648,36 +663,30 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
               <ArrowLeft className="w-5 h-5 stroke-[2.2]" />
             </button>
 
-            {userShop ? (
-              <div className="inline-flex p-1 bg-slate-100 rounded-xl shadow-inner">
-                <button
-                  type="button"
-                  onClick={() => setActiveSegment('profile')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    activeSegment === 'profile'
-                      ? 'bg-white text-slate-900 shadow-xs'
-                      : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  Profile
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveSegment('bizCenter')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    activeSegment === 'bizCenter'
-                      ? 'bg-white text-slate-900 shadow-xs'
-                      : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  Biz-Center
-                </button>
-              </div>
-            ) : (
-              <h2 className="font-extrabold text-sm sm:text-base text-slate-900 truncate max-w-[200px]">
-                {displayName}
-              </h2>
-            )}
+            <div className="inline-flex p-1 bg-slate-100 rounded-xl shadow-inner">
+              <button
+                type="button"
+                onClick={() => setActiveSegment('profile')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  activeSegment === 'profile'
+                    ? 'bg-white text-slate-900 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                Profile
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveSegment('bizCenter')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  activeSegment === 'bizCenter'
+                    ? 'bg-white text-slate-900 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                Biz-Center
+              </button>
+            </div>
 
             {/* Public Options / Share 3-dots */}
             <div className="relative">
@@ -728,34 +737,32 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
       {/* ============================================================== */}
       {/* DESKTOP SEGMENT SWITCHER (Profile vs My Biz / Biz-Center)       */}
       {/* ============================================================== */}
-      {(isMe || userShop) && (
-        <div className="hidden lg:flex justify-center mb-6">
-          <div className="inline-flex p-1 bg-slate-200/80 rounded-2xl shadow-inner">
-            <button
-              type="button"
-              onClick={() => setActiveSegment('profile')}
-              className={`px-6 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
-                activeSegment === 'profile'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              Profile
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveSegment('bizCenter')}
-              className={`px-6 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
-                activeSegment === 'bizCenter'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              {isMe ? 'My Biz' : 'Biz-Center'}
-            </button>
-          </div>
+      <div className="hidden lg:flex justify-center mb-6">
+        <div className="inline-flex p-1 bg-slate-200/80 rounded-2xl shadow-inner">
+          <button
+            type="button"
+            onClick={() => setActiveSegment('profile')}
+            className={`px-6 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
+              activeSegment === 'profile'
+                ? 'bg-white text-slate-900 shadow-xs'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            Profile
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveSegment('bizCenter')}
+            className={`px-6 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all ${
+              activeSegment === 'bizCenter'
+                ? 'bg-white text-slate-900 shadow-xs'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            {isMe ? 'My Biz' : 'Biz-Center'}
+          </button>
         </div>
-      )}
+      </div>
 
       {/* ============================================================== */}
       {/* BIZ-CENTER SEGMENT (Parity with Mobile BottomNavScreen / Shop)   */}
