@@ -141,7 +141,9 @@ export default function PublicBizCenterView({
   };
 
   const handleShare = async () => {
-    const url = typeof window !== 'undefined' ? window.location.href : '';
+    const url = typeof window !== 'undefined'
+      ? (user?.username ? `${window.location.origin}/biz-center/${encodeURIComponent(user.username)}` : window.location.href)
+      : '';
     if (navigator.share) {
       try {
         await navigator.share({
@@ -165,7 +167,7 @@ export default function PublicBizCenterView({
           {shop?.coverImage && (
             <img
               src={shop.coverImage}
-              alt="Shop Cover"
+              alt="Biz-Center Cover"
               className="w-full h-full object-cover"
             />
           )}

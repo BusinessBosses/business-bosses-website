@@ -130,7 +130,7 @@ export default function DedicatedBizCenterClient({
       }
 
       if (!resolvedUser && !resolvedShop) {
-        setErrorMsg('Biz-Center storefront not found. It may have been renamed or removed.');
+        setErrorMsg('Biz-Center not found. It may have been renamed or removed.');
         setLoading(false);
         return;
       }
@@ -148,7 +148,7 @@ export default function DedicatedBizCenterClient({
       setIsMe(isOwner);
     } catch (err) {
       console.error('Failed to load Biz-Center page:', err);
-      setErrorMsg('Failed to load Biz-Center storefront. Please try again.');
+      setErrorMsg('Failed to load Biz-Center. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -171,7 +171,7 @@ export default function DedicatedBizCenterClient({
         </div>
         <h2 className="text-lg font-black text-slate-900 mb-1">Biz-Center Not Found</h2>
         <p className="text-xs text-slate-500 max-w-sm mb-4 leading-relaxed">
-          {errorMsg || 'We could not find the requested Biz-Center storefront.'}
+          {errorMsg || 'We could not find the requested Biz-Center.'}
         </p>
         <Link
           href="/feed"
