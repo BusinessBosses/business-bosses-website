@@ -184,8 +184,11 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
           const match = window.location.pathname.match(/\/profile\/([^/?#]+)/);
           if (match && match[1] && match[1] !== '_' && match[1] !== 'index') {
             const rawParam = decodeURIComponent(match[1]);
-            // If the route param is an alphanumeric UID (or UUID/hex/digits), check if it's UID vs username
-            if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawParam)) {
+            // If the route param is an alphanumeric UID (like Firebase 28-char UID or UUID/hex/digits), prioritize UID
+            if (
+              /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawParam) ||
+              /^[A-Za-z0-9_-]{20,}$/.test(rawParam)
+            ) {
               targetUid = rawParam;
             } else {
               targetUsername = rawParam;
@@ -196,43 +199,58 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
 
       let fetchedUser: any = null;
 
-      // 1. By username
-      if (targetUsername && targetUsername !== '_') {
-        const cleanName = targetUsername.replace(/^@+/, '').trim();
-        try {
-          const res = await apiClient.get(`/users/username/${encodeURIComponent(cleanName)}`);
-          fetchedUser = res.data?.data || res.data;
-        } catch (e) {
-          console.warn('Could not find user by username, checking fallback', e);
-        }
+      // Helper to validate user response object
+      const isValidUserObj = (u: any) => u && typeof u === 'object' && !Array.isArray(u) && (u.uid || u.id || u.username);
 
-        // If username lookup failed, try looking up as UID in case the URL was /profile/:uid
-        if (!fetchedUser && !targetUid) {
-          try {
-            const res = await apiClient.get(`/users/${encodeURIComponent(cleanName)}`);
-            fetchedUser = res.data?.data || res.data;
-          } catch {}
-        }
-      }
-
-      // 2. By UID
-      if (!fetchedUser && targetUid) {
+      // 1. By UID (if targetUid exists)
+      if (targetUid) {
         try {
-          const res = await apiClient.get(`/users/${targetUid}`);
-          fetchedUser = res.data?.data || res.data;
+          const res = await apiClient.get(`/users/${encodeURIComponent(targetUid)}`);
+          const data = res.data?.data || res.data;
+          if (isValidUserObj(data)) {
+            fetchedUser = data;
+          }
         } catch (e) {
           console.warn('Could not find user by id', e);
         }
       }
 
+      // 2. By username
+      if (!fetchedUser && targetUsername && targetUsername !== '_') {
+        const cleanName = targetUsername.replace(/^@+/, '').trim();
+        try {
+          const res = await apiClient.get(`/users/username/${encodeURIComponent(cleanName)}`);
+          const data = res.data?.data || res.data;
+          if (isValidUserObj(data)) {
+            fetchedUser = data;
+          }
+        } catch (e) {
+          console.warn('Could not find user by username, checking fallback', e);
+        }
+
+        // If username lookup failed, try looking up as UID in case the URL was /profile/:uid
+        if (!fetchedUser) {
+          try {
+            const res = await apiClient.get(`/users/${encodeURIComponent(cleanName)}`);
+            const data = res.data?.data || res.data;
+            if (isValidUserObj(data)) {
+              fetchedUser = data;
+            }
+          } catch {}
+        }
+      }
+
       // 3. Fallback: Authenticated user's own profile
       if (!fetchedUser) {
-        if (myUser) {
+        if (myUser && isValidUserObj(myUser)) {
           fetchedUser = myUser;
         } else if (myUid) {
           try {
             const res = await apiClient.get(`/users/${myUid}`);
-            fetchedUser = res.data?.data || res.data;
+            const data = res.data?.data || res.data;
+            if (isValidUserObj(data)) {
+              fetchedUser = data;
+            }
           } catch {}
         }
       }
@@ -606,9 +624,12 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                 <button
                   type="button"
                   onClick={async () => {
-                    const identifier = profileUsername || profileUid || myUsername || myUid;
+                    const identifier = profileUsername || myUsername || profileUid || myUid;
+                    // Prefer /profile?username=... (or /profile?id=...) which hits /profile/index.html statically
                     const storeUrl = typeof window !== 'undefined'
-                      ? `${window.location.origin}/profile/${encodeURIComponent(identifier)}?tab=biz`
+                      ? (profileUsername || myUsername)
+                        ? `${window.location.origin}/profile?username=${encodeURIComponent(profileUsername || myUsername)}&tab=biz`
+                        : `${window.location.origin}/profile?id=${encodeURIComponent(identifier)}&tab=biz`
                       : '';
                     const storeTitle = userShop?.name || `${displayName}'s Biz Center`;
                     if (typeof navigator !== 'undefined' && navigator.share) {
@@ -769,7 +790,11 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
       {/* ============================================================== */}
       {activeSegment === 'bizCenter' ? (
         isMe ? (
-          <MyBizHubView userId={profile?.uid || profile?.id || ''} isPro={isPro} />
+          <MyBizHubView
+            userId={profile?.uid || profile?.id || ''}
+            username={profile?.username || ''}
+            isPro={isPro}
+          />
         ) : (
           <PublicBizCenterView
             user={profile}

@@ -56,7 +56,10 @@ export default function PublicBizCenterView({
       try {
         setLoading(true);
         // 1. Resolve shop by user ID first
-        const fetchedShop = initialShop ? initialShop : await shopService.getUserShop(uid);
+        let fetchedShop = initialShop || null;
+        if (!fetchedShop) {
+          fetchedShop = await shopService.getUserShop(uid);
+        }
         const shopId = fetchedShop?.id;
 
         // 2. Fetch products & services (support both user-specific and shop-specific queries)
@@ -79,7 +82,7 @@ export default function PublicBizCenterView({
         });
 
         if (isMounted) {
-          setShop(fetchedShop);
+          if (fetchedShop) setShop(fetchedShop);
           setProducts(Array.from(mergedProductsMap.values()));
           setServices(Array.from(mergedServicesMap.values()));
         }

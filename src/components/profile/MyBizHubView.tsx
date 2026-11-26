@@ -53,12 +53,13 @@ import SellOptionsModal from '../marketplace/SellOptionsModal';
 
 interface MyBizHubViewProps {
   userId: string;
+  username?: string;
   isPro?: boolean;
 }
 
 type DateFilterOption = 'all_time' | 'today' | 'last_7_days' | 'last_30_days';
 
-export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
+export default function MyBizHubView({ userId, username, isPro }: MyBizHubViewProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [shop, setShop] = useState<Shop | null>(null);
@@ -102,7 +103,9 @@ export default function MyBizHubView({ userId, isPro }: MyBizHubViewProps) {
 
   const handleShareBizCenter = async () => {
     if (typeof window === 'undefined') return;
-    const storeUrl = `${window.location.origin}/profile/${encodeURIComponent(userId)}?tab=biz`;
+    const storeUrl = username
+      ? `${window.location.origin}/profile?username=${encodeURIComponent(username)}&tab=biz`
+      : `${window.location.origin}/profile?id=${encodeURIComponent(userId)}&tab=biz`;
     const storeTitle = shop?.name || 'My Biz Center';
     const storeText = `Check out ${storeTitle} on Business Bosses`;
 
