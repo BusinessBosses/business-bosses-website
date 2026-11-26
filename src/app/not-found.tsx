@@ -5,12 +5,14 @@ import Link from 'next/link';
 import UnifiedProfileView from '../components/profile/UnifiedProfileView';
 import DedicatedPostPageClient from './(app)/post/[id]/DedicatedPostPageClient';
 import DedicatedBossUpPageClient from './(app)/boss-up/[id]/DedicatedBossUpPageClient';
+import DedicatedBizCenterClient from './(app)/biz-center/[identifier]/DedicatedBizCenterClient';
 import AppLayout from './(app)/layout';
 
 export default function NotFound() {
   const [profileUsername, setProfileUsername] = useState<string | null>(null);
   const [postId, setPostId] = useState<string | null>(null);
   const [bossUpId, setBossUpId] = useState<string | null>(null);
+  const [bizCenterId, setBizCenterId] = useState<string | null>(null);
   const [isChecking, setIsChecking] = useState<boolean>(true);
 
   useEffect(() => {
@@ -35,9 +37,23 @@ export default function NotFound() {
         setBossUpId(decodeURIComponent(bossUpMatch[1]));
       }
 
+      // 4. Dynamic Biz-Center SPA routing: /biz-center/[identifier]
+      const bizCenterMatch = pathname.match(/^\/biz-center\/([^/?#]+)/);
+      if (bizCenterMatch && bizCenterMatch[1] && bizCenterMatch[1] !== '_' && bizCenterMatch[1] !== 'index') {
+        setBizCenterId(decodeURIComponent(bizCenterMatch[1]));
+      }
+
       setIsChecking(false);
     }
   }, []);
+
+  if (bizCenterId) {
+    return (
+      <AppLayout>
+        <DedicatedBizCenterClient initialIdentifier={bizCenterId} />
+      </AppLayout>
+    );
+  }
 
   if (profileUsername) {
     return (

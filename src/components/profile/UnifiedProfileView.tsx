@@ -625,11 +625,8 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
                   type="button"
                   onClick={async () => {
                     const identifier = profileUsername || myUsername || profileUid || myUid;
-                    // Prefer /profile?username=... (or /profile?id=...) which hits /profile/index.html statically
                     const storeUrl = typeof window !== 'undefined'
-                      ? (profileUsername || myUsername)
-                        ? `${window.location.origin}/profile?username=${encodeURIComponent(profileUsername || myUsername)}&tab=biz`
-                        : `${window.location.origin}/profile?id=${encodeURIComponent(identifier)}&tab=biz`
+                      ? `${window.location.origin}/biz-center/${encodeURIComponent(identifier)}`
                       : '';
                     const storeTitle = userShop?.name || `${displayName}'s Biz Center`;
                     if (typeof navigator !== 'undefined' && navigator.share) {

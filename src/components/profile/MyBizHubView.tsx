@@ -104,8 +104,8 @@ export default function MyBizHubView({ userId, username, isPro }: MyBizHubViewPr
   const handleShareBizCenter = async () => {
     if (typeof window === 'undefined') return;
     const storeUrl = username
-      ? `${window.location.origin}/profile?username=${encodeURIComponent(username)}&tab=biz`
-      : `${window.location.origin}/profile?id=${encodeURIComponent(userId)}&tab=biz`;
+      ? `${window.location.origin}/biz-center/${encodeURIComponent(username)}`
+      : `${window.location.origin}/biz-center/${encodeURIComponent(userId)}`;
     const storeTitle = shop?.name || 'My Biz Center';
     const storeText = `Check out ${storeTitle} on Business Bosses`;
 
