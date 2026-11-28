@@ -83,8 +83,10 @@ export default function DedicatedBizCenterClient({
             const shopData = res.data?.data || res.data;
             if (shopData && shopData.id) {
               resolvedShop = shopData;
-              // If shop has owner userId, look up user
-              if (shopData.userId) {
+              // If shop object embeds user directly
+              if (shopData.user && isValidUserObj(shopData.user)) {
+                resolvedUser = shopData.user;
+              } else if (shopData.userId) {
                 try {
                   const userRes = await apiClient.get(`/users/${encodeURIComponent(shopData.userId)}`);
                   const u = userRes.data?.data || userRes.data;
@@ -100,7 +102,9 @@ export default function DedicatedBizCenterClient({
           try {
             const res = await apiClient.get(`/users/${encodeURIComponent(cleanIdentifier)}`);
             const u = res.data?.data || res.data;
-            if (isValidUserObj(u)) resolvedUser = u;
+            if (isValidUserObj(u)) {
+              resolvedUser = u;
+            }
           } catch {}
         }
 
@@ -109,7 +113,9 @@ export default function DedicatedBizCenterClient({
           try {
             const res = await apiClient.get(`/users/username/${encodeURIComponent(cleanIdentifier)}`);
             const u = res.data?.data || res.data;
-            if (isValidUserObj(u)) resolvedUser = u;
+            if (isValidUserObj(u)) {
+              resolvedUser = u;
+            }
           } catch {}
         }
 
@@ -127,6 +133,11 @@ export default function DedicatedBizCenterClient({
       const targetUid = resolvedUser?.uid || resolvedUser?.id;
       if (targetUid && !resolvedShop) {
         resolvedShop = await shopService.getUserShop(targetUid);
+      }
+
+      // If shop has user attached and resolvedUser is still null, take shop.user
+      if (!resolvedUser && resolvedShop && (resolvedShop as any).user) {
+        resolvedUser = (resolvedShop as any).user;
       }
 
       if (!resolvedUser && !resolvedShop) {

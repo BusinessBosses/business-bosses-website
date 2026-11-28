@@ -114,7 +114,16 @@ export default function UnifiedProfileView({ initialUsername, initialUid }: Prof
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Profile Segments: Profile (User details/tabs) vs My Biz / Biz-Center
-  const [activeSegment, setActiveSegment] = useState<'profile' | 'bizCenter'>('profile');
+  const [activeSegment, setActiveSegment] = useState<'profile' | 'bizCenter'>(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab') || urlParams.get('segment');
+      if (tabParam === 'biz' || tabParam === 'bizCenter' || tabParam === 'shop' || tabParam === 'mybiz') {
+        return 'bizCenter';
+      }
+    }
+    return 'profile';
+  });
   const [userShop, setUserShop] = useState<Shop | null>(null);
   const [activeTab, setActiveTab] = useState<'about' | 'posts' | 'requests' | 'deals'>('about');
 

@@ -22,11 +22,14 @@ import {
   MessageSquare,
   AlertCircle,
   Share2,
+  ExternalLink,
+  Eye,
 } from 'lucide-react';
 import { shopService, Shop } from '../../services/shopService';
 import { formatCurrency, formatThousands } from '../../common/functions/formatThousands';
 import OrderBookingModal from '../marketplace/OrderBookingModal';
 import { MarketItem } from '../../services/marketplaceService';
+import { toast } from 'react-toastify';
 
 interface PublicBizCenterViewProps {
   user: any;
@@ -44,8 +47,10 @@ export default function PublicBizCenterView({
   const [activeTab, setActiveTab] = useState<'showcase' | 'reviews' | 'contact'>('showcase');
   const [products, setProducts] = useState<any[]>([]);
   const [services, setServices] = useState<any[]>([]);
+  const [customItems, setCustomItems] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null);
   const [bookingModalOpen, setBookingModalOpen] = useState<boolean>(false);
+  const [previewCustomItem, setPreviewCustomItem] = useState<any | null>(null);
 
   const uid = user?.uid || user?.id;
 
@@ -55,19 +60,20 @@ export default function PublicBizCenterView({
       if (!uid) return;
       try {
         setLoading(true);
-        // 1. Resolve shop by user ID first
+        // 1. Resolve shop by user ID first if not provided
         let fetchedShop = initialShop || null;
         if (!fetchedShop) {
           fetchedShop = await shopService.getUserShop(uid);
         }
         const shopId = fetchedShop?.id;
 
-        // 2. Fetch products & services (support both user-specific and shop-specific queries)
-        const [userProducts, userServices, shopProducts, shopServices] = await Promise.all([
-          shopService.getUserProducts(uid),
-          shopService.getUserServices(uid),
-          shopId ? shopService.getShopProducts(shopId) : Promise.resolve([]),
-          shopId ? shopService.getShopServices(shopId) : Promise.resolve([]),
+        // 2. Fetch products, services, and custom items (public endpoints, no auth required)
+        const [userProducts, userServices, shopProducts, shopServices, fetchedCustomItems] = await Promise.all([
+          shopService.getUserProducts(uid).catch(() => []),
+          shopService.getUserServices(uid).catch(() => []),
+          shopId ? shopService.getShopProducts(shopId).catch(() => []) : Promise.resolve([]),
+          shopId ? shopService.getShopServices(shopId).catch(() => []) : Promise.resolve([]),
+          shopId ? shopService.getShopCustomItems(shopId).catch(() => []) : Promise.resolve([]),
         ]);
 
         // Merge and deduplicate by item ID
@@ -85,6 +91,7 @@ export default function PublicBizCenterView({
           if (fetchedShop) setShop(fetchedShop);
           setProducts(Array.from(mergedProductsMap.values()));
           setServices(Array.from(mergedServicesMap.values()));
+          setCustomItems(Array.isArray(fetchedCustomItems) ? fetchedCustomItems : []);
         }
       } catch (err) {
         console.error('Failed to load Biz-Center data:', err);
@@ -102,6 +109,8 @@ export default function PublicBizCenterView({
   const currencySymbol = shop?.currency || 'USD';
   const shopName = shop?.name || `${user?.fullname || user?.name || user?.username || 'Member'}'s Biz-Center`;
   const isVerified = shop?.verificationStatus === 'approved';
+
+  const totalShowcaseCount = products.length + services.length + customItems.length;
 
   const handleOpenItem = (item: any, type: 'product' | 'service') => {
     const marketItem: MarketItem = {
@@ -288,7 +297,7 @@ export default function PublicBizCenterView({
             }`}
           >
             <ShoppingBag className="w-4 h-4" />
-            <span>Showcase ({products.length + services.length})</span>
+            <span>Showcase ({totalShowcaseCount})</span>
           </button>
           <button
             type="button"
@@ -320,6 +329,85 @@ export default function PublicBizCenterView({
       {/* Tab Body */}
       {activeTab === 'showcase' && (
         <div className="space-y-6">
+          {/* Custom Items Section (Showcase Items parity with mobile user_shop_screen.dart) */}
+          {customItems.length > 0 && (
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-extrabold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-[#F21C29]" />
+                  <span>Showcase Highlights ({customItems.length})</span>
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {customItems.map((ci) => {
+                  const image =
+                    Array.isArray(ci.images) && ci.images.length > 0
+                      ? ci.images[0]
+                      : ci.image || (typeof ci.images === 'string' ? ci.images : '');
+                  return (
+                    <div
+                      key={ci.id}
+                      className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-xs flex flex-col justify-between group hover:border-slate-300 transition-all cursor-pointer"
+                      onClick={() => setPreviewCustomItem(ci)}
+                    >
+                      <div>
+                        <div className="aspect-video w-full rounded-xl bg-slate-100 overflow-hidden mb-3 relative">
+                          {image ? (
+                            <img
+                              src={image}
+                              alt={ci.title || 'Showcase Item'}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-300">
+                              <Sparkles className="w-8 h-8" />
+                            </div>
+                          )}
+                          <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-[#F21C29]/90 text-white text-[10px] font-bold">
+                            Showcase Item
+                          </span>
+                        </div>
+                        <h4 className="font-bold text-slate-900 text-sm line-clamp-1">{ci.title}</h4>
+                        <p className="text-xs text-slate-500 line-clamp-2 mt-1">
+                          {ci.description || 'Verified showcase listing.'}
+                        </p>
+                      </div>
+
+                      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span className="text-xs font-semibold text-slate-400">Featured</span>
+                        <div className="flex items-center gap-2">
+                          {ci.link && (
+                            <a
+                              href={ci.link.startsWith('http') ? ci.link : `https://${ci.link}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                              title="Visit Link"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setPreviewCustomItem(ci);
+                            }}
+                            className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors"
+                          >
+                            View Details
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Products Section */}
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -510,6 +598,74 @@ export default function PublicBizCenterView({
         onClose={() => setBookingModalOpen(false)}
         item={selectedItem}
       />
+
+      {/* Custom Item Preview Modal */}
+      {previewCustomItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
+            <div className="relative aspect-video w-full bg-slate-900">
+              {(() => {
+                const img =
+                  Array.isArray(previewCustomItem.images) && previewCustomItem.images.length > 0
+                    ? previewCustomItem.images[0]
+                    : previewCustomItem.image ||
+                      (typeof previewCustomItem.images === 'string' ? previewCustomItem.images : '');
+                return img ? (
+                  <img
+                    src={img}
+                    alt={previewCustomItem.title || 'Showcase Item'}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-slate-500">
+                    <Sparkles className="w-12 h-12" />
+                  </div>
+                );
+              })()}
+              <button
+                type="button"
+                onClick={() => setPreviewCustomItem(null)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto space-y-4">
+              <div>
+                <span className="inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-[#F21C29] mb-2">
+                  Biz-Center Showcase
+                </span>
+                <h3 className="text-xl font-black text-slate-900">{previewCustomItem.title}</h3>
+              </div>
+
+              {previewCustomItem.description && (
+                <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">
+                  {previewCustomItem.description}
+                </p>
+              )}
+
+              {previewCustomItem.link && (
+                <div className="pt-2">
+                  <a
+                    href={
+                      previewCustomItem.link.startsWith('http')
+                        ? previewCustomItem.link
+                        : `https://${previewCustomItem.link}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 px-4 rounded-xl bg-[#F21C29] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#D01420] transition-colors shadow-xs"
+                  >
+                    <span>Visit External Link</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

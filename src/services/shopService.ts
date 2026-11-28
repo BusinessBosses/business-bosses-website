@@ -324,6 +324,19 @@ export const shopService = {
   },
 
   /**
+   * Get custom items by shop ID (GET /custom-items/shop/:shopId)
+   */
+  async getShopCustomItems(shopId: string): Promise<any[]> {
+    try {
+      const res = await apiClient.get(`/custom-items/shop/${shopId}`);
+      const rows = res.data?.data?.rows || res.data?.rows || res.data?.data || [];
+      return Array.isArray(rows) ? rows : [];
+    } catch {
+      return [];
+    }
+  },
+
+  /**
    * Delete product (DELETE /goods/:id)
    */
   async deleteProduct(id: string | number): Promise<boolean> {
